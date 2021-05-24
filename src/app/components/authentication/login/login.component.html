@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="form-sidebar">
+    <div class="sidebar">
+      <img src="assets/bar.jpg">
+    </div>
+    <div class="form-container">
+      <form id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+        <h2>ĐĂNG NHẬP</h2> 
+        <div class="input-group">
+          <label for="username">TÊN ĐĂNG NHẬP</label> 
+          <input type="text" id="username" autocomplete="off" [formControlName]="'username'" name="username" required autofocus>
+          <div class="warning" *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched"> Tên đăng nhập không hợp lệ</div>   
+        </div>
+        <div class="input-group">
+          <label for="password">MẬT KHẨU</label>
+          <input type="password" id="password" [formControlName]="'password'" name="password" required>
+          <div class="warning" *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched"> Mật khẩu không được bỏ trống</div>   
+        </div>
+        <button id="submit-button" type="submit">ĐĂNG NHẬP</button>
+      </form>
+    </div>
+    
+  </div>
+    
+</div>
