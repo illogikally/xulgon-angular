@@ -1,0 +1,54 @@
+<div class="post">
+  <div class="post-header">
+    <div class="avatar-name">
+      <div class="post-avatar">
+        <a href="http://localhost:4200/{{ post.userId }}">
+          <img src="assets/avatar.jpg">
+        </a>
+      </div>
+      <div class="name-date">
+        <div class="name">
+          <a href="http://localhost:4200/{{ post.userId }}">
+            {{ post.username }}
+          </a>
+        </div>
+        <div class="date">{{ post.createdAt }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="post-body">
+    {{ post.body }}
+  </div>
+  <div class="post-meta">
+    <div>
+      <div *ngIf="post.reactionCount > 0" class="reaction-count">
+        {{ post.reactionCount }}
+      </div>
+    </div>
+    <div class="comment-share-count">
+      <span class="comment-count">{{ post.commentCount }} bình luận</span>
+      <span *ngIf="post.shareCount > 0" class="share-count">{{ post.shareCount }} lượt chia sẻ</span>
+    </div>
+  </div>
+
+  <div class="post-actions">
+    <div class="reaction-action">
+      <span>
+        <i class='bx bx-like' ></i> Thích
+      </span>
+    </div>
+    <div class="comment-action">
+      <span>
+        <i class='bx bx-message-alt'></i> Bình luận
+      </span>
+    </div>
+    <div *ngIf="post.shareCount > 0" class="share-action">
+      <span>
+        <i class='bx bx-network-chart'></i> Chia sẻ
+      </span>
+    </div>
+  </div>
+  <div class="comments">
+    <app-comment-list></app-comment-list>
+  </div>
+</div>

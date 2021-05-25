@@ -17,6 +17,9 @@
           <div class="warning" *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched"> Mật khẩu không được bỏ trống</div>   
         </div>
         <button id="submit-button" type="submit">ĐĂNG NHẬP</button>
+        <div class="login-failed" *ngIf="this.loginError">
+          <p class="register-success-text">Logined falied</p>   
+        </div>               
       </form>
     </div>
     
