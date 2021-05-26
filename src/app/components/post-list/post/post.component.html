@@ -9,7 +9,7 @@
       <div class="name-date">
         <div class="name">
           <a href="http://localhost:4200/{{ post.userId }}">
-            {{ post.username }}
+            <b>{{ post.username }}</b>
           </a>
         </div>
         <div class="date">{{ post.createdAt }}</div>
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="comment-share-count">
-      <span class="comment-count">{{ post.commentCount }} bình luận</span>
+      <span (click)="toggleComment()" class="comment-count">{{ post.commentCount }} bình luận</span>
       <span *ngIf="post.shareCount > 0" class="share-count">{{ post.shareCount }} lượt chia sẻ</span>
     </div>
   </div>
@@ -49,6 +49,6 @@
     </div>
   </div>
   <div class="comments">
-    <app-comment-list></app-comment-list>
+    <app-comment-list *ngIf="showComment" [contentId]="post.id"></app-comment-list>
   </div>
 </div>

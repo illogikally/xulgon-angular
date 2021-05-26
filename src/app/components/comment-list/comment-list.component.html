@@ -1,1 +1,4 @@
-<p>comment-list works!</p>
+<form [formGroup]="commentForm" (keyup.enter)="submit()">
+  <input type="text" placeholder="Bình luận..." autocomplete="off" formControlName="comment" />
+</form>
+<app-comment *ngFor="let comment of comments" [myComment]="comment"></app-comment>

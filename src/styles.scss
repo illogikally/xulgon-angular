@@ -1,5 +1,20 @@
+:root {
+  --bg-color: #f0f2f5;
+  font-size: 15px;
+  font-weight: normal;
+  font-family: Helvetica, Arial;
+}
+
 div {
   // border: 1px solid red;
+}
+
+.hover-underline {
+  &:hover {
+    text-decoration: underline;
+      text-decoration-thickness: 1px;
+      cursor: pointer;
+  }
 }
 
 body, html {

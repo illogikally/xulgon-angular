@@ -1,0 +1,38 @@
+<div class="comment">
+  <div>
+    <div class="comment-avatar">
+      <a [routerLink]="userProfile">
+        <img src="assets/avatar.jpg">
+      </a>
+    </div>
+  </div>
+  <div class="comment-right">
+    <div class="comment-body" style="display: inline-block;">
+      <div class="comment-username">
+        <a [routerLink]="userProfile">
+          <b>{{ myComment.username }}</b>
+        </a>
+      </div>
+      <div >
+        {{ myComment.body }}
+      </div>
+    </div>
+    <div class="comment-meta">
+      <span class="comment-like hover-underline"><b>Thích</b></span>
+      <span> · </span>
+      <span class="comment-reply hover-underline" (click)="showReplyOnClick()"><b>Trả lời</b></span>
+      <span> · </span>
+      <span class="comment-time-ago">{{ myComment.createdAgo }}</span>
+    </div>
+    <div class="comment-reply-container">
+      <div class="placeholder">
+        <span class="hover-underline" *ngIf="!(myComment.parentType == 'COMMENT' || showReply || myComment.replyCount == 0)" (click)="showReplyOnClick()">
+          <i class='bx bx-subdirectory-right'></i> {{ myComment.replyCount}} trả lời
+        </span>
+      </div>
+      <div>
+        <app-comment-list *ngIf="showReply" [contentId]="myComment.id"></app-comment-list>
+      </div>
+    </div>
+  </div>
+</div>

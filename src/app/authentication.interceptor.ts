@@ -17,7 +17,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        if (req.url.indexOf('refresh') !== -1 || req.url.indexOf('login') !== -1) {
+        if (req.url.indexOf('refresh') !== -1 || req.url.indexOf('retrieve') !== -1) {
             return next.handle(req);
         }
         const authenticationToken = this.authenticationService.getAuthenticationToken();

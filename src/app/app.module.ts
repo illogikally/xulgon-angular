@@ -14,7 +14,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PostListComponent } from './components/post-list/post-list.component';
 import { PostComponent } from './components/post-list/post/post.component';
 import { AuthenticationInterceptor } from './authentication.interceptor';
-import { CommentListComponent } from './components/comment-list/comment-list.component'
+import { CommentListComponent } from './components/comment-list/comment-list.component';
+import { CommentComponent } from './components/comment-list/comment/comment.component'
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CommentListComponent } from './components/comment-list/comment-list.com
     PostListComponent,
     PostComponent,
     CommentListComponent,
+    CommentComponent,
   ],
   imports: [
     BrowserModule,
