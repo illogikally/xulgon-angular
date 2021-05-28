@@ -1,32 +1,34 @@
 <nav class="navbar">
-  <div class="logo-search">
-      <div class="logo">
-        <a [routerLink]="''" >
-          <i class='bx bxs-meteor'></i>
-        </a>
+  <div>
+    <div class="logo-search">
+        <div class="logo">
+          <a [routerLink]="''" >
+            <i class='bx bxs-meteor'></i>
+          </a>
+        </div>
+      <div class="search">
+        <form [formGroup]="searchForm">
+          <input type="text" id="search" name="search" autocomplete="off">
+        </form>
       </div>
-    <div class="search">
-      <form [formGroup]="searchForm">
-        <input type="text" id="search" name="search" autocomplete="off">
-      </form>
     </div>
+    <ul class="menu">
+      <li class="home" [ngClass]="{'menu-active-div': rla.isActive}">
+        <a [routerLink]="['/navbar']" routerLinkActive="menu-routerLink-active" #rla="routerLinkActive" >
+          <i class='bx bx-home-circle'></i>
+        </a>
+      </li>
+      <li class="home" [ngClass]="{'menu-active-div': rlaHome.isActive}">
+        <a [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}" #rlaHome="routerLinkActive" routerLinkActive="menu-routerLink-active" >
+          <i class='bx bx-group' ></i>
+        </a>
+      </li>
+      <li class="home">
+        <a [routerLink]="['/profile']" routerLinkActive="menu-routerLink-active" >
+          <i class='bx bx-shape-circle'></i>
+        </a>
+      </li>
+    </ul>
+    <div class="options"></div>
   </div>
-  <ul class="menu">
-    <li class="home" [ngClass]="{'menu-active-div': rla.isActive}">
-      <a [routerLink]="['/navbar']" routerLinkActive="menu-routerLink-active" #rla="routerLinkActive" >
-        <i class='bx bx-home-circle'></i>
-      </a>
-    </li>
-    <li class="home" [ngClass]="{'menu-active-div': rlaHome.isActive}">
-      <a [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}" #rlaHome="routerLinkActive" routerLinkActive="menu-routerLink-active" >
-        <i class='bx bx-group' ></i>
-      </a>
-    </li>
-    <li class="home">
-      <a [routerLink]="['/profile']" routerLinkActive="menu-routerLink-active" >
-        <i class='bx bx-shape-circle'></i>
-      </a>
-    </li>
-  </ul>
-  <div class="options"></div>
 </nav>

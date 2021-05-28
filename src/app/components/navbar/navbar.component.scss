@@ -6,13 +6,24 @@
 }
 
 .navbar {
+  display: flex;
   height: 56px;
   width: 100%;
-  display: flex;
   z-index: 99;
   background-color: #fff;
   box-shadow: 0 2px 4px #00000033;
-  justify-content: space-between;
+
+  > div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    padding: 0 20px;
+    justify-content: space-between;
+    
+    > * {
+      flex-shrink: 0;
+    }
+  }
 
   .logo-search {
     display: flex;
@@ -54,7 +65,9 @@
   .menu {
     height: 100%;
     width: 400px;
+    border: 1px solid red;
     display: flex;
+    color: #65676B;
 
     a {
       @extend %flex-center;

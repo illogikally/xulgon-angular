@@ -7,17 +7,24 @@
     </div>
   </div>
   <div class="comment-right">
-    <div class="comment-body" style="display: inline-block;">
-      <div class="comment-username">
-        <a [routerLink]="userProfile">
-          <b>{{ myComment.username }}</b>
-        </a>
+    <div style="display: flex;">
+      <div class="comment-body">
+        <div class="comment-username">
+          <a [routerLink]="userProfile">
+            <b>{{ myComment.username }}</b>
+          </a>
+        </div>
+        <div >
+          {{ myComment.body }}
+        </div>
+        <div class="reaction-count" *ngIf="myComment.reactionCount > 0">
+          <img src="assets/like.svg"> {{ myComment.reactionCount}} 
+        </div>
       </div>
-      <div >
-        {{ myComment.body }}
-      </div>
-      <div class="reaction-count" *ngIf="myComment.reactionCount > 0">
-        <img src="assets/like.svg"> {{ myComment.reactionCount}} 
+      <div class="comment-options-container">
+        <div class="comment-options">
+          <i class='bx bx-dots-horizontal-rounded'></i>
+        </div>
       </div>
     </div>
     <div class="comment-meta">
