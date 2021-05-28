@@ -21,8 +21,8 @@
   </div>
   <div class="post-meta">
     <div>
-      <div *ngIf="post.reactionCount > 0" class="reaction-count">
-        {{ post.reactionCount }}
+      <div *ngIf="post.reactionCount > 0" class="flex-center reaction-count">
+        <img src="assets/like.svg" style="margin-right: 2px;"> {{ post.reactionCount }}
       </div>
     </div>
     <div class="comment-share-count">
@@ -32,12 +32,12 @@
   </div>
 
   <div class="post-actions">
-    <div class="reaction-action">
+    <div (click)="react()" class="reaction-action">
       <span>
         <i class='bx bx-like' ></i> Thích
       </span>
     </div>
-    <div class="comment-action">
+    <div class="comment-action" (click)="comment()">
       <span>
         <i class='bx bx-message-alt'></i> Bình luận
       </span>

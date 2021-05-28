@@ -4,6 +4,7 @@ export interface CommentResponse {
   parentId: number;
   parentType: string;
   body: string;
+  isReacted: boolean;
   username: string;
   avatarUrl: string;
   createdAgo: string;

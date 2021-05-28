@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import { CommentService } from './comment/comment.service';
 import { CommentResponse } from './comment/comment-response';
 import { FormControl, FormGroup } from '@angular/forms';
+import { CommentRequest } from './comment/comment-request';
 
 @Component({
   selector: 'app-comment-list',
@@ -11,7 +12,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class CommentListComponent implements OnInit {
 
   @Input() contentId!: number;
-  comments!: CommentResponse[];
+  comments: CommentResponse[] = [];
   showComment: boolean = false;
   commentForm!: FormGroup; 
   constructor(private commentService: CommentService) { 
@@ -24,12 +25,20 @@ export class CommentListComponent implements OnInit {
     });
 
     this.commentService.getCommentsByContent(this.contentId).subscribe(resp => {
-
+      
       this.comments = resp;
+      console.log(this.comments);
+      
     });
   }
 
+
   submit(): void {
-    console.log(this.commentForm.get('comment')?.value);
+    let commentRequest: CommentRequest = {
+      parentId: this.contentId,
+      body: this.commentForm.get('comment')?.value
+    }
+    this.commentService.createComment(commentRequest).subscribe(comment => this.comments.push(comment));
+    this.commentForm.get('comment')?.setValue("");
   }
 }

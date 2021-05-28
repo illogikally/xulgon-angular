@@ -4,11 +4,14 @@ import { LoginComponent } from './components/authentication/login/login.componen
 import { AuthenticationGuard } from './components/authentication/authentication.guard'
 import { HomeComponent } from './components/home/home.component'
 import { NavbarComponent } from './components/navbar/navbar.component'
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
-  { path: '', component: HomeComponent, canActivate: [AuthenticationGuard]},
-  { path: 'navbar', component: NavbarComponent}
+  // { path: '', component: HomeComponent, canActivate: [AuthenticationGuard]},
+  { path: 'navbar', component: NavbarComponent},
+  { path: ':id', component: ProfileComponent}
+
 ];
 
 @NgModule({

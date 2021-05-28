@@ -2,7 +2,7 @@
   <div class="logo-search">
       <div class="logo">
         <a [routerLink]="''" >
-          <i class='bx bxl-facebook-circle'></i>
+          <i class='bx bxs-meteor'></i>
         </a>
       </div>
     <div class="search">
@@ -19,12 +19,12 @@
     </li>
     <li class="home" [ngClass]="{'menu-active-div': rlaHome.isActive}">
       <a [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}" #rlaHome="routerLinkActive" routerLinkActive="menu-routerLink-active" >
-        <i class='bx bx-home-circle'></i>
+        <i class='bx bx-group' ></i>
       </a>
     </li>
     <li class="home">
-      <a [routerLink]="['/groups']" routerLinkActive="menu-routerLink-active" >
-        <i class='bx bx-home-circle'></i>
+      <a [routerLink]="['/profile']" routerLinkActive="menu-routerLink-active" >
+        <i class='bx bx-shape-circle'></i>
       </a>
     </li>
   </ul>

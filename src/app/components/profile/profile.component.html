@@ -1,0 +1,120 @@
+<app-navbar></app-navbar>
+<div class="profile-header">
+  <div class="flex-center">
+    <div class="cover-avatar">
+      <div class="cover"></div>
+      <div class="avatar-container flex-center">
+        <div class="avatar">
+          <img src="assets/heejin.jpg">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-center">
+    <h1 class="profile-name flex-center">Nguyễn Đức Mạnh</h1>
+  </div>
+  <div class="flex-center">
+    <div class="actions-menu">
+      <ul class="profile-menu">
+        <li>
+          <div class="flex-center">
+            Bài viết
+          </div>
+        </li>
+        <li>
+          <div class="flex-center">
+            Bạn bè
+          </div>
+        </li>
+        <li>
+          <div class="flex-center">
+            Ảnh
+          </div>
+        </li>
+      </ul>
+      <ul class="profile-actions">
+        <li>
+          <button id="add-friend">Thêm bạn bè</button>
+        </li>
+        <li>
+          <button id="send-message">Nhắn tin</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="profile-body">
+  <div class="flex-center">
+    <div class="content">
+      <div class="sidebar">
+        <div class="intro">
+          <h2>Giới thiệu</h2>
+          <div>Làm việc tại LG이노텍 - LG Innotek</div>
+          <div>Từng học tại THPT Hà Đông</div>
+          <div>Đã học tại THPT Hà Đông , Thanh Hà , Hải Dương</div>
+          <div>Sống tại Hải Dương</div>
+        </div>
+        <div class="photo-intro">
+          <div class="intro-title">
+            <h2>Ảnh</h2>
+          </div>
+          <div class="photo">
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+          </div>
+        </div>
+        <div class="friend-intro">
+          <div>
+            <h2>Bạn bè</h2>
+          </div>
+          <div class="friend">
+
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+            <div>
+              <img src="assets/heejin.jpg">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="post-container">
+          <app-post-list [pageId]="profileId"></app-post-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

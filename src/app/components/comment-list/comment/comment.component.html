@@ -16,12 +16,15 @@
       <div >
         {{ myComment.body }}
       </div>
+      <div class="reaction-count" *ngIf="myComment.reactionCount > 0">
+        <img src="assets/like.svg"> {{ myComment.reactionCount}} 
+      </div>
     </div>
     <div class="comment-meta">
-      <span class="comment-like hover-underline"><b>Thích</b></span>
+      <span class="comment-like hover-underline" [ngClass]="{reacted: myComment.isReacted}" (click)="like()"><b>Thích</b></span>
       <span> · </span>
-      <span class="comment-reply hover-underline" (click)="showReplyOnClick()"><b>Trả lời</b></span>
-      <span> · </span>
+      <span class="comment-reply hover-underline" *ngIf="!(myComment.parentType == 'COMMENT')" (click)="showReplyOnClick()"><b>Trả lời</b><span> · </span></span>
+      
       <span class="comment-time-ago">{{ myComment.createdAgo }}</span>
     </div>
     <div class="comment-reply-container">

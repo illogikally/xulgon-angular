@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PostService } from './post/post.service'
 import { Post } from './post/post'
 import { AuthenticationService } from '../authentication/authentication.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-list',
@@ -10,14 +11,17 @@ import { AuthenticationService } from '../authentication/authentication.service'
 })
 export class PostListComponent implements OnInit {
 
+  @Input() pageId!: number;
+
   posts: Array<Post> = new Array();
   constructor(private postService: PostService,
-    private authenticationService: AuthenticationService) { }
+    private authenticationService: AuthenticationService) {
+  }
 
   ngOnInit(): void {
 
     
-    this.postService.getPostsByPageId(1)
+    this.postService.getPostsByPageId(this.pageId)
       .subscribe(resp => this.posts = resp);
   }
 
