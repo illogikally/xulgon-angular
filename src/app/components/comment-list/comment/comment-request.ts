@@ -1,4 +1,4 @@
 export interface CommentRequest {
   parentId: number;
-  body: string
+  body: string;
 }

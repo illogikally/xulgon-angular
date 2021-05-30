@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import { ReactionType } from '../../common/reaction-type';
-import { ReactionPayload } from '../../common/reaction.payload';
-import { ReactionService } from '../../common/reaction.service';
+import { ReactionType } from '../common/reaction-type';
+import { ReactionPayload } from '../common/reaction.payload';
+import { ReactionService } from '../common/reaction.service';
 import { Post } from './post';
 
 @Component({

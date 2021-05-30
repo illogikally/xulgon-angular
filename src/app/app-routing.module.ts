@@ -5,11 +5,13 @@ import { AuthenticationGuard } from './components/authentication/authentication.
 import { HomeComponent } from './components/home/home.component'
 import { NavbarComponent } from './components/navbar/navbar.component'
 import { ProfileComponent } from './components/profile/profile.component';
+import { CreatePostComponent } from './components/post/create-post/create-post.component'
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
   // { path: '', component: HomeComponent, canActivate: [AuthenticationGuard]},
   { path: 'navbar', component: NavbarComponent},
+  { path: 'create-post', component: CreatePostComponent},
   { path: ':id', component: ProfileComponent}
 
 ];

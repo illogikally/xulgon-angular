@@ -1,8 +1,78 @@
 :root {
   --bg-color: #f0f2f5;
+  --btn-blue: #1877f2;
+  --border: 1px solid #00000033;
   font-size: 15px;
   font-weight: normal;
   font-family: 'Segoe UI', Arial;
+}
+$btn-blue: #1877f2;
+
+@mixin x-btn($sz, $r) {
+  $bg: #eee;
+  height: $sz;
+  width: $sz;
+  border-radius: 50%;
+  position: absolute;
+  right: $r;
+  font-size: 34px;
+  color: #777;
+  background-color: $bg;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($bg, 3%);
+  }
+
+  @extend %flex-center;
+}
+
+@mixin button($bg, $fg) {
+  height: 37px;
+  padding: 0 12px;
+  border-radius: 5px;
+  background-color: $bg;
+  font-family: 'Segoe UI';
+  font-weight: 500;
+  color: $fg;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  &:hover {
+    background-color: darken($bg, 3%);
+  }
+}
+
+@mixin scrollbar() {
+  $scrollbar-width: 15px;
+
+  &::-webkit-scrollbar-track {
+    background-color: #fff;
+    width: 20px;
+    &:hover {
+      background-color: rgba(#000, .05);
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: $scrollbar-width;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+    background-color: #fff;
+    transition: background-color .3s;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(#777, .3);
+    }
+  }
+
+  margin-right: - $scrollbar-width;
 }
 
 div {

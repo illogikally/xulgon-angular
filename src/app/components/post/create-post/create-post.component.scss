@@ -1,0 +1,190 @@
+@import 'src/styles';
+
+.create-post-container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  font-weight: 500;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba($color: #000, $alpha: .1);
+  .create-post {
+    --post-width: 500px;
+    background-color: #fff;
+    position: relative;
+    position: fixed;
+    border-radius: 10px;
+    width: var(--post-width);
+
+    .post-title {
+      border-bottom: 1px solid #00000033;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 20px 0;
+
+      .x-btn {
+        @include x-btn(40px, 15px);
+      }
+    }
+    .create-post-body {
+      padding: 20px 15px;
+
+      .post-info {
+        display: flex;
+
+        .avatar {
+          margin-top: 3px;
+          width: 40px;
+          box-sizing: border-box;
+          height: 40px;
+          border-radius: 50%;
+          overflow: hidden;
+          border: 1px solid #00000033;
+
+          @extend %flex-center;
+          img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+          }
+        } 
+        
+        .name--privacy {
+          margin-left: 10px;
+          font-weight: 500;
+          .name {
+            font-size: 14px;
+            margin-bottom: 5px;
+          }
+          .privacy {
+            font-size: 13px;
+            span {
+              padding: 2px 5px;
+              cursor: pointer;
+              border-radius: 5px;
+              background-color: #ddd;
+            }
+          }
+        }
+      }
+
+      .post-content {
+        max-height: 300px;
+        visibility: visible;
+        overflow-y: scroll;
+        margin: 15px 0;
+
+        @include scrollbar();
+
+
+        .post-text {
+          width: 100%;
+
+          textarea {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: 150px;
+            box-sizing: border-box;
+
+            border: none;
+            font-family: 'Segoe UI';
+            font-weight: 400;
+            outline: none;
+            font-size: 15px;
+            resize: none;
+          }
+        }
+
+        .post-photos {
+          border-radius: 10px;          
+          padding: 0;
+          border: var(--border);
+          overflow: hidden;
+          
+
+          > div {
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
+            justify-content: space-between;
+
+            &:first-child {
+              margin-bottom: 2px;
+            }
+
+            > div {
+              flex-grow: 1;
+              overflow: hidden;
+              flex-basis: 50%;
+
+              &:not(:last-child) {
+                margin-right: 2px;
+              }
+
+              > div {
+                width: 100%;
+                height: 0;
+                padding-bottom: 100%;
+              }
+            } 
+
+          }
+          img {
+            width: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+
+      .post-addition {
+        padding: 10px 15px;
+        border: 1px solid #00000033;
+        border-radius: 5px;
+        font-weight: inherit;
+        display: flex;
+        box-shadow: 0 1px 2px rgba(#000, .2);
+        align-items: center;
+        justify-content: space-between;
+        
+
+        input[type='file'] {
+          display: none;
+        }
+
+        .upload-image {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 35px;
+          width: 35px;
+          cursor: pointer;
+          font-size: 28px;
+          border-radius: 50%;
+          color: #867ae9;
+
+          &:hover {
+            background-color: #efefef;
+          }
+        }
+      }
+
+      .btn-post {
+        width: 100%;
+        margin-top: 20px;
+        @include button($btn-blue, #fff);
+
+        &:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+
+        }
+      }
+    }
+  }
+
+}

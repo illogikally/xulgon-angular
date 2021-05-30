@@ -14,10 +14,10 @@ export class CommentService {
   constructor(private http: HttpClient) { }
 
   getCommentsByContent(contentId: number): Observable<CommentResponse[]> {
-    return this.http.get<CommentResponse[]>(`http://localhost:8080/api/content/${contentId}/comments`);
+    return this.http.get<CommentResponse[]>(`http://localhost:8080/api/contents/${contentId}/comments`);
   }
 
   createComment(commentRequest: CommentRequest): Observable<CommentResponse> {
-    return this.http.post<CommentResponse>("http://localhost:8080/api/comment", commentRequest);
+    return this.http.post<CommentResponse>("http://localhost:8080/api/comments", commentRequest);
   }
 }
