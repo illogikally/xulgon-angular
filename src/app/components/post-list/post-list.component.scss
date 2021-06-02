@@ -1,6 +1,16 @@
+@import 'src/styles';
+
 a {
   &:hover {
     text-decoration: underline;
     text-decoration-thickness: 1px;
   }
+}
+
+.post-container {
+  @include card(10px);
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 17px;
 }

@@ -1,0 +1,67 @@
+@import 'src/styles';
+
+      a {
+          display: block;
+        }
+
+        .request {
+          display: flex;
+          padding: 10px;
+          border-radius: 10px;
+
+          &:hover {
+            background-color: #efefef;
+          }
+          
+          .avatar {
+            flex: 0 0 60px;
+            height: 60px;
+            @extend %flex-center;
+            margin-right: 10px;
+            border-radius: 50%;
+            border: 1px solid rgba(#555, .2);
+            overflow: hidden;
+
+            img {
+              object-fit: cover;
+              width: 100%;
+            }
+          }
+
+          .request-info {
+            flex-grow: 1;
+            font-size: 14px;
+            color: var(--secondary-text);
+            
+            > * {
+              padding: 3px 0;
+            }
+
+            .username--time {
+              display: flex;
+              justify-content: space-between;
+
+              .username {
+                font-weight: 500;
+                color: var(--primary-text);
+                font-size: 15px;
+              }
+            }
+            
+            .request-actions {
+
+              display: flex;
+              justify-content: space-between;
+
+              .accept-request {
+                flex-basis: 48%;
+                @include button(#1877f2, #fff);
+              }
+              .delete-request {
+                flex-basis: 48%;
+                @include button(#ddd, #000);
+              }
+            }
+          }
+
+        }

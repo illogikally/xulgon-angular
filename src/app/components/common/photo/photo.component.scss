@@ -1,0 +1,10 @@
+@import 'src/styles';
+
+a {
+  display: block;
+  height: 100%;
+
+  img {
+    object-fit: cover;
+  }
+}

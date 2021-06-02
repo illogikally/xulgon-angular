@@ -9,15 +9,18 @@
   display: flex;
   height: 56px;
   width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
   z-index: 99;
   background-color: #fff;
-  box-shadow: 0 2px 4px #00000033;
+  box-shadow: 0 1px 2px #00000033;
 
   > div {
     height: 100%;
     width: 100%;
     display: flex;
-    padding: 0 20px;
+    padding: 0 30px;
     justify-content: space-between;
     
     > * {
@@ -65,7 +68,6 @@
   .menu {
     height: 100%;
     width: 400px;
-    border: 1px solid red;
     display: flex;
     color: #65676B;
 
@@ -94,6 +96,75 @@
   .options {
     height: 100%;
     width: 350px;
+    display: flex;
+
+    .home-shortcut {
+      flex-grow: 1;
+      height: 100%;
+      @extend %flex-center;
+
+      .pill-container {
+        display: inline-block;
+        @extend %flex-center;
+      }
+
+      .pill {
+        height: 30px;
+        border-radius: 20px;
+        display: flex;
+        background-color: transparent;
+        padding: 2px 4px;
+        
+        &:hover {
+          background-color: rgba(#ccc, .7);
+        }
+
+        .avatar {
+          @extend %flex-center;
+          height: 28px;
+          width: 28px;
+          border-radius: 50%;
+          border: 1px solid rgba(#000, .3);
+          overflow: hidden;
+          margin-right: 4px;
+
+          img {
+            width: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .username {
+          font-weight: 500;
+          @extend %flex-center;
+        }
+      }
+    }
+
+    .notis {
+      display: flex;
+      flex: 0 0 210px;
+
+      li {
+        // border: 1px solid red;
+        width: 100%;
+        @extend %flex-center;
+
+        > div {
+          @include x-btn(40px, #000, #cacaca);
+          background-color: #ddd;
+        }
+        .create-post {
+          font-size: 25px;
+        }
+        .chat-noti, .general-noti {
+          font-size: 20px;
+        }
+        .more-opts {
+          font-size: 25px;
+        }
+      }
+    }
   }
 }
 

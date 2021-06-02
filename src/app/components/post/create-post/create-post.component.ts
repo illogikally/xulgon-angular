@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AuthenticationService } from '../../authentication/authentication.service';
 
 @Component({
   selector: 'app-create-post',
@@ -11,12 +12,22 @@ export class CreatePostComponent implements OnInit {
 
   photos: string[] = [];
   files: Blob[] = [];
+  avatarUrl: string;
+  username: string;
   postable: boolean = false;
   postForm!: FormGroup;
 
-  constructor(private http: HttpClient) { }
+  @Output() closeMe: EventEmitter<void> = new EventEmitter();
+
+  constructor(private http: HttpClient,
+    private auth: AuthenticationService) { 
+      this.avatarUrl = auth.getAvatarUrl();
+      this.username = auth.getUserName();
+  }
 
   ngOnInit(): void {
+    console.log(this.auth.getAvatarUrl());
+    
     this.postForm = new FormGroup({
       textarea: new FormControl(""),
       fileInput: new FormControl("")
@@ -43,21 +54,31 @@ export class CreatePostComponent implements OnInit {
   submit(): void {
     let fd = new FormData();
     let postRequest = new Blob([JSON.stringify({
-      pageId: 1,
+      pageId: this.auth.getProfileId(),
       privacy: 'PUBLIC',
-      body: "Yhorm the Giant is a Lord of Cinder and boss enemy in Dark Souls 3. He is known as the 'reclusive lord of the Profaned Capital'. Yhorm is the descendant of an ancient conqueror, but was asked by the very people once subjugated to lead them. In the past, he was a skilled Giant combatant, powerful enough to become a lord of a city and a Lord of Cinder.",
+      body: this.postForm.get('textarea')?.value,
     })], {type: 'application/json'});
-    let photoRequest = new Blob([JSON.stringify([{ privacy: 'PUBLIC'}, {privacy:'PUBLIC'}])], {type: 'application/json'});
     fd.append('postRequest', postRequest);
-    fd.append('postRequest', postRequest);
-    fd.append('photoRequest', photoRequest);
+    // let photoRequest = new Blob([JSON.stringify([{ privacy: 'PUBLIC'}, {privacy:'PUBLIC'}])], {type: 'application/json'});
 
+    let photoInfo: any[] = []
     this.files.forEach(file => {
+      photoInfo.push({privacy: 'PUBLIC'});
       fd.append('photos', file);
     });
+    if (this.files.length  == 0) {
+      fd.append('photos', new Blob([]));
+    }
+    console.log(fd.get('photos'));
+    
+    let photoRequest = new Blob([JSON.stringify(photoInfo)], {type: 'application/json'});
+    fd.append('photoRequest', photoRequest);
     this.http.post("http://localhost:8080/api/posts", fd).subscribe(big => console.log(big)); 
-    console.log("submitted");
-    
-    
+    console.log(this.auth.getProfileId());
+    this.closeMe.emit();
+  }
+
+  closeSelf(): void {
+    this.closeMe.emit();
   }
 }

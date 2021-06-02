@@ -1,30 +1,15 @@
 
-@mixin button($bg, $fg) {
-  height: 37px;
-  padding: 0 12px;
-  border-radius: 5px;
-  background-color: $bg;
-  font-family: 'Segoe UI';
-  font-weight: 500;
-  color: $fg;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  &:hover {
-    background-color: darken($bg, 3%);
-  }
-}
+@import 'src/styles';
+
 .profile-header {
   z-index: 1;
   width: 100%;
+  box-shadow: 0 1px 2px #00000033;
   background-color: #fff;
 
   .cover-avatar {
     height: 350px;
     width: 940px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    background-color: #000;
     display: flex;
     position: relative;
     justify-content: center;
@@ -32,6 +17,17 @@
     .cover {
       width: 100%;
       height: 100%;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      overflow: hidden;
+
+      @extend %flex-center;
+      
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+      }
     }
 
     .avatar-container {
@@ -45,21 +41,20 @@
       .avatar {
         height: 168px;
         width: 168px;
+        border: 1px solid #00000033;
         border-radius: 50%;
         overflow: hidden;
         cursor: pointer;
 
         img {
-          height: 100%;
           width: 100%;
+          height: auto;
         }
       }
     }
   }
 
   .profile-name {
-    // font-size: 28px;
-    // font-weight: bold;
     font-family: 'Segoe UI';
     height: 40px;
   }
@@ -79,7 +74,6 @@
       color: #65676B;
 
       > * {
-        // border: 1px solid red;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -102,34 +96,68 @@
     .profile-actions {
       display: flex;
       align-items: center;
+
+      i {
+        font-size: 20px;
+        margin-right: 3px;
+      }
+
+      button {
+        font-size: 15px;
+        font-weight: 700;
+        @extend %flex-center;
+
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+
       #add-friend {
         @include button(#1877f2, #fff);
-        margin-right: 10px;
       }
+
+      #friend-opts {
+        @include button(#1877f2, #fff);
+      }
+
       #send-message {
         @include button(#ddd, #000);
+      }
+
+      #delete-friend-request {
+        @include button(#ddd, #000);
+      }
+
+      #request-respond {
+        @include button(#1877f2, #fff);
       }
     }
   }
 }
 
 .profile-body {
-  margin-top: 20px;
+  margin-top: 17px;
   width: 100%;
+  display: flex;
+  justify-content: center;
   
   .content {
     width: 892px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    grid-gap: 17px;
 
+    .sidebar-container {
+      font-weight: 500;
+    }
+    
     .sidebar {
       font-family: 'Segoe UI';
       font-weight: 500;
-      margin-right: 10px;
-      flex: 0 0 360px;
     
 
       > * {
-        border-radius: 10px;
+        @include card(10px);
         background-color: #fff;
         padding: 15px 15px;
         margin-bottom: 20px;
@@ -137,33 +165,64 @@
 
       .intro {
         max-height: 500px;
+        font-size: 16px;
+
+        > div {
+          display: flex;
+          align-items: center;
+
+          i {
+            font-size: 30px;
+            margin-right: 10px;
+          }
+        }
       }
 
       .photo-intro {
         max-height: 600px;
-        img {
-          height: 100%;
-          width: 100%;
-        }
+
+
         .photo {
           display: grid;
-          grid-gap: 10px;
+          column-gap: 3px;
+          border-radius: 10px;
+          overflow: hidden;
           grid-template-columns: repeat(3, 1fr);
+          
+          > div {
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+          }
+
         }
 
       }
-      .friend-intro {
 
+      .friend-intro {
         max-height: 600px;
-        img {
-          height: 100%;
-          width: 100%;
-        }
 
         .friend {
           display: grid;
           grid-gap: 10px;
           grid-template-columns: repeat(3, 1fr);
+
+          .img-container {
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+
+          }
+          img {
+            object-fit: cover;
+            width: 100%;
+          }
+          .common-friend-count {
+            font-size: 14px;
+            font-weight: 400;
+          }
         }
       }
     }
@@ -178,4 +237,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.page-not-exist {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  @extend %flex-center;
 }

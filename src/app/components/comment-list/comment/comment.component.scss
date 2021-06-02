@@ -7,7 +7,7 @@
     width: 100%;
   }
   .comment-avatar {
-    margin-right: 15px;
+    margin-right: 10px;
     width: 35px;
     height: 35px;
     border-radius: 50%;
@@ -22,6 +22,7 @@
   }
   .comment-username {
     font-size: 14px;
+    font-weight: 500;
   }
 
   .comment-options-container {
@@ -65,12 +66,12 @@
     position: relative;
 
     .reaction-count {
+      position: absolute;
       border-radius: 15px;
       background-color: #fff;
       padding: 1px 4px;
       box-shadow: -1px 1px 2px 0px #00000033;
       font-size: 13px;
-      position: absolute;
       right: -25px;
       bottom: -5px;
 
@@ -80,6 +81,19 @@
       img {
         margin-right: 2px;
       }
+    }
+  }
+
+  .comment-media {
+    display: inline-block;
+    border-radius: 15px;
+    border: 1px solid rgba(#555, .2);
+    overflow: hidden;
+    height: 210px;
+    
+    img {
+      height: 100%;
+      width: auto;
     }
   }
 

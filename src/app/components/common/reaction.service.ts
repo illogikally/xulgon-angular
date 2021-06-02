@@ -12,7 +12,9 @@ export class ReactionService {
   constructor(private http: HttpClient) { }
 
   react(reaction: ReactionPayload): Observable<any> {
-    return this.http.post("http://localhost:8080/api/reaction", reaction);
+    console.log(reaction);
+    
+    return this.http.post("http://localhost:8080/api/reactions", reaction);
   }
 
 }

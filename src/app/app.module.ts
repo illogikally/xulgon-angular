@@ -18,6 +18,15 @@ import { CommentListComponent } from './components/comment-list/comment-list.com
 import { CommentComponent } from './components/comment-list/comment/comment.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CreatePostComponent } from './components/post/create-post/create-post.component'
+import { NgxStickySidebarModule } from '@smip/ngx-sticky-sidebar';
+import { PhotoComponent } from './components/common/photo/photo.component';
+import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer.component';
+import { XBtnComponent } from './components/common/x-btn/x-btn.component';
+import { FriendRequestComponent } from './components/friend-request/friend-request.component';
+import { FriendRequestItemComponent } from './components/friend-request-item/friend-request-item.component';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { ProfilePageComponent } from './components/profile-page/profile-page.component';
+import { NewsFeedComponent } from './components/news-feed/news-feed.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +40,17 @@ import { CreatePostComponent } from './components/post/create-post/create-post.c
     CommentComponent,
     ProfileComponent,
     CreatePostComponent,
+    PhotoComponent,
+    PhotoViewerComponent,
+    XBtnComponent,
+    FriendRequestComponent,
+    FriendRequestItemComponent,
+    ErrorPageComponent,
+    ProfilePageComponent,
+    NewsFeedComponent,
   ],
   imports: [
+    NgxStickySidebarModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,

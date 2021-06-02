@@ -1,0 +1,4 @@
+<a (click)="openPhotoView($event)" href="http://localhost:8080/photo/{{ photo?.id }}">
+  <img #img [src]="photo?.url">
+</a>
+<app-photo-viewer (closeMe)="closePhotoView()" *ngIf="showPhotoViewer" [photoResponse]="photo"></app-photo-viewer>

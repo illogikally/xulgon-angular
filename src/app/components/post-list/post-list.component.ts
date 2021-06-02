@@ -13,16 +13,25 @@ export class PostListComponent implements OnInit {
 
   @Input() pageId!: number;
 
-  posts: Array<Post> = new Array();
-  constructor(private postService: PostService,
-    private authenticationService: AuthenticationService) {
+  @Input() posts!: Array<Post>;
+
+  constructor(private activateRoute: ActivatedRoute,
+    private postService: PostService,
+      private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
-
-    
-    this.postService.getPostsByPageId(this.pageId)
-      .subscribe(resp => this.posts = resp);
+    if (!this.posts) {
+      this.loadPosts(this.pageId); 
+    }
+    this.activateRoute.params.subscribe(params => {
+      const id = +params['id'];
+      this.loadPosts(id);
+    });  
   }
 
+  loadPosts(pageId: number): void {
+    this.postService.getPostsByPageId(pageId)
+      .subscribe(resp => this.posts = resp);
+  }
 }

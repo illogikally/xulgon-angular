@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+<div class="friend-request">
+  <div class="sidebar-container">
+
+    <div class="sidebar">
+      <div class="title">Bạn bè</div> 
+      <ul class="content">
+        <app-friend-request-item 
+        (onDeleteRequest)="deleteRequest(request)"
+        *ngFor="let request of friendRequests" 
+        [request]="request"></app-friend-request-item>  
+        
+      </ul>
+    </div>
+  </div>
+  <div class="user-profile">
+    <app-profile></app-profile>
+  </div>
+</div>
+

@@ -1,27 +1,39 @@
 :root {
   --bg-color: #f0f2f5;
+  --bg-color-hover: #777;
   --btn-blue: #1877f2;
   --border: 1px solid #00000033;
+  --primary-text: #000000;
+  --secondary-text: #65676b;
   font-size: 15px;
   font-weight: normal;
-  font-family: 'Segoe UI', Arial;
+  font-family: 'Segoe UI', Arial
 }
+
 $btn-blue: #1877f2;
 
-@mixin x-btn($sz, $r) {
-  $bg: #eee;
+div {
+  // border: 1px solid red;
+}
+
+@mixin card($br) {
+  border-radius: $br;
+  box-shadow: 0 1px 2px rgba(#000, .2);
+  overflow: hidden;
+}
+
+@mixin x-btn($sz, $fg, $hover) {
   height: $sz;
   width: $sz;
   border-radius: 50%;
   position: absolute;
-  right: $r;
   font-size: 34px;
-  color: #777;
-  background-color: $bg;
+  color: $fg;
+  background-color: transparent;
   cursor: pointer;
 
   &:hover {
-    background-color: darken($bg, 3%);
+    background-color: $hover;
   }
 
   @extend %flex-center;
@@ -33,7 +45,8 @@ $btn-blue: #1877f2;
   border-radius: 5px;
   background-color: $bg;
   font-family: 'Segoe UI';
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 16px;
   color: $fg;
   cursor: pointer;
   border: none;
@@ -47,7 +60,7 @@ $btn-blue: #1877f2;
   $scrollbar-width: 15px;
 
   &::-webkit-scrollbar-track {
-    background-color: #fff;
+    background-color: transparent;
     width: 20px;
     &:hover {
       background-color: rgba(#000, .05);
@@ -75,9 +88,6 @@ $btn-blue: #1877f2;
   margin-right: - $scrollbar-width;
 }
 
-div {
-  border: 1px solid red;
-}
 
 .hover-underline {
   &:hover {
@@ -89,6 +99,7 @@ div {
 
 body, html {
   margin: 0;
+  position: relative;
   padding: 0;
   width: 100%;
   height: 100%;
@@ -120,4 +131,9 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+%fz {
+  width: 100%;
+  height: 100%;
 }

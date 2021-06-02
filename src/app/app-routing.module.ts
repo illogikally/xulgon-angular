@@ -6,13 +6,19 @@ import { HomeComponent } from './components/home/home.component'
 import { NavbarComponent } from './components/navbar/navbar.component'
 import { ProfileComponent } from './components/profile/profile.component';
 import { CreatePostComponent } from './components/post/create-post/create-post.component'
+import { PhotoComponent } from './components/common/photo/photo.component';
+import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer.component';
+import { FriendRequestComponent } from './components/friend-request/friend-request.component';
+import { ProfilePageComponent } from './components/profile-page/profile-page.component';
+import { NewsFeedComponent } from './components/news-feed/news-feed.component';
 
 const routes: Routes = [
+  { path: '', component: NewsFeedComponent},
   { path: 'login', component: LoginComponent},
-  // { path: '', component: HomeComponent, canActivate: [AuthenticationGuard]},
   { path: 'navbar', component: NavbarComponent},
-  { path: 'create-post', component: CreatePostComponent},
-  { path: ':id', component: ProfileComponent}
+  { path: 'friends', component: FriendRequestComponent},
+  { path: ':id', component: ProfilePageComponent}
+
 
 ];
 

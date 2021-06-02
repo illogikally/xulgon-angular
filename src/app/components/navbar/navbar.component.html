@@ -14,21 +14,58 @@
     </div>
     <ul class="menu">
       <li class="home" [ngClass]="{'menu-active-div': rla.isActive}">
-        <a [routerLink]="['/navbar']" routerLinkActive="menu-routerLink-active" #rla="routerLinkActive" >
+        <a [routerLink]="'/'" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="menu-routerLink-active" #rla="routerLinkActive" >
           <i class='bx bx-home-circle'></i>
         </a>
       </li>
       <li class="home" [ngClass]="{'menu-active-div': rlaHome.isActive}">
-        <a [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}" #rlaHome="routerLinkActive" routerLinkActive="menu-routerLink-active" >
+        <a [routerLink]="'/friends'" [routerLinkActiveOptions]="{exact: true}" #rlaHome="routerLinkActive" routerLinkActive="menu-routerLink-active" >
           <i class='bx bx-group' ></i>
         </a>
       </li>
       <li class="home">
-        <a [routerLink]="['/profile']" routerLinkActive="menu-routerLink-active" >
+        <a [routerLink]="'/groups'" routerLinkActive="menu-routerLink-active" >
           <i class='bx bx-shape-circle'></i>
         </a>
       </li>
     </ul>
-    <div class="options"></div>
+    <div class="options">
+      <div class="home-shortcut">
+        <div class="pill-container">
+          <a routerLink="/{{ loggedInUserId }}" class="pill">
+            <span class="avatar">
+              <img [src]="loggedInUserAvatarUrl">
+            </span>
+            <span class="username">
+              <span>{{ loggedInUsername }}</span>
+            </span>
+          </a>
+        </div>
+      </div>
+      <ul class="notis">
+        <li>
+          <div (click)="openCreatePost()" class="create-post">
+            <i class='bx bx-plus'></i>
+          </div>
+        </li>
+        <li>
+          <div class="chat-noti">
+            <i class='bx bxs-message-alt-dots' ></i>
+          </div>
+        </li>
+        <li>
+          <div class="general-noti">
+            <i class='bx bxs-bell' ></i>
+          </div>
+        </li>
+        <li>
+          <div class="more-opts">
+            <i class='bx bx-chevron-down' ></i>
+          </div>
+
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
+<app-create-post (closeMe)="closeCreatePost()" *ngIf="isCreatePostVisible"></app-create-post>

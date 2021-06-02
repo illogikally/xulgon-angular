@@ -4,14 +4,15 @@
   position: fixed;
   height: 100%;
   width: 100%;
+  z-index: 999;
   font-weight: 500;
   top: 0;
   left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba($color: #000, $alpha: .7);
 
-  background-color: rgba($color: #000, $alpha: .1);
   .create-post {
     --post-width: 500px;
     background-color: #fff;
@@ -27,7 +28,13 @@
       padding: 20px 0;
 
       .x-btn {
-        @include x-btn(40px, 15px);
+        @include x-btn(35px, #777, #333);
+        position: absolute;
+        background-color: #ddd;
+        &:hover {
+          background-color: #d2d2d2;
+        }
+        right: 15px;
       }
     }
     .create-post-body {
@@ -74,7 +81,6 @@
 
       .post-content {
         max-height: 300px;
-        visibility: visible;
         overflow-y: scroll;
         margin: 15px 0;
 
@@ -138,8 +144,8 @@
             width: 100%;
             object-fit: cover;
           }
-        }
       }
+        }
 
       .post-addition {
         padding: 10px 15px;

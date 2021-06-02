@@ -1,0 +1,24 @@
+<a (click)="preventDefault($event)" href="http://locahost:8080/{{request?.requesterId}}">
+          <li class="request">
+            <div class="avatar">
+              <img [src]="request?.requesterAvatarUrl">
+            </div>
+            <div class="request-info">
+              <div class="username--time">
+                <span class="username"> {{ request?.requesterName }}</span>
+                <span>{{ request?.createdAgo }}</span>
+              </div>
+              <div class="common-friends-count">
+                {{ request?.commonFriendCount }} bạn chung
+              </div>
+              <div class="request-actions">
+                <button #accept (click)="acceptRequest()" class="accept-request">
+                  Xác nhận
+                </button>
+                <button #decline (click)="deleteRequest()" class="delete-request">
+                  Xoá
+                </button>
+              </div>
+            </div>
+          </li>
+        </a>

@@ -1,0 +1,16 @@
+@import 'src/styles';
+
+.x-btn {
+  border-radius: 50%;
+  position: absolute;
+  font-size: 34px;
+  color: #777;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--bg-color-hover);
+  }
+
+  @extend %flex-center;
+}

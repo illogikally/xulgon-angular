@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommentService } from './comment/comment.service';
 import { CommentResponse } from './comment/comment-response';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CommentRequest } from './comment/comment-request';
+import { MessageService } from '../common/message.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -12,10 +13,13 @@ import { CommentRequest } from './comment/comment-request';
 export class CommentListComponent implements OnInit {
 
   @Input() contentId!: number;
-  comments: CommentResponse[] = [];
-  showComment: boolean = false;
+
+  @Input() comments!: CommentResponse[];
+  showComment: boolean = true;
   commentForm!: FormGroup; 
-  constructor(private commentService: CommentService) { 
+
+  constructor(private commentService: CommentService,
+    private messageService: MessageService) { 
 
   }
 
@@ -25,11 +29,10 @@ export class CommentListComponent implements OnInit {
     });
 
     this.commentService.getCommentsByContent(this.contentId).subscribe(resp => {
-      
       this.comments = resp;
-      console.log(this.comments);
-      
     });
+
+    
   }
 
 
@@ -38,7 +41,12 @@ export class CommentListComponent implements OnInit {
       parentId: this.contentId,
       body: this.commentForm.get('comment')?.value
     }
-    this.commentService.createComment(commentRequest).subscribe(comment => this.comments.push(comment));
+
+    this.commentService.createComment(commentRequest).subscribe(comment => {
+      this.comments.push(comment);
+      this.messageService.sendMessage("Comment added");
+    });
+
     this.commentForm.get('comment')?.setValue("");
   }
 }

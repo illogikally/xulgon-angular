@@ -27,6 +27,9 @@ export class AuthenticationService {
         this.localStorage.store('refreshToken', data.refreshToken);
         this.localStorage.store('username', data.username);
         this.localStorage.store('expiresAt', data.expiresAt);
+        this.localStorage.store('userId', data.userId);
+        this.localStorage.store('avatarUrl', data.avatarUrl);
+        this.localStorage.store('profileId', data.profileId);
 
         return true;
       }));
@@ -40,8 +43,20 @@ export class AuthenticationService {
     return this.localStorage.retrieve('authenticationToken');
   }
 
+  getProfileId(): number {
+    return this.localStorage.retrieve('profileId');
+  }
+
   getRefreshToken(): string {
     return this.localStorage.retrieve('refreshToken');
+  }
+
+  getAvatarUrl(): string {
+    return this.localStorage.retrieve('avatarUrl');
+  }
+
+  getUserId(): number {
+    return this.localStorage.retrieve('userId');
   }
 
   isLoggedIn(): boolean {
@@ -55,6 +70,9 @@ export class AuthenticationService {
         this.localStorage.clear('expiresAt');
         this.localStorage.clear('refreshToken');
         this.localStorage.clear('username');
+        this.localStorage.clear('userId');
+        this.localStorage.clear('profileId');
+        this.localStorage.clear('avatarUrl');
       }, error => {
         throwError(error);
       });

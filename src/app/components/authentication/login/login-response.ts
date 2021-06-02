@@ -3,4 +3,7 @@ export interface LoginResponse {
   refreshToken: string;
   expiresAt: Date;
   username: string;
+  userId: number;
+  profileId: number;
+  avatarUrl: string;
 }

@@ -1,17 +1,20 @@
-<app-navbar></app-navbar>
 <div class="profile-header">
   <div class="flex-center">
     <div class="cover-avatar">
-      <div class="cover"></div>
+      <div class="cover">
+        <img [src]="userProfile?.coverPhotoUrl">
+      </div>
       <div class="avatar-container flex-center">
         <div class="avatar">
-          <img src="assets/heejin.jpg">
+          <img [src]="userProfile?.avatarUrl">
         </div>
       </div>
     </div>
   </div>
   <div class="flex-center">
-    <h1 class="profile-name flex-center">Nguyễn Đức Mạnh</h1>
+    <h1 class="profile-name flex-center">
+      {{ userProfile?.lastName + " " + userProfile?.firstName }}
+    </h1>
   </div>
   <div class="flex-center">
     <div class="actions-menu">
@@ -32,89 +35,109 @@
           </div>
         </li>
       </ul>
-      <ul class="profile-actions">
-        <li>
-          <button id="add-friend">Thêm bạn bè</button>
-        </li>
-        <li>
-          <button id="send-message">Nhắn tin</button>
-        </li>
-      </ul>
+      <div class="profile-actions">
+        <button 
+        *ngIf="userProfile?.friendshipStatus == 'NULL'"
+        (click)="onAddFriendClick()" 
+        id="add-friend">
+          <i class='bx bxs-user-plus' ></i><span>Thêm bạn bè</span>
+        </button>
+
+        <button 
+        *ngIf="userProfile?.friendshipStatus == 'FRIEND'"
+        (click)="onFriendClick()" 
+        id="friend-opts">
+          <i class='bx bxs-user-check' ></i><span>Bạn bè</span>
+        </button>
+
+        <button 
+        *ngIf="userProfile?.friendshipStatus == 'SEND'"
+        (click)="onDeleteFriendRequestClick()" 
+        id="delete-friend-request">
+          <i class='bx bxs-user-x' ></i><span>Huỷ lời mời</span>
+        </button>
+
+        <button 
+        *ngIf="userProfile?.friendshipStatus == 'RECEIVED'"
+        (click)="onRequestRespond()" 
+        id="request-respond">
+          <i class='bx bxs-user-check' ></i><span>Trả lời</span>
+        </button>
+
+        <button 
+        id="send-message">
+          <i class='bx bxs-message-square-dots' ></i>
+          <span>Nhắn tin</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
 <div class="profile-body">
-  <div class="flex-center">
-    <div class="content">
-      <div class="sidebar">
-        <div class="intro">
-          <h2>Giới thiệu</h2>
-          <div>Làm việc tại LG이노텍 - LG Innotek</div>
-          <div>Từng học tại THPT Hà Đông</div>
-          <div>Đã học tại THPT Hà Đông , Thanh Hà , Hải Dương</div>
-          <div>Sống tại Hải Dương</div>
-        </div>
-        <div class="photo-intro">
-          <div class="intro-title">
-            <h2>Ảnh</h2>
-          </div>
-          <div class="photo">
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-          </div>
-        </div>
-        <div class="friend-intro">
-          <div>
-            <h2>Bạn bè</h2>
-          </div>
-          <div class="friend">
+  <div class="content">
+    <!-- <div class="content"> -->
+      <!-- <div class='sidebar-container'> -->
+        <div 
+        class="sidebar">
+            <div class="intro">
+              <h2>Giới thiệu</h2>
+              <div *ngIf="userProfile?.workplace">
+                <i class='bx bxs-building-house' ></i>
+                <span>Làm việc tại {{ userProfile?.workplace }}</span>
+                
+              </div>
 
-            <div>
-              <img src="assets/heejin.jpg">
+              <div *ngIf="userProfile?.school">
+                <i class='bx bxs-graduation' ></i>
+                <span>Học tại {{ userProfile?.school }}</span>
+              </div>
+              <div *ngIf="userProfile?.hometown">
+                <i class='bx bx-current-location'></i>
+                <span>Đang sống tại {{ userProfile?.hometown }}</span>   
+              </div>
             </div>
-            <div>
-              <img src="assets/heejin.jpg">
+            <div class="photo-intro">
+              <div class="intro-title">
+                <h2>Ảnh</h2>
+              </div>
+              <div class="photo">
+                <div *ngFor="let photo of userProfile?.photos" >
+                  <app-photo [photo]="photo" [style]="'width'"></app-photo>
+                </div>
+              </div>
             </div>
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-            <div>
-              <img src="assets/heejin.jpg">
-            </div>
-            <div>
-              <img src="assets/heejin.jpg">
+            <div class="friend-intro">
+              <div>
+                <h2>Bạn bè</h2>
+              </div>
+              <div class="friend">
+
+                <div *ngFor="let friend of userProfile?.friends">
+                  <div class="img-container">
+                    <a routerLink="/{{ friend?.id }}">
+                      <img [src]="friend.avatarUrl">
+                    </a>
+                  </div>
+                  <a routerLink="/{{ friend?.id }}">
+                    <div class="username">{{ friend.username }}</div>
+                  </a>
+                  <div *ngIf="friend.commonFriendCount > 0" class="common-friend-count">
+                    {{ friend.commonFriendCount }}
+                    <span> bạn chung</span>
+                  </div>
+                </div>
             </div>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
       <div class="timeline">
         <div class="post-container">
           <app-post-list [pageId]="profileId"></app-post-list>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </div>
-
+<!-- <div *ngIf="pageNotFound" class="page-not-exist">
+  <h1>Trang này không tồn tại.</h1>
+</div> -->

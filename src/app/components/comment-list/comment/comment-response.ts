@@ -7,6 +7,7 @@ export interface CommentResponse {
   isReacted: boolean;
   username: string;
   avatarUrl: string;
+  photo: any;
   createdAgo: string;
   replyCount: number;
   reactionCount: number;

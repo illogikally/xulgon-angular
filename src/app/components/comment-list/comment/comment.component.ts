@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ReactionType } from '../../common/reaction-type';
 import { ReactionPayload } from '../../common/reaction.payload';
 import { ReactionService } from '../../common/reaction.service';
@@ -12,35 +12,42 @@ import { CommentService } from './comment.service';
 })
 export class CommentComponent implements OnInit {
 
-  @Input() myComment!: CommentResponse;
+  @Input() commentResponse!: CommentResponse;
+  @Output() onCommentAdded: EventEmitter<boolean> = new EventEmitter;
+
   userProfile!: string;
-  showReply: boolean = false;
+  isRepliesVisible: boolean = false;
 
   constructor(private reactionService: ReactionService) { }
 
   ngOnInit(): void {
-    this.userProfile = `/${this.myComment.userId}`;
+    this.userProfile = `/${this.commentResponse.userId}`;
   }
 
-  showReplyOnClick(): void {
-    this.showReply = true;
+  showReplies(): void {
+    this.isRepliesVisible = true;
   }
 
   like(): void {
     
     let reaction: ReactionPayload = {
       type: ReactionType.LIKE,
-      contentId: this.myComment.id
+      contentId: this.commentResponse.id
     };
+
     this.reactionService.react(reaction).subscribe(resp => {
-      if (this.myComment.isReacted) {
-        this.myComment.reactionCount -= 1;
-        this.myComment.isReacted = false;
+      if (this.commentResponse.isReacted) {
+        this.commentResponse.reactionCount -= 1;
+        this.commentResponse.isReacted = false;
         return;
       }
-      this.myComment.reactionCount += 1;
-      this.myComment.isReacted = true;
+      this.commentResponse.reactionCount += 1;
+      this.commentResponse.isReacted = true;
     });
+  }
+
+  commentAdded(): void {
+    this.onCommentAdded.emit(true);
   }
 
 }

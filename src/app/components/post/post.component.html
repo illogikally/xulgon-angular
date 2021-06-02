@@ -3,13 +3,13 @@
     <div class="avatar-name">
       <div class="post-avatar">
         <a href="http://localhost:4200/{{ post.userId }}">
-          <img src="assets/avatar.jpg">
+          <img [src]="post?.avatarUrl" />
         </a>
       </div>
       <div class="name-date">
         <div class="name">
           <a href="http://localhost:4200/{{ post.userId }}">
-            <b>{{ post.username }}</b>
+            {{ post.username }}
           </a>
         </div>
         <div class="date">{{ post.createdAt }}</div>
@@ -17,7 +17,25 @@
     </div>
   </div>
   <div class="post-body">
-    {{ post.body }}
+    <div class="post-text">{{ post.body }}</div>
+    <div *ngIf="post.photos?.length > 0" class="post-media">
+      
+          <div>
+            <div *ngFor="let photo of post.photos.slice(0, 2)">
+              <div>
+                <app-photo [style]="'width'" [photo]="photo"></app-photo>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div *ngFor="let photo of post.photos.slice(2, 4)">
+              <div>
+                <app-photo [style]="'width'" [photo]="photo"></app-photo>
+              </div>
+            </div>
+          </div>
+    </div>
+    
   </div>
   <div class="post-meta">
     <div>
@@ -26,7 +44,7 @@
       </div>
     </div>
     <div class="comment-share-count">
-      <span (click)="toggleComment()" class="comment-count">{{ post.commentCount }} bình luận</span>
+      <span (click)="toggleComment()" *ngIf="post.commentCount > 0" class="comment-count">{{ post.commentCount }} bình luận</span>
       <span *ngIf="post.shareCount > 0" class="share-count">{{ post.shareCount }} lượt chia sẻ</span>
     </div>
   </div>
@@ -49,6 +67,6 @@
     </div>
   </div>
   <div class="comments">
-    <app-comment-list *ngIf="showComment" [contentId]="post.id"></app-comment-list>
+    <app-comment-list [comments]="post.comments" *ngIf="showComment" [contentId]="post.id"></app-comment-list>
   </div>
 </div>
