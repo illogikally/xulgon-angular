@@ -17,7 +17,7 @@ export class CommentService {
     return this.http.get<CommentResponse[]>(`http://localhost:8080/api/contents/${contentId}/comments`);
   }
 
-  createComment(commentRequest: CommentRequest): Observable<CommentResponse> {
+  createComment(commentRequest: FormData): Observable<CommentResponse> {
     return this.http.post<CommentResponse>("http://localhost:8080/api/comments", commentRequest);
   }
 }

@@ -29,7 +29,9 @@ export class FriendRequestComponent implements OnInit {
   }
 
   deleteRequest(request: FriendRequestDto): void {
-    this.friendRequests = this.friendRequests.filter(req => req.id !== request.id);
+    this.friendRequests = this.friendRequests .filter(
+        req => req.id !== request.id
+    );
   }
 
   changeProfile(event: any): void {

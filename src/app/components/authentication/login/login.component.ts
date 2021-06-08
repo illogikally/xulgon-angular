@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { throwError } from 'rxjs';
 import { AuthenticationService } from '../authentication.service';
 import { LoginRequest } from './login-request';
@@ -15,11 +14,10 @@ export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
   loginRequest: LoginRequest;
-  loginError: boolean = true;
+  loginError: boolean = false;
 
   constructor(private authenticationService: AuthenticationService,
-    private router: Router,
-    private toaster: ToastrService) { 
+    private router: Router ){
     this.loginRequest = {
       username: '',
       password: ''
@@ -41,7 +39,6 @@ export class LoginComponent implements OnInit {
       .subscribe(_ => {
         this.loginError = false;
         this.router.navigateByUrl('');
-        this.toaster.success('Login successful');
       }, error => { 
         this.loginError = true;
         throwError(error);

@@ -11,13 +11,16 @@ import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer.com
 import { FriendRequestComponent } from './components/friend-request/friend-request.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { NewsFeedComponent } from './components/news-feed/news-feed.component';
+import { FriendListComponent } from './components/profile/friend-list/friend-list.component';
 
 const routes: Routes = [
   { path: '', component: NewsFeedComponent},
+  { path: 'friend-list', component: FriendListComponent},
   { path: 'login', component: LoginComponent},
   { path: 'navbar', component: NavbarComponent},
   { path: 'friends', component: FriendRequestComponent},
-  { path: ':id', component: ProfilePageComponent}
+  { path: ':id', component: ProfilePageComponent},
+  { path: ':id/friends', component: FriendListComponent}
 
 
 ];

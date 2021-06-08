@@ -1,0 +1,24 @@
+<div class="friend-list">
+  <div class="header">
+    <div class="title">
+      <h2>Bạn bè</h2>
+    </div>
+    <div class="right-side">
+      <div class="input-group">
+        <span class="icon">
+          <i class='bx bx-search' ></i>
+        </span>
+        <form [formGroup]="searchForm">
+          <input 
+          type="text" 
+          formControlName="searchInput" 
+          placeholder="Tìm kiếm"
+          autocomplete="off" /> 
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="items">
+    <app-friend-list-item (removeItem)="removeItem($event)" *ngFor="let friend of friends" [userDto]="friend"></app-friend-list-item>
+  </div>
+</div>

@@ -29,14 +29,14 @@
           <div>
             <div *ngFor="let photo of photos.slice(2, 4)">
               <div>
-                <img [src]="photo" >
+                <img [src]="photo.url" >
               </div>
             </div>
           </div>
           <div>
             <div *ngFor="let photo of photos.slice(0, 2)">
               <div>
-                <img [src]="photo" >
+                <img [src]="photo.url" >
               </div>
             </div>
           </div>

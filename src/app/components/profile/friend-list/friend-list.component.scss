@@ -1,0 +1,40 @@
+.friend-list {
+  background-color: #fff;
+  padding: 0 20px;
+  width: 800px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .right-side {
+
+      .input-group {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        .icon {
+          position: absolute;
+          left: 5px;
+        } 
+
+        input {
+          width: 200px;
+          height: 30px;
+          background-color: var(--bg-color);
+          border: none;
+          outline: none;
+          border-radius: 20px;
+          padding: 0 5px 0 25px;
+        }
+      }
+    }
+  }
+  .items {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -2,6 +2,7 @@ export interface PhotoResponse {
   id: number;
   userId: number;
   username: string;
+  sizeRatio: number;
   createdAt: string;
   body: string;
   url: string;

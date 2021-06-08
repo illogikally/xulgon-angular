@@ -4,6 +4,7 @@ import { ProfileService } from './profile.service';
 import { UserProfile } from './user-profile';
 import { DOCUMENT } from '@angular/common'
 import { MessageService } from '../common/message.service';
+import { UserService } from '../common/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,11 +14,18 @@ import { MessageService } from '../common/message.service';
 export class ProfileComponent implements OnInit {
 
   @Input() profileId!: number;
+
+  @ViewChild('sidebar', {static: true}) sidebar!: ElementRef;
+  @ViewChild('replyFriendRequest') replyRequestBtn!: ElementRef;
+  @ViewChild('friend') friendBtn!: ElementRef;
+
   userProfile!: UserProfile;
   pageNotFound: boolean = false;
-  @ViewChild('sidebar', {static: true}) sidebar!: ElementRef;
+  showReplyRequestOpts: boolean = false;
+  showFriendOpts: boolean = false;
 
   constructor(private activateRoute: ActivatedRoute,
+    private userService: UserService,
     private profileService: ProfileService,
     private messageService: MessageService,
     @Inject(DOCUMENT) private document: Document) {
@@ -38,10 +46,12 @@ export class ProfileComponent implements OnInit {
       this.userProfile.friendshipStatus = status;
     });
     
-    
   }
 
   loadProfile(id: number): void {
+    if (typeof id === 'undefined') {
+      return;
+    }
     this.profileService.getUserProfile(id).subscribe(resp => {
       this.userProfile = resp;
       console.log(this.userProfile);
@@ -52,25 +62,59 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  onAddFriendClick(): void {
-    this.profileService.addFriend(this.userProfile.userId)
+  sendFriendRequest(): void {
+    this.userService.sendFriendRequest(this.userProfile.userId)
         .subscribe(_ => {
           this.userProfile.friendshipStatus = 'SEND';
         });
   }
 
-  onFriendClick(): void {
-
-  }
-
-  onDeleteFriendRequestClick(): void {
-    this.profileService.deleteFriendRequest(this.userProfile.userId)
+  deleteFriendRequest(): void {
+    this.userService.deleteFriendRequest(this.userProfile.userId)
         .subscribe(_ => {
           this.userProfile.friendshipStatus = 'NULL';
         });
   }
 
-  onRequestRespond(): void {
-
+  onReplyFriendRequestClicked(): void {
+    this.showReplyRequestOpts = !this.showReplyRequestOpts;
   }
+
+  closeReplyFriendRequestOpts(event: any) {
+    let btnAndChildren = [...this.replyRequestBtn.nativeElement.children,
+                            this.replyRequestBtn.nativeElement];
+
+    if (!btnAndChildren.includes(event.target)) {
+      this.showReplyRequestOpts = false;
+    }
+    
+  }
+
+  onFriendClick(): void {
+    this.showFriendOpts = !this.showFriendOpts;
+  }
+
+  closeFriendOpts(event: any): void {
+    let btnAndChildren = [...this.friendBtn.nativeElement.children,
+                            this.friendBtn.nativeElement];
+
+    if (!btnAndChildren.includes(event.target)) {
+      this.showFriendOpts = false;
+    }
+  }
+
+  unfriend(): void {
+    this.userService.unfriend(this.userProfile.userId).subscribe(_ => {
+      this.userProfile.friendshipStatus = 'NULL';
+    });
+  }
+
+  acceptFriendRequest(): void {
+    this.userService.acceptFriendRequest(this.userProfile.userId).subscribe(_ => {
+      this.userProfile.friendshipStatus = 'FRIEND';
+    });
+  }
+
+
+
 }

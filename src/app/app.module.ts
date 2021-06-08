@@ -8,7 +8,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { LoginComponent } from './components/authentication/login/login.component'
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { ToastrModule } from 'ngx-toastr';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PostListComponent } from './components/post-list/post-list.component';
@@ -18,7 +17,6 @@ import { CommentListComponent } from './components/comment-list/comment-list.com
 import { CommentComponent } from './components/comment-list/comment/comment.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CreatePostComponent } from './components/post/create-post/create-post.component'
-import { NgxStickySidebarModule } from '@smip/ngx-sticky-sidebar';
 import { PhotoComponent } from './components/common/photo/photo.component';
 import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer.component';
 import { XBtnComponent } from './components/common/x-btn/x-btn.component';
@@ -27,6 +25,9 @@ import { FriendRequestItemComponent } from './components/friend-request-item/fri
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { NewsFeedComponent } from './components/news-feed/news-feed.component';
+import { ClickOutsideModule } from 'ng-click-outside';
+import { FriendListComponent } from './components/profile/friend-list/friend-list.component';
+import { FriendListItemComponent } from './components/profile/friend-list/friend-list-item/friend-list-item.component';
 
 @NgModule({
   declarations: [
@@ -48,16 +49,17 @@ import { NewsFeedComponent } from './components/news-feed/news-feed.component';
     ErrorPageComponent,
     ProfilePageComponent,
     NewsFeedComponent,
+    FriendListComponent,
+    FriendListItemComponent,
   ],
   imports: [
-    NgxStickySidebarModule,
+    ClickOutsideModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
     NgxWebstorageModule.forRoot(),
-    ToastrModule.forRoot()
   ],
   providers: [
     {

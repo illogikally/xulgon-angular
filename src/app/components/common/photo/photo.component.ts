@@ -1,4 +1,5 @@
 import {ViewChild, Component, Input, OnInit, ElementRef, EventEmitter } from '@angular/core';
+import { PhotoResponse } from './photo-response';
 
 @Component({
   selector: 'app-photo',
@@ -7,7 +8,7 @@ import {ViewChild, Component, Input, OnInit, ElementRef, EventEmitter } from '@a
 })
 export class PhotoComponent implements OnInit {
 
-  @Input() photo!: any;
+  @Input() photo!: PhotoResponse;
   @Input() style!: string;
   @ViewChild('img', {static: true}) img!: ElementRef;
 
@@ -19,7 +20,9 @@ export class PhotoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.img.nativeElement.style[this.style] = '100%';
+    console.log(this.photo?.sizeRatio);
+    
+
   }
 
   openPhotoView(event: any): void {

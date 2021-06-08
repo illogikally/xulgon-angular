@@ -1,4 +1,4 @@
-<div class="profile-header">
+<div  class="profile-header">
   <div class="flex-center">
     <div class="cover-avatar">
       <div class="cover">
@@ -8,11 +8,14 @@
         <div class="avatar">
           <img [src]="userProfile?.avatarUrl">
         </div>
+        <div class="change-avatar">
+
+        </div>
       </div>
     </div>
   </div>
   <div class="flex-center">
-    <h1 class="profile-name flex-center">
+    <h1 [ngClass]="{loading: userProfile === undefined}" class="profile-name flex-center">
       {{ userProfile?.lastName + " " + userProfile?.firstName }}
     </h1>
   </div>
@@ -35,10 +38,11 @@
           </div>
         </li>
       </ul>
-      <div class="profile-actions">
+      <div 
+      class="profile-actions">
         <button 
         *ngIf="userProfile?.friendshipStatus == 'NULL'"
-        (click)="onAddFriendClick()" 
+        (click)="sendFriendRequest()" 
         id="add-friend">
           <i class='bx bxs-user-plus' ></i><span>Thêm bạn bè</span>
         </button>
@@ -46,26 +50,42 @@
         <button 
         *ngIf="userProfile?.friendshipStatus == 'FRIEND'"
         (click)="onFriendClick()" 
+        #friend
         id="friend-opts">
           <i class='bx bxs-user-check' ></i><span>Bạn bè</span>
+          <div  
+          (clickOutside)="closeFriendOpts($event)"
+          *ngIf="showFriendOpts" 
+          class="button-opts">
+            <div (click)="unfriend()">Huỷ bỏ bạn bè</div>
+          </div>
         </button>
 
         <button 
         *ngIf="userProfile?.friendshipStatus == 'SEND'"
-        (click)="onDeleteFriendRequestClick()" 
+        (click)="deleteFriendRequest()" 
         id="delete-friend-request">
           <i class='bx bxs-user-x' ></i><span>Huỷ lời mời</span>
         </button>
 
         <button 
         *ngIf="userProfile?.friendshipStatus == 'RECEIVED'"
-        (click)="onRequestRespond()" 
-        id="request-respond">
+        (click)="onReplyFriendRequestClicked()" 
+        #replyFriendRequest
+        id="reply-friend-request">
           <i class='bx bxs-user-check' ></i><span>Trả lời</span>
+          <div  
+          (clickOutside)="closeReplyFriendRequestOpts($event)"
+          *ngIf="showReplyRequestOpts" 
+          class="button-opts">
+            <div (click)="acceptFriendRequest()">Đồng ý</div>
+            <div (click)="deleteFriendRequest()">Xoá lời mời</div>
+          </div>
         </button>
 
         <button 
-        id="send-message">
+        id="send-message"
+        *ngIf="userProfile?.friendshipStatus != undefined">
           <i class='bx bxs-message-square-dots' ></i>
           <span>Nhắn tin</span>
         </button>
@@ -81,10 +101,12 @@
         class="sidebar">
             <div class="intro">
               <h2>Giới thiệu</h2>
+              <div style="margin-bottom: 10px;" class="loading" *ngIf="!userProfile"></div>
+              <div style="margin-bottom: 10px;" class="loading" *ngIf="!userProfile"></div>
+              <div style="margin-bottom: 10px;" class="loading" *ngIf="!userProfile"></div>
               <div *ngIf="userProfile?.workplace">
                 <i class='bx bxs-building-house' ></i>
                 <span>Làm việc tại {{ userProfile?.workplace }}</span>
-                
               </div>
 
               <div *ngIf="userProfile?.school">
@@ -101,8 +123,13 @@
                 <h2>Ảnh</h2>
               </div>
               <div class="photo">
+                <div *ngIf="!userProfile" style="background-color: #ddd;"></div>
+                <div *ngIf="!userProfile" style="background-color: #ddd;"></div>
+                <div *ngIf="!userProfile" style="background-color: #ddd;"></div>
                 <div *ngFor="let photo of userProfile?.photos" >
-                  <app-photo [photo]="photo" [style]="'width'"></app-photo>
+                  <app-photo 
+                  [photo]="photo" 
+                  ></app-photo>
                 </div>
               </div>
             </div>

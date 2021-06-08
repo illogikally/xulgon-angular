@@ -1,0 +1,33 @@
+<div class="friend-list-item">
+  <div class="avatar-container">
+    <div class="avatar">
+      <img [src]="userDto.avatarUrl" />
+    </div>
+  </div>
+  <div class="body">
+    <div class="username">
+      {{ userDto.username }}
+    </div>
+    <div class="common-friend-count">
+      {{ userDto.commonFriendCount }} bạn bè chung
+    </div>
+
+    <div 
+    (click)="showOptions()" 
+    #optionsBtn
+    class="options-btn">
+      <i class='bx bx-dots-horizontal-rounded' ></i>
+
+      <div 
+      *ngIf="isOptionsVisible"
+      (clickOutside)="hideOptions($event)"
+      class="options">
+        <div 
+        (click)="unfriend()">
+          <i class='bx bx-user-x'></i>
+          <span>Huỷ bỏ bạn bè</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
