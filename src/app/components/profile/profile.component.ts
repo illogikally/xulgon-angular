@@ -1,10 +1,12 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { UserProfile } from './user-profile';
-import { DOCUMENT } from '@angular/common'
+import { DOCUMENT, Location } from '@angular/common'
 import { MessageService } from '../common/message.service';
 import { UserService } from '../common/user.service';
+import { BehaviorSubject } from 'rxjs';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +21,13 @@ export class ProfileComponent implements OnInit {
   @ViewChild('replyFriendRequest') replyRequestBtn!: ElementRef;
   @ViewChild('friend') friendBtn!: ElementRef;
 
+  profileLoaded: EventEmitter<UserProfile> = new EventEmitter();
+
+  isUpdateAvatar = false;
+  loggedInUserProfileId: number;
   userProfile!: UserProfile;
+  loadedTabs: Set<string> = new Set();
+  currentTab: string = '';
   pageNotFound: boolean = false;
   showReplyRequestOpts: boolean = false;
   showFriendOpts: boolean = false;
@@ -27,25 +35,60 @@ export class ProfileComponent implements OnInit {
   constructor(private activateRoute: ActivatedRoute,
     private userService: UserService,
     private profileService: ProfileService,
+    private router: Router,
+    private auth: AuthenticationService,
+    private location: Location,
     private messageService: MessageService,
     @Inject(DOCUMENT) private document: Document) {
-
     this.profileId = this.activateRoute.snapshot.params.id;
+    this.loggedInUserProfileId = auth.getProfileId();
   }
 
   ngOnInit(): void {
+    this.setDefaultTab();
+
+    this.router.events.subscribe(event => {
+      this.setDefaultTab();
+    });
+
+    this.messageService.updateCoverPhoto.subscribe(url => {
+      this.userProfile.coverPhotoUrl = url;
+    });
+
+    this.messageService.updateAvatar.subscribe(url => {
+      this.userProfile.avatarUrl = url;
+    });
+
     this.loadProfile(this.profileId);
+
     this.activateRoute.params.subscribe(params => {
       const id = +params['id'];
       this.loadProfile(id);
     });
+
     this.messageService.onFriendRequestChange().subscribe(profileId => {
       this.loadProfile(profileId);
     });
+
     this.messageService.onFriendshipStatusChange().subscribe(status => {
       this.userProfile.friendshipStatus = status;
     });
-    
+  }
+
+  setDefaultTab(): void {
+    let url = window.location.href;
+    if (/friends$/g.test(url)) {
+      this.loadedTabs.add('friends');
+      this.currentTab = 'friends';
+    }
+    else if (/photos$/g.test(url)) {
+      this.loadedTabs.add('photos');
+      this.currentTab = 'photos';
+    }
+    else {
+      this.loadedTabs.add('');
+      this.currentTab = '';
+    }
   }
 
   loadProfile(id: number): void {
@@ -54,11 +97,10 @@ export class ProfileComponent implements OnInit {
     }
     this.profileService.getUserProfile(id).subscribe(resp => {
       this.userProfile = resp;
-      console.log(this.userProfile);
+      this.messageService.sendLoadedProfile(this.userProfile);
+      this.profileLoaded.emit(this.userProfile);
     }, error => {
       this.pageNotFound = true;
-      console.log("page not found");
-      
     });
   }
 
@@ -73,6 +115,7 @@ export class ProfileComponent implements OnInit {
     this.userService.deleteFriendRequest(this.userProfile.userId)
         .subscribe(_ => {
           this.userProfile.friendshipStatus = 'NULL';
+          this.messageService.sendDeleteFriendRequest(this.userProfile.userId);
         });
   }
 
@@ -81,6 +124,7 @@ export class ProfileComponent implements OnInit {
   }
 
   closeReplyFriendRequestOpts(event: any) {
+
     let btnAndChildren = [...this.replyRequestBtn.nativeElement.children,
                             this.replyRequestBtn.nativeElement];
 
@@ -112,9 +156,20 @@ export class ProfileComponent implements OnInit {
   acceptFriendRequest(): void {
     this.userService.acceptFriendRequest(this.userProfile.userId).subscribe(_ => {
       this.userProfile.friendshipStatus = 'FRIEND';
+      this.messageService.sendDeleteFriendRequest(this.userProfile.userId);
     });
   }
 
+  changeCurrentTab(event: any, tab: string): void {
+    event.preventDefault();
+    this.loadedTabs.add(tab);
+    this.currentTab = tab;
+    this.location.go(`${this.userProfile.id}/${tab}`);
+  }
 
+  showUpdateProfilePic(type: string): void {
+    this.isUpdateAvatar = true;
+    this.messageService.updateAvatarOrCover.next(type);
+  }
 
 }

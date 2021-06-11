@@ -29,7 +29,9 @@
 
     </div>
       <div *ngIf="commentResponse.photo" class="comment-media">
-        <app-photo [photo]="commentResponse.photo" [style]="'height'"></app-photo>
+        <app-photo 
+        [isComment]="true"
+        [photo]="commentResponse.photo" [style]="'height'"></app-photo>
       </div>
     <div class="comment-meta">
       <span class="comment-like hover-underline" [ngClass]="{ reacted: commentResponse.isReacted }" (click)="like()"><b>Thích</b></span>

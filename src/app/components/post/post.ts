@@ -4,6 +4,7 @@ export interface Post {
   id: number;
   pageId: number;
   userId: number;
+  privacy: string;
   username: string;
   createdAt: string;
   posted: string;

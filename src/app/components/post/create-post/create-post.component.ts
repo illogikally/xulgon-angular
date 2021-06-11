@@ -17,7 +17,7 @@ export class CreatePostComponent implements OnInit {
   files: Blob[] = [];
   sizeRatio: number[] = []
   avatarUrl: string;
-  username: string;
+  fullname: string
   postable: boolean = false;
   postForm!: FormGroup;
 
@@ -27,7 +27,8 @@ export class CreatePostComponent implements OnInit {
     private messageService: MessageService,
     private auth: AuthenticationService) { 
       this.avatarUrl = auth.getAvatarUrl();
-      this.username = auth.getUserName();
+      this.fullname = auth.getAuth().fullname;
+      
   }
 
   ngOnInit(): void {
@@ -66,29 +67,29 @@ export class CreatePostComponent implements OnInit {
   }
 
   submit(): void {
-    let fd = new FormData();
+    let formData = new FormData();
 
     let postRequest = new Blob([JSON.stringify({
       pageId: this.auth.getProfileId(),
       privacy: 'PUBLIC',
       body: this.postForm.get('textarea')?.value
     })], {type: 'application/json'});
-    fd.append('postRequest', postRequest);
+    formData.append('postRequest', postRequest);
 
     let photoRequests: any[] = []
     this.files.forEach((v, i) => {
       photoRequests.push({privacy: 'PUBLIC', widthHeightRatio: this.sizeRatio[i]});
-      fd.append('photos', v);
+      formData.append('photos', v);
     });
 
     if (this.files.length == 0) {
-      fd.append('photos', new Blob([]));
+      formData.append('photos', new Blob([]));
     }
-    console.log(fd.get('photos'));
+    console.log(formData.get('photos'));
     
     let photoRequestBlob = new Blob([JSON.stringify(photoRequests)], {type: 'application/json'});
-    fd.append('photoRequest', photoRequestBlob);
-    this.http.post<Post>("http://localhost:8080/api/posts", fd).subscribe(resp => {
+    formData.append('photoRequest', photoRequestBlob);
+    this.http.post<Post>("http://localhost:8080/api/posts", formData).subscribe(resp => {
       this.messageService.sendCreatedPost(resp);
     }); 
 

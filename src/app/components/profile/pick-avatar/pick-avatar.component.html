@@ -1,0 +1,51 @@
+<div class="pick-avatar">
+  <div class="content">
+    <div class="title">
+      <h2 
+      [innerText]="updateType == 'avatar' ? 'Thay ảnh đại diện' : 'Thay ảnh bìa'"></h2>
+      <div 
+      (click)="close()"
+      class="x-btn">
+        <i class='bx bx-x'></i>
+      </div>
+    </div>
+    <div class="body">
+    <div 
+    (click)="fileInput.click()"
+    class="upload-file">
+      <i class='bx bx-plus' ></i>
+      <span>Tải ảnh lên</span>
+      <form [formGroup]="uploadFileForm">
+        <input 
+        #fileInput
+        (change)="onSelectFile($event)"
+        type="file"
+        accept="image/*"
+        formControlName="fileInput">
+      </form>
+    </div>
+      <div class="photos">
+        <app-square-image 
+        [photo]="photo"
+        (photoPicked)="photoPicked($event)"
+        *ngFor="let photo of photos" ></app-square-image>
+      </div>
+      <div 
+      *ngIf="pickedPhoto != undefined || photoBlobUrl != ''"
+      class="confirmation">
+        <div class="photo-container">
+          <img 
+          [src]="pickedPhoto?.url || photoBlobUrl" /> 
+        </div>
+        <div class="buttons">
+          <div 
+          (click)="abort()"
+          class="abort">Huỷ</div>
+          <div 
+          (click)="confirm()"
+          class="confirm">Xác nhận</div>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>

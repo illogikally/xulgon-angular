@@ -13,26 +13,21 @@ import { MessageService } from '../common/message.service';
 export class PostListComponent implements OnInit {
 
   @Input() pageId!: number;
-
   @Input() posts!: Array<Post>;
 
   constructor(private activateRoute: ActivatedRoute,
     private messageService: MessageService,
     private postService: PostService,
-      private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
-    if (!this.posts) {
-      this.loadPosts(this.pageId); 
-    }
+    this.messageService.onProfileLoaded().subscribe(profile => {
+      this.loadPosts(profile.id); 
+    });
     this.messageService.onCreatedPost().subscribe(post => {
       this.posts.unshift(post);
     });
-    this.activateRoute.params.subscribe(params => {
-      const id = +params['id'];
-      this.loadPosts(id);
-    });  
   }
 
   loadPosts(pageId: number): void {

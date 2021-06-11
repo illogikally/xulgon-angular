@@ -1,7 +1,7 @@
 .friend-list {
   background-color: #fff;
-  padding: 0 20px;
-  width: 800px;
+  padding: 0 20px 20px 20px;
+  border-radius: 10px;
 
   .header {
     display: flex;
@@ -17,17 +17,19 @@
 
         .icon {
           position: absolute;
-          left: 5px;
+          left: 7px;
+          font-size: 17px;
         } 
 
         input {
           width: 200px;
-          height: 30px;
+          height: 33px;
           background-color: var(--bg-color);
+          font-size: 15px;
           border: none;
           outline: none;
           border-radius: 20px;
-          padding: 0 5px 0 25px;
+          padding: 0 5px 0 30px;
         }
       }
     }

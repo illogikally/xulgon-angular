@@ -99,6 +99,19 @@
     }
   }
   .user-profile {
+
+    .profile-place-holder {
+      @extend %flex-center;
+      position: fixed;
+      background-color: var(--bg-color);
+      top: 56px;
+      bottom: 0;
+      right: 0;
+      left: 360px;
+      z-index: 9;
+
+    }
     flex-grow: 1;
   }
 }
+

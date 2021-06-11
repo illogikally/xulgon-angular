@@ -1,19 +1,40 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Post } from '../post/post';
+import { UserProfile } from '../profile/user-profile';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
 
+  constructor() { }
+
   private subject = new Subject<string>();
   private friendRequestChange = new Subject<number>();
   private friendshipStatus = new Subject<string>();
+  private deleteFriendRequest = new Subject<number>();
   private createdPost = new Subject<Post>();
+  updateAvatar = new Subject<string>();
+  updateCoverPhoto = new Subject<string>();
+  updateAvatarOrCover = new BehaviorSubject<string>('');
+  private userProfileLoaded = new BehaviorSubject<UserProfile>({} as UserProfile);
 
+  sendDeleteFriendRequest(id: number) {
+    this.deleteFriendRequest.next(id);
+  }
 
-  constructor() { }
+  onDeleteFriendRequest(): Observable<number> {
+    return this.deleteFriendRequest.asObservable();
+  }
+
+  onProfileLoaded(): Observable<UserProfile> {
+    return this.userProfileLoaded.asObservable();
+  }
+
+  sendLoadedProfile(profile: UserProfile): void {
+    this.userProfileLoaded.next(profile);
+  }
 
   onFriendshipStatusChange(): Observable<string> {
     return this.friendshipStatus.asObservable();
@@ -30,6 +51,7 @@ export class MessageService {
   changeFriendshipStatus(status: string): void {
     this.friendshipStatus.next(status);
   }
+
   onNewMessge(): Observable<string> {
     return this.subject.asObservable();
   }

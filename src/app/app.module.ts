@@ -28,6 +28,13 @@ import { NewsFeedComponent } from './components/news-feed/news-feed.component';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { FriendListComponent } from './components/profile/friend-list/friend-list.component';
 import { FriendListItemComponent } from './components/profile/friend-list/friend-list-item/friend-list-item.component';
+import { HeaderComponent } from './components/profile/header/header.component';
+import { ProfileTemplateComponent } from './components/profile/profile-template/profile-template.component';
+import { ProfileTimelineComponent } from './components/profile/profile-timeline/profile-timeline.component';
+import { PhotoListComponent } from './components/profile/photo-list/photo-list.component';
+import { PhotoListItemComponent } from './components/profile/photo-list/photo-list-item/photo-list-item.component';
+import { SquareImageComponent } from './components/common/square-image/square-image.component';
+import { PickAvatarComponent } from './components/profile/pick-avatar/pick-avatar.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +58,13 @@ import { FriendListItemComponent } from './components/profile/friend-list/friend
     NewsFeedComponent,
     FriendListComponent,
     FriendListItemComponent,
+    HeaderComponent,
+    ProfileTemplateComponent,
+    ProfileTimelineComponent,
+    PhotoListComponent,
+    PhotoListItemComponent,
+    SquareImageComponent,
+    PickAvatarComponent,
   ],
   imports: [
     ClickOutsideModule,

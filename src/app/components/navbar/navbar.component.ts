@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { MessageService } from '../common/message.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,8 @@ export class NavbarComponent implements OnInit {
   loggedInUserId!: number;
   loggedInUserAvatarUrl!: string;
 
-  constructor(private auth: AuthenticationService) { 
+  constructor(private messageService: MessageService,
+    private auth: AuthenticationService) { 
     this.loggedInUsername = auth.getUserName();
     this.loggedInUserId = auth.getUserId();
     this.loggedInUserAvatarUrl = auth.getAvatarUrl();
@@ -25,6 +27,10 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.messageService.updateAvatar.subscribe(url => {
+      this.loggedInUserAvatarUrl = url;
+      this.auth.setAvatarUrl(url);
+    });
   }
 
   openCreatePost(): void {

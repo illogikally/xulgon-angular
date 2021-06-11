@@ -14,17 +14,27 @@
     </div>
     <ul class="menu">
       <li class="home" [ngClass]="{'menu-active-div': rla.isActive}">
-        <a [routerLink]="'/'" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="menu-routerLink-active" #rla="routerLinkActive" >
+        <a 
+        [routerLink]="'/'" 
+        [routerLinkActiveOptions]="{exact: true}" 
+        routerLinkActive="menu-routerLink-active" 
+        #rla="routerLinkActive" >
           <i class='bx bx-home-circle'></i>
         </a>
       </li>
       <li class="home" [ngClass]="{'menu-active-div': rlaHome.isActive}">
-        <a [routerLink]="'/friends'" [routerLinkActiveOptions]="{exact: true}" #rlaHome="routerLinkActive" routerLinkActive="menu-routerLink-active" >
+        <a 
+        [routerLink]="'/friend_requests'" 
+        [routerLinkActiveOptions]="{exact: true}" 
+        #rlaHome="routerLinkActive" 
+        routerLinkActive="menu-routerLink-active" >
           <i class='bx bx-group' ></i>
         </a>
       </li>
       <li class="home">
-        <a [routerLink]="'/groups'" routerLinkActive="menu-routerLink-active" >
+        <a 
+        [routerLink]="'/groups'" 
+        routerLinkActive="menu-routerLink-active" >
           <i class='bx bx-shape-circle'></i>
         </a>
       </li>
@@ -32,7 +42,9 @@
     <div class="options">
       <div class="home-shortcut">
         <div class="pill-container">
-          <a routerLink="/{{ loggedInUserId }}" class="pill">
+          <a 
+          routerLink="/{{ loggedInUserId }}" 
+          class="pill">
             <span class="avatar">
               <img [src]="loggedInUserAvatarUrl">
             </span>
@@ -68,4 +80,6 @@
     </div>
   </div>
 </nav>
-<app-create-post (closeMe)="closeCreatePost()" *ngIf="isCreatePostVisible"></app-create-post>
+<app-create-post 
+(closeMe)="closeCreatePost()" 
+*ngIf="isCreatePostVisible"></app-create-post>

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from '../../common/message.service';
 import { UserDto } from '../../common/user-dto';
 import { UserProfile } from '../user-profile';
 
@@ -12,20 +14,37 @@ import { UserProfile } from '../user-profile';
 export class FriendListComponent implements OnInit {
 
   friends!: UserDto[];
-  @Input() profileId!: UserProfile;
+  friendsCopy!: UserDto[];
+  @Input() profileId!: number | undefined;
   searchForm!: FormGroup;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private messageService: MessageService,
+    private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    this.messageService.onProfileLoaded().subscribe(profile => {
+      this.http.get<UserDto[]>(`http://localhost:8080/api/users/${profile.id}/friends`)
+          .subscribe(resp => {
+            this.friends = resp;
+            this.friendsCopy =  this.friends;
+          })
+    })
+
     this.searchForm = new FormGroup({
       searchInput: new FormControl('')
     });
-    this.http.get<UserDto[]>(`http://localhost:8080/api/users/1/friends`)
-        .subscribe(resp => {
-          this.friends = resp;
-        })
+
+    this.searchForm.get('searchInput')?.valueChanges.subscribe(value => {
+      this.friends = this.friendsCopy.filter(friend => {
+        let name = friend.username.normalize("NFD")
+              .replace(/\p{Diacritic}/gu, '')
+              .toLowerCase();
+
+        return name.includes(value.toLowerCase());
+      });
+    })
   }
 
   removeItem(userDto: UserDto): void {

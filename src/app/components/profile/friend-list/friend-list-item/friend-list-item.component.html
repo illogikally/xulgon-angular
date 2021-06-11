@@ -1,33 +1,44 @@
 <div class="friend-list-item">
-  <div class="avatar-container">
-    <div class="avatar">
-      <img [src]="userDto.avatarUrl" />
+
+    <div class="avatar-container">
+  <a routerLink="/{{userDto.profileId}}">
+      <div class="avatar">
+        <img [src]="userDto.avatarUrl" />
+      </div>
+  </a>
     </div>
-  </div>
-  <div class="body">
-    <div class="username">
-      {{ userDto.username }}
+  
+  
+    <div class="body">
+  <a routerLink="/{{userDto.profileId}}">
+      <div class="username">
+        <a href="http://localhost:8080/{{ userDto.id }}"></a>{{ userDto.username }}
+      </div>
+      <div 
+      *ngIf="userDto.commonFriendCount > 0"
+      class="common-friend-count">
+        {{ userDto.commonFriendCount }} bạn bè chung
+      </div>
+  </a>
     </div>
-    <div class="common-friend-count">
-      {{ userDto.commonFriendCount }} bạn bè chung
-    </div>
+  
+  <div class="flex-center">
 
     <div 
-    (click)="showOptions()" 
-    #optionsBtn
-    class="options-btn">
-      <i class='bx bx-dots-horizontal-rounded' ></i>
-
-      <div 
-      *ngIf="isOptionsVisible"
-      (clickOutside)="hideOptions($event)"
-      class="options">
+      (click)="showOptions()" 
+      #optionsBtn
+      class="options-btn">
+        <i class='bx bx-dots-horizontal-rounded' ></i>
         <div 
-        (click)="unfriend()">
-          <i class='bx bx-user-x'></i>
-          <span>Huỷ bỏ bạn bè</span>
+        *ngIf="isOptionsVisible"
+        (clickOutside)="hideOptions($event)"
+        class="options">
+          <div 
+          (click)="unfriend()">
+            <i class='bx bx-user-x'></i>
+            <span>Huỷ bỏ bạn bè</span>
+          </div>
         </div>
       </div>
-    </div>
   </div>
 </div>

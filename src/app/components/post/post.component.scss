@@ -1,11 +1,7 @@
 @import 'src/styles';
 
 .post {
-//   @include card(10px);
-//   box-sizing: border-box;
-//   width: 100%;
   background-color: #fff;
-//   margin-bottom: 17px;
   padding: 10px 15px;
 
   .post-header {
@@ -33,9 +29,17 @@
 
       .name-date {
         font-weight: 500;
-        .date {
+
+        .date--privacy {
           font-size: 13px;
           color: grey;
+          display: flex;
+          align-items: center;
+
+          .privacy {
+            font-size: 15px;
+            margin-left: 5px;
+          }
         }
       }
     }
@@ -49,7 +53,8 @@
       padding: 0;
       border: var(--border);
       overflow: hidden;
-      margin-top: 10px;
+      margin: 0 -15px;
+      margin-top: 15px;
       
 
       > div {

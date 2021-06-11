@@ -1,0 +1,19 @@
+<div class="photo-item">
+  <div 
+  *ngIf="photo.userId == loggedInUserId"
+  #optionsBtn
+  (click)="showOptions()"
+  class="options">
+    <i class='bx bx-dots-vertical-rounded' ></i>
+    <div 
+    (clickOutside)="hideOptions($event)"
+    *ngIf="isOptionsVisible"
+    class="option-list">
+      <div (click)="deletePhoto()"
+      class="item"><i class='bx bx-trash'></i>Xoá ảnh</div>
+    </div>
+  </div>
+  <div class="photo-container">
+    <app-photo [photo]="photo"></app-photo>
+  </div>
+</div>

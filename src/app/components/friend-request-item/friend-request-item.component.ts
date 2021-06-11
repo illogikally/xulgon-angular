@@ -12,9 +12,11 @@ import { FriendRequestDto } from '../friend-request/friend-request-dto';
 export class FriendRequestItemComponent implements OnInit {
 
   @Input() request!: FriendRequestDto;
-  @Output() onDeleteRequest: EventEmitter<FriendRequestDto> = new EventEmitter();
   @ViewChild('accept', {static: true}) acceptBtn!: ElementRef;
   @ViewChild('decline', {static: true}) declineBtn!: ElementRef;
+
+  @Output() onDeleteRequest: EventEmitter<FriendRequestDto> = new EventEmitter();
+  @Output() profilePicked: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private http: HttpClient,
     private location: Location,
@@ -31,6 +33,7 @@ export class FriendRequestItemComponent implements OnInit {
     }
 
     this.messageService.changeFriendRequest(this.request.requesterId);
+    this.profilePicked.emit(true);
     this.location.go("/" + this.request.requesterId);
   }
 

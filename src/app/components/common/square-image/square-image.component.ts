@@ -1,0 +1,25 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PhotoResponse } from '../photo/photo-response';
+
+@Component({
+  selector: 'app-square-image',
+  templateUrl: './square-image.component.html',
+  styleUrls: ['./square-image.component.scss']
+})
+export class SquareImageComponent implements OnInit {
+
+  @Input() photo!: PhotoResponse;
+  @Output() photoPicked: EventEmitter<PhotoResponse> = new EventEmitter();
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  photoClicked(): void {
+    console.log('click');
+    
+    this.photoPicked.emit(this.photo);
+  }
+
+}

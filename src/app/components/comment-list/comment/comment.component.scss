@@ -16,7 +16,8 @@
     border: 1px solid #00000022;
 
     img {
-      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 1;
       width: 100%;
     }
   }

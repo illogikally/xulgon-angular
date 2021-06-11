@@ -8,7 +8,9 @@
                 <span class="username"> {{ request?.requesterName }}</span>
                 <span>{{ request?.createdAgo }}</span>
               </div>
-              <div class="common-friends-count">
+              <div 
+              *ngIf="request.commonFriendCount > 0"
+              class="common-friends-count">
                 {{ request?.commonFriendCount }} bạn chung
               </div>
               <div class="request-actions">

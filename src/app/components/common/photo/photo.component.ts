@@ -10,6 +10,7 @@ export class PhotoComponent implements OnInit {
 
   @Input() photo!: PhotoResponse;
   @Input() style!: string;
+  @Input() isComment!: boolean;
   @ViewChild('img', {static: true}) img!: ElementRef;
 
   showPhotoViewer: boolean = false;
@@ -20,9 +21,11 @@ export class PhotoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.photo?.sizeRatio);
-    
-
+    if (this.isComment) {
+      this.img.nativeElement.style['aspect-ratio'] = '0';
+      this.img.nativeElement.style['height'] = '100%';
+      this.img.nativeElement.style['width'] = 'auto';
+    }
   }
 
   openPhotoView(event: any): void {

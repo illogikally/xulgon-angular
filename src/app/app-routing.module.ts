@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/authentication/login/login.component';
 import { AuthenticationGuard } from './components/authentication/authentication.guard'
@@ -12,21 +12,29 @@ import { FriendRequestComponent } from './components/friend-request/friend-reque
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { NewsFeedComponent } from './components/news-feed/news-feed.component';
 import { FriendListComponent } from './components/profile/friend-list/friend-list.component';
+import { ProfileTimelineComponent } from './components/profile/profile-timeline/profile-timeline.component';
+import { PhotoListComponent } from './components/profile/photo-list/photo-list.component';
 
 const routes: Routes = [
-  { path: '', component: NewsFeedComponent},
-  { path: 'friend-list', component: FriendListComponent},
-  { path: 'login', component: LoginComponent},
-  { path: 'navbar', component: NavbarComponent},
-  { path: 'friends', component: FriendRequestComponent},
-  { path: ':id', component: ProfilePageComponent},
-  { path: ':id/friends', component: FriendListComponent}
-
+  { path: '', component: NewsFeedComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'navbar', component: NavbarComponent },
+  { path: 'friend_requests', component: FriendRequestComponent },
+  { 
+    path: ':id', 
+    component: ProfileComponent, 
+    children: [
+      { path: '', component: ProfileTimelineComponent },
+      { path: 'friends', component: FriendListComponent },
+      { path: 'photos', component: PhotoListComponent }
+    ]
+    
+  }
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

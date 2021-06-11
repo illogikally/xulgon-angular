@@ -19,6 +19,9 @@
     </div>
   </div>
   <div class="items">
-    <app-friend-list-item (removeItem)="removeItem($event)" *ngFor="let friend of friends" [userDto]="friend"></app-friend-list-item>
+    <app-friend-list-item 
+    (removeItem)="removeItem($event)" 
+    *ngFor="let friend of friends" 
+    [userDto]="friend" ></app-friend-list-item>
   </div>
 </div>

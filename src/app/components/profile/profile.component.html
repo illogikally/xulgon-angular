@@ -3,13 +3,24 @@
     <div class="cover-avatar">
       <div class="cover">
         <img [src]="userProfile?.coverPhotoUrl">
+        <div 
+        *ngIf="userProfile?.id == loggedInUserProfileId"
+        (click)="showUpdateProfilePic('cover')"
+        class="change-cover">
+          <i class='bx bxs-camera'></i>
+          <span>Thay ảnh bìa</span>
+        </div>
       </div>
       <div class="avatar-container flex-center">
         <div class="avatar">
           <img [src]="userProfile?.avatarUrl">
         </div>
-        <div class="change-avatar">
-
+        <div 
+        *ngIf="userProfile?.id == loggedInUserProfileId"
+        (click)="showUpdateProfilePic('avatar')"
+        class="change-avatar">
+          <i class='bx bxs-camera'></i>
+          
         </div>
       </div>
     </div>
@@ -22,20 +33,36 @@
   <div class="flex-center">
     <div class="actions-menu">
       <ul class="profile-menu">
-        <li>
-          <div class="flex-center">
-            Bài viết
-          </div>
+        <li 
+        [ngClass]="{'tab-active': currentTab == ''}">
+
+          <a 
+          (click)="changeCurrentTab($event, '')"
+          href="http://localhost:4200/{{userProfile?.id}}"> 
+            <div class="flex-center">
+              <span>Bài viết</span> 
+            </div>
+          </a>
         </li>
-        <li>
-          <div class="flex-center">
-            Bạn bè
-          </div>
+        <li
+        [ngClass]="{'tab-active': currentTab == 'friends'}">
+          <a 
+          (click)="changeCurrentTab($event, 'friends')"
+          href="http://localhost:4200/{{userProfile?.id}}/friends">
+            <div class="flex-center">
+              <span>Bạn bè</span>
+            </div>
+          </a>
         </li>
-        <li>
-          <div class="flex-center">
-            Ảnh
-          </div>
+        <li
+        [ngClass]="{'tab-active': currentTab == 'photos'}">
+          <a
+          href="http://localhost:4200/{{userProfile?.id}}/friends"
+          (click)="changeCurrentTab($event, 'photos')">
+            <div class="flex-center">
+              Ảnh
+            </div>
+          </a>
         </li>
       </ul>
       <div 
@@ -57,7 +84,10 @@
           (clickOutside)="closeFriendOpts($event)"
           *ngIf="showFriendOpts" 
           class="button-opts">
-            <div (click)="unfriend()">Huỷ bỏ bạn bè</div>
+            <div (click)="unfriend()">
+              <i class='bx bx-user-x' ></i>
+              <span>Huỷ bỏ bạn bè</span>
+            </div>
           </div>
         </button>
 
@@ -94,77 +124,34 @@
   </div>
 </div>
 <div class="profile-body">
-  <div class="content">
-    <!-- <div class="content"> -->
-      <!-- <div class='sidebar-container'> -->
-        <div 
-        class="sidebar">
-            <div class="intro">
-              <h2>Giới thiệu</h2>
-              <div style="margin-bottom: 10px;" class="loading" *ngIf="!userProfile"></div>
-              <div style="margin-bottom: 10px;" class="loading" *ngIf="!userProfile"></div>
-              <div style="margin-bottom: 10px;" class="loading" *ngIf="!userProfile"></div>
-              <div *ngIf="userProfile?.workplace">
-                <i class='bx bxs-building-house' ></i>
-                <span>Làm việc tại {{ userProfile?.workplace }}</span>
-              </div>
+  <div class="content-container">
 
-              <div *ngIf="userProfile?.school">
-                <i class='bx bxs-graduation' ></i>
-                <span>Học tại {{ userProfile?.school }}</span>
-              </div>
-              <div *ngIf="userProfile?.hometown">
-                <i class='bx bx-current-location'></i>
-                <span>Đang sống tại {{ userProfile?.hometown }}</span>   
-              </div>
-            </div>
-            <div class="photo-intro">
-              <div class="intro-title">
-                <h2>Ảnh</h2>
-              </div>
-              <div class="photo">
-                <div *ngIf="!userProfile" style="background-color: #ddd;"></div>
-                <div *ngIf="!userProfile" style="background-color: #ddd;"></div>
-                <div *ngIf="!userProfile" style="background-color: #ddd;"></div>
-                <div *ngFor="let photo of userProfile?.photos" >
-                  <app-photo 
-                  [photo]="photo" 
-                  ></app-photo>
-                </div>
-              </div>
-            </div>
-            <div class="friend-intro">
-              <div>
-                <h2>Bạn bè</h2>
-              </div>
-              <div class="friend">
+    <app-profile-timeline
+    [profileLoaded]="profileLoaded"
+    *ngIf="loadedTabs.has('')"
+    [ngClass]="{'hidden': currentTab !== ''}"
+    ></app-profile-timeline>
 
-                <div *ngFor="let friend of userProfile?.friends">
-                  <div class="img-container">
-                    <a routerLink="/{{ friend?.id }}">
-                      <img [src]="friend.avatarUrl">
-                    </a>
-                  </div>
-                  <a routerLink="/{{ friend?.id }}">
-                    <div class="username">{{ friend.username }}</div>
-                  </a>
-                  <div *ngIf="friend.commonFriendCount > 0" class="common-friend-count">
-                    {{ friend.commonFriendCount }}
-                    <span> bạn chung</span>
-                  </div>
-                </div>
-            </div>
-          </div>
-        </div>
-      <!-- </div> -->
-      <div class="timeline">
-        <div class="post-container">
-          <app-post-list [pageId]="profileId"></app-post-list>
-        </div>
-      </div>
-    <!-- </div> -->
+    <app-friend-list
+    [ngClass]="{'hidden': currentTab != 'friends'}"
+    [profileId]="userProfile?.id"
+    *ngIf="loadedTabs.has('friends')">
+    </app-friend-list>
+
+    <app-photo-list
+    *ngIf="loadedTabs.has('photos')"
+    [ngClass]="{'hidden': currentTab !== 'photos'}"
+    >
+
+    </app-photo-list>
+
   </div>
+  <!-- <app-profile-timeline [userProfile]="userProfile" [profileId]="userProfile.id"></app-profile-timeline> -->
 </div>
+<app-pick-avatar
+*ngIf="isUpdateAvatar"
+(closeMe)="isUpdateAvatar = false"
+></app-pick-avatar>
 <!-- <div *ngIf="pageNotFound" class="page-not-exist">
   <h1>Trang này không tồn tại.</h1>
 </div> -->

@@ -23,6 +23,7 @@ export class AuthenticationService {
   login(loginRequest: LoginRequest): Observable<boolean> {
     return this.httpClient.post<LoginResponse>("http://localhost:8080/api/authentication/token/retrieve", loginRequest)
       .pipe(map(data => {
+        this.localStorage.store('auth', data);
         this.localStorage.store('authenticationToken', data.token);
         this.localStorage.store('refreshToken', data.refreshToken);
         this.localStorage.store('username', data.username);
@@ -33,6 +34,10 @@ export class AuthenticationService {
 
         return true;
       }));
+  }
+
+  getAuth(): any {
+    return this.localStorage.retrieve('auth');
   }
 
   getUserName(): string {
@@ -59,6 +64,9 @@ export class AuthenticationService {
     return this.localStorage.retrieve('userId');
   }
 
+  setAvatarUrl(url: string): void {
+    this.localStorage.store('avatarUrl', url);
+  }
   isLoggedIn(): boolean {
     return this.getAuthenticationToken() != null;
   }
@@ -71,6 +79,7 @@ export class AuthenticationService {
         this.localStorage.clear('refreshToken');
         this.localStorage.clear('username');
         this.localStorage.clear('userId');
+        this.localStorage.clear('auth');
         this.localStorage.clear('profileId');
         this.localStorage.clear('avatarUrl');
       }, error => {

@@ -7,9 +7,15 @@
   border: 1px solid rgba(#999, .2);
   box-shadow: 0 1px 1px rgba(#333, .1);
 
+  a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+
   .avatar-container {
     @extend %flex-center;
-    margin-right: 10px;
 
     .avatar {
 
@@ -28,6 +34,7 @@
   }
 
   .body {
+    padding-left: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -45,11 +52,11 @@
   .options-btn {
     @extend %flex-center;
     border-radius: 50%;
-    position: absolute;
+    position: relative;
     height: 30px;
     width: 30px;
     font-size: 20px;
-    right: 0;
+    // right: 10px;
     cursor: pointer;
 
     &:hover {
@@ -57,33 +64,38 @@
     }
 
     .options {
-      font-size: 15px;
-      position: absolute;
-      top: 110%;
-      border-radius: 10px;
-      padding: 5px;
-      box-shadow: -4px 4px 7px rgba(#777, .2);
-      border: 1px solid rgba(#999, .1);
-      right: 0;
-      background-color: #fff;
+      @extend %opts;
       
-      > * {
-        display: flex;
-        align-items: center;
-        padding: 2px 5px;
-        white-space: nowrap;
-        border-radius: 3px;
-        font-weight: 500;
-
-        i {
-          font-size: 25px;
-          margin-right: 5px;
-        }
-
-        &:hover {
-          background-color: #f0f2f5;
-        }
+      i {
+        font-size: 23px !important;
       }
+      // font-size: 15px;
+      // position: absolute;
+      // top: 110%;
+      // border-radius: 10px;
+      // padding: 5px;
+      // box-shadow: -4px 4px 7px rgba(#777, .2);
+      // border: 1px solid rgba(#999, .1);
+      // right: 0;
+      // background-color: #fff;
+      
+      // > * {
+      //   display: flex;
+      //   align-items: center;
+      //   padding: 2px 5px;
+      //   white-space: nowrap;
+      //   border-radius: 3px;
+      //   font-weight: 500;
+
+      //   i {
+      //     font-size: 25px;
+      //     margin-right: 5px;
+      //   }
+
+      //   &:hover {
+      //     background-color: #f0f2f5;
+      //   }
+      // }
     }
   }
 }

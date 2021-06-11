@@ -1,0 +1,11 @@
+<div class="photo-list">
+  <div class="title">
+    <h2>Ảnh</h2>
+  </div>
+  <div class="content">
+    <app-photo-list-item 
+    *ngFor="let photo of photos" 
+    (photoDeleted)="photoDeleted($event)"
+    [photo]="photo"> </app-photo-list-item>
+  </div>
+</div>

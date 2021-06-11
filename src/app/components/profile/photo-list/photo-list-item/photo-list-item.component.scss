@@ -1,0 +1,63 @@
+@import "src/styles";
+
+.photo-item {
+  position: relative;
+
+  &:hover {
+    .options {
+      visibility: visible;
+    }
+  }
+
+  .photo-container {
+    border-radius: 10px;
+    border: 1px solid rgba(#777, .2);
+    overflow: hidden;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+  }
+
+  .options {
+    @extend %flex-center;
+    visibility: hidden;
+    cursor: pointer;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(#ddd, .5);
+    right: 10px;
+    top: 10px;
+
+    &:hover {
+      background-color: rgba(#cdcdcd, .5);
+    }
+    i {
+      font-size: 20px;
+    }
+    
+    .option-list {
+      @extend %opts;
+      white-space: nowrap;
+      right: -20px;
+    }
+  }
+
+    // cursor: pointer;
+    // position: absolute;
+    // bottom: 105%;
+    // right: 0;
+    // padding: 5px;
+    // border-radius: 5px;
+    // box-shadow: -2px 2px 4px rgba(#555, .2);
+    // background-color: #fff;
+    // white-space: nowrap;
+
+    // .item {
+    //   border-radius: 5px;
+    //   &:hover {
+    //     background-color: #eee;
+    //   }
+    // }
+}

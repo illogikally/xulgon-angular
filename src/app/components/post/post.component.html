@@ -12,7 +12,24 @@
             {{ post.username }}
           </a>
         </div>
-        <div class="date">{{ post.createdAt }}</div>
+        <div class="date--privacy">
+          <span>{{ post.createdAt }}</span>
+          
+
+          <span class="privacy">
+            <i 
+            *ngIf="post.privacy == 'FRIEND'"
+            class='bx bx-group' ></i>
+
+            <i class='bx bx-globe' 
+            *ngIf="post.privacy == 'PUBLIC'"
+            ></i>
+
+            <i class='bx bxs-lock-alt' 
+            *ngIf="post.privacy == 'ME'"
+            ></i>
+          </span>
+        </div>
       </div>
     </div>
   </div>
