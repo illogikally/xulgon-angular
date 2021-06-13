@@ -7,10 +7,12 @@
   --secondary-text: #65676b;
   font-size: 15px;
   font-weight: normal;
-  font-family: 'Segoe UI', Arial
+  font-family: 'Segoe UI';
+  color: #050505;
 }
 
 $btn-blue: #1877f2;
+$btn-grey: #D8DADF;
 $active-tab: #1876F2;
 
 .full-height {
@@ -21,9 +23,25 @@ $active-tab: #1876F2;
   width: 100%;
 }
 
+.secondary-text {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.visible {
+  // visibility: visible;
+  opacity: 1;
+}
+
 .hidden {
+  // visibility: hidden;
+  opacity: 0;
+}
+
+.none {
   display: none;
 }
+
 .loading {
   border-radius: 20px;
   background-color: #eee;
@@ -31,14 +49,35 @@ $active-tab: #1876F2;
   color: transparent;
 }
 
+.mr-10 {
+  margin-right: 10px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
 div {
   // border: 1px solid red;
 }
 
+.w-500 {
+	font-weight: 500;
+}
+
+.f-17 {
+  font-size: 17px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
 @mixin card($br) {
   border-radius: $br;
+  background-color: #fff;
   box-shadow: 0 1px 2px rgba(#000, .2);
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 @mixin x-btn($sz, $fg, $hover) {
@@ -61,7 +100,7 @@ div {
 @mixin button($bg, $fg) {
   @extend %flex-center;
   height: 37px;
-  padding: 0 12px;
+  padding: 0 15px;
   border-radius: 5px;
   background-color: $bg;
   font-family: 'Segoe UI';
@@ -69,6 +108,7 @@ div {
   font-size: 16px;
   color: $fg;
   cursor: pointer;
+  position: relative;
   border: none;
   outline: none;
 
@@ -77,8 +117,7 @@ div {
   }
 }
 
-@mixin scrollbar() {
-  $scrollbar-width: 15px;
+@mixin scrollbar($w) {
 
   &::-webkit-scrollbar-track {
     background-color: transparent;
@@ -89,7 +128,7 @@ div {
   }
 
   &::-webkit-scrollbar {
-    width: $scrollbar-width;
+    width: $w;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -106,10 +145,12 @@ div {
     }
   }
 
-  margin-right: - $scrollbar-width;
 }
 
 
+.mr-5 {
+  margin-right: 5px;
+}
 
 .hover-underline {
   &:hover {
@@ -128,12 +169,7 @@ body, html {
 }
 
 body {
-  position: fixed;
-  overflow-y: scroll !important;
-}
-
-html {
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 ul {
@@ -173,10 +209,11 @@ a {
   font-weight: 500;
   font-size: 15px;
   padding: 5px 5px;
-  width: 200px;
+  cursor: pointer;
+  min-width: 200px;
   background-color: #fff;
   border-radius: 5px;
-  box-shadow: -4px 4px 10px rgba(#333, .4);
+  box-shadow: -4px 4px 15px rgba(#333, .4);
   color: #000;
   bottom: 110%;
 

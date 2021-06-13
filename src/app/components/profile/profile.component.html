@@ -3,30 +3,32 @@
     <div class="cover-avatar">
       <div class="cover">
         <img [src]="userProfile?.coverPhotoUrl">
-        <div 
+        <!-- <div 
         *ngIf="userProfile?.id == loggedInUserProfileId"
         (click)="showUpdateProfilePic('cover')"
         class="change-cover">
           <i class='bx bxs-camera'></i>
           <span>Thay ảnh bìa</span>
-        </div>
+        </div> -->
       </div>
       <div class="avatar-container flex-center">
         <div class="avatar">
-          <img [src]="userProfile?.avatarUrl">
+          <app-photo [photo]="userProfile?.avatar"></app-photo>
         </div>
-        <div 
+        <!-- <div 
         *ngIf="userProfile?.id == loggedInUserProfileId"
         (click)="showUpdateProfilePic('avatar')"
         class="change-avatar">
           <i class='bx bxs-camera'></i>
           
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
   <div class="flex-center">
-    <h1 [ngClass]="{loading: userProfile === undefined}" class="profile-name flex-center">
+    <h1 
+    [ngClass]="{loading: userProfile === undefined}" 
+    class="profile-name flex-center">
       {{ userProfile?.lastName + " " + userProfile?.firstName }}
     </h1>
   </div>
@@ -37,7 +39,7 @@
         [ngClass]="{'tab-active': currentTab == ''}">
 
           <a 
-          (click)="changeCurrentTab($event, '')"
+          (click)="switchTab($event, '')"
           href="http://localhost:4200/{{userProfile?.id}}"> 
             <div class="flex-center">
               <span>Bài viết</span> 
@@ -47,7 +49,7 @@
         <li
         [ngClass]="{'tab-active': currentTab == 'friends'}">
           <a 
-          (click)="changeCurrentTab($event, 'friends')"
+          (click)="switchTab($event, 'friends')"
           href="http://localhost:4200/{{userProfile?.id}}/friends">
             <div class="flex-center">
               <span>Bạn bè</span>
@@ -58,7 +60,7 @@
         [ngClass]="{'tab-active': currentTab == 'photos'}">
           <a
           href="http://localhost:4200/{{userProfile?.id}}/friends"
-          (click)="changeCurrentTab($event, 'photos')">
+          (click)="switchTab($event, 'photos')">
             <div class="flex-center">
               Ảnh
             </div>
@@ -76,13 +78,14 @@
 
         <button 
         *ngIf="userProfile?.friendshipStatus == 'FRIEND'"
-        (click)="onFriendClick()" 
+        (click)="isFriendOptsVisible = !isFriendOptsVisible" 
         #friend
         id="friend-opts">
           <i class='bx bxs-user-check' ></i><span>Bạn bè</span>
           <div  
-          (clickOutside)="closeFriendOpts($event)"
-          *ngIf="showFriendOpts" 
+          (clickOutside)="isFriendOptsVisible = false"
+          [delayClickOutsideInit]="true"
+          *ngIf="isFriendOptsVisible" 
           class="button-opts">
             <div (click)="unfriend()">
               <i class='bx bx-user-x' ></i>
@@ -92,7 +95,7 @@
         </button>
 
         <button 
-        *ngIf="userProfile?.friendshipStatus == 'SEND'"
+        *ngIf="userProfile?.friendshipStatus == 'SENT'"
         (click)="deleteFriendRequest()" 
         id="delete-friend-request">
           <i class='bx bxs-user-x' ></i><span>Huỷ lời mời</span>
@@ -106,6 +109,7 @@
           <i class='bx bxs-user-check' ></i><span>Trả lời</span>
           <div  
           (clickOutside)="closeReplyFriendRequestOpts($event)"
+          [delayClickOutsideInit]="true"
           *ngIf="showReplyRequestOpts" 
           class="button-opts">
             <div (click)="acceptFriendRequest()">Đồng ý</div>
@@ -127,20 +131,19 @@
   <div class="content-container">
 
     <app-profile-timeline
-    [profileLoaded]="profileLoaded"
     *ngIf="loadedTabs.has('')"
-    [ngClass]="{'hidden': currentTab !== ''}"
+    [ngClass]="{'none': currentTab !== ''}"
     ></app-profile-timeline>
 
     <app-friend-list
-    [ngClass]="{'hidden': currentTab != 'friends'}"
+    [ngClass]="{'none': currentTab != 'friends'}"
     [profileId]="userProfile?.id"
     *ngIf="loadedTabs.has('friends')">
     </app-friend-list>
 
     <app-photo-list
     *ngIf="loadedTabs.has('photos')"
-    [ngClass]="{'hidden': currentTab !== 'photos'}"
+    [ngClass]="{'none': currentTab !== 'photos'}"
     >
 
     </app-photo-list>

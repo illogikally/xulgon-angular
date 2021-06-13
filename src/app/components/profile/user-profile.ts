@@ -3,7 +3,7 @@ import { PhotoResponse } from "../common/photo/photo-response";
 export interface UserProfile {
   id: number;
   userId: number;
-  avatarUrl: string;
+  avatar: PhotoResponse;
   coverPhotoUrl: string;
   workplace: string;
   firstName: string;

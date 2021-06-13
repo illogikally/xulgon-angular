@@ -1,7 +1,11 @@
-<a (click)="openPhotoView($event)" href="http://localhost:8080/photo/{{ photo?.id }}">
+<a 
+(click)="openPhotoView($event)" 
+href="http://localhost:8080/photos/{{ photo?.id }}">
   <img 
-  [ngClass]="photo.sizeRatio < 1 ? 'full-width' : 'full-height'"
-  #img 
+  #image
   [src]="photo?.url">
 </a>
-<app-photo-viewer (closeMe)="closePhotoView()" *ngIf="showPhotoViewer" [photoResponse]="photo"></app-photo-viewer>
+<app-photo-viewer 
+(closeMe)="closePhotoView()" 
+*ngIf="showPhotoViewer" 
+[photoResponse]="photo"></app-photo-viewer>

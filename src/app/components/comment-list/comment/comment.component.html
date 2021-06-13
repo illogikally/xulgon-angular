@@ -1,18 +1,19 @@
 <div class="comment">
   <div>
     <div class="comment-avatar">
-      <a [routerLink]="userProfile">
-        <img [src]="commentResponse.avatarUrl">
-      </a>
+      <app-user-ref
+      [userDto]="commentResponse.user"
+      borderRadius="50%"
+      ></app-user-ref>
     </div>
   </div>
   <div class="comment-right">
     <div style="display: flex;">
       <div class="comment-body">
         <div class="comment-username">
-          <a [routerLink]="userProfile">
-            {{ commentResponse.username }}
-          </a>
+          <app-user-ref
+          [userDto]="commentResponse.user"
+          ></app-user-ref>
         </div>
         <div >
           {{ commentResponse.body }}
@@ -47,7 +48,9 @@
         </span>
       </div>
       <div>
-        <app-comment-list  *ngIf="isRepliesVisible" [contentId]="commentResponse.id"></app-comment-list>
+        <app-comment-list  
+        *ngIf="isRepliesVisible" 
+        [contentId]="commentResponse.id"></app-comment-list>
       </div>
     </div>
   </div>

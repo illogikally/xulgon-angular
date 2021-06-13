@@ -1,0 +1,57 @@
+@import "src/styles";
+
+.post-skeleton {
+	@include card(10px);
+	padding: 15px;	
+	margin-bottom: 17px;
+	$bg: #dfdfdf;
+
+
+	.header {
+		display: flex;
+
+		.avatar {
+			border-radius: 50%;
+			width: 40px;
+			background-color: $bg;
+			height: 40px;
+			margin-right: 10px;
+		}
+
+		.name--date {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+			
+			> div {
+				width: 150px;
+				height: 12px;
+				background-color: $bg;
+				border-radius: 10px;
+			}
+
+			.date {
+				margin-top: 5px;
+				width: 100px;
+			}
+		}
+	}
+	.body {
+		margin: 10px 0;
+		height: 150px;;
+	}
+
+	.actions {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		> div {
+			background-color: $bg;
+			width: 50px;
+			height: 12px;
+			border-radius: 10px;
+		}
+	}
+}
+

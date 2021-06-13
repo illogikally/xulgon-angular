@@ -35,6 +35,19 @@ import { PhotoListComponent } from './components/profile/photo-list/photo-list.c
 import { PhotoListItemComponent } from './components/profile/photo-list/photo-list-item/photo-list-item.component';
 import { SquareImageComponent } from './components/common/square-image/square-image.component';
 import { PickAvatarComponent } from './components/profile/pick-avatar/pick-avatar.component';
+import { GroupComponent } from './components/group/group.component';
+import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
+import { GroupAboutComponent } from './components/group/group-about/group-about.component';
+import { GroupMemberComponent } from './components/group/group-member/group-member.component';
+import { GroupMediaComponent } from './components/group/group-media/group-media.component';
+import { GroupTimelineComponent } from './components/group/group-timeline/group-timeline.component';
+import { GroupCreatePostComponent } from './components/group/group-timeline/group-create-post/group-create-post.component';
+import { NgxStickySidebarModule } from '@smip/ngx-sticky-sidebar';
+import { UserRefAvatarComponent } from './components/common/user-ref-avatar/user-ref-avatar.component';
+import { UserRefComponent } from './components/common/user-ref/user-ref.component';
+import { UserRefPopupComponent } from './components/common/user-ref/user-ref-popup/user-ref-popup.component';
+import { PostSkeletonComponent } from './components/post/post-skeleton/post-skeleton.component';
+import { NgxSkeletonLoaderComponent, NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -65,11 +78,23 @@ import { PickAvatarComponent } from './components/profile/pick-avatar/pick-avata
     PhotoListItemComponent,
     SquareImageComponent,
     PickAvatarComponent,
+    GroupComponent,
+    GroupFeedComponent,
+    GroupAboutComponent,
+    GroupMemberComponent,
+    GroupMediaComponent,
+    GroupTimelineComponent,
+    GroupCreatePostComponent,
+    UserRefAvatarComponent,
+    UserRefComponent,
+    UserRefPopupComponent,
+    PostSkeletonComponent,
   ],
   imports: [
     ClickOutsideModule,
     BrowserModule,
     AppRoutingModule,
+    NgxStickySidebarModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,

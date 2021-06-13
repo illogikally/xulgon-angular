@@ -7,9 +7,10 @@
   border: 1px solid rgba(#999, .2);
   box-shadow: 0 1px 1px rgba(#333, .1);
 
-  a {
+  a.body-c {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     height: 100%;
     width: 100%;
   }
@@ -35,15 +36,13 @@
 
   .body {
     padding-left: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     width: 100%;
     position: relative;
 
     .username {
       font-weight: 500;
     }
+
     .common-friend-count {
       font-size: 14px;
     }

@@ -1,12 +1,12 @@
+import { UserDto } from "../../common/user-dto";
+
 export interface CommentResponse {
   id: number;
-  userId: number;
   parentId: number;
   parentType: string;
   body: string;
   isReacted: boolean;
-  username: string;
-  avatarUrl: string;
+  user: UserDto;
   photo: any;
   createdAgo: string;
   replyCount: number;

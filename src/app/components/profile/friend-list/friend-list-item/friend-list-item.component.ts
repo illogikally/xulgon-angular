@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
 import { UserDto } from 'src/app/components/common/user-dto';
 import { UserService } from 'src/app/components/common/user.service';
 
@@ -14,10 +15,13 @@ export class FriendListItemComponent implements OnInit {
   @Output() removeItem: EventEmitter<UserDto> = new EventEmitter();
   
   isOptionsVisible: boolean = false;
+  loggedInUserId!: number;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+    private auth: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.loggedInUserId = this.auth.getUserId();
   }
 
   showOptions(): void {

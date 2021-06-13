@@ -12,6 +12,6 @@ export class PostService {
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
   getPostsByPageId(pageId: number): Observable<Array<Post>> {
-    return this.http.get<Array<Post>>(`http://localhost:8080/api/profiles/${pageId}/posts`); 
+    return this.http.get<Array<Post>>(`http://localhost:8080/api/pages/${pageId}/posts`); 
   }
 }

@@ -1,0 +1,50 @@
+@import "src/styles";
+
+.user-ref-container {
+	position: relative;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: underline;
+	}
+
+	.user-ref {
+		display: flex;
+		position: absolute;
+		justify-content: center;
+		top: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+}
+
+.user-ref-a {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	text-decoration: inherit;
+
+
+	// &:hover {
+	// 	text-decoration: underline;
+	// }
+
+	.username {
+		position: relative;	
+		left: 0;
+	}
+
+	.avatar-container {
+		border: 1px solid rgba(#333, .2);
+		width: 100%;
+		aspect-ratio: 1;
+		overflow: hidden;
+
+		img {
+			object-fit: cover;
+			width: 100%;
+			aspect-ratio: 1;
+		}
+	}
+}

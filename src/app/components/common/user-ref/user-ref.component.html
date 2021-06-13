@@ -1,0 +1,31 @@
+<div 
+(mouseenter)="onMouseEnter()"
+(mouseleave)="onMouseLeave()"
+class="user-ref-container">
+	<a 
+	#a
+	class="user-ref-a"
+	routerLink="/{{ userDto.profileId }}">
+		<div 
+		*ngIf="borderRadius"
+		class="avatar-container" 
+		#avatarContainer>
+			<img [src]="userDto.avatarUrl">
+		</div>
+		<div 
+		class="username"
+		*ngIf="!borderRadius"
+		>
+		{{ userDto.username }}
+	</div>
+	</a>
+	<div 
+	class="user-ref"
+	#userRef>
+		<app-user-ref-popup
+		*ngIf="isUserRefVisible"
+		[@fadeInOut]
+		[userDto]="userDto"
+		></app-user-ref-popup>
+	</div>
+</div>

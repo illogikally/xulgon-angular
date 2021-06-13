@@ -17,7 +17,9 @@ export class PostComponent implements OnInit {
 
   @Input() post!: Post | PhotoResponse | any;
   onInputFocus: EventEmitter<boolean> = new EventEmitter();
+
   showComment: boolean = false;
+  isPostOptsVisible = false;
 
   constructor(private reactionService: ReactionService,
     private messageService: MessageService) { }
@@ -42,13 +44,8 @@ export class PostComponent implements OnInit {
     };
 
     this.reactionService.react(reaction).subscribe(resp => {
-      if (this.post.isReacted) {
-        this.post.reactionCount -= 1;
-        this.post.isReacted = false;
-        return;
-      }
-      this.post.reactionCount += 1;
-      this.post.isReacted = true;
+      this.post.reactionCount += this.post.isReacted ? -1 : 1;
+      this.post.isReacted = !this.post.isReacted;
     });
   }
 

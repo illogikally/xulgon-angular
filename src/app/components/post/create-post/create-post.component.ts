@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { MessageService } from '../../common/message.service';
@@ -11,29 +11,37 @@ import { Post } from '../post';
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.scss']
 })
-export class CreatePostComponent implements OnInit {
+export class CreatePostComponent implements OnDestroy, OnInit {
 
   photos: any[] = [];
   files: Blob[] = [];
-  sizeRatio: number[] = []
+  sizeRatios: number[] = []
   avatarUrl: string;
   fullname: string
   postable: boolean = false;
   postForm!: FormGroup;
+  isPrivacyOptsVisible = false;
+  privacy = 'FRIEND';
 
   @Output() closeMe: EventEmitter<void> = new EventEmitter();
+  @ViewChild('privacyBtn') privacyBtn!: ElementRef;
 
   constructor(private http: HttpClient,
     private messageService: MessageService,
+    private renderer: Renderer2,
     private auth: AuthenticationService) { 
       this.avatarUrl = auth.getAvatarUrl();
       this.fullname = auth.getAuth().fullname;
       
   }
 
+  ngOnDestroy(): void {
+    this.renderer.setStyle(document.body, 'position', 'relative');
+  }
+
   ngOnInit(): void {
-    console.log(this.auth.getAvatarUrl());
-    
+    this.renderer.setStyle(document.body, 'position', 'fixed');
+
     this.postForm = new FormGroup({
       textarea: new FormControl(""),
       fileInput: new FormControl("")
@@ -51,12 +59,12 @@ export class CreatePostComponent implements OnInit {
         let img = new Image();
         img.src = event.target?.result as string;
         img.onload = () => {
-          this.sizeRatio.push(img.width / img.height);
+          this.sizeRatios.push(img.width / img.height);
         }
 
         this.photos.push({
           url: event.target?.result as string,
-          sizeRatio: this.sizeRatio[this.sizeRatio.length-1]
+          sizeRatio: this.sizeRatios[this.sizeRatios.length-1]
         });
       }
     }
@@ -71,14 +79,14 @@ export class CreatePostComponent implements OnInit {
 
     let postRequest = new Blob([JSON.stringify({
       pageId: this.auth.getProfileId(),
-      privacy: 'PUBLIC',
+      privacy: this.privacy,
       body: this.postForm.get('textarea')?.value
     })], {type: 'application/json'});
     formData.append('postRequest', postRequest);
 
     let photoRequests: any[] = []
     this.files.forEach((v, i) => {
-      photoRequests.push({privacy: 'PUBLIC', widthHeightRatio: this.sizeRatio[i]});
+      photoRequests.push({privacy: this.privacy, widthHeightRatio: this.sizeRatios[i]});
       formData.append('photos', v);
     });
 
@@ -99,4 +107,24 @@ export class CreatePostComponent implements OnInit {
   closeSelf(): void {
     this.closeMe.emit();
   }
+
+  setPrivacy(privacy: string): void {
+    this.privacy = privacy;
+    this.isPrivacyOptsVisible = false;
+  }
+
+  showPrivacyOpts(): void {
+    this.isPrivacyOptsVisible = !this.isPrivacyOptsVisible;
+  }
+
+  clickOutsidePrivacyOpts(): void {
+    this.isPrivacyOptsVisible = false;
+  }
+
+  abort(): void {
+    this.files = [];
+    this.sizeRatios = [];
+    this.photos = [];
+  }
+
 }

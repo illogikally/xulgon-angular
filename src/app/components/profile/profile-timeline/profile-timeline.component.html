@@ -1,9 +1,10 @@
 <div class="content">
-    <!-- <div class="content"> -->
-      <!-- <div class='sidebar-container'> -->
         <div 
         class="sidebar">
+        <!-- <div class="sidebar__inner"> -->
+
             <div class="intro">
+        
               <h2>Giới thiệu</h2>
               <div *ngIf="userProfile?.workplace">
                 <i class='bx bxs-building-house' ></i>
@@ -38,26 +39,26 @@
 
                 <div *ngFor="let friend of userProfile?.friends">
                   <div class="img-container">
-                    <a routerLink="/{{ friend?.id }}">
-                      <img [src]="friend.avatarUrl">
-                    </a>
+                    <app-user-ref 
+                    [userDto]="friend" 
+                    borderRadius="10px"
+                    ></app-user-ref>
                   </div>
                   <a routerLink="/{{ friend?.id }}">
                     <div class="username">{{ friend.username }}</div>
                   </a>
-                  <div *ngIf="friend.commonFriendCount > 0" class="common-friend-count">
+                  <div *ngIf="friend.commonFriendCount > 0 && friend.id != loggedInUserId" class="common-friend-count">
                     {{ friend.commonFriendCount }}
                     <span> bạn chung</span>
                   </div>
                 </div>
             </div>
           </div>
+        <!-- </div> -->
         </div>
-      <!-- </div> -->
       <div class="timeline">
         <div class="post-container">
           <app-post-list></app-post-list>
         </div>
       </div>
-    <!-- </div> -->
   </div>

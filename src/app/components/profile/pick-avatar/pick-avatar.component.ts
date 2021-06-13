@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Event } from '@angular/router';
 import { MessageService } from '../../common/message.service';
@@ -11,7 +11,7 @@ import { UserProfile } from '../user-profile';
   templateUrl: './pick-avatar.component.html',
   styleUrls: ['./pick-avatar.component.scss']
 })
-export class PickAvatarComponent implements OnInit {
+export class PickAvatarComponent implements OnInit, OnDestroy {
 
   @Output() closeMe: EventEmitter<void> = new EventEmitter();
 
@@ -27,9 +27,15 @@ export class PickAvatarComponent implements OnInit {
 
 
   constructor(private http: HttpClient,
+    private renderer: Renderer2,
     private messageService: MessageService) { }
 
+  ngOnDestroy(): void {
+    this.renderer.setStyle(document.body, 'position', 'relative');
+  }
+
   ngOnInit(): void {
+    this.renderer.setStyle(document.body, 'position', 'fixed');
     this.uploadFileForm = new FormGroup({
       fileInput: new FormControl('')
     }); 
@@ -43,7 +49,7 @@ export class PickAvatarComponent implements OnInit {
         this.updateType = 'cover';
       }
     });
-
+    
     this.messageService.onProfileLoaded().subscribe(profile => {
       this.userProfile = profile;
       this.http.get<PhotoResponse[]>(`http://localhost:8080/api/profiles/${profile.id}/photos`)
@@ -124,52 +130,6 @@ export class PickAvatarComponent implements OnInit {
         });
       }
     }
-    // if (this.updateType == 'avatar') {
-    //   if (this.pickedPhoto) {
-    //     this.http.put(`http://localhost:8080/api/profiles/${this.userProfile.id}/update-avatar`, this.pickedPhoto?.id)
-    //         .subscribe(_ => {
-    //           this.messageService.updateAvatar.next(this.pickedPhoto?.url);
-    //         });
-
-    //     return;
-    //   }
-    //   else {
-
-    //     this.http.put<PhotoResponse>(`http://localhost:8080/api/profiles/${this.userProfile.id}/upload-avatar`, formData).subscribe(
-    //       resp => {
-    //         this.messageService.updateAvatar.next(resp.url);
-    //       }
-    //     );
-    //   }
-
-    // }
-    // else {
-    //   if (this.pickedPhoto) {
-    //     this.http.put(`http://localhost:8080/api/profiles/${this.userProfile.id}/update-avatar`, this.pickedPhoto?.id)
-    //         .subscribe(_ => {
-    //           this.messageService.updateAvatar.next(this.pickedPhoto?.url);
-    //         });
-
-    //     return;
-    //   }
-    //   else {
-
-    //     let formData = new FormData();
-    //     let photoRequest = new Blob([JSON.stringify({
-    //       privacy: 'PUBLIC',
-    //       sizeRatio: this.photoSizeRatio
-    //     })], {type: 'application/json'});
-    //     formData.append('photoRequest', photoRequest);
-
-    //     formData.append('photo', this.photoBlob == undefined ? new Blob() : this.photoBlob);
-    //     this.http.put<PhotoResponse>(`http://localhost:8080/api/profiles/${this.userProfile.id}/upload-avatar`, formData).subscribe(
-    //       resp => {
-    //         this.messageService.updateAvatar.next(resp.url);
-    //       }
-    //     );
-    //   }
-
-    // }
 
     this.close();
   }

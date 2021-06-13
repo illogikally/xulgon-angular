@@ -10,16 +10,16 @@
   
   
     <div class="body">
-  <a routerLink="/{{userDto.profileId}}">
+      <a routerLink="/{{userDto.profileId}}" class="body-c">
       <div class="username">
         <a href="http://localhost:8080/{{ userDto.id }}"></a>{{ userDto.username }}
       </div>
       <div 
-      *ngIf="userDto.commonFriendCount > 0"
+      *ngIf="userDto.commonFriendCount > 0 && userDto.id != loggedInUserId"
       class="common-friend-count">
         {{ userDto.commonFriendCount }} bạn bè chung
       </div>
-  </a>
+    </a>
     </div>
   
   <div class="flex-center">

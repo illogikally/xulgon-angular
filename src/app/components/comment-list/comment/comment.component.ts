@@ -21,7 +21,7 @@ export class CommentComponent implements OnInit {
   constructor(private reactionService: ReactionService) { }
 
   ngOnInit(): void {
-    this.userProfile = `/${this.commentResponse.userId}`;
+    this.userProfile = `/${this.commentResponse.user.profileId}`;
   }
 
   showReplies(): void {

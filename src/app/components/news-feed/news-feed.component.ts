@@ -21,11 +21,10 @@ export class NewsFeedComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.sendLoadedProfile({} as UserProfile);
+    this.messageService.pageId.next(null);
+
     this.http.get<Post[]>(`http://localhost:8080/api/users/timeline`).subscribe(resp => {
       this.posts = resp;
-      console.log(this.posts);
-      
     });
   }
 

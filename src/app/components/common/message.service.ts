@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Post } from '../post/post';
 import { UserProfile } from '../profile/user-profile';
+import { UserDto } from './user-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,8 @@ export class MessageService {
   private deleteFriendRequest = new Subject<number>();
   private createdPost = new Subject<Post>();
   updateAvatar = new Subject<string>();
+  pageId = new BehaviorSubject<any>(null);
+  userRef = new Subject<UserDto>();
   updateCoverPhoto = new Subject<string>();
   updateAvatarOrCover = new BehaviorSubject<string>('');
   private userProfileLoaded = new BehaviorSubject<UserProfile>({} as UserProfile);

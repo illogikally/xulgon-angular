@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { AuthenticationService } from '../../authentication/authentication.service';
 import { MessageService } from '../../common/message.service';
 import { UserProfile } from '../user-profile';
 
@@ -10,19 +12,25 @@ import { UserProfile } from '../user-profile';
 export class ProfileTimelineComponent implements OnInit {
 
   @Input() userProfile!: UserProfile;
-  @Input() profileLoaded!: EventEmitter<UserProfile>;
+  loggedInUserId: number;
 
-  profileId!: number;
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService,
+    private auth: AuthenticationService) {
+
+      this.loggedInUserId = this.auth.getUserId();
+    }
 
   ngOnInit(): void {
-    this.profileLoaded.subscribe(profile => {
-      this.profileId = profile.id;
-    });
     
     this.messageService.onProfileLoaded().subscribe(profile => {
       this.userProfile = profile;
     })
+  }
+
+  updateSticky = new Subject<boolean>();
+
+  updateMethod() {
+    this.updateSticky.next(true);
   }
 
 }

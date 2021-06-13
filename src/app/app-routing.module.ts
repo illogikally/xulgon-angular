@@ -14,12 +14,40 @@ import { NewsFeedComponent } from './components/news-feed/news-feed.component';
 import { FriendListComponent } from './components/profile/friend-list/friend-list.component';
 import { ProfileTimelineComponent } from './components/profile/profile-timeline/profile-timeline.component';
 import { PhotoListComponent } from './components/profile/photo-list/photo-list.component';
+import { GroupComponent } from './components/group/group.component';
+import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
+import { GroupTimelineComponent } from './components/group/group-timeline/group-timeline.component';
+import { GroupAboutComponent } from './components/group/group-about/group-about.component';
+import { GroupMediaComponent } from './components/group/group-media/group-media.component';
+import { GroupMemberComponent } from './components/group/group-member/group-member.component';
+import { UserRefComponent } from './components/common/user-ref/user-ref.component';
+import { UserRefAvatarComponent } from './components/common/user-ref-avatar/user-ref-avatar.component';
+import { PostSkeletonComponent } from './components/post/post-skeleton/post-skeleton.component';
 
 const routes: Routes = [
   { path: '', component: NewsFeedComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'navbar', component: NavbarComponent },
-  { path: 'friend_requests', component: FriendRequestComponent },
+  { path: 'friends', component: FriendRequestComponent },
+  { path: 'test', component: PostSkeletonComponent},
+  { 
+    path: 'groups', 
+    children: [
+
+      { path: '', redirectTo: 'feed', pathMatch: 'full'},
+      { path: 'feed', component: GroupFeedComponent},
+      {
+        path: ':id', 
+        component: GroupComponent,
+        children: [
+          { path: '', component: GroupTimelineComponent},
+          { path: 'about', component: GroupAboutComponent},
+          { path: 'media', component: GroupMediaComponent},
+          { path: 'members', component: GroupMemberComponent},
+        ]
+
+      }
+    ]
+  },
   { 
     path: ':id', 
     component: ProfileComponent, 

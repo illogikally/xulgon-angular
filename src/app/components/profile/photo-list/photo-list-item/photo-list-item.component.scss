@@ -2,12 +2,17 @@
 
 .photo-item {
   position: relative;
+  background-color: transparent;
+  color: transparent;
+  box-sizing: border-box;
+  background-clip: content-box;
+  border-radius: 10px;
 
   &:hover {
-    .options {
-      visibility: visible;
-    }
+    color: #050505;
+    background-color: rgba(#cdcdcd, .5);
   }
+
 
   .photo-container {
     border-radius: 10px;
@@ -20,19 +25,17 @@
 
   .options {
     @extend %flex-center;
-    visibility: hidden;
     cursor: pointer;
+    background-color: inherit;
     position: absolute;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: rgba(#ddd, .5);
+    color: inherit;
+    // background-color: rgba(#ddd, .5);
     right: 10px;
     top: 10px;
 
-    &:hover {
-      background-color: rgba(#cdcdcd, .5);
-    }
     i {
       font-size: 20px;
     }
@@ -44,20 +47,4 @@
     }
   }
 
-    // cursor: pointer;
-    // position: absolute;
-    // bottom: 105%;
-    // right: 0;
-    // padding: 5px;
-    // border-radius: 5px;
-    // box-shadow: -2px 2px 4px rgba(#555, .2);
-    // background-color: #fff;
-    // white-space: nowrap;
-
-    // .item {
-    //   border-radius: 5px;
-    //   &:hover {
-    //     background-color: #eee;
-    //   }
-    // }
 }

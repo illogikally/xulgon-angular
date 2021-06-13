@@ -3,7 +3,8 @@
 .pick-avatar {
   @extend %flex-center;
   @extend %f-scr;
-  background-color: rgba(#eee, .7);
+  background-color: rgba(#000, .7);
+  z-index: 20;
 
 
   .content {
@@ -47,7 +48,7 @@
         }
 
         &:hover {
-          background-color: rgba(#ddd, .9);
+          background-color: rgba(#dddddd, .9);
         }
 
         i {

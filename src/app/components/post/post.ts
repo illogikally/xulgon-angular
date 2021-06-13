@@ -1,15 +1,14 @@
 import { CommentResponse } from "../comment-list/comment/comment-response";
+import { UserDto } from "../common/user-dto";
 
 export interface Post {
   id: number;
+  user: UserDto;
   pageId: number;
-  userId: number;
   privacy: string;
-  username: string;
   createdAt: string;
   posted: string;
   isReacted: boolean;
-  avatarUrl: string;
   photos: any[];
   body: string;
   reactionCount: number;

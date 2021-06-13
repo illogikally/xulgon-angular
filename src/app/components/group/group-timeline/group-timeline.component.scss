@@ -1,0 +1,22 @@
+@import "src/styles";
+
+.group-timeline {
+	display: grid;
+	grid-template-columns: 1fr 360px;
+	gap: 17px;
+
+	.timeline-sidebar {
+		@include card(10px);
+		padding: 20px;
+
+
+		.group-meta {
+			.privacy {
+				> * {
+					display: grid;
+					grid-template-columns: 30px 1fr;
+				}
+			}
+		}
+	}
+}

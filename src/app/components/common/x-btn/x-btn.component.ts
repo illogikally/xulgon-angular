@@ -11,5 +11,9 @@ export class XBtnComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  hover() {
+    console.log('hover');
+    
+  }
 
 }

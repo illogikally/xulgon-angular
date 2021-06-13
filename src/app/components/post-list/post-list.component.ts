@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { PostService } from '../post/post.service'
 import { Post } from '../post/post'
 import { AuthenticationService } from '../authentication/authentication.service';
@@ -10,7 +10,7 @@ import { MessageService } from '../common/message.service';
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss']
 })
-export class PostListComponent implements OnInit {
+export class PostListComponent implements OnInit, OnDestroy {
 
   @Input() pageId!: number;
   @Input() posts!: Array<Post>;
@@ -21,17 +21,28 @@ export class PostListComponent implements OnInit {
     private authenticationService: AuthenticationService) {
   }
 
+  ngOnDestroy(): void {
+    // this.posts = [];
+  }
+
   ngOnInit(): void {
-    this.messageService.onProfileLoaded().subscribe(profile => {
-      this.loadPosts(profile.id); 
+
+    this.messageService.pageId.subscribe(id => {
+      this.loadPosts(id);
     });
+
     this.messageService.onCreatedPost().subscribe(post => {
       this.posts.unshift(post);
     });
   }
 
   loadPosts(pageId: number): void {
+    if (!pageId) return;
+
     this.postService.getPostsByPageId(pageId)
-      .subscribe(resp => this.posts = resp);
+      .subscribe(posts => {
+        this.posts = posts;
+      });
+      
   }
 }

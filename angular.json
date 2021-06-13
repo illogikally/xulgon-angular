@@ -34,6 +34,7 @@
               "src/styles.scss"
             ],
             "scripts": [
+              "./node_modules/css-element-queries/src/ResizeSensor.js"
             ]
           },
           "configurations": {
