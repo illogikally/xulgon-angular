@@ -4,6 +4,7 @@ import { CommentResponse } from './comment/comment-response';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CommentRequest } from './comment/comment-request';
 import { MessageService } from '../common/message.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -20,11 +21,15 @@ export class CommentListComponent implements OnInit {
   file: Blob | undefined;
   sizeRatio!: number;
   imgUrl!: string;
+  
+  loggedInUserAvatarUrl: string;
 
 
   constructor(private commentService: CommentService,
+    private authService: AuthenticationService,
     private messageService: MessageService) { 
-
+      
+      this.loggedInUserAvatarUrl = authService.getAuth().avatarUrl;
   }
 
   ngOnInit(): void {

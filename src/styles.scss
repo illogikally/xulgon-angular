@@ -94,11 +94,11 @@ div {
     background-color: $hover;
   }
 
-  @extend %flex-center;
+  @extend %fc;
 }
 
 @mixin button($bg, $fg) {
-  @extend %flex-center;
+  @extend %fc;
   height: 37px;
   padding: 0 15px;
   border-radius: 5px;
@@ -193,7 +193,7 @@ a {
   align-items: center;
 }
 
-%flex-center {
+%fc {
   display: flex;
   justify-content: center;
   align-items: center;

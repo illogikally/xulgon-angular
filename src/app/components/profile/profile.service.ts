@@ -8,10 +8,15 @@ import { UserProfile } from './user-profile';
 })
 export class ProfileService {
 
+  url = 'http://localhost:8080/api/profiles/'
   constructor(private http: HttpClient) { }
 
   getUserProfile(id: number): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`http://localhost:8080/api/profiles/${id}`);
+    return this.http.get<UserProfile>(this.url + `${id}`);
+  }
+
+  isBlocked(profileId: number): Observable<boolean> {
+    return this.http.get<boolean>(this.url + `${profileId}/is-blocked`);
   }
 
 }

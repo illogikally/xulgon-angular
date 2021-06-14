@@ -16,7 +16,7 @@
           .avatar {
             flex: 0 0 60px;
             height: 60px;
-            @extend %flex-center;
+            @extend %fc;
             margin-right: 10px;
             border-radius: 50%;
             border: 1px solid rgba(#555, .2);

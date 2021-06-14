@@ -23,6 +23,7 @@ import { GroupMemberComponent } from './components/group/group-member/group-memb
 import { UserRefComponent } from './components/common/user-ref/user-ref.component';
 import { UserRefAvatarComponent } from './components/common/user-ref-avatar/user-ref-avatar.component';
 import { PostSkeletonComponent } from './components/post/post-skeleton/post-skeleton.component';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
 
 const routes: Routes = [
   { path: '', component: NewsFeedComponent },
@@ -57,7 +58,9 @@ const routes: Routes = [
       { path: 'photos', component: PhotoListComponent }
     ]
     
-  }
+  },
+  { path: '**', component: ErrorPageComponent}
+
 
 ];
 

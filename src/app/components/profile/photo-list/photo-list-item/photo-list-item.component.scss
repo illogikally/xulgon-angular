@@ -24,7 +24,7 @@
   }
 
   .options {
-    @extend %flex-center;
+    @extend %fc;
     cursor: pointer;
     background-color: inherit;
     position: absolute;

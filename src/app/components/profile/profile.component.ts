@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { UserProfile } from './user-profile';
@@ -26,12 +26,14 @@ export class ProfileComponent implements OnInit {
   loggedInUserProfileId: number;
   userProfile!: UserProfile;
   loadedTabs: Set<string> = new Set();
-  currentTab: string = '';
-  pageNotFound: boolean = false;
-  showReplyRequestOpts: boolean = false;
-  isFriendOptsVisible: boolean = false;
-
+  currentTab = '';
+  pageNotFound!: boolean;
+  showReplyRequestOpts = false;
+  isFriendOptsVisible = false;
+  moreActionOptsVisible = false;
+  
   constructor(private activateRoute: ActivatedRoute,
+    private renderer: Renderer2,
     private userService: UserService,
     private profileService: ProfileService,
     private router: Router,
@@ -61,6 +63,7 @@ export class ProfileComponent implements OnInit {
       if (id != null) {
         this.messageService.pageId.next(id);
         
+        this.isBlocked(id);
         this.loadProfile(id);
       }
     });
@@ -92,12 +95,21 @@ export class ProfileComponent implements OnInit {
     if (!id) return;
 
     this.profileService.getUserProfile(id).subscribe(resp => {
+      this.pageNotFound = false;
+      if (resp.isBlocked) this.pageError();
+      
+
       this.userProfile = resp;
       this.messageService.sendLoadedProfile(this.userProfile);
       this.profileLoaded.emit(this.userProfile);
     }, error => {
-      this.pageNotFound = true;
+      this.pageError();
     });
+  }
+
+  pageError(): void {
+    this.pageNotFound = true;
+    this.renderer.setStyle(document.body, 'position', 'fixed');
   }
 
   sendFriendRequest(): void {
@@ -147,6 +159,25 @@ export class ProfileComponent implements OnInit {
   showUpdateProfilePic(type: string): void {
     this.isUpdateAvatar = true;
     this.messageService.updateAvatarOrCover.next(type);
+  }
+
+  block(): void {
+    this.userService.block(this.userProfile.userId).subscribe(_ => {
+      this.userProfile.blocked = true;
+    });
+  }
+
+  unblock(): void {
+    this.userService.unblock(this.userProfile.userId).subscribe(_ => {
+      this.userProfile.blocked = false;
+    });
+  }
+
+  isBlocked(profileId: number): void {
+    this.profileService.isBlocked(profileId).subscribe(isBlocked => {
+      // if (isBlocked) this.pageError();
+      this.pageNotFound = isBlocked;
+    })
   }
 
 }

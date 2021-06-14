@@ -6,17 +6,17 @@
 	gap: 17px;
 
 	.timeline-sidebar {
-		@include card(10px);
-		padding: 20px;
 
 
-		.group-meta {
-			.privacy {
-				> * {
-					display: grid;
-					grid-template-columns: 30px 1fr;
+			.group-meta {
+				@include card(10px);
+				padding: 20px;
+				.privacy {
+					> * {
+						display: grid;
+						grid-template-columns: 30px 1fr;
+					}
 				}
 			}
-		}
 	}
 }

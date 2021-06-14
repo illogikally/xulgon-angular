@@ -1,0 +1,32 @@
+@import "src/styles";
+
+.group-create-post {
+	@include card(10px);
+	padding: 15px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+	font-weight: 500;
+	
+	&:hover {
+
+		.icon {
+			background-color: rgba(#eee, .7);
+		}
+	}
+
+	.icon {
+		@extend %fc;
+		width: 35px;
+		height: 35px;
+		margin-right: 20px;
+		border-radius: 50%;
+		color: $btn-blue;
+		font-size: 25px;
+	}
+
+	.des {
+		font-size: 16px;
+	}
+}

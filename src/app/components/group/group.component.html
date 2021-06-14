@@ -131,15 +131,22 @@
                 Huỷ yêu cầu
               </div>
               <div 
-              (click)="isMoreActionsVisible = !isMoreActionsVisible"
+              (click)="toggleMoreActions()"
               class="more-action-btn">
                 <i class='bx bx-dots-horizontal-rounded' ></i>
                 <div 
                 (clickOutside)="isMoreActionsVisible = false"
                 *ngIf="isMoreActionsVisible"
                 [delayClickOutsideInit]="true"
+                #moreAction
                 class="more-actions">
-                  <div>Rời nhóm</div>
+                  <div
+                  *ngIf="groupResponse.isMember"
+                  >
+                    <i class='bx bxs-door-open' ></i>
+                    <span>Rời nhóm</span>
+                    
+                  </div>
                 </div>
               </div>
             </div>

@@ -48,6 +48,8 @@ import { UserRefComponent } from './components/common/user-ref/user-ref.componen
 import { UserRefPopupComponent } from './components/common/user-ref/user-ref-popup/user-ref-popup.component';
 import { PostSkeletonComponent } from './components/post/post-skeleton/post-skeleton.component';
 import { NgxSkeletonLoaderComponent, NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { JoinRequestListComponent } from './components/group/join-request-list/join-request-list.component';
+import { GroupContentComponent } from './components/group/group-content/group-content.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +91,8 @@ import { NgxSkeletonLoaderComponent, NgxSkeletonLoaderModule } from 'ngx-skeleto
     UserRefComponent,
     UserRefPopupComponent,
     PostSkeletonComponent,
+    JoinRequestListComponent,
+    GroupContentComponent,
   ],
   imports: [
     ClickOutsideModule,

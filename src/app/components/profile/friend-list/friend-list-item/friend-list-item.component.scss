@@ -16,7 +16,7 @@
   }
 
   .avatar-container {
-    @extend %flex-center;
+    @extend %fc;
 
     .avatar {
 
@@ -49,7 +49,7 @@
   }
 
   .options-btn {
-    @extend %flex-center;
+    @extend %fc;
     border-radius: 50%;
     position: relative;
     height: 30px;

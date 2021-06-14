@@ -20,11 +20,11 @@ export class UserRefPopupComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.self.nativeElement.getBoundingClientRect().top < window.innerHeight / 2) {
-      this.renderer.setStyle(this.self.nativeElement, 'top', '100%');
+      this.renderer.setStyle(this.self.nativeElement, 'top', '200%');
       this.renderer.setStyle(this.self.nativeElement, 'bottom', 'auto');
     }
     else {
-      this.renderer.setStyle(this.self.nativeElement, 'bottom', '100%');
+      this.renderer.setStyle(this.self.nativeElement, 'bottom', '0');
       this.renderer.setStyle(this.self.nativeElement, 'top', 'auto');
     }
     
@@ -46,10 +46,9 @@ export class UserRefPopupComponent implements OnInit {
   }
 
   sendRequest(): void {
-    console.log('click');
-    
     this.userService.sendFriendRequest(this.userDto.id)
     .subscribe(_ => this.userDto.friendshipStatus = "SENT")
   }
+
 
 }

@@ -12,6 +12,7 @@ export interface UserProfile {
   hometown: string;
   friendshipStatus: string;
   isBlocked: boolean;
+  blocked: boolean;
   friends: any[];
   photos: PhotoResponse[];
 }

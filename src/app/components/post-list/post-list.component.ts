@@ -28,11 +28,14 @@ export class PostListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.messageService.pageId.subscribe(id => {
+      this.pageId = id;
       this.loadPosts(id);
     });
 
     this.messageService.onCreatedPost().subscribe(post => {
-      this.posts.unshift(post);
+      if (post.pageId == this.pageId) {
+        this.posts.unshift(post);
+      }
     });
   }
 

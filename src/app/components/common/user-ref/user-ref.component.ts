@@ -11,7 +11,7 @@ import { UserDto } from '../user-dto';
     trigger('fadeInOut', [
       transition(':enter', [   
         style({opacity:0}),
-        animate('.1s .7s', style({opacity: 1})) 
+        animate('.1s .4s', style({opacity: 1})) 
       ]),
       transition(':leave', [   
         animate(100, style({opacity: 0})) 

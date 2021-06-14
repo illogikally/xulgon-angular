@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
 import { PhotoResponse } from '../common/photo/photo-response';
 import { Location } from '@angular/common';
+import { NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-photo-viewer',
@@ -16,6 +17,7 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
 
   
   constructor(private http: HttpClient,
+    private router: Router,
     private renderer: Renderer2,
     private location: Location) { }
 
@@ -23,8 +25,13 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
     this.renderer.setStyle(document.body, 'overflow-y', 'scroll');
   }
 
+  // @HostListener('window:popstate', ['$event'])
+  // onPopState(event: any) {
+  //   this.close();
+  // }
   ngOnInit(): void {
     this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
+
 
     // this.http.get<PhotoResponse>("http://localhost:8080/api/photos/" + this.photoResponse?.id)
     this.location.go(`photos/${this.photoResponse?.id}`);

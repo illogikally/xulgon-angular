@@ -3,8 +3,9 @@
 .photo-viewer {
   display: flex;
   position: fixed;
-  z-index: 999;
+  z-index: 1001;
   top: 0;
+  // top: 56px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -12,7 +13,7 @@
   .viewer-content {
     flex-grow: 1;
     background-color: #000;
-    @extend %flex-center;
+    @extend %fc;
 
     .x-btn {
       @include x-btn(40px, #fff, #1a1a1a);

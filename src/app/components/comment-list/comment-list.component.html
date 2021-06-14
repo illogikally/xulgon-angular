@@ -1,13 +1,29 @@
 <div class="comment-list">
 
+  <div class="comments">
+    <app-comment  
+    *ngFor="let comment of comments" 
+    [commentResponse]="comment"></app-comment>
+  </div>
+
   <form [formGroup]="commentForm" (keyup.enter)="submit()">
     <div class="input-container">
-      <input type="text" autofocus placeholder="Bình luận..." autocomplete="off" formControlName="comment" />
+      <div class="input-avatar">
+        <div class="avatar-container">
+          <img [src]="loggedInUserAvatarUrl">
+        </div> 
+      </div>
+      <input 
+      type="text" 
+      placeholder="Bình luận..." 
+      autocomplete="off" 
+      formControlName="comment" />
+
       <div 
       *ngIf="!file"
       (click)="uploadImage.click()"
       class="add-image-btn">
-        <i class='bx bxs-file-image'></i>
+        <i class='bx bxs-image'></i>
       </div>
     </div>
     <div  *ngIf="file" class="upload-image-container">
@@ -30,9 +46,4 @@
     formControlName="fileInput" 
     (change)="onSelectImage($event)"/>
   </form>
-  <div class="comments">
-    <app-comment  
-    *ngFor="let comment of comments" 
-    [commentResponse]="comment"></app-comment>
-  </div>
 </div>

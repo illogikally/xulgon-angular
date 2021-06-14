@@ -141,7 +141,7 @@
 
     > * {
       border-radius: 5px;
-      @extend %flex-center;
+      @extend %fc;
       width: 100%; 
       padding: 6px 0px;
       height: 20px;
@@ -152,7 +152,7 @@
       }
 
       span {
-        @extend %flex-center;
+        @extend %fc;
       }
 
       i {
@@ -169,4 +169,8 @@ a {
     text-decoration: underline;
     text-decoration-thickness: 1px;
   }
+}
+
+.comments {
+  border-top: 1px solid rgba(#333, .2);
 }

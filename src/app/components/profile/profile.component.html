@@ -1,27 +1,29 @@
+<div class="user-profile">
+
 <div  class="profile-header">
   <div class="flex-center">
     <div class="cover-avatar">
       <div class="cover">
         <img [src]="userProfile?.coverPhotoUrl">
-        <!-- <div 
+        <div 
         *ngIf="userProfile?.id == loggedInUserProfileId"
         (click)="showUpdateProfilePic('cover')"
         class="change-cover">
           <i class='bx bxs-camera'></i>
           <span>Thay ảnh bìa</span>
-        </div> -->
+        </div>
       </div>
       <div class="avatar-container flex-center">
         <div class="avatar">
           <app-photo [photo]="userProfile?.avatar"></app-photo>
         </div>
-        <!-- <div 
+        <div 
         *ngIf="userProfile?.id == loggedInUserProfileId"
         (click)="showUpdateProfilePic('avatar')"
         class="change-avatar">
           <i class='bx bxs-camera'></i>
           
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -123,6 +125,34 @@
           <i class='bx bxs-message-square-dots' ></i>
           <span>Nhắn tin</span>
         </button>
+
+        <button
+        *ngIf="userProfile?.friendshipStatus"
+        (click)="moreActionOptsVisible = !moreActionOptsVisible"
+        id="more-action">
+          <i class='bx bx-dots-horizontal-rounded'></i>
+          <div 
+          *ngIf="moreActionOptsVisible"
+          (clickOutside)="moreActionOptsVisible = false"
+          [delayClickOutsideInit]="true"
+          class="opts">
+            <div
+            *ngIf="!userProfile.blocked"
+            (click)="block()"
+            >
+              <i class='bx bx-block' ></i>
+              <span>Chặn người này</span>
+            </div>
+            <div
+            *ngIf="userProfile.blocked"
+            (click)="unblock()"
+            >
+              <i class='bx bx-block' ></i>
+              <span>Gỡ chặn người này</span>
+            </div>
+
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -151,10 +181,11 @@
   </div>
   <!-- <app-profile-timeline [userProfile]="userProfile" [profileId]="userProfile.id"></app-profile-timeline> -->
 </div>
+<div *ngIf="pageNotFound == undefined" class="loading-page">
+  </div>
+</div>
+<app-error-page *ngIf="pageNotFound"></app-error-page>
 <app-pick-avatar
 *ngIf="isUpdateAvatar"
 (closeMe)="isUpdateAvatar = false"
 ></app-pick-avatar>
-<!-- <div *ngIf="pageNotFound" class="page-not-exist">
-  <h1>Trang này không tồn tại.</h1>
-</div> -->

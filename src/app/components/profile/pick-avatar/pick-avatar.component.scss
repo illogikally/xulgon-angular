@@ -1,7 +1,7 @@
 @import "src/styles";
 
 .pick-avatar {
-  @extend %flex-center;
+  @extend %fc;
   @extend %f-scr;
   background-color: rgba(#000, .7);
   z-index: 20;
@@ -34,7 +34,7 @@
 
       .upload-file {
 
-        @extend %flex-center;
+        @extend %fc;
         border-radius: 5px;
         height: 40px;
         margin-bottom: 10px;
@@ -74,7 +74,7 @@
         background-color: #fff;
 
         .photo-container {
-          @extend %flex-center;
+          @extend %fc;
           height: 90%;
           width: 100%;
           padding: 10px 0;

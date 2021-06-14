@@ -105,7 +105,11 @@
       </span>
     </div>
   </div>
-  <div class="comments">
-    <app-comment-list [comments]="post.comments" *ngIf="showComment" [contentId]="post.id"></app-comment-list>
+  <div 
+  *ngIf="showComment" 
+  class="comments">
+    <app-comment-list 
+    [comments]="post.comments" 
+    [contentId]="post.id"></app-comment-list>
   </div>
 </div>

@@ -13,6 +13,18 @@
           <div class="name">{{ fullname }}</div>
           <div class="privacy">
             <span 
+            *ngIf="groupResponse"
+            class="page-target">
+              <span *ngIf="groupResponse?.isPrivate">
+                <i class='bx bxs-network-chart' ></i>
+              </span>
+              <span *ngIf="!groupResponse?.isPrivate">
+                <i class='bx bx-globe' ></i>
+              </span>
+              {{groupResponse?.name}}
+            </span>
+            <span 
+            *ngIf="!groupResponse"
             (click)="showPrivacyOpts()"
             #privacyBtn>
               <span

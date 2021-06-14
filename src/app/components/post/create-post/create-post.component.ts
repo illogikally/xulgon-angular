@@ -4,6 +4,7 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, 
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { MessageService } from '../../common/message.service';
+import { GroupResponse } from '../../group/group-response';
 import { Post } from '../post';
 
 @Component({
@@ -22,6 +23,8 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   postForm!: FormGroup;
   isPrivacyOptsVisible = false;
   privacy = 'FRIEND';
+
+  @Input() groupResponse!: GroupResponse; 
 
   @Output() closeMe: EventEmitter<void> = new EventEmitter();
   @ViewChild('privacyBtn') privacyBtn!: ElementRef;
@@ -77,8 +80,12 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   submit(): void {
     let formData = new FormData();
 
+    let targetPage = this.groupResponse ? 
+        this.groupResponse.id : this.auth.getProfileId();
+    this.privacy = this.groupResponse ? 'GROUP' : this.privacy;
+
     let postRequest = new Blob([JSON.stringify({
-      pageId: this.auth.getProfileId(),
+      pageId: targetPage,
       privacy: this.privacy,
       body: this.postForm.get('textarea')?.value
     })], {type: 'application/json'});
