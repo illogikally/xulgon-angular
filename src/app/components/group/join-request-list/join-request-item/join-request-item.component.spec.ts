@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { XBtnComponent } from './x-btn.component';
+import { JoinRequestItemComponent } from './join-request-item.component';
 
-describe('XBtnComponent', () => {
-  let component: XBtnComponent;
-  let fixture: ComponentFixture<XBtnComponent>;
+describe('JoinRequestItemComponent', () => {
+  let component: JoinRequestItemComponent;
+  let fixture: ComponentFixture<JoinRequestItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ XBtnComponent ]
+      declarations: [ JoinRequestItemComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(XBtnComponent);
+    fixture = TestBed.createComponent(JoinRequestItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

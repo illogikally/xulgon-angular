@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserRefAvatarComponent } from './user-ref-avatar.component';
+import { ChatNoticationComponent } from './chat-notication.component';
 
-describe('UserRefAvatarComponent', () => {
-  let component: UserRefAvatarComponent;
-  let fixture: ComponentFixture<UserRefAvatarComponent>;
+describe('ChatNoticationComponent', () => {
+  let component: ChatNoticationComponent;
+  let fixture: ComponentFixture<ChatNoticationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserRefAvatarComponent ]
+      declarations: [ ChatNoticationComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserRefAvatarComponent);
+    fixture = TestBed.createComponent(ChatNoticationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

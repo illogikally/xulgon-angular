@@ -6,6 +6,8 @@ import { Post } from './post';
 import { CommentListComponent } from '../comment-list/comment-list.component'
 import { MessageService } from '../common/message.service';
 import { PhotoResponse } from '../common/photo/photo-response';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { GroupResponse } from '../group/group-response';
 
 
 @Component({
@@ -18,13 +20,26 @@ export class PostComponent implements OnInit {
   @Input() post!: Post | PhotoResponse | any;
   onInputFocus: EventEmitter<boolean> = new EventEmitter();
 
+
   showComment: boolean = false;
   isPostOptsVisible = false;
 
+  loggedInUserId: number;
+
+  groupReponse!: GroupResponse;
+  
+
   constructor(private reactionService: ReactionService,
-    private messageService: MessageService) { }
+    private authService: AuthenticationService,
+    private messageService: MessageService) { 
+      this.loggedInUserId = authService.getUserId();
+  }
 
   ngOnInit(): void {
+    this.messageService.groupLoaded.subscribe(group => {
+      this.groupReponse = group;
+    });
+
     this.messageService.onNewMessge().subscribe(msg => {
       if (msg == "Comment added") {
         this.post.commentCount += 1;

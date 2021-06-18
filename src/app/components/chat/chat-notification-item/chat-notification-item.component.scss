@@ -1,0 +1,83 @@
+@import "src/styles";
+
+.chat-noti-item {
+	position: relative;
+	display: flex;
+	align-items: center;
+	
+	&:hover {
+		.opts {
+			visibility: visible;
+		}
+	}
+
+	.content {
+		padding: 5px 5px;
+		width: 100%;
+		margin: 7px -5px;
+		display: flex;
+		cursor: pointer;
+		position: relative;
+		border-radius: 10px;
+
+		&:hover {
+			background-color: rgba(#d8dadf, .5);
+		}
+
+		.avatar {
+			margin-right: 13px;
+			height: 56px;
+			width: 56px;
+			border-radius: 50%;
+			border: 1px solid rgba(#333, .2);
+			overflow: hidden;
+
+			img {
+				object-fit: cover;
+				width: 100%;
+				aspect-ratio: 1;
+			}
+		}
+
+		.body {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
+			.name {
+				margin-bottom: 3px;
+			}
+			.msg--ago {
+				color: var(--secondary-text); 
+				font-size: 13px;
+			}
+		}
+	}
+		.opts {
+			display: flex;
+			align-items: center;
+			position: absolute;
+			right: 20px;
+			visibility: hidden;
+
+			.opts-btn {
+
+				@include x-btn(35px, #111, rgba(#d8dadf, .5));
+				position: relative;
+				background-color: #fff;
+
+				border: 1px solid rgba(#333, .2);
+
+				i {
+					font-size: 23px;
+				}
+
+				.opts-popup {
+					@extend %opts;
+					bottom: auto;
+					top: 120%;
+					right: 0;
+				}
+			}
+		}
+}

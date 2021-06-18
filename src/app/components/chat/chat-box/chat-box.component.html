@@ -1,0 +1,29 @@
+<div class="chat-box">
+	<div class="content">
+		<div class="title">
+			<div class="avatar">
+				<div class="avatar-container">
+					<img src="assets/avatar.jpg" />
+				</div>
+			</div>
+			<div class="name">
+				Nông Đức Mạnh
+			</div>
+			<div class="x-btn">
+				<i class='bx bx-x' ></i>
+			</div>
+		</div>
+		<div class="msg" >
+			<app-chat-msg
+			*ngFor="let message of messages; let i = index"
+			[thisMsg]="messages[i]"
+			[nextMsg]="i == 0 ? null : messages[i-1]"
+			[prevMsg]="messages[i+1]"
+			></app-chat-msg>
+		</div>
+		<form [formGroup]="msgForm" (keyup.enter)="submit()" class="input-bar">
+			<input type="text" class="input" formControlName="input" placeholder="Aa">
+			<i class='bx bxs-send' ></i>
+		</form>
+	</div>
+</div>

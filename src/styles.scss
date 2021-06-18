@@ -29,13 +29,11 @@ $active-tab: #1876F2;
 }
 
 .visible {
-  // visibility: visible;
-  opacity: 1;
+  visibility: visible;
 }
 
 .hidden {
-  // visibility: hidden;
-  opacity: 0;
+  visibility: hidden;
 }
 
 .none {
@@ -61,6 +59,17 @@ div {
   // border: 1px solid red;
 }
 
+%avatar {
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(#333, .2);
+
+  img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 1;
+  }
+}
 .w-500 {
 	font-weight: 500;
 }
@@ -232,6 +241,34 @@ a {
     &:hover {
       background-color: rgba(#eee, .8);
     }
+  }
+}
+
+%input-group {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  i {
+    font-size: 20px;
+    position: absolute;
+    left: 10px;
+
+  }
+
+  .input {
+
+    @extend %fz;
+    box-sizing: border-box;
+    font-size: 15px;
+    padding: 0 15px;
+    padding-left: 35px;
+    display: block;
+    outline: none;
+    border: none;
+    background-color: #f0f2f5;
+    border-radius: 20px;
   }
 }
 

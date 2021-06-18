@@ -17,6 +17,7 @@ export class AuthenticationService {
     username: this.getUserName()
   }
 
+
   constructor(private httpClient: HttpClient,
     private localStorage: LocalStorageService) { }
 

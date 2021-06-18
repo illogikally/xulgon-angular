@@ -8,7 +8,9 @@
     [delayClickOutsideInit]="true"
     *ngIf="isPostOptsVisible"
     class="options-list">
-      <div >
+      <div 
+      *ngIf="post.user.id == loggedInUserId || groupReponse?.role == 'ADMIN'"
+      >
         <i class='bx bx-trash' ></i>
         <span>Xoá bài viết</span>
       </div>

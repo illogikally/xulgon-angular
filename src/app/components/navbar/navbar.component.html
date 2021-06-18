@@ -10,7 +10,11 @@
         <form [formGroup]="searchForm">
           <div class="input-group">
             <i class='bx bx-search' ></i>
-            <input type="text" placeholder="Tìm kiếm..."id="search" name="search" autocomplete="off">
+            <input 
+            (input)="sendMsg($event)"
+            type="text" 
+            placeholder="Tìm kiếm..." 
+            id="search" name="search" autocomplete="off">
           </div>
         </form>
       </div>
@@ -99,6 +103,8 @@
     </div>
   </div>
 </nav>
+<app-chat-box></app-chat-box>
+<!-- <app-chat-notication></app-chat-notication> -->
 <app-create-post 
 (closeMe)="closeCreatePost()" 
 *ngIf="isCreatePostVisible"></app-create-post>

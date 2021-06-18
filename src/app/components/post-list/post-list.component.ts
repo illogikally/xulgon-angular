@@ -13,7 +13,7 @@ import { MessageService } from '../common/message.service';
 export class PostListComponent implements OnInit, OnDestroy {
 
   @Input() pageId!: number;
-  @Input() posts!: Array<Post>;
+  @Input() posts!: Post[];
 
   constructor(private activateRoute: ActivatedRoute,
     private messageService: MessageService,
@@ -22,13 +22,12 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.posts = [];
   }
 
   ngOnInit(): void {
-
     this.messageService.pageId.subscribe(id => {
       this.pageId = id;
+      
       this.loadPosts(id);
     });
 

@@ -34,7 +34,7 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "./node_modules/css-element-queries/src/ResizeSensor.js"
+              "node_modules/sockjs-client/dist/sockjs.min.js"
             ]
           },
           "configurations": {

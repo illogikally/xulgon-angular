@@ -21,9 +21,10 @@ import { GroupAboutComponent } from './components/group/group-about/group-about.
 import { GroupMediaComponent } from './components/group/group-media/group-media.component';
 import { GroupMemberComponent } from './components/group/group-member/group-member.component';
 import { UserRefComponent } from './components/common/user-ref/user-ref.component';
-import { UserRefAvatarComponent } from './components/common/user-ref-avatar/user-ref-avatar.component';
 import { PostSkeletonComponent } from './components/post/post-skeleton/post-skeleton.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { GroupContentComponent } from './components/group/group-content/group-content.component';
+import { JoinRequestListComponent } from './components/group/join-request-list/join-request-list.component';
 
 const routes: Routes = [
   { path: '', component: NewsFeedComponent },
@@ -40,12 +41,12 @@ const routes: Routes = [
         path: ':id', 
         component: GroupComponent,
         children: [
-          { path: '', component: GroupTimelineComponent},
-          { path: 'about', component: GroupAboutComponent},
-          { path: 'media', component: GroupMediaComponent},
-          { path: 'members', component: GroupMemberComponent},
+          { path: '', component: GroupContentComponent},
+          { path: 'about', component: GroupContentComponent},
+          { path: 'media', component: GroupContentComponent},
+          { path: 'members', component: GroupContentComponent},
+          { path: 'member_request', component: JoinRequestListComponent}
         ]
-
       }
     ]
   },

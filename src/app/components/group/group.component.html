@@ -7,7 +7,7 @@
       </div>
       <div class="group-meta">
         <div class="cover-img">
-          <img src="assets/twice.jpg" alt="">
+          <img [src]="groupResponse?.coverPhotoUrl">
         </div>
         <div class="name--privacy">
           <div class="name">
@@ -22,26 +22,34 @@
           </div>
         </div>
       </div>
-      <div class="home">
-        <div class="div">
-          <div class="home-icon">
+      <div 
+      class="home">
+        <a
+        routerLink="/groups/{{groupResponse?.id}}" 
+        routerLinkActive="active-sidebar-tab" 
+        [routerLinkActiveOptions]="{exact: true}"
+        >
+          <div class="icon">
             <i class='bx bxs-home' ></i>
           </div>
           <span>Trang chủ</span>
+        </a>
       </div>
-        </div>
       <div class="tools">
         <div class="tools-title">Công cụ quản trị</div>
-        <div class="tool">
-          <div class="icon-container">
+
+        <a 
+        routerLink="/groups/{{ groupResponse?.id }}/member_request"
+        routerLinkActive="active-sidebar-tab"
+        [routerLinkActiveOptions]="{exact: true}"
+        class="tool">
             <div class="icon">
               <i class='bx bxs-user-plus' ></i>
             </div>
-          </div>
           <div class="text">
             <div>Yêu cầu tham gia</div>
           </div>
-        </div>
+        </a>
         <div class="tool">
           <div class="icon-container">
             <div class="icon">
@@ -56,131 +64,7 @@
     </div>
   </div>
   <div class="group-content">
-    <div class="group-header">
-      <div class="content">
-        <div class="cover-container">
-          <img src="assets/twice.jpg">
-        </div>
-        <div class="name--tabs--container">
-          <div class="group-name">
-            <div class="name-content">
-              <div class="name">{{ groupResponse?.name }}</div>
-              <div class="group-meta">
-                <span *ngIf="groupResponse?.isHidden">
-                  <i class='bx bx-globe'></i>
-                  <span>Nhóm công khai</span>
-                </span>
-                <span *ngIf="!groupResponse?.isHidden">
-                  <i class='mr-5 bx bx-lock-alt' ></i>
-                  <span>Nhóm riêng tư</span>
-                </span>
-                <span> · </span>
-                <span> {{ groupResponse?.memberCount }} thành viên </span>
-              </div>
-            </div> 
-            <div class="invite"></div>
-          </div>
-          <div class="tabs--actions">
-            <div class="tabs">
-              <div [ngClass]="{'active': currentTab == 'about'}">
-                <a 
-                (click)="switchTab($event, 'about')"
-                href="http://localhost:4200/groups/{{ groupResponse?.id }}/about" >
-                  <div>Giới thiệu</div> 
-                </a>
-              </div>
-              <div 
-              *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate"
-              [ngClass]="{'active': currentTab == ''}">
-                <a 
-                (click)="switchTab($event, '')"
-                href="http://localhost:4200/groups/{{ groupResponse?.id }}/" >
-                  <div>Thảo luận</div> 
-                </a>
-              </div>
-              <div 
-              *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate"
-              [ngClass]="{'active': currentTab == 'members'}">
-                <a 
-                (click)="switchTab($event, 'members')"
-                href="http://localhost:4200/groups/{{ groupResponse?.id }}/members" >
-                  <div>Thành viên</div> 
-                </a>
-              </div>
-              <div 
-              *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate"
-              [ngClass]="{'active': currentTab == 'media'}">
-                <a 
-                (click)="switchTab($event, 'media')"
-                href="http://localhost:4200/groups/{{ groupResponse?.id }}/media">
-                  <div>File phương tiện</div> 
-                </a>
-              </div>
-            </div>
-            <div class="actions">
-              <div 
-              *ngIf="!groupResponse?.isMember && !groupResponse?.isRequestSent"
-              (click)="sendJoinRequest()"
-              class="join-group">
-                Tham gia nhóm
-              </div>
-              <div 
-              *ngIf="groupResponse?.isRequestSent"
-              (click)="cancelJoinRequest()"
-              class="cancel-request">
-                Huỷ yêu cầu
-              </div>
-              <div 
-              (click)="toggleMoreActions()"
-              class="more-action-btn">
-                <i class='bx bx-dots-horizontal-rounded' ></i>
-                <div 
-                (clickOutside)="isMoreActionsVisible = false"
-                *ngIf="isMoreActionsVisible"
-                [delayClickOutsideInit]="true"
-                #moreAction
-                class="more-actions">
-                  <div
-                  *ngIf="groupResponse.isMember"
-                  >
-                    <i class='bx bxs-door-open' ></i>
-                    <span>Rời nhóm</span>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="group-body">
-      <div class="content-container">
-
-        <app-group-about
-        *ngIf="loadedTabs.has('about')"
-        [ngClass]="{'none': currentTab !== 'about'}"
-        ></app-group-about>
-
-        <app-group-member
-        *ngIf="loadedTabs.has('members')"
-        [ngClass]="{'none': currentTab !== 'members'}"
-        ></app-group-member>
-
-        <app-group-timeline
-        [groupResponse]="groupResponse"
-        *ngIf="loadedTabs.has('')"
-        [ngClass]="{'none': currentTab !== ''}"
-        ></app-group-timeline>
-
-        <app-group-media
-        *ngIf="loadedTabs.has('media')"
-        [ngClass]="{'none': currentTab !== 'media'}"
-        ></app-group-media>
-      </div>
-    </div>
-
+    <router-outlet></router-outlet>
   </div>
 </div>
 

@@ -61,7 +61,6 @@ export class ProfileComponent implements OnInit {
     this.activateRoute.params.subscribe(params => {
       const id = +params['id'];
       if (id != null) {
-        this.messageService.pageId.next(id);
         
         this.isBlocked(id);
         this.loadProfile(id);
@@ -78,22 +77,29 @@ export class ProfileComponent implements OnInit {
   }
 
   initDefaultTab(): void {
-    this.setDefaultTab('');
-    this.setDefaultTab('friends');
-    this.setDefaultTab('photos');
+    let tabs = ['friends', 'photos'];
+    for (let tab of tabs) {
+      if (this.setDefaultTab(tab)) return;
+    }
+    if (this.loadedTabs.size == 0) this.loadedTabs.add('');
   }
 
-  setDefaultTab(tab: string) {
+  setDefaultTab(tab: string): boolean {
     let url = window.location.href;
-    if (new RegExp(tab).test(url)) {
+    
+    if (new RegExp('.*?/\\d+?/?' + tab).test(url)) {
       this.loadedTabs.add(tab);
       this.currentTab = tab;
+      console.log(tab);
+      return true;
     }
+    return false;
   }
 
   loadProfile(id: number): void {
     if (!id) return;
 
+    this.messageService.pageId.next(id);
     this.profileService.getUserProfile(id).subscribe(resp => {
       this.pageNotFound = false;
       if (resp.isBlocked) this.pageError();

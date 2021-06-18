@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { LoginComponent } from './components/authentication/login/login.component'
@@ -19,7 +19,6 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { CreatePostComponent } from './components/post/create-post/create-post.component'
 import { PhotoComponent } from './components/common/photo/photo.component';
 import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer.component';
-import { XBtnComponent } from './components/common/x-btn/x-btn.component';
 import { FriendRequestComponent } from './components/friend-request/friend-request.component';
 import { FriendRequestItemComponent } from './components/friend-request-item/friend-request-item.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
@@ -43,13 +42,19 @@ import { GroupMediaComponent } from './components/group/group-media/group-media.
 import { GroupTimelineComponent } from './components/group/group-timeline/group-timeline.component';
 import { GroupCreatePostComponent } from './components/group/group-timeline/group-create-post/group-create-post.component';
 import { NgxStickySidebarModule } from '@smip/ngx-sticky-sidebar';
-import { UserRefAvatarComponent } from './components/common/user-ref-avatar/user-ref-avatar.component';
 import { UserRefComponent } from './components/common/user-ref/user-ref.component';
 import { UserRefPopupComponent } from './components/common/user-ref/user-ref-popup/user-ref-popup.component';
 import { PostSkeletonComponent } from './components/post/post-skeleton/post-skeleton.component';
-import { NgxSkeletonLoaderComponent, NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { JoinRequestListComponent } from './components/group/join-request-list/join-request-list.component';
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
+import { JoinRequestItemComponent } from './components/group/join-request-list/join-request-item/join-request-item.component';
+import { InjectableRxStompRpcConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
+import { MyRxStompConfig } from './my-rx-stomp.config';
+import { AuthenticationService } from './components/authentication/authentication.service';
+import { ChatNoticationComponent } from './components/chat/chat-notication/chat-notication.component';
+import { ChatNotificationItemComponent } from './components/chat/chat-notification-item/chat-notification-item.component';
+import { ChatBoxComponent } from './components/chat/chat-box/chat-box.component';
+import { ChatMsgComponent } from './components/chat/chat-box/chat-msg/chat-msg.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +70,6 @@ import { GroupContentComponent } from './components/group/group-content/group-co
     CreatePostComponent,
     PhotoComponent,
     PhotoViewerComponent,
-    XBtnComponent,
     FriendRequestComponent,
     FriendRequestItemComponent,
     ErrorPageComponent,
@@ -87,14 +91,19 @@ import { GroupContentComponent } from './components/group/group-content/group-co
     GroupMediaComponent,
     GroupTimelineComponent,
     GroupCreatePostComponent,
-    UserRefAvatarComponent,
     UserRefComponent,
     UserRefPopupComponent,
     PostSkeletonComponent,
     JoinRequestListComponent,
     GroupContentComponent,
+    JoinRequestItemComponent,
+    ChatNoticationComponent,
+    ChatNotificationItemComponent,
+    ChatBoxComponent,
+    ChatMsgComponent,
   ],
   imports: [
+    FormsModule,
     ClickOutsideModule,
     BrowserModule,
     AppRoutingModule,
@@ -105,6 +114,18 @@ import { GroupContentComponent } from './components/group/group-content/group-co
     NgxWebstorageModule.forRoot(),
   ],
   providers: [
+    {
+      provide: InjectableRxStompRpcConfig,
+      useClass: MyRxStompConfig,
+      deps: [AuthenticationService]
+
+
+    },
+    {
+      provide: RxStompService,
+      useFactory: rxStompServiceFactory,
+      deps: [InjectableRxStompRpcConfig]
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,
