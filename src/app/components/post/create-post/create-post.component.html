@@ -74,7 +74,9 @@
       </div>
       <div class="post-content">
         <div class="post-text">
-          <textarea formControlName="textarea" autofocus (input)="autoGrow($event)"></textarea>
+          <textarea 
+          spellcheck="false"
+          formControlName="textarea" autofocus (input)="autoGrow($event)"></textarea>
         </div>
         <div 
         *ngIf="photos.length > 0" 

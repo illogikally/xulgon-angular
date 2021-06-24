@@ -5,9 +5,10 @@ import { ReactionService } from '../common/reaction.service';
 import { Post } from './post';
 import { CommentListComponent } from '../comment-list/comment-list.component'
 import { MessageService } from '../common/message.service';
-import { PhotoResponse } from '../common/photo/photo-response';
+import { PhotoViewResponse } from '../common/photo/photo-view-response';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { GroupResponse } from '../group/group-response';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { GroupResponse } from '../group/group-response';
 })
 export class PostComponent implements OnInit {
 
-  @Input() post!: Post | PhotoResponse | any;
+  @Input() post!: Post | PhotoViewResponse | any;
   onInputFocus: EventEmitter<boolean> = new EventEmitter();
 
 
@@ -30,6 +31,7 @@ export class PostComponent implements OnInit {
   
 
   constructor(private reactionService: ReactionService,
+    private http: HttpClient,
     private authService: AuthenticationService,
     private messageService: MessageService) { 
       this.loggedInUserId = authService.getUserId();
@@ -67,6 +69,12 @@ export class PostComponent implements OnInit {
   comment(): void {
     this.showComment = true;
     this.onInputFocus.emit(true);
+  }
+
+  delete(): void {
+    this.http.delete(`http://localhost:8080/api/posts/${this.post.id}`).subscribe(_ => {
+      this.messageService.postDeleted.next(this.post.id);
+    });
   }
 
 

@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { MessageService } from '../../message.service';
 import { UserDto } from '../../user-dto';
 import { UserService } from '../../user.service';
 
@@ -14,6 +15,7 @@ export class UserRefPopupComponent implements OnInit {
 
   @Input() userDto!: UserDto;
   constructor(private self: ElementRef,
+    private messageService: MessageService,
     private userService: UserService,
     private renderer: Renderer2) { }
 
@@ -48,6 +50,14 @@ export class UserRefPopupComponent implements OnInit {
   sendRequest(): void {
     this.userService.sendFriendRequest(this.userDto.id)
     .subscribe(_ => this.userDto.friendshipStatus = "SENT")
+  }
+
+  openChatBox(): void {
+    this.messageService.openChatBox.next({
+      id: this.userDto.id,
+      avatarUrl: this.userDto.avatarUrl,
+      name: this.userDto.username
+    });
   }
 
 

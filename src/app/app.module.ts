@@ -55,6 +55,8 @@ import { ChatNoticationComponent } from './components/chat/chat-notication/chat-
 import { ChatNotificationItemComponent } from './components/chat/chat-notification-item/chat-notification-item.component';
 import { ChatBoxComponent } from './components/chat/chat-box/chat-box.component';
 import { ChatMsgComponent } from './components/chat/chat-box/chat-msg/chat-msg.component';
+import { ProfileAboutComponent } from './components/profile/profile-about/profile-about.component';
+import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +103,8 @@ import { ChatMsgComponent } from './components/chat/chat-box/chat-msg/chat-msg.c
     ChatNotificationItemComponent,
     ChatBoxComponent,
     ChatMsgComponent,
+    ProfileAboutComponent,
+    GroupSettingsComponent,
   ],
   imports: [
     FormsModule,

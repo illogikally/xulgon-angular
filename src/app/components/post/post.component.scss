@@ -36,6 +36,14 @@
       width: 100%;
       display: flex;
 
+      .name--page {
+        display: flex;
+        i {
+          font-size: 11px;
+          margin: 0 5px;
+          color: #777;
+        }
+      }
       .post-avatar {
         width: 45px;
         position: relative;

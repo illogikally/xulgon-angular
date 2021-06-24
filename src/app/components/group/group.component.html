@@ -1,17 +1,24 @@
   
 <div class="group">
-  <div>
-    <div class="group-sidebar">
+  <div
+  >
+  <!-- *ngIf="false" -->
+    <div 
+    class="group-sidebar">
       <div class="title">
         <span>Quản lý nhóm</span>
       </div>
       <div class="group-meta">
+        <div class="hide">
+          <i class='bx bx-slider' ></i>
+        </div>
         <div class="cover-img">
-          <img [src]="groupResponse?.coverPhotoUrl">
+          <!-- <img [src]="groupResponse?.coverPhotoUrl"> -->
+          <img src="assets/machine.jpg">
         </div>
         <div class="name--privacy">
           <div class="name">
-            bigggg
+            Forum Machine Learning cơ bản
           </div>
           <div class="privacy">
             <div>
@@ -50,7 +57,11 @@
             <div>Yêu cầu tham gia</div>
           </div>
         </a>
-        <div class="tool">
+        <a 
+        routerLink="/groups/{{ groupResponse?.id }}/settings"
+        routerLinkActive="active-sidebar-tab"
+        [routerLinkActiveOptions]="{exact: true}"
+        class="tool">
           <div class="icon-container">
             <div class="icon">
               <i class='bx bxs-cog'></i>
@@ -59,7 +70,7 @@
           <div class="text">
             <div>Cài đặt</div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
-import { PhotoResponse } from '../common/photo/photo-response';
+import { PhotoViewResponse } from '../common/photo/photo-view-response';
 import { Location } from '@angular/common';
 import { NavigationStart, Router } from '@angular/router';
 
@@ -11,10 +11,8 @@ import { NavigationStart, Router } from '@angular/router';
 })
 export class PhotoViewerComponent implements OnInit, OnDestroy {
 
-  @Input() photoResponse!: PhotoResponse | undefined; 
+  @Input() photoResponse!: PhotoViewResponse | undefined; 
   @Output() closeMe: EventEmitter<boolean> = new EventEmitter();
-
-
   
   constructor(private http: HttpClient,
     private router: Router,
@@ -33,7 +31,10 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
     this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
 
 
-    // this.http.get<PhotoResponse>("http://localhost:8080/api/photos/" + this.photoResponse?.id)
+    this.http.get<PhotoViewResponse>("http://localhost:8080/api/photos/" + this.photoResponse?.id)
+        .subscribe(resp => {
+          this.photoResponse = resp;
+        });
     this.location.go(`photos/${this.photoResponse?.id}`);
   }
 

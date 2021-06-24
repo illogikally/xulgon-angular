@@ -13,6 +13,7 @@ export class ChatMsgComponent implements OnInit {
   @Input() prevMsg!: any;
   @Input() nextMsg!: any;
   loggedInUserId: number = this.authService.getUserId();
+  @Input() avatarUrl!: string;
   @Input() index!: number;
 
   constructor(private authService: AuthenticationService) { }
@@ -22,18 +23,11 @@ export class ChatMsgComponent implements OnInit {
   }
 
   isFirstMsg(): boolean {
-
-    return (this.thisMsg?.userId == this.nextMsg?.userId
-        && this.thisMsg?.userId != this.prevMsg?.userId);
+    return this.thisMsg?.userId != this.prevMsg?.userId;
   }
 
   isLastMsg(): boolean {
-    return (this.thisMsg?.userId != this.nextMsg?.userId 
-        && this.thisMsg?.userId == this.prevMsg?.userId );
+    return this.thisMsg?.userId != this.nextMsg?.userId 
   }
 
-  isMidst(): boolean {
-    return (this.thisMsg?.userId == this.nextMsg?.userId 
-        && this.thisMsg?.userId == this.prevMsg?.userId );
-  }
 }

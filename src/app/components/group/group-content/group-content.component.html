@@ -2,7 +2,8 @@
     <div class="group-header">
       <div class="content">
         <div class="cover-container">
-          <img src="assets/twice.jpg">
+          <!-- <img src="assets/twice.jpg"> -->
+          <img src="assets/machine.jpg">
         </div>
         <div class="name--tabs--container">
           <div class="group-name">
@@ -25,13 +26,13 @@
           </div>
           <div class="tabs--actions">
             <div class="tabs">
-              <div [ngClass]="{'active': currentTab == 'about'}">
+              <!-- <div [ngClass]="{'active': currentTab == 'about'}">
                 <a 
                 (click)="switchTab($event, 'about')"
                 href="http://localhost:4200/groups/{{ groupResponse?.id }}/about" >
                   <div>Giới thiệu</div> 
                 </a>
-              </div>
+              </div> -->
               <div 
               *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate"
               [ngClass]="{'active': currentTab == ''}">

@@ -11,7 +11,7 @@
     border-radius: 10px;
     width: 700px;
     background-color: #fff;
-    padding: 10px 15px;
+    padding: 10px 15px 20px 15px;
     position: relative;
     
     .title {
@@ -31,12 +31,14 @@
     .body {
       height: 550px;
       position: relative;
+      display: flex;
+      flex-direction: column;
 
       .upload-file {
 
         @extend %fc;
         border-radius: 5px;
-        height: 40px;
+        flex: 0 0 40px;
         margin-bottom: 10px;
         background-color: rgba(#eee, .9);
         width: 100%;
@@ -61,7 +63,11 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 8px;
-        column-gap: 8px;
+        @include scrollbar(15px);
+        // flex-grow: 1;
+        margin-right: -15px;
+        overflow-y: scroll;
+        // column-gap: 8px;
       }
 
       .confirmation {

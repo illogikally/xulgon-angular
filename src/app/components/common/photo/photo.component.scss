@@ -1,13 +1,21 @@
 @import 'src/styles';
 
 a {
-  // aspect-ratio: 1;
-  height: 100%;
+  @extend %fz;
 
   img {
-    aspect-ratio: 1;
     object-fit: cover;
-    width: 100%;
+    // width: 100%;
   }
+}
+
+.isComment {
+  height: 100%;
+  width: auto;
+}
+
+.notComment {
+  width: 100%;
+  aspect-ratio: 1;
 }
 

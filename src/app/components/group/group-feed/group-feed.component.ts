@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from '../../common/message.service';
 
 @Component({
   selector: 'app-group-feed',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GroupFeedComponent implements OnInit {
 
-  constructor() { }
+  posts!: any[]
+  constructor(private http: HttpClient,
+    private messageService: MessageService) { }
 
   ngOnInit(): void {
+    this.messageService.pageId.next(130);
   }
 
 }

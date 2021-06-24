@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2 } 
 import { FormControl, FormGroup } from '@angular/forms';
 import { Event } from '@angular/router';
 import { MessageService } from '../../common/message.service';
-import { PhotoResponse } from '../../common/photo/photo-response';
+import { PhotoViewResponse } from '../../common/photo/photo-view-response';
 import { UserProfile } from '../user-profile';
 
 @Component({
@@ -16,8 +16,8 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
   @Output() closeMe: EventEmitter<void> = new EventEmitter();
 
   updateType = '';
-  photos!: PhotoResponse[];
-  pickedPhoto!: PhotoResponse | undefined;
+  photos!: PhotoViewResponse[];
+  pickedPhoto!: PhotoViewResponse | undefined;
   uploadFileForm!: FormGroup;
   photoBlob: Blob | undefined;
   photoSizeRatio = 0;
@@ -52,14 +52,14 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
     
     this.messageService.onProfileLoaded().subscribe(profile => {
       this.userProfile = profile;
-      this.http.get<PhotoResponse[]>(`http://localhost:8080/api/profiles/${profile.id}/photos`)
+      this.http.get<PhotoViewResponse[]>(`http://localhost:8080/api/profiles/${profile.id}/photos`)
           .subscribe(photos => {
             this.photos = photos;
           });
     }); 
   }
 
-  photoPicked(photo: PhotoResponse): void {
+  photoPicked(photo: PhotoViewResponse): void {
     console.log('picke');
     
     this.pickedPhoto = photo;
@@ -120,12 +120,12 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
       formData.append('photo', this.photoBlob == undefined ? new Blob() : this.photoBlob);
 
       if (this.updateType == 'avatar') {
-        this.http.put<PhotoResponse>(dest + 'upload-avatar', formData).subscribe(resp => {
+        this.http.put<PhotoViewResponse>(dest + 'upload-avatar', formData).subscribe(resp => {
           this.messageService.updateAvatar.next(resp.url);
         });
       }
       else {
-        this.http.put<PhotoResponse>(dest + 'upload-cover', formData).subscribe(resp => {
+        this.http.put<PhotoViewResponse>(dest + 'upload-cover', formData).subscribe(resp => {
           this.messageService.updateCoverPhoto.next(resp.url);
         });
       }

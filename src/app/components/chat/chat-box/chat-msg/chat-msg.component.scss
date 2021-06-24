@@ -7,7 +7,7 @@
 
 
 		.content {
-			max-width: 70%;
+			max-width: 80%;
 			display: flex;
 			padding: 1px 0px;
 
@@ -25,20 +25,14 @@
 				}
 			}
 			.body {
-
 				.text {
 					word-wrap: break-word;
-					padding: 5px 10px 5px 10px;
-					border-radius: 18px;
+					padding: 7px 10px;
 
 				}
 			}
 		}
 
-
-		.last-msg {
-			padding-bottom: 10px;
-		}
 
 		.my-msg {
 			width: 100%;
@@ -48,59 +42,44 @@
 			.text {
 				background-color: #0084ff;
 				color: #fff;
+				border-radius: 18px 4px 4px 18px;
 			}
-
-			.midst {
-				.text{
-					border-bottom-right-radius: 4px !important;
-					border-top-right-radius: 4px !important;
-
-				}
-			}
-
 
 			.first-msg {
-
 				.text {
-					border-bottom-right-radius: 4px !important;
+					border-top-right-radius: 18px;
 				}
 			}
 
 			.last-msg {
-
+				padding-bottom: 10px;
 
 				.text {
-					border-top-right-radius: 4px !important;
+					border-bottom-right-radius: 18px;
 				}
-
 			}
 		}
 
 
 		.your-msg {
+			width: 100%;
 
 			.text {
-				background-color: #e4e6eb !important;
-			}
-
-			.midst {
-
-				.text {
-					border-bottom-left-radius: 4px !important;
-					border-top-left-radius: 4px !important;
-				}
+				background-color: #e4e6eb;
+				border-radius: 4px 18px 18px 4px;
 			}
 
 			.first-msg {
 				.text {
-					border-bottom-left-radius: 4px !important;
+					border-top-left-radius: 18px;
 				}
 			}
 
 			.last-msg {
+				padding-bottom: 10px;
 
 				.text {
-					border-top-left-radius: 4px !important;
+					border-bottom-left-radius: 18px;
 				}
 
 				.avatar {

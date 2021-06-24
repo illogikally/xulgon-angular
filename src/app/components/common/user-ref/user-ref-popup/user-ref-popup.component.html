@@ -1,14 +1,23 @@
 <div class="user-ref-popup">
 		<div class="avatar--info">
 			<div class="avatar">
-				<img src="assets/avatar.jpg">
+				<img [src]="userDto.avatarUrl" />
 			</div>
 			<div class="info--name">
 				<div class="name">
-					{{ userDto.username }}
+					<span>{{ userDto.username }}</span>
+					
 				</div>
-				<div>{{ userDto.workplace }}</div>
-				<div>{{ userDto.hometown }}</div>
+				<div>
+					<i class='bx bxs-building-house' ></i>
+					<span>{{ userDto.workplace }}</span>
+					
+				</div>
+				<div>
+					<i class='bx bx-current-location'></i>
+					<span>{{ userDto.hometown }}</span>
+					
+				</div>
 				
 			</div>
 		</div>
@@ -17,7 +26,9 @@
 			<div
 			*ngIf="userDto.friendshipStatus"
 			class="others" >
-				<div class="message">
+				<div 
+				(click)="openChatBox()"
+				class="message">
 					<i class='bx bxs-message-square-dots'></i>
 					<span>Nhắn tin</span>
 				</div>

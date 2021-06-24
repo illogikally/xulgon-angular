@@ -1,6 +1,6 @@
 <div class="photo-item">
   <div 
-  *ngIf="photo.user.id == loggedInUserId"
+  *ngIf="photo.user?.id == loggedInUserId"
   #optionsBtn
   (click)="showOptions()"
   class="options">

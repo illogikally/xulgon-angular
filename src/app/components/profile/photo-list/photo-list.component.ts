@@ -15,8 +15,10 @@ export class PhotoListComponent implements OnInit {
     private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.messageService.onProfileLoaded().subscribe(profile => {
-      this.http.get<any[]>(`http://localhost:8080/api/profiles/${profile.id}/photos`).subscribe(photos => {
+    this.messageService.pageId.subscribe(pageId => {
+      if (!pageId) return;
+
+      this.http.get<any[]>(`http://localhost:8080/api/pages/${pageId}/photos`).subscribe(photos => {
         this.photos = photos;
       });
     })

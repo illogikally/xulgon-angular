@@ -43,7 +43,7 @@ $active-tab: #1876F2;
 .loading {
   border-radius: 20px;
   background-color: #eee;
-  height: 20px;
+  height: 10px;
   color: transparent;
 }
 
@@ -222,6 +222,7 @@ a {
   min-width: 200px;
   background-color: #fff;
   border-radius: 5px;
+  white-space: nowrap;
   box-shadow: -4px 4px 15px rgba(#333, .4);
   color: #000;
   bottom: 110%;
@@ -257,7 +258,7 @@ a {
 
   }
 
-  .input {
+  input {
 
     @extend %fz;
     box-sizing: border-box;

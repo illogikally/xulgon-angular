@@ -25,6 +25,7 @@ import { PostSkeletonComponent } from './components/post/post-skeleton/post-skel
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
 import { JoinRequestListComponent } from './components/group/join-request-list/join-request-list.component';
+import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
 
 const routes: Routes = [
   { path: '', component: NewsFeedComponent },
@@ -45,7 +46,8 @@ const routes: Routes = [
           { path: 'about', component: GroupContentComponent},
           { path: 'media', component: GroupContentComponent},
           { path: 'members', component: GroupContentComponent},
-          { path: 'member_request', component: JoinRequestListComponent}
+          { path: 'member_request', component: JoinRequestListComponent},
+          { path: 'settings', component: GroupSettingsComponent}
         ]
       }
     ]
@@ -54,9 +56,10 @@ const routes: Routes = [
     path: ':id', 
     component: ProfileComponent, 
     children: [
-      { path: '', component: ProfileTimelineComponent },
-      { path: 'friends', component: FriendListComponent },
-      { path: 'photos', component: PhotoListComponent }
+      { path: '', component: ProfileComponent },
+      { path: 'about', component: ProfileComponent},
+      { path: 'friends', component:  ProfileComponent},
+      { path: 'photos', component: ProfileComponent }
     ]
     
   },

@@ -76,8 +76,16 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  openChatBox(): void {
+    this.messageService.openChatBox.next({
+      id: this.userProfile.userId,
+      name: this.userProfile.lastName + " " + this.userProfile.firstName,
+      avatarUrl: this.userProfile.avatar.url
+    });
+  }
+
   initDefaultTab(): void {
-    let tabs = ['friends', 'photos'];
+    let tabs = ['friends', 'photos', 'about'];
     for (let tab of tabs) {
       if (this.setDefaultTab(tab)) return;
     }

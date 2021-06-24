@@ -1,9 +1,9 @@
-import { PhotoResponse } from "../common/photo/photo-response";
+import { PhotoViewResponse } from "../common/photo/photo-view-response";
 
 export interface UserProfile {
   id: number;
   userId: number;
-  avatar: PhotoResponse;
+  avatar: PhotoViewResponse;
   coverPhotoUrl: string;
   workplace: string;
   firstName: string;
@@ -14,5 +14,5 @@ export interface UserProfile {
   isBlocked: boolean;
   blocked: boolean;
   friends: any[];
-  photos: PhotoResponse[];
+  photos: PhotoViewResponse[];
 }

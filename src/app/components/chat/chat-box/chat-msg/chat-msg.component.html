@@ -2,11 +2,11 @@
 	<div 
 	[ngClass]="thisMsg?.userId != loggedInUserId ? 'your-msg' : 'my-msg'">
 		<div 
-		[ngClass]="{'first-msg': isFirstMsg(), 'last-msg': isLastMsg(), 'midst': isMidst()}"
+		[ngClass]="{'first-msg': isFirstMsg(), 'last-msg': isLastMsg()}"
 		class="content">
 			<div class="avatar">
 				<div class="avatar-container">
-					<img src="assets/avatar.jpg" />
+					<img [src]="avatarUrl" />
 				</div>
 			</div>
 			<div class="body">

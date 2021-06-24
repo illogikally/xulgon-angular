@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   loginRequest: LoginRequest;
   loginError: boolean = false;
+  isLogin = true;
 
   constructor(private authenticationService: AuthenticationService,
     private router: Router ){

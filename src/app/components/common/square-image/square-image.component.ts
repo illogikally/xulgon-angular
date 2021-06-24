@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PhotoResponse } from '../photo/photo-response';
+import { PhotoViewResponse } from '../photo/photo-view-response';
 
 @Component({
   selector: 'app-square-image',
@@ -8,8 +8,8 @@ import { PhotoResponse } from '../photo/photo-response';
 })
 export class SquareImageComponent implements OnInit {
 
-  @Input() photo!: PhotoResponse;
-  @Output() photoPicked: EventEmitter<PhotoResponse> = new EventEmitter();
+  @Input() photo!: PhotoViewResponse;
+  @Output() photoPicked: EventEmitter<PhotoViewResponse> = new EventEmitter();
 
   constructor() { }
 

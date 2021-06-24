@@ -49,6 +49,16 @@
           </a>
         </li>
         <li
+        [ngClass]="{'tab-active': currentTab == 'about'}">
+          <a 
+          (click)="switchTab($event, 'about')"
+          href="http://localhost:4200/{{userProfile?.id}}/about">
+            <div class="flex-center">
+              <span>Giới thiệu</span>
+            </div>
+          </a>
+        </li>
+        <li
         [ngClass]="{'tab-active': currentTab == 'friends'}">
           <a 
           (click)="switchTab($event, 'friends')"
@@ -121,6 +131,7 @@
 
         <button 
         id="send-message"
+        (click)="openChatBox()"
         *ngIf="userProfile?.friendshipStatus != undefined">
           <i class='bx bxs-message-square-dots' ></i>
           <span>Nhắn tin</span>
@@ -162,7 +173,7 @@
 
     <app-profile-timeline
     *ngIf="loadedTabs.has('')"
-    [ngClass]="{'none': currentTab !== ''}"
+    [ngClass]="{'none': currentTab != ''}"
     ></app-profile-timeline>
 
     <app-friend-list
@@ -173,13 +184,18 @@
 
     <app-photo-list
     *ngIf="loadedTabs.has('photos')"
-    [ngClass]="{'none': currentTab !== 'photos'}"
+    [ngClass]="{'none': currentTab != 'photos'}"
     >
-
     </app-photo-list>
 
+    <app-profile-about
+    *ngIf="loadedTabs.has('about')"
+    [ngClass]="{'none': currentTab != 'about'}"
+    >
+
+    </app-profile-about>
+
   </div>
-  <!-- <app-profile-timeline [userProfile]="userProfile" [profileId]="userProfile.id"></app-profile-timeline> -->
 </div>
 <div *ngIf="pageNotFound == undefined" class="loading-page">
   </div>

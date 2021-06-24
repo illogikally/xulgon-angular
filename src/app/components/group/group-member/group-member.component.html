@@ -1,1 +1,52 @@
-<p>group-member works!</p>
+<div class="group-member">
+	<div class="group-member__inner">
+		<div class="title-search">
+			<div class="title">
+				<span>Thành viên · <span style="color: #666">3</span></span>
+			</div>
+			<div class="search">
+				<i class='bx bx-search' ></i>
+				<input type="text" 
+				placeholder="Tìm thành viên"
+				name="" id="">
+			</div>
+		</div>
+		<div class="body">
+			<div class="admins">
+				<div class="title">
+					Quản trị viên · <span style="color: #666">1</span>
+				</div>
+				<div 
+				*ngFor="let admin of admins"
+				class="member">
+					<div class="avatar">
+						<div class="avatar-cont">
+							<img [src]="admin.avatarUrl">
+						</div>
+					</div>
+					<div class="name">
+						{{ admin.name }}
+					</div>
+				</div>
+			</div>
+			<div class="members">
+
+				<div class="title">
+					Thành viên nhóm · <span style="color: #666">2</span>
+				</div>
+				<div 
+				*ngFor="let admin of members"
+				class="member">
+					<div class="avatar">
+						<div class="avatar-cont">
+							<img [src]="admin.avatarUrl">
+						</div>
+					</div>
+					<div class="name">
+						{{ admin.name }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

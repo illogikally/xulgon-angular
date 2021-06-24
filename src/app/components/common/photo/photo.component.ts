@@ -1,5 +1,5 @@
 import {ViewChild, Component, Input, OnInit, ElementRef, EventEmitter, Renderer2 } from '@angular/core';
-import { PhotoResponse } from './photo-response';
+import { PhotoViewResponse } from './photo-view-response';
 
 @Component({
   selector: 'app-photo',
@@ -8,7 +8,7 @@ import { PhotoResponse } from './photo-response';
 })
 export class PhotoComponent implements OnInit {
 
-  @Input() photo!: PhotoResponse | undefined;
+  @Input() photo!: PhotoViewResponse | undefined;
   @Input() isComment!: boolean;
 
   @ViewChild('image', {static: true}) image!: ElementRef;
@@ -20,11 +20,11 @@ export class PhotoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (this.isComment) {
-      this.renderer.setStyle(this.image.nativeElement, 'aspect-ratio', '0');
-      this.renderer.setStyle(this.image.nativeElement, 'height', '100%');
-      this.renderer.setStyle(this.image.nativeElement, 'width', 'auto');
-    }
+    // if (this.isComment) {
+    //   this.renderer.setStyle(this.image.nativeElement, 'aspect-ratio', '0');
+    //   this.renderer.setStyle(this.image.nativeElement, 'height', '100%');
+    //   this.renderer.setStyle(this.image.nativeElement, 'width', 'auto');
+    // }
   }
 
   openPhotoView(event: any): void {

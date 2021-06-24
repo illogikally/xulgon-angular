@@ -6,14 +6,14 @@
   @extend %fc;
 }
 
-.form-sidebar {
-  border: 1px solid #00000033;
+.content {
+  border: 1px solid #00000022;
   width: 700px;
   border-radius: 5px;
   padding: 0 15px 0 0;
   display: flex;
   height: 500px;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, .1);
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
 }
 
 .sidebar {
@@ -74,6 +74,18 @@ label {
 .form-container {
   display: flex;
   align-items: center;
+
+  .name {
+    display: flex;
+    justify-content: space-between;
+
+    .input-group {
+      flex-basis: 49%;
+      input {
+        background-color: #fff;
+      }
+    }
+  }
 }
 
 #login-form {
@@ -95,4 +107,12 @@ label {
       background-color: #006ec1;
     }
   }
+}
+
+a {
+  margin-top: 20px;
+  font-size: 13px;
+  display: block;
+  color: $btn-blue;
+  text-decoration: underline;
 }

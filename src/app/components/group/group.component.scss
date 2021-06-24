@@ -27,6 +27,11 @@
       border-bottom: 1px solid rgba(#333, .2);
       padding:  16px 5px;
       display: flex;
+      position: relative;
+
+      .hide {
+        @include x-btn(35px, $btn-grey, #050505);
+      }
 
       .cover-img {
         width: 48px;

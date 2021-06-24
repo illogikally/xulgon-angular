@@ -9,10 +9,19 @@
     *ngIf="isPostOptsVisible"
     class="options-list">
       <div 
+      (click)="delete()"
       *ngIf="post.user.id == loggedInUserId || groupReponse?.role == 'ADMIN'"
       >
         <i class='bx bx-trash' ></i>
         <span>Xoá bài viết</span>
+      </div>
+      <div>
+        <i class='bx bx-group' ></i>
+        <span>Chỉnh sửa riêng tư</span>
+      </div>
+      <div>
+        <i class='bx bx-bell-off' ></i>
+        <span>Tắt thông báo với bài viết này</span>
       </div>
     </div>
   </div>
@@ -25,9 +34,13 @@
         ></app-user-ref>
       </div>
       <div class="name-date" style="position: relative;">
-        <div class="name">
-          <app-user-ref
-          [userDto]="post.user"></app-user-ref>
+        <div class="name--page">
+          <div class="name">
+            <app-user-ref
+            [userDto]="post.user"></app-user-ref>
+          </div>
+          <!-- <span><i class='bx bxs-right-arrow' ></i></span> -->
+          <!-- <span>Forum Machine Learning cơ bản</span> -->
         </div>
         <div class="date--privacy">
           <span>{{ post.createdAt }}</span>

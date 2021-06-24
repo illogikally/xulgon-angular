@@ -25,6 +25,9 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.messageService.postDeleted.subscribe(id => {
+      this.posts = this.posts.filter(post => post.id != id);
+    });
     this.messageService.pageId.subscribe(id => {
       this.pageId = id;
       

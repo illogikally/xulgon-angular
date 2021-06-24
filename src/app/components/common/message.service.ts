@@ -17,9 +17,11 @@ export class MessageService {
   private friendshipStatus = new Subject<string>();
   private deleteFriendRequest = new Subject<number>();
   private createdPost = new Subject<Post>();
+  postDeleted = new Subject<number>();
   groupLoaded = new BehaviorSubject<GroupResponse>({} as GroupResponse);
   updateAvatar = new Subject<string>();
   pageId = new BehaviorSubject<any>(null);
+  openChatBox = new Subject<any>();
   userRef = new Subject<UserDto>();
   updateCoverPhoto = new Subject<string>();
   updateAvatarOrCover = new BehaviorSubject<string>('');

@@ -3,12 +3,12 @@
 .chat-box {
 	height: 450px;
 	box-sizing: border-box;
-	display: none;
+	visibility: hidden;
 
 	width: 328px;
 	position: fixed;
 	bottom: 0;
-	z-index: 999;
+	z-index: 1005;
 	right: 100px;
 	border-radius: 10px 10px 0 0;
 	background-color: #fff;

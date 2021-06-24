@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit {
   loggedInUsername!: string;
   loggedInUserId!: number;
   loggedInUserAvatarUrl!: string;
+  chatNotifVisible = false;
 
   constructor(private messageService: MessageService,
     private rxStompService: RxStompService,
@@ -29,21 +30,7 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  sendMsg(event: any): void {
-    console.log('send');
-    
-    this.rxStompService.publish({destination: '/app/chat', body: JSON.stringify({'msg': event.target.value})});
-  }
-
-  xulgon(): void {
-    this.rxStompService.watch('/user/queue/chat').subscribe(msg => {
-      console.log(msg);
-    });
-  }
-
   ngOnInit(): void {
-    
-    this.xulgon();
     this.messageService.updateAvatar.subscribe(url => {
       this.loggedInUserAvatarUrl = url;
       this.auth.setAvatarUrl(url);
