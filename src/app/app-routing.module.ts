@@ -26,44 +26,57 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
 import { JoinRequestListComponent } from './components/group/join-request-list/join-request-list.component';
 import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
+import { LoggedInComponent } from './components/common/logged-in/logged-in.component';
+import { PostViewComponent } from './components/post-view/post-view.component';
 
 const routes: Routes = [
-  { path: '', component: NewsFeedComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'friends', component: FriendRequestComponent },
-  { path: 'test', component: PostSkeletonComponent},
+  { path: 'register', component: LoginComponent },
   { 
-    path: 'groups', 
+    path: '', 
+    component: LoggedInComponent,
+    canActivate: [AuthenticationGuard],
     children: [
-
-      { path: '', redirectTo: 'feed', pathMatch: 'full'},
-      { path: 'feed', component: GroupFeedComponent},
-      {
-        path: ':id', 
-        component: GroupComponent,
+      { 
+        path: 'permalink/:id', 
+        component: PostViewComponent
+      },
+      { path: '', component: NewsFeedComponent },
+      { path: 'friends', component: FriendRequestComponent },
+      { 
+        path: 'groups', 
         children: [
-          { path: '', component: GroupContentComponent},
-          { path: 'about', component: GroupContentComponent},
-          { path: 'media', component: GroupContentComponent},
-          { path: 'members', component: GroupContentComponent},
-          { path: 'member_request', component: JoinRequestListComponent},
-          { path: 'settings', component: GroupSettingsComponent}
+
+          { path: '', redirectTo: 'feed', pathMatch: 'full'},
+          { path: 'feed', component: GroupFeedComponent},
+          {
+            path: ':id', 
+            component: GroupComponent,
+            children: [
+              { path: '', component: GroupContentComponent},
+              { path: 'about', component: GroupContentComponent},
+              { path: 'media', component: GroupContentComponent},
+              { path: 'members', component: GroupContentComponent},
+              { path: 'member_request', component: JoinRequestListComponent},
+              { path: 'settings', component: GroupSettingsComponent}
+            ]
+          }
         ]
-      }
+      },
+      { 
+        path: ':id', 
+        component: ProfileComponent, 
+        children: [
+          { path: '', component: ProfileComponent },
+          { path: 'about', component: ProfileComponent},
+          { path: 'friends', component:  ProfileComponent},
+          { path: 'photos', component: ProfileComponent }
+        ]
+        
+      },
+      { path: '**', component: ErrorPageComponent}
     ]
   },
-  { 
-    path: ':id', 
-    component: ProfileComponent, 
-    children: [
-      { path: '', component: ProfileComponent },
-      { path: 'about', component: ProfileComponent},
-      { path: 'friends', component:  ProfileComponent},
-      { path: 'photos', component: ProfileComponent }
-    ]
-    
-  },
-  { path: '**', component: ErrorPageComponent}
 
 
 ];

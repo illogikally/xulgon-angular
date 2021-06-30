@@ -1,4 +1,6 @@
-<div class="chat-box">
+<div 
+(click)="chatboxClick()"
+class="chat-box">
 	<div class="content">
 		<div class="title">
 			<div class="avatar">
@@ -7,7 +9,7 @@
 				</div>
 			</div>
 			<div class="name">
-				{{ user?.name }}
+				{{ user?.username }}
 			</div>
 			<div 
 			(click)="close()"
@@ -24,7 +26,7 @@
 			[prevMsg]="messages[i+1]"
 			></app-chat-msg>
 		</div>
-		<form [formGroup]="msgForm" (keyup.enter)="submit()" class="input-bar">
+		<form [formGroup]="msgForm" (keyup.enter)="sendMessage()" class="input-bar">
 			<input type="text" class="input" formControlName="input" placeholder="Aa">
 			<i class='bx bxs-send' ></i>
 		</form>

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatNoticationComponent } from './chat-notication.component';
+import { NotifItemComponent } from './notif-item.component';
 
-describe('ChatNoticationComponent', () => {
-  let component: ChatNoticationComponent;
-  let fixture: ComponentFixture<ChatNoticationComponent>;
+describe('NotifItemComponent', () => {
+  let component: NotifItemComponent;
+  let fixture: ComponentFixture<NotifItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatNoticationComponent ]
+      declarations: [ NotifItemComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChatNoticationComponent);
+    fixture = TestBed.createComponent(NotifItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

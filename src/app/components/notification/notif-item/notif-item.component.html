@@ -1,0 +1,32 @@
+<div 
+(click)="click()"
+class="notif-item">
+	<div class="content">
+		<div 
+		*ngIf="!notif.isRead"
+		class="mark-as-read"></div>
+		<div class="avatar">
+			<div class="img-container">
+				<img [src]="notif.actorAvatar" />
+			</div>
+		</div>
+		<div class="body">
+			<div class="notif-text">
+				<strong>{{ notif.actor }}</strong>
+				<span> đã </span>
+				<span *ngIf="notif.type == 'COMMENT'" >bình luận trong</span>
+				<span *ngIf="notif.type == 'REACTION'">thích</span>
+
+				<span *ngIf="notif.contentType == 'POST'"> bài viết của bạn</span>
+				<span *ngIf="notif.contentType == 'COMMENT'"> bình luận của bạn</span>
+				<span *ngIf="notif.contentType == 'PHOTO'"> hình ảnh của bạn</span>
+				<span
+				*ngIf="notif.contentBody"
+				>: {{ notif.contentBody }}</span>	
+			</div>
+			<div class="ago">
+				<span>{{ notif.createdAgo }}</span>	
+			</div>
+		</div>
+	</div>
+</div>

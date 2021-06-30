@@ -16,7 +16,8 @@ export class GroupMemberComponent implements OnInit {
     private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.messageService.pageId.subscribe(id => {
+    this.messageService.onLoadPostsByPageId().subscribe(id => {
+      if (id === undefined) return;
 
       this.http.get<any[]>(`http://localhost:8080/api/groups/${id}/members`).subscribe(members => {
         this.members = members;

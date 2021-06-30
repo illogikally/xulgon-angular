@@ -4,7 +4,7 @@
   <div class="flex-center">
     <div class="cover-avatar">
       <div class="cover">
-        <img [src]="userProfile?.coverPhotoUrl">
+        <img [src]="userProfile?.coverPhotoUrl ">
         <div 
         *ngIf="userProfile?.id == loggedInUserProfileId"
         (click)="showUpdateProfilePic('cover')"
@@ -31,7 +31,7 @@
     <h1 
     [ngClass]="{loading: userProfile === undefined}" 
     class="profile-name flex-center">
-      {{ userProfile?.lastName + " " + userProfile?.firstName }}
+      {{ userProfile?.fullName}}
     </h1>
   </div>
   <div class="flex-center">

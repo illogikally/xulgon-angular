@@ -35,9 +35,20 @@
         [photo]="commentResponse.photo" [style]="'height'"></app-photo>
       </div>
     <div class="comment-meta">
-      <span class="comment-like hover-underline" [ngClass]="{ reacted: commentResponse.isReacted }" (click)="like()"><b>Thích</b></span>
+      <span 
+      class="comment-like hover-underline" 
+      [ngClass]="{ reacted: commentResponse.isReacted }" 
+      (click)="like()">
+        <b>Thích</b>
+      </span>
       <span> · </span>
-      <span class="comment-reply hover-underline" *ngIf="!(commentResponse.parentType == 'COMMENT')" (click)="showReplies()"><b>Trả lời</b><span> · </span></span>
+      <span 
+      class="comment-reply hover-underline" 
+      *ngIf="!(commentResponse.parentType == 'COMMENT')" 
+      (click)="showReplies()">
+        <b>Trả lời</b>
+        <span> · </span>
+      </span>
       
       <span class="comment-time-ago">{{ commentResponse.createdAgo }}</span>
     </div>
@@ -50,6 +61,7 @@
       <div>
         <app-comment-list  
         *ngIf="isRepliesVisible" 
+        [postId]="commentResponse.postId"
         [contentId]="commentResponse.id"></app-comment-list>
       </div>
     </div>

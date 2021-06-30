@@ -24,8 +24,9 @@ export class FriendListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.onProfileLoaded().subscribe(profile => {
-      this.http.get<UserDto[]>(`http://localhost:8080/api/users/${profile.id}/friends`)
+    this.messageService.onLoadPostsByPageId().subscribe(pageId => {
+      if (pageId === undefined) return;
+      this.http.get<UserDto[]>(`http://localhost:8080/api/users/${pageId}/friends`)
           .subscribe(resp => {
             this.friends = resp;
             this.friendsCopy =  this.friends;

@@ -9,6 +9,7 @@ import { PhotoViewResponse } from '../common/photo/photo-view-response';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { GroupResponse } from '../group/group-response';
 import { HttpClient } from '@angular/common/http';
+import { CommentResponse } from '../comment-list/comment/comment-response';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class PostComponent implements OnInit {
   onInputFocus: EventEmitter<boolean> = new EventEmitter();
 
 
-  showComment: boolean = false;
+  @Input() showComment: boolean = false;
   isPostOptsVisible = false;
 
   loggedInUserId: number;

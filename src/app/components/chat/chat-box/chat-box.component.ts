@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { RxStomp } from '@stomp/rx-stomp';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { MessageService } from '../../common/message.service';
+import { ChatMessage } from '../chat-msg';
 
 @Component({
   selector: 'app-chat-box',
@@ -13,13 +14,14 @@ import { MessageService } from '../../common/message.service';
 })
 export class ChatBoxComponent implements OnInit {
 
-  messages!: any[];
+  messages!: ChatMessage[];
   msgForm: FormGroup;
-  userId!: number;
   visible = false;
   user!: any;
+  @Input() markAsRead!: EventEmitter<number>;
 
   constructor(private messageService: MessageService,
+    private auth$: AuthenticationService,
     private renderer: Renderer2,
     private self: ElementRef,
     private rxStomp: RxStompService,
@@ -33,41 +35,51 @@ export class ChatBoxComponent implements OnInit {
 
   ngOnInit(): void {
     this.messageService.openChatBox.subscribe(user => {
-      
-      this.userId = user.id;
       this.user = user;
-      console.log(this.self.nativeElement);
-      
       this.loadMessages();
       this.show();
-      
     });
 
     this.rxStomp.watch('/user/queue/chat').subscribe(msg => {
-      this.messages.unshift(JSON.parse(msg.body));
+      let chatMsg: ChatMessage = JSON.parse(msg.body);
+      if (this.messages) {
+        this.messages.unshift(chatMsg);
+      }
     });
 
   }
 
   close(): void {
-    this.renderer.setStyle(this.self.nativeElement.children[0], 'visibility', 'hidden');
+    this.renderer.setStyle(this.self.nativeElement.children[0], 'display', 'none');
   }
 
   show(): void {
-    this.renderer.setStyle(this.self.nativeElement.children[0], 'visibility', 'visible');
+    this.renderer.setStyle(this.self.nativeElement.children[0], 'display', 'block');
   }
 
   loadMessages(): void {
+    this.messages = [];
 
     this.http.get<any>(`http://localhost:8080/api/messages/with/${this.user.id}`).subscribe(resp => {
       this.messages = resp;
+      this.markConversationAsRead();
     })
   }
 
-  submit(): void {
+  getConversationId(): number | undefined {
+    return this.messages.find(msg => msg.conversationId)?.conversationId;
+  }
+
+  markConversationAsRead(): void {
+    if (this.messages[0].isRead || this.messages[0].userId == this.auth$.getUserId()) return;
+    this.markAsRead.emit(this.messages[0].id);
+  }
+
+  sendMessage(): void {
     let messageRequest = {
       message: this.msgForm.get('input')?.value,
-      receiverId: this.userId
+      receiverId: this.user.id,
+      conversationId: this.getConversationId()
     }
 
     this.msgForm.get('input')?.setValue('');
@@ -76,6 +88,9 @@ export class ChatBoxComponent implements OnInit {
       destination: '/app/chat', 
       body: JSON.stringify(messageRequest)
     });
+  }
 
+  chatboxClick(): void {
+    this.markConversationAsRead();
   }
 }

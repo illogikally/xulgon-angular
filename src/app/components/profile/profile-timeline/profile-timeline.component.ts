@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { MessageService } from '../../common/message.service';
@@ -9,7 +9,7 @@ import { UserProfile } from '../user-profile';
   templateUrl: './profile-timeline.component.html',
   styleUrls: ['./profile-timeline.component.scss']
 })
-export class ProfileTimelineComponent implements OnInit {
+export class ProfileTimelineComponent implements OnInit, OnDestroy {
 
   @Input() userProfile!: UserProfile;
   loggedInUserId: number;
@@ -20,6 +20,9 @@ export class ProfileTimelineComponent implements OnInit {
       this.loggedInUserId = this.auth.getUserId();
     }
 
+  ngOnDestroy() {
+
+  }
   ngOnInit(): void {
     
     this.messageService.onProfileLoaded().subscribe(profile => {

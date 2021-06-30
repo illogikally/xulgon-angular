@@ -14,7 +14,7 @@ export class GroupFeedComponent implements OnInit {
     private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.messageService.pageId.next(130);
+    this.messageService.loadPostsByPageId(130);
   }
 
 }

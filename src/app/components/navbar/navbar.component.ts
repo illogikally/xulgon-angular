@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MessageService } from '../common/message.service';
@@ -17,24 +18,31 @@ export class NavbarComponent implements OnInit {
   loggedInUserId!: number;
   loggedInUserAvatarUrl!: string;
   chatNotifVisible = false;
+  moreOptsVisible = false;
+  loggedInUserProfileId!: any;
 
   constructor(private messageService: MessageService,
-    private rxStompService: RxStompService,
+    private router: Router,
     private auth: AuthenticationService) { 
-
-    this.loggedInUsername = auth.getUserName();
-    this.loggedInUserId = auth.getUserId();
-    this.loggedInUserAvatarUrl = auth.getAvatarUrl();
+    this.loggedInUsername = this.auth.getUserName();
+    this.loggedInUserId = this.auth.getUserId();
+    this.loggedInUserAvatarUrl = this.auth.getAvatarUrl();
+    this.loggedInUserProfileId = this.auth.getProfileId();
+    this.messageService.updateAvatar.subscribe(url => {
+      this.loggedInUserAvatarUrl = url;
+      this.auth.setAvatarUrl(url);
+    });
     this.searchForm = new FormGroup({
       search: new FormControl('')
     });
   }
 
   ngOnInit(): void {
-    this.messageService.updateAvatar.subscribe(url => {
-      this.loggedInUserAvatarUrl = url;
-      this.auth.setAvatarUrl(url);
-    });
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigateByUrl('/login');
   }
 
   openCreatePost(): void {

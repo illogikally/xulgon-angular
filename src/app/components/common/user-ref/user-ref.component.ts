@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MessageService } from '../message.service';
 import { UserDto } from '../user-dto';
 
@@ -26,11 +26,12 @@ export class UserRefComponent implements OnInit {
   @Input() isPhotoView: boolean = false;
   @ViewChild('avatarContainer') avatarContainer!: ElementRef;
 
+  popupVisibility = new EventEmitter<any>();
   isUserRefVisible = false;
 
   constructor(private renderer: Renderer2,
-    private ref: ElementRef,
-    private messageService: MessageService) { }
+    private self: ElementRef,
+    private message$: MessageService) { }
 
   ngAfterViewInit() {
     if (this.borderRadius ) {
@@ -40,17 +41,22 @@ export class UserRefComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    
   }
 
   onMouseEnter(): void {
     if (this.isPhotoView) return;
 
-    this.isUserRefVisible = true;
+    this.popupVisibility.emit({
+      msg: 'show',
+      rect: this.self.nativeElement.getBoundingClientRect(),
+      userDto: this.userDto
+    });
   }
 
   onMouseLeave(): void {
-
-    this.isUserRefVisible = false;
+    this.popupVisibility.emit({
+      msg: 'hide'
+    });
   }
 }

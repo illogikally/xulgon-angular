@@ -17,7 +17,7 @@ export class GroupComponent implements OnInit {
   @ViewChild('moreAction') moreAction!: ElementRef;
 
   constructor(private location: Location,
-    private messageService: MessageService,
+    private message$: MessageService,
     private renderer: Renderer2,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -32,12 +32,12 @@ export class GroupComponent implements OnInit {
   }
 
   getGroupProfile(id: number): void {
-    this.messageService.pageId.next(id);
+    this.message$.loadPostsByPageId(id);
     this.http.get<GroupResponse>(`http://localhost:8080/api/groups/${id}`).subscribe(resp => {
       this.groupResponse = resp;
       console.log(resp);
       
-      this.messageService.groupLoaded.next(resp);
+      this.message$.groupLoaded.next(resp);
     }, error => {
       console.log("Group Not found");
     });

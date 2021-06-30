@@ -5,6 +5,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { CommentRequest } from './comment/comment-request';
 import { MessageService } from '../common/message.service';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-comment-list',
@@ -14,7 +15,8 @@ import { AuthenticationService } from '../authentication/authentication.service'
 export class CommentListComponent implements OnInit {
 
   @Input() contentId!: number;
-  @Input() comments!: CommentResponse[];
+  @Input() postId!: number;
+  comments = new Array<CommentResponse>();
 
   showComment: boolean = true;
   commentForm!: FormGroup; 
@@ -26,9 +28,9 @@ export class CommentListComponent implements OnInit {
 
 
   constructor(private commentService: CommentService,
+    private http: HttpClient,
     private authService: AuthenticationService,
-    private messageService: MessageService) { 
-      
+    private message$: MessageService) { 
       this.loggedInUserAvatarUrl = authService.getAuth().avatarUrl;
   }
 
@@ -39,18 +41,28 @@ export class CommentListComponent implements OnInit {
     });
 
     this.commentService.getCommentsByContent(this.contentId).subscribe(resp => {
-      this.comments = resp;
+      this.comments = this.comments.concat(resp);
     });
 
+    this.message$.notif.subscribe(msg => {
+      if (msg.type == 'comment_id') {
+        console.log('comment_id');
+        
+        this.http.get<CommentResponse>(`http://localhost:8080/api/comments/${msg.commentId}`)
+        .subscribe(comment => {
+          this.comments.unshift(comment);
+        });
+      }
+    });
     
   }
-
 
   submit(): void {
     let formData = new FormData;
 
-    let commentRequest = new Blob([JSON.stringify({
+    let commentRequest = new Blob( [JSON.stringify({
       parentId: this.contentId,
+      postId: this.postId,
       body: this.commentForm.get('comment')?.value,
       sizeRatio: this.sizeRatio
     })], { type: 'application/json' });
@@ -58,9 +70,11 @@ export class CommentListComponent implements OnInit {
 
     formData.append('photo', this.file === undefined ? new Blob() : this.file)
 
+
+
     this.commentService.createComment(formData).subscribe(comment => {
       this.comments.push(comment);
-      this.messageService.sendMessage("Comment added");
+      this.message$.sendMessage("Comment added");
     });
 
     this.commentForm.get('comment')?.setValue("");
@@ -72,9 +86,9 @@ export class CommentListComponent implements OnInit {
       this.file = event.target.files[0];
       var reader = new FileReader();
 
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      reader.readAsDataURL(event.target.files[0]); 
 
-      reader.onload = (event) => { // called once readAsDataURL is completed
+      reader.onload = (event) => {
         let img = new Image();
         img.src = event.target?.result as string;
         img.onload = () => {

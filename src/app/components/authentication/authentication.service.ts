@@ -5,6 +5,7 @@ import { LoginResponse } from './login/login-response';
 import { LocalStorageService } from 'ngx-webstorage';
 import { map, tap } from 'rxjs/operators'
 import { Observable, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class AuthenticationService {
 
 
   constructor(private httpClient: HttpClient,
+    private router: Router,
     private localStorage: LocalStorageService) { }
 
   login(loginRequest: LoginRequest): Observable<boolean> {
@@ -32,7 +34,6 @@ export class AuthenticationService {
         this.localStorage.store('userId', data.userId);
         this.localStorage.store('avatarUrl', data.avatarUrl);
         this.localStorage.store('profileId', data.profileId);
-
         return true;
       }));
   }

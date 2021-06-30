@@ -51,15 +51,20 @@ import { JoinRequestItemComponent } from './components/group/join-request-list/j
 import { InjectableRxStompRpcConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
 import { MyRxStompConfig } from './my-rx-stomp.config';
 import { AuthenticationService } from './components/authentication/authentication.service';
-import { ChatNoticationComponent } from './components/chat/chat-notication/chat-notication.component';
+import { ChatNotificationComponent } from './components/chat/chat-notification/chat-notification.component';
 import { ChatNotificationItemComponent } from './components/chat/chat-notification-item/chat-notification-item.component';
 import { ChatBoxComponent } from './components/chat/chat-box/chat-box.component';
 import { ChatMsgComponent } from './components/chat/chat-box/chat-msg/chat-msg.component';
 import { ProfileAboutComponent } from './components/profile/profile-about/profile-about.component';
 import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
+import { LoggedInComponent } from './components/common/logged-in/logged-in.component';
+import { NotificationComponent } from './components/notification/notification/notification.component';
+import { NotifItemComponent } from './components/notification/notif-item/notif-item.component';
+import { PostViewComponent } from './components/post-view/post-view.component';
 
 @NgModule({
   declarations: [
+    LoggedInComponent,
     AppComponent,
     LoginComponent,
     HomeComponent,
@@ -99,12 +104,15 @@ import { GroupSettingsComponent } from './components/group/group-settings/group-
     JoinRequestListComponent,
     GroupContentComponent,
     JoinRequestItemComponent,
-    ChatNoticationComponent,
+    ChatNotificationComponent,
     ChatNotificationItemComponent,
     ChatBoxComponent,
     ChatMsgComponent,
     ProfileAboutComponent,
     GroupSettingsComponent,
+    NotificationComponent,
+    NotifItemComponent,
+    PostViewComponent,
   ],
   imports: [
     FormsModule,
@@ -122,8 +130,6 @@ import { GroupSettingsComponent } from './components/group/group-settings/group-
       provide: InjectableRxStompRpcConfig,
       useClass: MyRxStompConfig,
       deps: [AuthenticationService]
-
-
     },
     {
       provide: RxStompService,

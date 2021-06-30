@@ -18,13 +18,8 @@ class="user-ref-container">
 		{{ userDto.username }}
 	</div>
 	</a>
-	<div 
-	class="user-ref"
-	#userRef>
 		<app-user-ref-popup
-		*ngIf="isUserRefVisible"
-		[@fadeInOut]
 		[userDto]="userDto"
+		[visibility]="popupVisibility"
 		></app-user-ref-popup>
-	</div>
 </div>

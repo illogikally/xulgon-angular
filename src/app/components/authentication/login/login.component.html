@@ -6,52 +6,69 @@
     <div class="form-container">
       <form 
       *ngIf="!isLogin"
-      id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+      id="login-form"
+      [formGroup]="registerForm" 
+      (ngSubmit)="register()">
         <h2>ĐĂNG KÝ</h2> 
         <div class="name">
 
           <div class="input-group">
             <label for="username">HỌ</label> 
-            <input type="text" id="username" autocomplete="off" [formControlName]="'username'" name="username" required autofocus>
+            <input type="text" autocomplete="off" [formControlName]="'lastName'" name="username" required>
           </div>
           <div class="input-group">
             <label for="password">TÊN</label>
-            <input type="password" id="password" [formControlName]="'password'" name="password" required>
+            <input [formControlName]="'firstName'" required>
           </div>
         </div>
         <div class="input-group">
           <label for="username">TÊN TÀI KHOẢN</label> 
-          <input type="text" id="username" autocomplete="off" [formControlName]="'username'" name="username" required autofocus>
+          <input type="text" autocomplete="off" [formControlName]="'username'" name="username" required >
         </div>
         <div class="input-group">
           <label for="password">MẬT KHẨU</label>
-          <input type="password" id="password" [formControlName]="'password'" name="password" required>
+          <input type="password" [formControlName]="'password'"  required>
         </div>
         <button id="submit-button" type="submit">ĐĂNG KÝ</button>
-        <div class="login-failed" *ngIf="this.loginError">
-          <p class="register-success-text">Logined falied</p>   
+        <div class="login-failed" *ngIf="registerError">
+          <p class="register-success-text">Đăng kí thất bại</p>   
         </div>               
-        <a href="">Đã có tài khoản? Nhấn vào đây để đăng nhập.</a>
+        <div style="color: green" *ngIf="registerError === false">
+          <p class="register-success-text">Đăng kí thành công</p>   
+        </div>               
+        <a 
+        (click)="showLogin($event)"
+        href="http://locahost:4200/login">Đã có tài khoản? Nhấn vào đây để đăng nhập.</a>
       </form>
       <form 
+
+
       *ngIf="isLogin"
       id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
         <h2>ĐĂNG NHẬP</h2> 
         <div class="input-group">
           <label for="username">TÊN ĐĂNG NHẬP</label> 
-          <input type="text" id="username" autocomplete="off" [formControlName]="'username'" name="username" required autofocus>
-          <div class="warning" *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched"> Tên đăng nhập không hợp lệ</div>   
+          <input 
+          type="text" 
+          autocomplete="off" 
+          [formControlName]="'username'" 
+          name="username" required autofocus>
+          <!-- <div class="warning" *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched"> Tên đăng nhập không hợp lệ</div>    -->
         </div>
         <div class="input-group">
           <label for="password">MẬT KHẨU</label>
-          <input type="password" id="password" [formControlName]="'password'" name="password" required>
-          <div class="warning" *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched"> Mật khẩu không được bỏ trống</div>   
+          <input 
+          type="password"
+          [formControlName]="'password'" 
+          name="password" required>
         </div>
         <button id="submit-button" type="submit">ĐĂNG NHẬP</button>
         <div class="login-failed" *ngIf="this.loginError">
-          <p class="register-success-text">Logined falied</p>   
+          <p class="register-success-text">Sai tên tài khoản hoặc mật khẩu</p>   
         </div>               
-        <a href="">Chưa có tài khoản? Đăng ký tại đây</a>
+        <a 
+        (click)="showRegister($event)"
+        href="http://localhost:4200/signup">Chưa có tài khoản? Đăng ký tại đây</a>
       </form>
     </div>
     

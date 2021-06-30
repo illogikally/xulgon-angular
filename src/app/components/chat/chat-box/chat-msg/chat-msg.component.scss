@@ -24,9 +24,11 @@
 					height: 28px;
 				}
 			}
+
 			.body {
 				.text {
 					word-wrap: break-word;
+					word-break: break-word;
 					padding: 7px 10px;
 
 				}
@@ -83,7 +85,7 @@
 				}
 
 				.avatar {
-					visibility: visible ;
+					visibility: visible;
 				}
 			}
 		}

@@ -9,9 +9,14 @@ import { Post } from './post';
 })
 export class PostService {
 
+  postApi = 'http://localhost:8080/api/posts/';
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
   getPostsByPageId(pageId: number): Observable<Array<Post>> {
     return this.http.get<Array<Post>>(`http://localhost:8080/api/pages/${pageId}/posts`); 
+  }
+
+  getPost(postId: number): Observable<Post> {
+    return this.http.get<Post>(this.postApi + postId);
   }
 }

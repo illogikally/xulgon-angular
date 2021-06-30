@@ -103,7 +103,7 @@
 
     .profile-place-holder {
       @extend %fc;
-      position: fixed;
+      position: absolute;
       background-color: var(--bg-color);
       top: 56px;
       bottom: 0;

@@ -52,7 +52,7 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
     
     this.messageService.onProfileLoaded().subscribe(profile => {
       this.userProfile = profile;
-      this.http.get<PhotoViewResponse[]>(`http://localhost:8080/api/profiles/${profile.id}/photos`)
+      this.http.get<PhotoViewResponse[]>(`http://localhost:8080/api/pages/${profile.id}/photos`)
           .subscribe(photos => {
             this.photos = photos;
           });

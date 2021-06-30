@@ -1,3 +1,5 @@
+@import "src/styles";
+
 .comment {
   margin: 10px 0;
   display: flex;
@@ -100,10 +102,10 @@
 
   .comment-reply-container {
     margin-top: 2px;
-    font-size: 14px;
 
     .placeholder {
       color: grey;
+      font-size: 14px;
 
     }
   }
@@ -117,5 +119,5 @@ a {
 }
 
 .reacted {
-  color: blue;
+  color: $btn-blue;
 }

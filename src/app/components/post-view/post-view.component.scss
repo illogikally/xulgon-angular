@@ -1,0 +1,13 @@
+.post-view {
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	top: 56px;
+
+	&__inner {
+		padding-top: 20px;
+		width: 680px;
+	}
+	padding-bottom: 400px;
+}

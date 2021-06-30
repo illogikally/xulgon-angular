@@ -173,9 +173,34 @@
         .chat-noti, .general-noti {
           font-size: 20px;
         }
+
         .more-opts {
           font-size: 25px;
-        }
+          position: relative;
+
+          &__items {
+            @extend %opts;
+            bottom: auto;
+            top: 120%;
+            right: -50%;
+
+            > div {
+              display: flex;
+              align-items: center;
+
+              .icon {
+                @extend %fc;
+                border-radius: 50%;
+                background-color: $btn-grey;
+                font-size: 25px;
+                width: 35px; 
+                height: 35px;
+                margin-right: 10px;
+              }
+            }
+          }
+
+      }
       }
     }
   }

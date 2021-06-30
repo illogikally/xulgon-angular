@@ -6,8 +6,7 @@ export interface UserProfile {
   avatar: PhotoViewResponse;
   coverPhotoUrl: string;
   workplace: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   school: string;
   hometown: string;
   friendshipStatus: string;

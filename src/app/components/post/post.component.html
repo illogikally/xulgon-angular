@@ -124,7 +124,8 @@
   *ngIf="showComment" 
   class="comments">
     <app-comment-list 
-    [comments]="post.comments" 
+    [postId]="post.id"
     [contentId]="post.id"></app-comment-list>
+    <!-- [comments]="post.comments"  -->
   </div>
 </div>

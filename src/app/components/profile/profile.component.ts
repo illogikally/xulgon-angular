@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { UserProfile } from './user-profile';
@@ -6,13 +6,14 @@ import { MessageService } from '../common/message.service';
 import { UserService } from '../common/user.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   @Input() profileId!: number;
 
@@ -38,9 +39,14 @@ export class ProfileComponent implements OnInit {
     private profileService: ProfileService,
     private router: Router,
     private auth: AuthenticationService,
+    private title: Title,
     private location: Location,
     private messageService: MessageService) {
     this.loggedInUserProfileId = auth.getProfileId();
+  }
+
+  ngOnDestroy(): void {
+    this.renderer.setStyle(document.body, 'position', '');
   }
 
   ngOnInit(): void {
@@ -59,12 +65,14 @@ export class ProfileComponent implements OnInit {
     });
 
     this.activateRoute.params.subscribe(params => {
-      const id = +params['id'];
-      if (id != null) {
-        
-        this.isBlocked(id);
-        this.loadProfile(id);
+      const id = params['id'];
+      if (id == null || !/\d+/g.test(id)) {
+        this.pageError();
+        return;
       }
+      
+      this.isBlocked(id);
+      this.loadProfile(id);
     });
 
     this.messageService.onFriendRequestChange().subscribe(profileId => {
@@ -79,7 +87,7 @@ export class ProfileComponent implements OnInit {
   openChatBox(): void {
     this.messageService.openChatBox.next({
       id: this.userProfile.userId,
-      name: this.userProfile.lastName + " " + this.userProfile.firstName,
+      username: this.userProfile.fullName,
       avatarUrl: this.userProfile.avatar.url
     });
   }
@@ -98,7 +106,6 @@ export class ProfileComponent implements OnInit {
     if (new RegExp('.*?/\\d+?/?' + tab).test(url)) {
       this.loadedTabs.add(tab);
       this.currentTab = tab;
-      console.log(tab);
       return true;
     }
     return false;
@@ -106,12 +113,12 @@ export class ProfileComponent implements OnInit {
 
   loadProfile(id: number): void {
     if (!id) return;
+    this.messageService.loadPostsByPageId(id);
 
-    this.messageService.pageId.next(id);
     this.profileService.getUserProfile(id).subscribe(resp => {
       this.pageNotFound = false;
       if (resp.isBlocked) this.pageError();
-      
+      this.title.setTitle(resp.fullName);
 
       this.userProfile = resp;
       this.messageService.sendLoadedProfile(this.userProfile);

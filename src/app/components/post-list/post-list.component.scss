@@ -8,10 +8,6 @@ a {
 }
 
 .post-container {
-  @include card(10px);
-  overflow: visible;
-  box-sizing: border-box;
   width: 100%;
-  background-color: #fff;
   margin-bottom: 17px;
 }

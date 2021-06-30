@@ -1,117 +1,119 @@
-<div class="user-ref-popup">
-		<div class="avatar--info">
-			<div class="avatar">
-				<img [src]="userDto.avatarUrl" />
-			</div>
-			<div class="info--name">
-				<div class="name">
-					<span>{{ userDto.username }}</span>
-					
-				</div>
-				<div>
-					<i class='bx bxs-building-house' ></i>
-					<span>{{ userDto.workplace }}</span>
-					
-				</div>
-				<div>
-					<i class='bx bx-current-location'></i>
-					<span>{{ userDto.hometown }}</span>
-					
-				</div>
+<div 
+#self
+class="user-ref-popup">
+	<div class="avatar--info">
+		<div class="avatar">
+			<img [src]="userDto.avatarUrl" />
+		</div>
+		<div class="info--name">
+			<div class="name">
+				<span>{{ userDto.username }}</span>
 				
 			</div>
+			<div>
+				<i class='bx bxs-building-house' ></i>
+				<span>{{ userDto.workplace }}</span>
+				
+			</div>
+			<div>
+				<i class='bx bx-current-location'></i>
+				<span>{{ userDto.hometown }}</span>
+				
+			</div>
+			
 		</div>
-		<div class="actions">
+	</div>
+	<div class="actions">
 
-			<div
-			*ngIf="userDto.friendshipStatus"
-			class="others" >
+		<div
+		*ngIf="userDto.friendshipStatus"
+		class="others" >
+			<div 
+			(click)="openChatBox()"
+			class="message">
+				<i class='bx bxs-message-square-dots'></i>
+				<span>Nhắn tin</span>
+			</div>
+
+			<div 
+			(click)="sendRequest()"
+			*ngIf="userDto.friendshipStatus == 'NULL'"
+			class="add-friend">
+				<i class='bx bxs-user-plus' ></i>
+				<span>Thêm bạn</span>
+			</div>
+
+			<div 
+			(click)="deleteRequest()"
+			*ngIf="userDto.friendshipStatus == 'SENT'"
+			class="cancel">
+				<i class='bx bxs-x-square' ></i>
+				<span>Huỷ lời mời</span>
+			</div>
+
+
+			<div 
+			*ngIf="userDto.friendshipStatus == 'RECEIVED'"
+			(click)="friendOptsVisible = !friendOptsVisible"
+			class="received">
+				<i class='bx bx-user-check' ></i>
+				<span>Trả lời</span>
 				<div 
-				(click)="openChatBox()"
-				class="message">
-					<i class='bx bxs-message-square-dots'></i>
-					<span>Nhắn tin</span>
-				</div>
-
-				<div 
-				(click)="sendRequest()"
-				*ngIf="userDto.friendshipStatus == 'NULL'"
-				class="add-friend">
-					<i class='bx bxs-user-plus' ></i>
-					<span>Thêm bạn</span>
-				</div>
-
-				<div 
-				(click)="deleteRequest()"
-				*ngIf="userDto.friendshipStatus == 'SENT'"
-				class="cancel">
-					<i class='bx bxs-x-square' ></i>
-					<span>Huỷ lời mời</span>
-				</div>
-
-
-				<div 
-				*ngIf="userDto.friendshipStatus == 'RECEIVED'"
-				(click)="friendOptsVisible = !friendOptsVisible"
-				class="received">
-					<i class='bx bx-user-check' ></i>
-					<span>Trả lời</span>
-					<div 
-					*ngIf="friendOptsVisible"
-					(clickOutside)="friendOptsVisible = false"
-					[delayClickOutsideInit]="true"
-					class="opts">
-						<div (click)="acceptRequest()">
-							<i class='bx bx-check' ></i>
-							<span>Chấp nhận lời mời</span>
-						</div>
-						<div (click)="deleteRequest()">
-							<i class='bx bx-x' ></i>
-							<span>Từ chối</span>
-						</div>
+				*ngIf="friendOptsVisible"
+				(clickOutside)="friendOptsVisible = false"
+				[delayClickOutsideInit]="true"
+				class="opts">
+					<div (click)="acceptRequest()">
+						<i class='bx bx-check' ></i>
+						<span>Chấp nhận lời mời</span>
+					</div>
+					<div (click)="deleteRequest()">
+						<i class='bx bx-x' ></i>
+						<span>Từ chối</span>
 					</div>
 				</div>
+			</div>
 
+			<div 
+			*ngIf="userDto.friendshipStatus == 'FRIEND'"
+			(click)="friendOptsVisible = !friendOptsVisible"
+			class="friend">
+				<i class='bx bxs-user-check'></i>
+				<span>Bạn bè</span>
 				<div 
-				*ngIf="userDto.friendshipStatus == 'FRIEND'"
-				(click)="friendOptsVisible = !friendOptsVisible"
-				class="friend">
-					<i class='bx bxs-user-check'></i>
-					<span>Bạn bè</span>
-					<div 
-					*ngIf="friendOptsVisible"
-					(clickOutside)="friendOptsVisible = false"
-					[delayClickOutsideInit]="true"
-					class="opts">
-						<div
-						(click)="unfriend()"
-						>
-							<i class='bx bx-user-x' ></i>
-							<span>Huỷ bạn bè</span>
-						</div>
+				*ngIf="friendOptsVisible"
+				(clickOutside)="friendOptsVisible = false"
+				[delayClickOutsideInit]="true"
+				class="opts">
+					<div
+					(click)="unfriend()"
+					>
+						<i class='bx bx-user-x' ></i>
+						<span>Huỷ bạn bè</span>
 					</div>
 				</div>
+			</div>
 
+			<div 
+			(click)="moreActionOptsVisible = !moreActionOptsVisible"	
+			class="more-actions">
+				<i class='bx bx-dots-horizontal-rounded' ></i>
 				<div 
-				(click)="moreActionOptsVisible = !moreActionOptsVisible"	
-				class="more-actions">
-					<i class='bx bx-dots-horizontal-rounded' ></i>
+				*ngIf="moreActionOptsVisible"
+				(clickOutside)="moreActionOptsVisible = false"
+				[delayClickOutsideInit]="true"
+				class="opts">
 					<div 
-					*ngIf="moreActionOptsVisible"
-					(clickOutside)="moreActionOptsVisible = false"
-					[delayClickOutsideInit]="true"
-					class="opts">
-						<div 
 
-						>
-							<i class='bx bx-block'></i>
-							<span>Chặn</span>
-						</div>
-				</div>
-			</div>
-			</div>
-			<div class="me">
-
+					>
+						<i class='bx bx-block'></i>
+						<span>Chặn</span>
+					</div>
 			</div>
 		</div>
+		</div>
+		<div class="me">
+
+		</div>
+	</div>
 </div>

@@ -66,10 +66,10 @@
       <div class="home-shortcut">
         <div class="pill-container">
           <a 
-          routerLink="/{{ loggedInUserId }}" 
+          routerLink="/{{ loggedInUserProfileId }}" 
           class="pill">
             <span class="avatar">
-              <img [src]="loggedInUserAvatarUrl">
+              <img [src]="loggedInUserAvatarUrl || 'http://localhost:8080/contents/default-avatar.png'">
             </span>
             <span class="username">
               <span>{{ loggedInUsername }}</span>
@@ -87,28 +87,42 @@
           <div 
           (click)="this.chatNotifVisible = !this.chatNotifVisible"
           class="chat-noti">
-            <i class='bx bxs-message-square-dots' ></i>
+            <app-chat-notification></app-chat-notification>
           </div>
         </li>
         <li>
           <div class="general-noti">
-            <i class='bx bxs-bell' ></i>
+            <app-notification></app-notification>
           </div>
         </li>
         <li>
-          <div class="more-opts">
-            <i class='bx bx-chevron-down' ></i>
-          </div>
+
+            <div 
+            (click)="moreOptsVisible = !moreOptsVisible"
+            class="more-opts">
+              <i class='bx bx-chevron-down' ></i>
+              <div 
+              (clickOutside)="moreOptsVisible = false"
+              [delayClickOutsideInit]="true"
+              *ngIf="moreOptsVisible"
+              class="more-opts__items">
+                <div 
+                (click)="logout()"
+                class="logout">
+                  <div class="icon">
+                    <i class='bx bx-exit'></i>
+                  </div>
+                  <span>Đăng xuất</span>
+                </div>
+              </div>
+            </div>
 
         </li>
       </ul>
     </div>
   </div>
 </nav>
-<app-chat-box></app-chat-box>
-<app-chat-notication
-[ngClass]="{'hidden': !chatNotifVisible}"
-></app-chat-notication>
+<!-- <app-user-ref-popup></app-user-ref-popup> -->
 <!-- (clickOutside)="chatNotifVisible = false"
 [delayClickOutsideInit]="true" -->
 <app-create-post 

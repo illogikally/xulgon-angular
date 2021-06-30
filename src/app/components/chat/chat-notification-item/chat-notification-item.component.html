@@ -1,25 +1,43 @@
-<div class="chat-noti-item">
+<div
+(click)="openChatBox($event)"
+class="chat-noti-item">
 	<div class="content">
 		<div class="avatar">
 			<div class="avatar-container">
-				<img src="assets/{{url}}" />
+				<img [src]="conversation.user.avatarUrl"/>
 			</div>
 		</div>
 		<div class="body">
-			<div class="name">{{name}}</div>
+			<div class="name">{{ conversation.user.username }}</div>
 			<div class="msg--ago">
-				<span class="msg">{{msg}}</span>
-				<span> · </span> 
-				<span class="ago">{{ago}}</span>
+				<span 
+				[ngStyle]="{'color': isConversationRead() ? 'inherit' : '#1877f2' }"
+				class="msg">
+					<span
+					*ngIf="conversation.latestMessage.userId == loggedInUserId"
+					>Bạn: </span>
+					{{ conversation.latestMessage.message }}
+				</span>
+				<span>&nbsp;·&nbsp;</span> 
+				<span class="ago">{{ conversation.latestMessage.createdAgo }}</span>
 			</div>
 		</div>
 	</div>
-	<div class="opts">
+	<!-- <div 
+	#opts
+	class="opts">
 		<div class="opts-btn">
 			<i class='bx bx-dots-horizontal-rounded'></i>
 			<div class="opts-popup">
 				<div>Đánh dấu là đã đọc</div>
 			</div>
 		</div>
+	</div> -->
+	<div 
+	[ngClass]="isConversationRead() ? 'hidden' : 'visible'"
+	#markAsRead
+	(click)="read()"
+	class="mark-as-read">
+
 	</div>
 </div>

@@ -17,9 +17,8 @@ export class MyRxStompConfig extends InjectableRxStompConfig {
     this.heartbeatIncoming = 0;
     this.heartbeatOutgoing = 20000;
     this.reconnectDelay = 500;
-    this.debug = (msg: string) => {
-      console.log(new Date(), msg);
-      
-    }
+    // this.debug = (msg: string) => {
+    //   console.log(new Date(), msg);
+    // }
   }
 }

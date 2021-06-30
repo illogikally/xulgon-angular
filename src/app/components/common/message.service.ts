@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { GroupResponse } from '../group/group-response';
 import { Post } from '../post/post';
 import { UserProfile } from '../profile/user-profile';
+import { UserBasic } from './user-basic';
 import { UserDto } from './user-dto';
 
 @Injectable({
@@ -17,12 +18,25 @@ export class MessageService {
   private friendshipStatus = new Subject<string>();
   private deleteFriendRequest = new Subject<number>();
   private createdPost = new Subject<Post>();
+  notif = new BehaviorSubject<any>('');
   postDeleted = new Subject<number>();
   groupLoaded = new BehaviorSubject<GroupResponse>({} as GroupResponse);
+  userRef = new Subject<any>();
+  loggedIn = new Subject<void>();
   updateAvatar = new Subject<string>();
-  pageId = new BehaviorSubject<any>(null);
-  openChatBox = new Subject<any>();
-  userRef = new Subject<UserDto>();
+  // pageId = new BehaviorSubject<number | undefined>(undefined);
+  private pageId = new BehaviorSubject<number | undefined>(undefined);
+  loadPostsByPageId(pageId: number | undefined): void {
+    this.pageId.next(pageId);
+  }
+
+  onLoadPostsByPageId(): Observable<number | undefined> {
+    return this.pageId.asObservable();
+  }
+
+
+  openChatBox = new Subject<UserBasic>();
+  // userRef = new Subject<UserDto>();
   updateCoverPhoto = new Subject<string>();
   updateAvatarOrCover = new BehaviorSubject<string>('');
   private userProfileLoaded = new BehaviorSubject<UserProfile>({} as UserProfile);
