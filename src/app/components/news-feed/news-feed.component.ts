@@ -16,11 +16,11 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
 
   pageId: number;
   posts!: Post[];
-  constructor(private auth: AuthenticationService,
+  constructor(private auth$: AuthenticationService,
     private title: Title,
-    private messageService: MessageService,
+    private message$: MessageService,
     private http: HttpClient) {
-    this.pageId = auth.getProfileId();
+    this.pageId = auth$.getProfileId();
   }
 
   isDestroyed = false;
@@ -30,7 +30,6 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle('Xulgon');
-    // this.messageService.pageId.next(undefined);
 
     this.http.get<Post[]>(`http://localhost:8080/api/users/timeline`).subscribe(resp => {
       this.posts = resp;

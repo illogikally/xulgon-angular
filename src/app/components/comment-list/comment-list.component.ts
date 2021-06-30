@@ -31,7 +31,7 @@ export class CommentListComponent implements OnInit {
     private http: HttpClient,
     private authService: AuthenticationService,
     private message$: MessageService) { 
-      this.loggedInUserAvatarUrl = authService.getAuth().avatarUrl;
+      this.loggedInUserAvatarUrl = authService.getAvatarUrl();
   }
 
   ngOnInit(): void {

@@ -12,7 +12,7 @@ export class MyRxStompConfig extends InjectableRxStompConfig {
     super();
     this.webSocketFactory = () => new SockJS('http://localhost:8080/ws');
     this.connectHeaders = {
-      'X-Authorization': this.auth.getAuthenticationToken()
+      'X-Authorization': this.auth.getToken()
     },
     this.heartbeatIncoming = 0;
     this.heartbeatOutgoing = 20000;

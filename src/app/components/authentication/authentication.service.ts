@@ -15,7 +15,7 @@ export class AuthenticationService {
 
   refreshToken = {
     token: this.getRefreshToken(),
-    username: this.getUserName()
+    username: this.getUsername()
   }
 
 
@@ -26,32 +26,46 @@ export class AuthenticationService {
   login(loginRequest: LoginRequest): Observable<boolean> {
     return this.httpClient.post<LoginResponse>("http://localhost:8080/api/authentication/token/retrieve", loginRequest)
       .pipe(map(data => {
-        this.localStorage.store('auth', data);
-        this.localStorage.store('authenticationToken', data.token);
-        this.localStorage.store('refreshToken', data.refreshToken);
-        this.localStorage.store('username', data.username);
-        this.localStorage.store('expiresAt', data.expiresAt);
-        this.localStorage.store('userId', data.userId);
         this.localStorage.store('avatarUrl', data.avatarUrl);
+        this.localStorage.store('expiresAt', data.expiresAt);
         this.localStorage.store('profileId', data.profileId);
+        this.localStorage.store('refreshToken', data.refreshToken);
+        this.localStorage.store('token', data.token);
+        this.localStorage.store('userFullName', data.userFullName);
+        this.localStorage.store('userId', data.userId);
+        this.localStorage.store('username', data.username);
         return true;
       }));
   }
 
-  getAuth(): any {
-    return this.localStorage.retrieve('auth');
+  refreshAuthToken() {
+  return this.httpClient.post<LoginResponse>('http://localhost:8080/api/authentication/token/refresh',
+    this.refreshToken)
+    .pipe(tap(data => {
+      this.localStorage.store('auth', data);
+      this.localStorage.store('expiresAt', data.expiresAt);
+      this.localStorage.store('token', data.token);
+    }));
   }
 
-  getUserName(): string {
-    return this.localStorage.retrieve('username');
+  getUserFullName(): string {
+    return this.localStorage.retrieve('userFullName');
   }
 
-  getAuthenticationToken(): string {
-    return this.localStorage.retrieve('authenticationToken');
+  getFirstName(): string {
+    return this.localStorage.retrieve('userFullName').split(' ').slice(-1)[0];
+  }
+
+  getToken(): string {
+    return this.localStorage.retrieve('token');
   }
 
   getProfileId(): number {
     return this.localStorage.retrieve('profileId');
+  }
+
+  getUsername(): string {
+    return this.localStorage.retrieve('username');
   }
 
   getRefreshToken(): string {
@@ -69,21 +83,22 @@ export class AuthenticationService {
   setAvatarUrl(url: string): void {
     this.localStorage.store('avatarUrl', url);
   }
+
   isLoggedIn(): boolean {
-    return this.getAuthenticationToken() != null;
+    return this.getToken() != null;
   }
 
   logout(): void {
     this.httpClient.post('http://localhost:8080/api/authentication/token/delete', this.getRefreshToken(), {responseType: 'text'})
       .subscribe(_ => {
-        this.localStorage.clear('authenticationToken');
-        this.localStorage.clear('expiresAt');
-        this.localStorage.clear('refreshToken');
-        this.localStorage.clear('username');
-        this.localStorage.clear('userId');
-        this.localStorage.clear('auth');
-        this.localStorage.clear('profileId');
         this.localStorage.clear('avatarUrl');
+        this.localStorage.clear('expiresAt');
+        this.localStorage.clear('profileId');
+        this.localStorage.clear('refreshToken');
+        this.localStorage.clear('token');
+        this.localStorage.clear('userFullName');
+        this.localStorage.clear('userId');
+        this.localStorage.clear('username');
       }, error => {
         throwError(error);
       });

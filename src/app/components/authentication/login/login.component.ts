@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   isLogin = false;
   registerError: boolean | undefined;
 
-  constructor(private authenticationService: AuthenticationService,
+  constructor(private auth$: AuthenticationService,
     private http: HttpClient,
     private location: Location,
     private router: Router ){
@@ -32,7 +32,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(window.location.href);
+    if (this.auth$.getToken()) {
+      this.router.navigateByUrl("/");
+    }
     
     if (/login/g.test(window.location.href)) {
       this.isLogin = true;
@@ -44,10 +46,11 @@ export class LoginComponent implements OnInit {
     })
 
     this.registerForm = new FormGroup({
-      username: new FormControl(''),
-      password: new FormControl(''),
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
+      username: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+      firstName: new FormControl('', [Validators.required, 
+        Validators.pattern('[a-zA-Z ]+')]),
+      lastName: new FormControl('', Validators.required),
     });
 
   }
@@ -77,7 +80,7 @@ export class LoginComponent implements OnInit {
     this.loginRequest.username = this.loginForm.get('username')?.value;
     this.loginRequest.password = this.loginForm.get('password')?.value;
     
-    this.authenticationService.login(this.loginRequest)
+    this.auth$.login(this.loginRequest)
       .subscribe(_ => {
         this.loginError = false;
         console.log('heh');

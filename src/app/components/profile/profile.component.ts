@@ -7,6 +7,8 @@ import { UserService } from '../common/user.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -115,7 +117,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (!id) return;
     this.messageService.loadPostsByPageId(id);
 
-    this.profileService.getUserProfile(id).subscribe(resp => {
+    this.profileService.getUserProfile(id)
+    .subscribe(resp => {
       this.pageNotFound = false;
       if (resp.isBlocked) this.pageError();
       this.title.setTitle(resp.fullName);
@@ -123,7 +126,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.userProfile = resp;
       this.messageService.sendLoadedProfile(this.userProfile);
       this.profileLoaded.emit(this.userProfile);
-    }, error => {
+    }, _ => {
       this.pageError();
     });
   }
@@ -173,7 +176,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     event.preventDefault();
     this.loadedTabs.add(tab);
     this.currentTab = tab;
-    // this.location.go(`${this.userProfile.id}/${tab}`);
     this.location.go(`${this.userProfile.id}/${tab}`);
   }
 

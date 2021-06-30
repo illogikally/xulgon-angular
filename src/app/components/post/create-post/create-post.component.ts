@@ -18,7 +18,7 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   files: Blob[] = [];
   sizeRatios: number[] = []
   avatarUrl: string;
-  fullname: string
+  userFullName: string
   postable: boolean = false;
   postForm!: FormGroup;
   isPrivacyOptsVisible = false;
@@ -34,7 +34,7 @@ export class CreatePostComponent implements OnDestroy, OnInit {
     private renderer: Renderer2,
     private auth: AuthenticationService) { 
       this.avatarUrl = auth.getAvatarUrl();
-      this.fullname = auth.getAuth().fullname;
+      this.userFullName = auth.getUserFullName();
       
   }
 

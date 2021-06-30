@@ -21,6 +21,7 @@ export class ChatNotificationItemComponent implements OnInit {
   isRead!: boolean;
 
 
+
   constructor(private messageService: MessageService,
     private auth$: AuthenticationService) {
       this.loggedInUserId = this.auth$.getUserId();

@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit {
   constructor(private messageService: MessageService,
     private router: Router,
     private auth: AuthenticationService) { 
-    this.loggedInUsername = this.auth.getUserName();
+    this.loggedInUsername = this.auth.getFirstName();
     this.loggedInUserId = this.auth.getUserId();
     this.loggedInUserAvatarUrl = this.auth.getAvatarUrl();
     this.loggedInUserProfileId = this.auth.getProfileId();

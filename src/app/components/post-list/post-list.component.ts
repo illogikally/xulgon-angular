@@ -17,6 +17,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   @Input() pageId!: number;
   @Input() posts!: Post[];
 
+  isLoadingPost = true;
+
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   constructor(private activateRoute: ActivatedRoute,
     private message$: MessageService,
@@ -28,7 +30,6 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.message$.loadPostsByPageId(undefined);
     this.destroyed$.next(true);
     this.destroyed$.complete();
-    
   }
 
   ngOnInit(): void {
@@ -55,10 +56,15 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   loadPosts(pageId: number): void {
     if (!pageId) return;
+
     this.postService.getPostsByPageId(pageId)
-      .subscribe(posts => {
-        this.posts = posts;
-      });
+    .subscribe(posts => {
+      this.posts = posts;
+      this.isLoadingPost = false;
+    },
+    error => {
+      this.isLoadingPost = false;
+    });
       
   }
 }
