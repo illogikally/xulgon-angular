@@ -20,7 +20,7 @@ export class ChatBoxComponent implements OnInit {
   user!: any;
   @Input() markAsRead!: EventEmitter<number>;
 
-  constructor(private messageService: MessageService,
+  constructor(private message$: MessageService,
     private auth$: AuthenticationService,
     private renderer: Renderer2,
     private self: ElementRef,
@@ -34,12 +34,13 @@ export class ChatBoxComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.openChatBox.subscribe(user => {
+    this.message$.openChatBox.subscribe(user => {
       this.user = user;
       this.loadMessages();
       this.show();
     });
 
+    this.markAsRead
     this.rxStomp.watch('/user/queue/chat').subscribe(msg => {
       let chatMsg: ChatMessage = JSON.parse(msg.body);
       if (this.messages) {
@@ -71,7 +72,10 @@ export class ChatBoxComponent implements OnInit {
   }
 
   markConversationAsRead(): void {
-    if (this.messages[0].isRead || this.messages[0].userId == this.auth$.getUserId()) return;
+    if (this.messages[0]?.isRead === true || this.messages[0]?.userId === this.auth$.getUserId()) return;
+    this.messages[0].isRead = true;
+    console.log('mark as read');
+    
     this.markAsRead.emit(this.messages[0].id);
   }
 

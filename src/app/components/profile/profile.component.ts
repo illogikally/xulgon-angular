@@ -7,8 +7,11 @@ import { UserService } from '../common/user.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { catchError } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject } from 'rxjs';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { Post } from '../post/post';
+import { PostService } from '../post/post.service';
 
 @Component({
   selector: 'app-profile',
@@ -25,6 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   profileLoaded: EventEmitter<UserProfile> = new EventEmitter();
 
+  private destroyed$ = new ReplaySubject<boolean>(1);
   isUpdateAvatar = false;
   loggedInUserProfileId: number;
   userProfile!: UserProfile;
@@ -34,8 +38,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   showReplyRequestOpts = false;
   isFriendOptsVisible = false;
   moreActionOptsVisible = false;
+
+  timeline: Post[] | undefined; 
   
   constructor(private activateRoute: ActivatedRoute,
+    private post$: PostService,
     private renderer: Renderer2,
     private userService: UserService,
     private profileService: ProfileService,
@@ -43,30 +50,44 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private title: Title,
     private location: Location,
-    private messageService: MessageService) {
+    private message$: MessageService) {
     this.loggedInUserProfileId = auth.getProfileId();
   }
 
   ngOnDestroy(): void {
+    
+    console.log('destroyed');
+    
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
     this.renderer.setStyle(document.body, 'position', '');
   }
 
   ngOnInit(): void {
     this.initDefaultTab();
+    
 
-    this.router.events.subscribe(event => {
+    this.router.events
+    .pipe(takeUntil(this.destroyed$))
+    .subscribe(event => {
       this.initDefaultTab();
     });
 
-    this.messageService.updateCoverPhoto.subscribe(url => {
+    this.message$.updateCoverPhoto
+    .pipe(takeUntil(this.destroyed$))
+    .subscribe(url => {
       this.userProfile.coverPhotoUrl = url;
     });
 
-    this.messageService.updateAvatar.subscribe(url => {
+    this.message$.updateAvatar
+    .pipe(takeUntil(this.destroyed$))
+    .subscribe(url => {
       this.userProfile.avatar.url = url;
     });
 
-    this.activateRoute.params.subscribe(params => {
+    this.activateRoute.params
+    .pipe(takeUntil(this.destroyed$))
+    .subscribe(params => {
       const id = params['id'];
       if (id == null || !/\d+/g.test(id)) {
         this.pageError();
@@ -77,20 +98,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.loadProfile(id);
     });
 
-    this.messageService.onFriendRequestChange().subscribe(profileId => {
-      this.loadProfile(profileId);
-    });
+    // this.message$.onFriendRequestChange()
+    // .pipe(takeUntil(this.destroyed$))
+    // .subscribe(profileId => {
+    //   console.log('friend request chagne');
+      
+    //   this.loadProfile(profileId);
+    // });
 
-    this.messageService.onFriendshipStatusChange().subscribe(status => {
+    this.message$.onFriendshipStatusChange().subscribe(status => {
       this.userProfile.friendshipStatus = status;
     });
   }
 
   openChatBox(): void {
-    this.messageService.openChatBox.next({
+    this.message$.openChatBox.next({
       id: this.userProfile.userId,
       username: this.userProfile.fullName,
       avatarUrl: this.userProfile.avatar.url
+    });
+  }
+
+  getTimeline(profileId: number): void {
+    this.post$.getPostsByPageId(profileId).subscribe(posts => {
+      this.timeline = posts;
     });
   }
 
@@ -115,7 +146,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   loadProfile(id: number): void {
     if (!id) return;
-    this.messageService.loadPostsByPageId(id);
+    this.message$.loadPostsByPageId(id);
+    this.getTimeline(id);
 
     this.profileService.getUserProfile(id)
     .subscribe(resp => {
@@ -124,7 +156,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.title.setTitle(resp.fullName);
 
       this.userProfile = resp;
-      this.messageService.sendLoadedProfile(this.userProfile);
+      this.message$.sendLoadedProfile(this.userProfile);
       this.profileLoaded.emit(this.userProfile);
     }, _ => {
       this.pageError();
@@ -147,7 +179,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userService.deleteFriendRequest(this.userProfile.userId)
         .subscribe(_ => {
           this.userProfile.friendshipStatus = 'NULL';
-          this.messageService.sendDeleteFriendRequest(this.userProfile.userId);
+          this.message$.sendDeleteFriendRequest(this.userProfile.userId);
         });
   }
 
@@ -168,7 +200,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   acceptFriendRequest(): void {
     this.userService.acceptFriendRequest(this.userProfile.userId).subscribe(_ => {
       this.userProfile.friendshipStatus = 'FRIEND';
-      this.messageService.sendDeleteFriendRequest(this.userProfile.userId);
+      this.message$.sendDeleteFriendRequest(this.userProfile.userId);
     });
   }
 
@@ -181,7 +213,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   showUpdateProfilePic(type: string): void {
     this.isUpdateAvatar = true;
-    this.messageService.updateAvatarOrCover.next(type);
+    this.message$.updateAvatarOrCover.next(type);
   }
 
   block(): void {

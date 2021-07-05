@@ -1,6 +1,7 @@
 export interface UserDto {
   id: number;
   profileId: number;
+  isFollow: boolean;
   friendshipStatus: string;
   avatarUrl: string;
   workplace: string;

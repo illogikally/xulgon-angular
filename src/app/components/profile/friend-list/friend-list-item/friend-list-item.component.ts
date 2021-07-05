@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
+import { MessageService } from 'src/app/components/common/message.service';
 import { UserDto } from 'src/app/components/common/user-dto';
 import { UserService } from 'src/app/components/common/user.service';
 
@@ -11,16 +12,26 @@ import { UserService } from 'src/app/components/common/user.service';
 export class FriendListItemComponent implements OnInit {
 
   @Input() userDto!: UserDto;
-  @ViewChild('optionsBtn', {static: true}) optionsBtn!: ElementRef;
+  @Input() pageId!: number;
+  @ViewChild('optionsBtn') optionsBtn!: ElementRef;
   @Output() removeItem: EventEmitter<UserDto> = new EventEmitter();
   
   isOptionsVisible: boolean = false;
   loggedInUserId!: number;
+  loggedInProfileId!: number;
+
+  profileId!: number;
 
   constructor(private userService: UserService,
+    private message$: MessageService,
     private auth: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.message$.onLoadPostsByPageId().subscribe(pageId => {
+      if (!pageId) return;
+      this.profileId = pageId;
+    });
+    this.loggedInProfileId = this.auth.getProfileId();
     this.loggedInUserId = this.auth.getUserId();
   }
 
@@ -38,9 +49,14 @@ export class FriendListItemComponent implements OnInit {
   }
 
   unfriend(): void {
-    
     this.userService.unfriend(this.userDto.id).subscribe(_ => {
       this.removeItem.emit(this.userDto);
+    });
+  }
+
+  unfollow(): void {
+    this.userService.unfollow(this.userDto.id).subscribe(_ => {
+      this.userDto.isFollow = false;
     });
   }
 }

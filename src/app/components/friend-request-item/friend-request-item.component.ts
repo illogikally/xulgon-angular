@@ -32,9 +32,9 @@ export class FriendRequestItemComponent implements OnInit {
       return;
     }
 
-    this.messageService.changeFriendRequest(this.request.requesterId);
+    this.messageService.changeFriendRequest(this.request.requesterProfileId);
     this.profilePicked.emit(true);
-    this.location.go("/" + this.request.requesterId);
+    this.location.go("/" + this.request.requesterProfileId);
   }
 
   acceptRequest(): void {

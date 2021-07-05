@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '../common/message.service';
 import { ReplaySubject, Subscriber, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UserService } from '../common/user.service';
 
 @Component({
   selector: 'app-post-list',
@@ -15,15 +16,17 @@ import { takeUntil } from 'rxjs/operators';
 export class PostListComponent implements OnInit, OnDestroy {
 
   @Input() pageId!: number;
-  @Input() posts!: Post[];
+  @Input() posts: Post[] | undefined;
 
   isLoadingPost = true;
+  @Input() showGroup!: boolean;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
-  constructor(private activateRoute: ActivatedRoute,
+  constructor(private activatedRoute: ActivatedRoute,
+    private user$: UserService,
     private message$: MessageService,
-    private postService: PostService,
-    private authenticationService: AuthenticationService) {
+    private post$: PostService,
+    private auth$: AuthenticationService) {
   }
 
   ngOnDestroy() {
@@ -35,21 +38,21 @@ export class PostListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.message$.postDeleted.asObservable()
     .subscribe(id => {
-      this.posts = this.posts.filter(post => post.id != id);
+      this.posts = this.posts?.filter(post => post.id != id);
     });
 
-    this.message$.onLoadPostsByPageId()
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe(id => {
+    // this.message$.onLoadPostsByPageId()
+    // .pipe(takeUntil(this.destroyed$))
+    // .subscribe(id => {
       
-      if (id === undefined) return;
-      this.pageId = id;
-      this.loadPosts(id);
-    });
+    //   if (id === undefined) return;
+    //   this.pageId = id;
+    //   this.loadPosts(id);
+    // });
 
     this.message$.onCreatedPost().subscribe(post => {
       if (post.pageId == this.pageId) {
-        this.posts.unshift(post);
+        this.posts?.unshift(post);
       }
     });
   }
@@ -57,7 +60,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   loadPosts(pageId: number): void {
     if (!pageId) return;
 
-    this.postService.getPostsByPageId(pageId)
+    this.post$.getPostsByPageId(pageId)
     .subscribe(posts => {
       this.posts = posts;
       this.isLoadingPost = false;

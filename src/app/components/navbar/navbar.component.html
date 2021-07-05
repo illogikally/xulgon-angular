@@ -11,6 +11,7 @@
           <div class="input-group">
             <i class='bx bx-search' ></i>
             <input 
+            (keyup.enter)="search($event)"
             type="text" 
             placeholder="Tìm kiếm..." 
             id="search" name="search" autocomplete="off">

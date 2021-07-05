@@ -15,14 +15,14 @@
         <i class='bx bx-trash' ></i>
         <span>Xoá bài viết</span>
       </div>
-      <div>
+      <!-- <div>
         <i class='bx bx-group' ></i>
         <span>Chỉnh sửa riêng tư</span>
       </div>
       <div>
         <i class='bx bx-bell-off' ></i>
         <span>Tắt thông báo với bài viết này</span>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="post-header">
@@ -39,8 +39,12 @@
             <app-user-ref
             [userDto]="post.user"></app-user-ref>
           </div>
-          <!-- <span><i class='bx bxs-right-arrow' ></i></span> -->
-          <!-- <span>Forum Machine Learning cơ bản</span> -->
+          <span
+          *ngIf="showGroup && post.pageType == 'GROUP'"
+          >
+            <span><i class='bx bxs-right-arrow' ></i></span>
+            <span>{{ post.pageName }}</span>
+          </span>
         </div>
         <div class="date--privacy">
           <span>{{ post.createdAt }}</span>
@@ -113,12 +117,12 @@
         <i class='bx bx-message-alt'></i> Bình luận
       </span>
     </div>
-    <div *ngIf="post.privacy == 'PUBLIC'" class="share-action">
+    <!-- <div *ngIf="post.privacy == 'PUBLIC'" class="share-action">
       <span>
         <i class='bx bx-share'></i>
         <span>Chia sẻ</span>
       </span>
-    </div>
+    </div> -->
   </div>
   <div 
   *ngIf="showComment" 

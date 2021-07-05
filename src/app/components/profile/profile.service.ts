@@ -9,6 +9,7 @@ import { UserProfile } from './user-profile';
 export class ProfileService {
 
   url = 'http://localhost:8080/api/profiles/'
+
   constructor(private http: HttpClient) { }
 
   getUserProfile(id: number): Observable<UserProfile> {

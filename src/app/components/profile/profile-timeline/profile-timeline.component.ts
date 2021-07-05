@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { MessageService } from '../../common/message.service';
+import { Post } from '../../post/post';
 import { UserProfile } from '../user-profile';
 
 @Component({
@@ -11,8 +13,11 @@ import { UserProfile } from '../user-profile';
 })
 export class ProfileTimelineComponent implements OnInit, OnDestroy {
 
-  @Input() userProfile!: UserProfile;
+  @Input() userProfile: UserProfile | undefined;
+  @Input() timeline: Post[] | undefined;
   loggedInUserId: number;
+
+  private destroyed$ = new ReplaySubject<boolean>(1);
 
   constructor(private messageService: MessageService,
     private auth: AuthenticationService) {
@@ -21,13 +26,17 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
     }
 
   ngOnDestroy() {
-
+    this.destroyed$.next(true);
+    this.destroyed$.complete()
+    
   }
   ngOnInit(): void {
     
-    this.messageService.onProfileLoaded().subscribe(profile => {
-      this.userProfile = profile;
-    })
+    // this.messageService.onProfileLoaded()
+    // .pipe(takeUntil(this.destroyed$))
+    // .subscribe(profile => {
+    //   this.userProfile = profile;
+    // })
   }
 
   updateSticky = new Subject<boolean>();

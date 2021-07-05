@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MessageService } from '../common/message.service';
 import { UserProfile } from '../profile/user-profile';
@@ -18,9 +19,11 @@ export class FriendRequestComponent implements OnInit {
 
   constructor(private auth: AuthenticationService,
     private messageService: MessageService,
+    private title: Title,
     private http: HttpClient) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Friends')
 
     this.messageService.sendLoadedProfile({} as UserProfile);
 

@@ -1,7 +1,7 @@
-<div class="flex-center">
-  <div style="width: 680px; margin-top: 70px;">
+<div class="news-feed">
+  <div style="width: 680px">
     <app-post-list 
-    *ngIf="isDestroyed"
+    [showGroup]="true"
     [posts]="posts"></app-post-list>
   </div>
 </div>

@@ -35,7 +35,7 @@ import { PhotoListItemComponent } from './components/profile/photo-list/photo-li
 import { SquareImageComponent } from './components/common/square-image/square-image.component';
 import { PickAvatarComponent } from './components/profile/pick-avatar/pick-avatar.component';
 import { GroupComponent } from './components/group/group.component';
-import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
+import { GroupGeneralComponent } from './components/group/group-general/group-general.component';
 import { GroupAboutComponent } from './components/group/group-about/group-about.component';
 import { GroupMemberComponent } from './components/group/group-member/group-member.component';
 import { GroupMediaComponent } from './components/group/group-media/group-media.component';
@@ -61,6 +61,17 @@ import { LoggedInComponent } from './components/common/logged-in/logged-in.compo
 import { NotificationComponent } from './components/notification/notification/notification.component';
 import { NotifItemComponent } from './components/notification/notif-item/notif-item.component';
 import { PostViewComponent } from './components/post-view/post-view.component';
+import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
+import { SearchComponent } from './components/search/search.component';
+import { ByPeopleComponent } from './components/search/by-people/by-people.component';
+import { ByGroupsComponent } from './components/search/by-groups/by-groups.component';
+import { ByPostsComponent } from './components/search/by-posts/by-posts.component';
+import { ResultComponent } from './components/search/by-people/result/result.component';
+import { ByPeopleResultComponent } from './components/search/by-people/by-people-result/by-people-result.component';
+import { ByGroupResultComponent } from './components/search/by-people/by-group-result/by-group-result.component';
+import { RouteReuseStrategy } from '@angular/router';
+import { MyReuseStrategy } from './my-reuse-trategy';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 @NgModule({
   declarations: [
@@ -92,7 +103,7 @@ import { PostViewComponent } from './components/post-view/post-view.component';
     SquareImageComponent,
     PickAvatarComponent,
     GroupComponent,
-    GroupFeedComponent,
+    GroupGeneralComponent,
     GroupAboutComponent,
     GroupMemberComponent,
     GroupMediaComponent,
@@ -113,6 +124,14 @@ import { PostViewComponent } from './components/post-view/post-view.component';
     NotificationComponent,
     NotifItemComponent,
     PostViewComponent,
+    GroupFeedComponent,
+    SearchComponent,
+    ByPeopleComponent,
+    ByGroupsComponent,
+    ByPostsComponent,
+    ResultComponent,
+    ByPeopleResultComponent,
+    ByGroupResultComponent,
   ],
   imports: [
     FormsModule,
@@ -126,6 +145,10 @@ import { PostViewComponent } from './components/post-view/post-view.component';
     NgxWebstorageModule.forRoot(),
   ],
   providers: [
+    {
+      provide: RouteReuseStrategy,
+      useClass: MyReuseStrategy
+    },
     {
       provide: InjectableRxStompRpcConfig,
       useClass: MyRxStompConfig,

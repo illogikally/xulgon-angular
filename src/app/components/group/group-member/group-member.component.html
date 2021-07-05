@@ -19,14 +19,39 @@
 				<div 
 				*ngFor="let admin of admins"
 				class="member">
-					<div class="avatar">
-						<div class="avatar-cont">
-							<img [src]="admin.avatarUrl">
+					<div 
+					(click)="showOpts($event)"
+					*ngIf="groupProfile?.role === 'ADMIN'"
+					id="opts-{{admin.id}}"
+					class="opts">
+						<div 
+						(click)="memberOptsVisible = !memberOptsVisible"
+						class="btn opts-btn">
+							<i class='bx bx-dots-horizontal-rounded' ></i></div>
+						<!-- *ngIf="memberOptsVisible" -->
+						<div 
+						style="visibility: hidden;"
+						(clickOutside)="memberOptsVisible = false"
+						(click)="memberOptsVisible = false;"
+						[exclude]="'.opts-btn'"
+						class="opts-popup">
+							<div
+							(click)="promote(admin)"
+							>Cho thành viên làm quản trị viên</div>
+							<div
+							(click)="kick(admin)"
+							>Xoá thành viên</div>
 						</div>
 					</div>
-					<div class="name">
-						{{ admin.name }}
+					<div class="avatar">
+						<div class="avatar-cont">
+							<app-user-ref
+							[borderRadius]="'50%'"
+							[userDto]="admin.user"
+							></app-user-ref>
+						</div>
 					</div>
+						<app-user-ref [userDto]="admin.user" ></app-user-ref>
 				</div>
 			</div>
 			<div class="members">
@@ -39,11 +64,38 @@
 				class="member">
 					<div class="avatar">
 						<div class="avatar-cont">
-							<img [src]="member.avatarUrl">
+							<!-- <img [src]="member.avatarUrl"> -->
+							<app-user-ref
+							[borderRadius]="'50%'"
+							[userDto]="member.user"
+							></app-user-ref>
 						</div>
 					</div>
-					<div class="name">
+							<app-user-ref [userDto]="member.user" ></app-user-ref>
+					<!-- <div class="name">
 						{{ member.name }}
+					</div> -->
+					<div 
+					*ngIf="groupProfile?.role === 'ADMIN'"
+					(click)="showOpts($event)"
+					class="opts">
+						<div 
+						(click)="memberOptsVisible = !memberOptsVisible"
+						class="btn opts-btn">
+							<i class='bx bx-dots-horizontal-rounded' ></i></div>
+						<!-- *ngIf="memberOptsVisible" -->
+						<div 
+						(clickOutside)="memberOptsVisible = false"
+						(click)="memberOptsVisible = false;"
+						[exclude]="'.opts-btn'"
+						class="opts-popup">
+							<div
+							(click)="promote(member)"
+							>Cho thành viên làm quản trị viên</div>
+							<div
+							(click)="kick(member)"
+							>Xoá thành viên</div>
+						</div>
 					</div>
 				</div>
 			</div>

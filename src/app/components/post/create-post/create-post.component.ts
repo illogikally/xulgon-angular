@@ -56,9 +56,9 @@ export class CreatePostComponent implements OnDestroy, OnInit {
       this.files.push(event.target.files[0]);
       var reader = new FileReader();
 
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      reader.readAsDataURL(event.target.files[0]);
 
-      reader.onload = (event) => { // called once readAsDataURL is completed
+      reader.onload = (event) => { 
         let img = new Image();
         img.src = event.target?.result as string;
         img.onload = () => {
@@ -82,7 +82,7 @@ export class CreatePostComponent implements OnDestroy, OnInit {
 
     let targetPage = this.groupResponse ? 
         this.groupResponse.id : this.auth.getProfileId();
-    this.privacy = this.groupResponse ? 'GROUP' : this.privacy;
+    this.privacy = !this.groupResponse ? this.privacy : this.groupResponse.isPrivate ? 'GROUP' : 'PUBLIC';
 
     let postRequest = new Blob([JSON.stringify({
       pageId: targetPage,

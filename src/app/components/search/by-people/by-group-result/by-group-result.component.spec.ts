@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProfileTimelineComponent } from './profile-timeline.component';
+import { ByGroupResultComponent } from './by-group-result.component';
 
-describe('ProfileTimelineComponent', () => {
-  let component: ProfileTimelineComponent;
-  let fixture: ComponentFixture<ProfileTimelineComponent>;
+describe('ByGroupResultComponent', () => {
+  let component: ByGroupResultComponent;
+  let fixture: ComponentFixture<ByGroupResultComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProfileTimelineComponent ]
+      declarations: [ ByGroupResultComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProfileTimelineComponent);
+    fixture = TestBed.createComponent(ByGroupResultComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

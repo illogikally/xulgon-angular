@@ -1,0 +1,40 @@
+@import "src/styles";
+
+.result {
+	@include card(10px);
+	padding: 15px;
+	display: flex;
+
+	.avatar-container {
+		margin-right: 10px;
+
+		.avatar {
+			width: 60px;
+			display: block;
+			height: 60px;
+			border-radius: 50%;
+			border: 1px solid rgba(#333, .2);
+			overflow: hidden;
+
+			img {
+				aspect-ratio: 1;
+				object-fit: cover;
+				width: 100%;
+			}
+		}
+	}
+	.infos {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		.name {
+			display: block;
+			font-weight: 500;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}

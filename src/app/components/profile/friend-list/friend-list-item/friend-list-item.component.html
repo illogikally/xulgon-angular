@@ -23,10 +23,10 @@
     </div>
   
   <div class="flex-center">
-
     <div 
       (click)="showOptions()" 
       #optionsBtn
+      *ngIf="loggedInProfileId == profileId"
       class="options-btn">
         <i class='bx bx-dots-horizontal-rounded' ></i>
         <div 
@@ -38,7 +38,10 @@
             <i class='bx bx-user-x'></i>
             <span>Huỷ bỏ bạn bè</span>
           </div>
-          <div>
+          <div
+          *ngIf="userDto?.isFollow"
+          (click)="unfollow()"
+          >
             <i class='bx bx-outline' ></i>
             <span>Bỏ theo dõi</span>
           </div>

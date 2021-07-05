@@ -3,8 +3,11 @@
 .group {
   position: relative;
   top: 56px;
-  display: grid;
-  grid-template-columns: 360px 1fr;
+  display: flex;
+
+  .sidebar-below {
+    flex: 0 0 360px;
+  }
 
   .group-sidebar {
     position: fixed;
@@ -134,8 +137,9 @@
 
       }
     }
-
-
+  }
+  .group-content {
+    flex-grow: 1;
   }
 }
 

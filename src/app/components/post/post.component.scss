@@ -2,8 +2,8 @@
 
 .post {
   @include scrollbar(15px);
-  @include card(10px);
-  background-color: #fff;
+  // @include card(10px);
+  background-color: transparent;
   padding-bottom: 0;
   position: relative;
   padding: 10px 15px;
@@ -23,6 +23,7 @@
     .options-list {
       @extend %opts;
       bottom: auto;
+      z-index: 1;
       top: 120%;
       right: 0;
 

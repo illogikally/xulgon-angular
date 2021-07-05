@@ -1,10 +1,10 @@
   
 <div class="group">
   <div
+  class="sidebar-below"
+  *ngIf="groupResponse?.role == 'ADMIN'"
   >
-  <!-- *ngIf="false" -->
-    <div 
-    class="group-sidebar">
+    <div class="group-sidebar">
       <div class="title">
         <span>Quản lý nhóm</span>
       </div>
@@ -13,12 +13,11 @@
           <i class='bx bx-slider' ></i>
         </div>
         <div class="cover-img">
-          <!-- <img [src]="groupResponse?.coverPhotoUrl"> -->
-          <img src="assets/machine.jpg">
+          <img [src]="groupResponse?.coverPhotoUrl">
         </div>
         <div class="name--privacy">
           <div class="name">
-            Forum Machine Learning cơ bản
+            <span>{{ groupResponse?.name }}</span>
           </div>
           <div class="privacy">
             <div>

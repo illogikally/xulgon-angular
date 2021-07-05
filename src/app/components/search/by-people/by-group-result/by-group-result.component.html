@@ -1,0 +1,24 @@
+<div class="result">
+	<div class="avatar-container">
+		<a 
+		routerLink="/groups/{{result.id}}"
+		class="avatar">
+			<img [src]="result?.coverPhotoUrl" />
+		</a>
+	</div>
+	<div class="infos">
+
+		<a 
+		routerLink="/groups/{{result.id}}"
+		class="name">
+			<span>{{ result?.name }}</span>
+		</a>
+		<div class="privacy--member-count">
+			<span *ngIf="result.isPrivate">Nhóm riêng tư</span>
+			<span *ngIf="!result.isPrivate">Nhóm công khai</span>
+			<span> · </span>
+			<span>{{ result.memberCount }} thành viên</span>
+		</div>
+		<div></div>
+	</div>
+</div>

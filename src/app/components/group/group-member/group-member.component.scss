@@ -38,7 +38,28 @@
 				display: flex;
 				align-items: center;
 				margin-bottom: 10px;
+				position: relative;
 				font-size: 15px;
+
+				.opts {
+					position: absolute;
+					display: flex;
+					justify-content: center;
+					right: 10px;
+
+					.btn {
+						@include button($btn-grey, #050505);
+						width: 20px;
+					}
+
+					.opts-popup {
+						@extend %opts;
+						top: 110%;
+						right: 0;
+						bottom: auto;
+
+					}
+				}
 				.avatar {
 					margin-right: 15px;
 					.avatar-cont {

@@ -4,6 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MessageService } from '../common/message.service';
+import { UserService } from '../common/user.service';
 import { Post } from '../post/post';
 import { UserProfile } from '../profile/user-profile';
 
@@ -17,13 +18,11 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
   pageId: number;
   posts!: Post[];
   constructor(private auth$: AuthenticationService,
+    private user$: UserService,
     private title: Title,
-    private message$: MessageService,
     private http: HttpClient) {
     this.pageId = auth$.getProfileId();
   }
-
-  isDestroyed = false;
 
   ngOnDestroy() {
   }
@@ -31,8 +30,8 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.title.setTitle('Xulgon');
 
-    this.http.get<Post[]>(`http://localhost:8080/api/users/timeline`).subscribe(resp => {
-      this.posts = resp;
+    this.user$.getNewsFeed().subscribe(posts => {
+      this.posts = posts;
     });
   }
 

@@ -24,6 +24,8 @@ export class PostComponent implements OnInit {
 
 
   @Input() showComment: boolean = false;
+  @Input() showGroup!: boolean;
+
   isPostOptsVisible = false;
 
   loggedInUserId: number;
@@ -40,6 +42,7 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     this.messageService.groupLoaded.subscribe(group => {
+      if (!group) return;
       this.groupReponse = group;
     });
 

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { GroupResponse } from '../group/group-response';
+import { Post } from '../post/post';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +34,21 @@ export class UserService {
   
   acceptFriendRequest(userId: number): Observable<any> {
     return this.http.post(this.url + `${userId}/friends`, {});
+  }
+
+  getGroupFeed(): Observable<Post[]> {
+    return this.http.get<Post[]>(this.url + 'group-feed');
+  }
+
+  getNewsFeed(): Observable<Post[]> {
+    return this.http.get<Post[]>(this.url + 'news-feed');
+  }
+
+  getJoinedGroups(): Observable<GroupResponse[]> {
+    return this.http.get<GroupResponse[]>(this.url + "groups");
+  } 
+
+  unfollow(userId: number): Observable<any> {
+    return this.http.delete<any>(this.url + `${userId}/unfollow`);
   }
 }

@@ -20,7 +20,10 @@ export class MessageService {
   private createdPost = new Subject<Post>();
   notif = new BehaviorSubject<any>('');
   postDeleted = new Subject<number>();
-  groupLoaded = new BehaviorSubject<GroupResponse>({} as GroupResponse);
+  loadGroupFeed = new Subject<any>();
+  generalSearch = new BehaviorSubject<string>('');
+  loadGroupProfile = new BehaviorSubject<number | null>(null);
+  groupLoaded = new BehaviorSubject<GroupResponse | null>(null);
   userRef = new Subject<any>();
   loggedIn = new Subject<void>();
   updateAvatar = new Subject<string>();

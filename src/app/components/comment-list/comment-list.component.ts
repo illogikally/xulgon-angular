@@ -60,6 +60,8 @@ export class CommentListComponent implements OnInit {
   submit(): void {
     let formData = new FormData;
 
+console.log(this.postId);
+
     let commentRequest = new Blob( [JSON.stringify({
       parentId: this.contentId,
       postId: this.postId,

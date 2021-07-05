@@ -1,20 +1,29 @@
 <div class="group-timeline">
 	
 	<div class="content">
+		<div 
+		*ngIf="!groupResponse?.isMember && groupResponse?.isPrivate"
+		class="private-group-warn">
+			<div class="lock">
+				<img src="assets/lock.jpg" />
+			</div>	
+			<div class="text">
+				<div>Đây là nhóm riêng tư. </div>
+				<div>Hãy tham gia nhóm để xem bài viết của các thành viên</div>
+			</div>
+		</div>
 		<app-group-create-post
+		*ngIf="groupResponse?.isMember"
 		[groupResponse]="groupResponse"
 		></app-group-create-post>
 		<app-post-list></app-post-list>
-			
 	</div>
 	<div class="timeline-sidebar">
 
 			<div class="group-meta">
 				<div class="about mb-20">
 					<div class="w-500 f-17 mb-20">Giới thiệu</div>
-					<span>Thảo luận các vấn đề Machine Learning cơ bản.
-Theo blog: https://machinelearningcoban.com
-Diễn đàn: https://forum.machinelearningcoban.com/ Ẩn bớt</span>
+					<span>{{ groupResponse?.about }}</span>
 					
 				</div>
 				<div class="hidden">
@@ -35,7 +44,7 @@ Diễn đàn: https://forum.machinelearningcoban.com/ Ẩn bớt</span>
 						</div>
 						<div>
 							<div class="f-17 w-500">Riêng tư</div>
-							<div style="margin-top: 10px;">Chỉ thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng.</div>
+							<div>Chỉ thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng.</div>
 						</div>
 					</div>
 
@@ -45,7 +54,7 @@ Diễn đàn: https://forum.machinelearningcoban.com/ Ẩn bớt</span>
 						</div>
 						<div>
 							<div class="f-17 w-500">Công khai</div>
-							<div style="margin-top: 10px;">Ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng.</div>
+							<div>Ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng.</div>
 						</div>
 					</div>
 				</div>

@@ -1,0 +1,271 @@
+@import "src/styles";
+
+.group-general {
+	position: relative;
+	top: 56px;
+
+	&__inner {
+		display: flex;
+
+		.content {
+			flex-grow: 1;
+		}
+
+		.content-sidebar {
+			flex: 0 0 360px;
+
+			.sidebar {
+				background-color: #fff;
+				position: fixed;
+				top: 56px;
+				box-shadow: -2px 0 4px 0 rgba(#000, .2);
+				font-weight: 500;
+				padding: 10px 8px;
+				box-sizing: border-box;
+				width: 360px;
+				bottom: 0;
+
+				.menu {
+					border-bottom: 1px solid rgba(#333, .2);
+					padding-bottom: 5px;
+
+					.title {
+						font-size: 24px;
+						font-weight: 700;
+						padding-left: 10px;
+					}
+					.input-group {
+						@extend %input-group;
+						margin: 10px 8px;
+						height: 35px;
+					}
+				}
+
+				.menu-items {
+					font-weight: 500;
+
+					.my-feed {
+						background-color: #e7f3ff;
+						// .icon-cont {
+						// 	background-color: $btn-blue;
+						// }
+					}
+					> div {
+						border-radius: 10px;
+						padding: 0 8px;
+						display: flex;
+						align-items: center;
+						height: 52px;
+						box-sizing: border-box;
+
+						.icon-cont {
+							@extend %fc;
+							width: 35px;
+							height: 35px;
+							border-radius: 50%;
+							margin-right: 8px;
+							background-color: $btn-grey;
+
+							i {
+								font-size: 25px;
+							}
+						}
+						
+					}
+				}
+
+				.create-group {
+					@extend %fc;
+					padding: 5px;
+					border-radius: 5px;
+					color: $btn-blue;
+					background-color: #e7f3ff;
+					cursor: pointer;
+					margin: 5px 8px;
+					
+					&:hover {
+						background-color: darken(#e7f3ff, 3);
+					}
+
+					&__inner {
+						display: flex;
+						align-items: center;
+					}
+				}
+
+				.create-group-form {
+					margin: 0 8px;
+					position: relative;
+
+					label {
+						margin-bottom: 2px;
+						margin-left: 5px;
+					}
+
+						.input-group-name {
+							position: relative;
+							margin-bottom: 10px;
+							border-radius: 10px;
+							box-sizing: border-box;
+							border: 1px solid rgba(#333, .2);
+							outline: none;
+							height: 50px;
+							padding: 0 15px;
+							font-size: 16px;
+							width: 100%;
+
+							&:focus {
+								box-shadow: 0 0 0 2px rgba($btn-blue, .6);
+								border: none;
+							}
+						}
+
+					.privacy-drop {
+						.chose {
+							width: 100%;
+							cursor: pointer;
+							height: 50px;
+							border-radius: 10px;
+							box-sizing: border-box;
+							display: flex;
+							align-items: center;
+							padding: 0 15px;
+							border: 1px solid rgba(#333, .2);
+
+
+							&:focus {
+								box-shadow: 0 0 0 2px rgba($btn-blue, .6);
+								border: none;
+							}
+
+							> div {
+								display: flex;
+								align-items: center;
+
+								.icon {
+									margin-right: 8px;
+								}
+							}
+
+							.arrow {
+								position: absolute;
+								right: 10px;
+								font-size: 13px;
+							}
+						}
+
+
+						.drop-list {
+							@include card(10px);
+							padding: 5px;
+							box-shadow: 0 0 16px rgba(#000, .2);
+							z-index: 1;
+							position: absolute;
+
+
+							> div:not(.arrow) {
+								cursor: pointer;
+								display: flex;
+								border-radius: 10px;
+								padding: 5px ;
+
+								&:hover {
+									background-color: rgba(#ddd, .6);
+								}
+							}
+							.icon {
+								@extend %fc;
+								margin-right: 10px;
+
+								&__inner {
+									@extend %fc;
+									width: 36px;
+									height: 36px;
+									font-size: 20px;
+									border-radius: 50%;
+									overflow: hidden;
+									background-color: #ddd;
+								}
+							}
+							.text {
+								.primary {
+									font-weight: 500;
+								}
+								.secondary {
+									font-size: 13px;
+									font-weight: 400;
+									color: var(--secondary-text);
+								}
+							}
+						}
+					}
+
+					.buttons {
+						display: flex;
+						margin-top: 10px;;
+						justify-content: space-between;
+						width: 100%;
+
+						.abort {
+							flex-basis: 30%;
+							@include button($btn-grey, #050505); 
+						}
+
+						.submit {
+							flex-basis: 50%;
+							@include button($btn-blue, #fff);
+						}
+					}
+				}
+			}
+			.admin-groups {
+				padding: 10px 0;
+				border-bottom: 1px solid rgba(#333, .2);
+				&__title {
+					font-size: 17px;
+
+				}
+			}
+			.groups {
+				&__title {
+					margin-top: 10px;
+					font-size: 17px;
+
+				}
+
+			}
+		}
+
+	}
+}
+		.group-item {
+			margin-top: 10px;
+			padding: 2px 5px;
+			&__inner {
+				display: flex;
+			}
+			.avatar {
+				width: 60px;
+				height: 60px;
+				margin-right: 10px;
+				border: 1px solid rgba(#333, .15);
+				border-radius: 5px;
+				overflow: hidden;
+
+				img {
+					width: 100%;
+					aspect-ratio: 1;
+					object-fit: cover;
+				}
+			}
+			.name {
+				display: flex;
+				align-items: center;
+			}
+		}
+
+
+.forbidden {
+	background-color: rgba($btn-blue, .5) !important;
+	cursor: not-allowed !important;
+}

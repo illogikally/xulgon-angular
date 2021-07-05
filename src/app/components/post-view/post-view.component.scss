@@ -1,3 +1,5 @@
+@import "src/styles";
+
 .post-view {
 	position: relative;
 	width: 100%;
@@ -6,6 +8,7 @@
 	top: 56px;
 
 	&__inner {
+		@include card(10px);
 		padding-top: 20px;
 		width: 680px;
 	}

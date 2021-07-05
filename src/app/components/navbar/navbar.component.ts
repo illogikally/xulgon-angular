@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -22,6 +23,7 @@ export class NavbarComponent implements OnInit {
   loggedInUserProfileId!: any;
 
   constructor(private messageService: MessageService,
+    private location: Location,
     private router: Router,
     private auth: AuthenticationService) { 
     this.loggedInUsername = this.auth.getFirstName();
@@ -51,5 +53,13 @@ export class NavbarComponent implements OnInit {
 
   closeCreatePost(): void {
     this.isCreatePostVisible = false;
+  }
+
+  search(event: any): void {
+    if (!event.target.value) return;
+    this.router.navigateByUrl('/search/people?q=' + event.target.value);
+    // if (window.location.href.includes("http://localhost:4200/search/")) {
+    //   window.location.reload();
+    // }
   }
 }

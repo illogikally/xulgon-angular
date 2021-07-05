@@ -1,33 +1,23 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/authentication/login/login.component';
 import { AuthenticationGuard } from './components/authentication/authentication.guard'
-import { HomeComponent } from './components/home/home.component'
-import { NavbarComponent } from './components/navbar/navbar.component'
 import { ProfileComponent } from './components/profile/profile.component';
-import { CreatePostComponent } from './components/post/create-post/create-post.component'
-import { PhotoComponent } from './components/common/photo/photo.component';
-import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer.component';
 import { FriendRequestComponent } from './components/friend-request/friend-request.component';
-import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { NewsFeedComponent } from './components/news-feed/news-feed.component';
-import { FriendListComponent } from './components/profile/friend-list/friend-list.component';
-import { ProfileTimelineComponent } from './components/profile/profile-timeline/profile-timeline.component';
-import { PhotoListComponent } from './components/profile/photo-list/photo-list.component';
 import { GroupComponent } from './components/group/group.component';
-import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
-import { GroupTimelineComponent } from './components/group/group-timeline/group-timeline.component';
-import { GroupAboutComponent } from './components/group/group-about/group-about.component';
-import { GroupMediaComponent } from './components/group/group-media/group-media.component';
-import { GroupMemberComponent } from './components/group/group-member/group-member.component';
-import { UserRefComponent } from './components/common/user-ref/user-ref.component';
-import { PostSkeletonComponent } from './components/post/post-skeleton/post-skeleton.component';
+import { GroupGeneralComponent } from './components/group/group-general/group-general.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
 import { JoinRequestListComponent } from './components/group/join-request-list/join-request-list.component';
 import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
 import { LoggedInComponent } from './components/common/logged-in/logged-in.component';
 import { PostViewComponent } from './components/post-view/post-view.component';
+import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
+import { SearchComponent } from './components/search/search.component';
+import { ByPeopleComponent } from './components/search/by-people/by-people.component';
+import { ByPostsComponent } from './components/search/by-posts/by-posts.component';
+import { ByGroupsComponent } from './components/search/by-groups/by-groups.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -37,21 +27,31 @@ const routes: Routes = [
     component: LoggedInComponent,
     canActivate: [AuthenticationGuard],
     children: [
+      { path: '', component: NewsFeedComponent },
       { 
         path: 'permalink/:id', 
         component: PostViewComponent
       },
-      { path: '', component: NewsFeedComponent },
       { path: 'friends', component: FriendRequestComponent },
+      { 
+        path: 'search',
+        component: SearchComponent,
+        children: [
+          { path: '', redirectTo: 'people', pathMatch: 'full'},
+          { path: 'people', component: ByPeopleComponent},
+          { path: 'groups', component: ByGroupsComponent},
+          { path: 'posts', component: ByPostsComponent},
+        ]
+
+      },
       { 
         path: 'groups', 
         children: [
 
           { path: '', redirectTo: 'feed', pathMatch: 'full'},
-          { path: 'feed', component: GroupFeedComponent},
+          { path: 'feed', component: GroupGeneralComponent },
           {
             path: ':id', 
-            component: GroupComponent,
             children: [
               { path: '', component: GroupContentComponent},
               { path: 'about', component: GroupContentComponent},
@@ -65,7 +65,6 @@ const routes: Routes = [
       },
       { 
         path: ':id', 
-        component: ProfileComponent, 
         children: [
           { path: '', component: ProfileComponent },
           { path: 'about', component: ProfileComponent},
@@ -82,7 +81,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload', scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

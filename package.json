@@ -24,6 +24,7 @@
     "@types/sockjs-client": "^1.5.0",
     "css-element-queries": "^1.2.3",
     "ng-click-outside": "^8.0.0",
+    "ngx-auto-unsubscribe": "^3.0.1",
     "ngx-skeleton-loader": "^2.9.1",
     "ngx-webstorage": "^8.0.0",
     "rxjs": "~6.6.0",

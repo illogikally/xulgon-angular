@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { GroupResponse } from './group-response';
 
 @Injectable({
   providedIn: 'root'
@@ -21,4 +22,21 @@ export class GroupService {
   declineRequest(requestId: number): Observable<any> {
     return this.http.delete<any>(`http://localhost:8080/api/group-join-requests/${requestId}`);
   }
+
+  createGroup(request: any): Observable<number> {
+    return this.http.post<number>(this.groupUrl, request);
+  }
+
+  leaveGroup(groupId: number): Observable<any> {
+    return this.http.delete<any>(this.groupUrl + `${groupId}/quit`);
+  }
+
+  promote(userId: number, groupId: number): Observable<any> {
+    return this.http.put<any>(this.groupUrl + `${groupId}/promote/${userId}`, {});
+  }
+
+  kick(userId: number, groupId: number): Observable<any> {
+    return this.http.put<any>(this.groupUrl + `${groupId}/kick/${userId}`, {});
+  }
+
 }

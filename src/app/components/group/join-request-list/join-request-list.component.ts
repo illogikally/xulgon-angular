@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { MessageService } from '../../common/message.service';
 import { GroupService } from '../group.service';
 
@@ -7,17 +9,26 @@ import { GroupService } from '../group.service';
   templateUrl: './join-request-list.component.html',
   styleUrls: ['./join-request-list.component.scss']
 })
-export class JoinRequestListComponent implements OnInit {
+export class JoinRequestListComponent implements OnInit, OnDestroy {
 
   joinRequests!: any[];
   dummy!: any[];
 
+  private destroyed$ = new ReplaySubject<boolean>(1);
+
   constructor(private groupService: GroupService,
     private messageService: MessageService) { }
 
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
+
   ngOnInit(): void {
-    this.messageService.groupLoaded.subscribe(group => {
-      if (!group.id) return;
+    this.messageService.groupLoaded
+    .pipe(takeUntil(this.destroyed$))
+    .subscribe(group => {
+      if (!group) return;
 
       this.groupService.getJoinRequests(group.id).subscribe(requests => {
         this.joinRequests = requests;
@@ -31,8 +42,6 @@ export class JoinRequestListComponent implements OnInit {
   }
 
   inputChange(event: any): void {
-    console.log(event.target.value);
-    
     let pattern: string = event.target.value;
 
     this.joinRequests = this.dummy.filter((req: any) => {

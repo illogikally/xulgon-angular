@@ -173,6 +173,8 @@
 
     <app-profile-timeline
     *ngIf="loadedTabs.has('')"
+    [timeline]="timeline"
+    [userProfile]="userProfile"
     [ngClass]="{'none': currentTab != ''}"
     ></app-profile-timeline>
 

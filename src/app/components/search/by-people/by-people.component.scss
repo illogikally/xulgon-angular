@@ -1,0 +1,11 @@
+.by-people {
+	width: 680px;
+	margin-top: 20px;
+
+	&__inner {
+		> * {
+			display: block;
+			margin-bottom: 17px;
+		}
+	}
+}

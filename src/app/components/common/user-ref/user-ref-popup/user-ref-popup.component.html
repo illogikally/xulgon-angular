@@ -3,21 +3,21 @@
 class="user-ref-popup">
 	<div class="avatar--info">
 		<div class="avatar">
-			<img [src]="userDto.avatarUrl" />
+			<img [src]="userDto?.avatarUrl" />
 		</div>
 		<div class="info--name">
 			<div class="name">
-				<span>{{ userDto.username }}</span>
+				<span>{{ userDto?.username }}</span>
 				
 			</div>
 			<div>
 				<i class='bx bxs-building-house' ></i>
-				<span>{{ userDto.workplace }}</span>
+				<span>{{ userDto?.workplace }}</span>
 				
 			</div>
 			<div>
 				<i class='bx bx-current-location'></i>
-				<span>{{ userDto.hometown }}</span>
+				<span>{{ userDto?.hometown }}</span>
 				
 			</div>
 			
@@ -26,7 +26,7 @@ class="user-ref-popup">
 	<div class="actions">
 
 		<div
-		*ngIf="userDto.friendshipStatus"
+		*ngIf="userDto?.friendshipStatus"
 		class="others" >
 			<div 
 			(click)="openChatBox()"
@@ -37,7 +37,7 @@ class="user-ref-popup">
 
 			<div 
 			(click)="sendRequest()"
-			*ngIf="userDto.friendshipStatus == 'NULL'"
+			*ngIf="userDto?.friendshipStatus == 'NULL'"
 			class="add-friend">
 				<i class='bx bxs-user-plus' ></i>
 				<span>Thêm bạn</span>
@@ -45,7 +45,7 @@ class="user-ref-popup">
 
 			<div 
 			(click)="deleteRequest()"
-			*ngIf="userDto.friendshipStatus == 'SENT'"
+			*ngIf="userDto?.friendshipStatus == 'SENT'"
 			class="cancel">
 				<i class='bx bxs-x-square' ></i>
 				<span>Huỷ lời mời</span>
@@ -53,7 +53,7 @@ class="user-ref-popup">
 
 
 			<div 
-			*ngIf="userDto.friendshipStatus == 'RECEIVED'"
+			*ngIf="userDto?.friendshipStatus == 'RECEIVED'"
 			(click)="friendOptsVisible = !friendOptsVisible"
 			class="received">
 				<i class='bx bx-user-check' ></i>
@@ -75,7 +75,7 @@ class="user-ref-popup">
 			</div>
 
 			<div 
-			*ngIf="userDto.friendshipStatus == 'FRIEND'"
+			*ngIf="userDto?.friendshipStatus == 'FRIEND'"
 			(click)="friendOptsVisible = !friendOptsVisible"
 			class="friend">
 				<i class='bx bxs-user-check'></i>
