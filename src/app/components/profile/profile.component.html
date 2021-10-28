@@ -31,48 +31,56 @@
     <h1 
     [ngClass]="{loading: userProfile === undefined}" 
     class="profile-name flex-center">
-      {{ userProfile?.fullName}}
+      {{ userProfile?.fullName }}
     </h1>
   </div>
   <div class="flex-center">
     <div class="actions-menu">
       <ul class="profile-menu">
-        <li 
-        [ngClass]="{'tab-active': currentTab == ''}">
-
-          <a 
-          (click)="switchTab($event, '')"
-          href="http://localhost:4200/{{userProfile?.id}}"> 
+        <!-- [routerLink]="['./']" -->
+        <li
+        [routerLink]="['./']"
+        routerLinkActive="tab-active"
+        [routerLinkActiveOptions]="{exact: true}"
+        > 
+          <a
+          (click)="navigate('./', $event)"
+          >
             <div class="flex-center">
               <span>Bài viết</span> 
             </div>
           </a>
         </li>
         <li
-        [ngClass]="{'tab-active': currentTab == 'about'}">
-          <a 
-          (click)="switchTab($event, 'about')"
-          href="http://localhost:4200/{{userProfile?.id}}/about">
+        [routerLink]="['about']"
+        (click)="navigate('about', $event)"
+        routerLinkActive="tab-active"
+        >
+          <a>
             <div class="flex-center">
               <span>Giới thiệu</span>
             </div>
           </a>
         </li>
+
+        <!-- [routerLink]="['friends']" -->
         <li
-        [ngClass]="{'tab-active': currentTab == 'friends'}">
-          <a 
-          (click)="switchTab($event, 'friends')"
-          href="http://localhost:4200/{{userProfile?.id}}/friends">
+        [routerLink]="['friends']"
+        routerLinkActive="tab-active">
+          <a
+          (click)="navigate('friends', $event)"
+          >
             <div class="flex-center">
               <span>Bạn bè</span>
             </div>
           </a>
         </li>
         <li
-        [ngClass]="{'tab-active': currentTab == 'photos'}">
-          <a
-          href="http://localhost:4200/{{userProfile?.id}}/friends"
-          (click)="switchTab($event, 'photos')">
+        [routerLink]="['photos']"
+        routerLinkActive="tab-active">
+        <!-- [ngClass]="{'tab-active': tab('photos')}" -->
+          <a 
+          (click)="navigate('photos', $event)">
             <div class="flex-center">
               Ảnh
             </div>
@@ -170,8 +178,9 @@
 </div>
 <div class="profile-body">
   <div class="content-container">
+    <router-outlet></router-outlet>
 
-    <app-profile-timeline
+    <!-- <app-profile-timeline
     *ngIf="loadedTabs.has('')"
     [timeline]="timeline"
     [userProfile]="userProfile"
@@ -195,7 +204,7 @@
     [ngClass]="{'none': currentTab != 'about'}"
     >
 
-    </app-profile-about>
+    </app-profile-about> -->
 
   </div>
 </div>

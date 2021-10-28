@@ -12,7 +12,7 @@
     <div class="body">
       <a routerLink="/{{userDto.profileId}}" class="body-c">
       <div class="username">
-        <a href="http://localhost:8080/{{ userDto.id }}"></a>{{ userDto.username }}
+        {{ userDto.username }}
       </div>
       <div 
       *ngIf="userDto.commonFriendCount > 0 && userDto.id != loggedInUserId"

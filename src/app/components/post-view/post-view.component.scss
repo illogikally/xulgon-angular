@@ -9,8 +9,9 @@
 
 	&__inner {
 		@include card(10px);
-		padding-top: 20px;
+		margin-top: 20px;
 		width: 680px;
 	}
+
 	padding-bottom: 400px;
 }

@@ -71,7 +71,7 @@ import { ByPeopleResultComponent } from './components/search/by-people/by-people
 import { ByGroupResultComponent } from './components/search/by-people/by-group-result/by-group-result.component';
 import { RouteReuseStrategy } from '@angular/router';
 import { MyReuseStrategy } from './my-reuse-trategy';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { MessageService } from './components/common/message.service';
 
 @NgModule({
   declarations: [
@@ -147,7 +147,8 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   providers: [
     {
       provide: RouteReuseStrategy,
-      useClass: MyReuseStrategy
+      useClass: MyReuseStrategy,
+      deps: [MessageService]
     },
     {
       provide: InjectableRxStompRpcConfig,

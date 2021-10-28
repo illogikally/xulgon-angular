@@ -1,6 +1,5 @@
 <div class="friend-request">
   <div class="sidebar-container">
-
     <div class="sidebar">
       <div class="title">Lời mời kết bạn</div> 
       <ul class="content">
@@ -14,13 +13,13 @@
     </div>
   </div>
   <div class="user-profile">
-
-    <div 
+    <!-- <div 
     *ngIf="!isProfilePicked"
     class="profile-place-holder">
       <h2>Chọn một profile mà bạn muốn xem trước.</h2>
-    </div>
-    <app-profile></app-profile>
+    </div> -->
+    <router-outlet ></router-outlet>
+    <!-- <app-profile></app-profile> -->
   </div>
 </div>
 

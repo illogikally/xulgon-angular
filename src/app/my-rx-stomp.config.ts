@@ -8,11 +8,11 @@ import { AuthenticationService } from './components/authentication/authenticatio
 
 
 export class MyRxStompConfig extends InjectableRxStompConfig {
-  constructor(private auth: AuthenticationService) {
+  constructor(private auth$: AuthenticationService) {
     super();
     this.webSocketFactory = () => new SockJS('http://localhost:8080/ws');
     this.connectHeaders = {
-      'X-Authorization': this.auth.getToken()
+      'X-Authorization': this.auth$.getToken()
     },
     this.heartbeatIncoming = 0;
     this.heartbeatOutgoing = 20000;

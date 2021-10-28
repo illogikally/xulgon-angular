@@ -48,8 +48,12 @@ export class AuthenticationService {
     }));
   }
 
-  getUserFullName(): string {
-    return this.localStorage.retrieve('userFullName');
+  getAuth(): LoginResponse | undefined {
+    return this.localStorage.retrieve('auth');
+  }
+
+  getUserFullName(): string | undefined {
+    return this.getAuth()?.userFullName;
   }
 
   getFirstName(): string {
@@ -99,6 +103,7 @@ export class AuthenticationService {
         this.localStorage.clear('userFullName');
         this.localStorage.clear('userId');
         this.localStorage.clear('username');
+        this.router.navigateByUrl('/login');
       }, error => {
         throwError(error);
       });

@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '../common/message.service';
 import { FriendRequestDto } from '../friend-request/friend-request-dto';
 
@@ -19,7 +20,9 @@ export class FriendRequestItemComponent implements OnInit {
   @Output() profilePicked: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private http: HttpClient,
+    private router: Router,
     private location: Location,
+    private route: ActivatedRoute,
     private messageService: MessageService) { }
 
   ngOnInit(): void {
@@ -32,9 +35,12 @@ export class FriendRequestItemComponent implements OnInit {
       return;
     }
 
-    this.messageService.changeFriendRequest(this.request.requesterProfileId);
-    this.profilePicked.emit(true);
-    this.location.go("/" + this.request.requesterProfileId);
+    // this.messageService.changeFriendRequest(this.request.requesterProfileId);
+    this.router.navigate([this.request.requesterId],  
+    {relativeTo: this.route});
+      // , skipLocationChange: true});
+    // this.profilePicked.emit(true);
+    // this.location.go("/" + this.request.requesterProfileId);
   }
 
   acceptRequest(): void {

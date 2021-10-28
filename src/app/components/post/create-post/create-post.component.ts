@@ -34,7 +34,7 @@ export class CreatePostComponent implements OnDestroy, OnInit {
     private renderer: Renderer2,
     private auth: AuthenticationService) { 
       this.avatarUrl = auth.getAvatarUrl();
-      this.userFullName = auth.getUserFullName();
+      this.userFullName = auth.getUserFullName() as string;
       
   }
 

@@ -60,6 +60,7 @@ export class GroupGeneralComponent implements OnInit {
   abort(): void {
     this.createGroupVisible = false;
     this.createGroupIsPrivate = undefined;
+    this.createGroupForm.get('groupName')?.setValue('');
   }
 
   submit(): void {

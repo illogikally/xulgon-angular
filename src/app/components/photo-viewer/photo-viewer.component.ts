@@ -13,6 +13,7 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
 
   @Input() photoResponse!: PhotoViewResponse | undefined; 
   @Output() closeMe: EventEmitter<boolean> = new EventEmitter();
+  prevUrl: string[] = [];
   
   constructor(private http: HttpClient,
     private router: Router,
@@ -35,6 +36,7 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
         .subscribe(resp => {
           this.photoResponse = resp;
         });
+    this.prevUrl.push(window.location.href.replace(/https?:\/\/.*?\//g, ''));
     this.location.go(`photos/${this.photoResponse?.id}`);
   }
 

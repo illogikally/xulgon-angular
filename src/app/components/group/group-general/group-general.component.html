@@ -40,10 +40,12 @@
 							*ngIf="createGroupVisible"
 							[formGroup]="createGroupForm" >
 
-								<label>Tên nhóm</label>
-								<input class="input-group-name"
-								formControlName="groupName" type="text" />
-								<label>Quyền riêng tư</label>
+								<div class="input-group-name">
+									<span [ngClass]="{'focus': groupNameInput.value}">Tên nhóm</span>
+									<input
+									#groupNameInput
+									formControlName="groupName" type="text" />
+								</div>
 								<div class="privacy-drop">
 									<div 
 									(click)="createGroupPrivacyDropVisible = !createGroupPrivacyDropVisible"
@@ -52,7 +54,9 @@
 										<div class="arrow">
 											<i class='bx bxs-down-arrow'></i>
 										</div>
-										<div *ngIf="createGroupIsPrivate === undefined">Chọn quyền riêng tư</div>
+										<div 
+										class="placeholder"
+										[ngClass]="{'focus': createGroupIsPrivate !== undefined}">Quyền riêng tư</div>
 										<div 
 										*ngIf="createGroupIsPrivate === false"
 										>
@@ -110,10 +114,10 @@
 									<div 
 									(click)="abort()"
 									class="abort">Huỷ</div>
-									<div 
-									[ngClass]="submitable() ? '' : 'forbidden'"
+									<button 
 									(click)="submit()"
-									class="submit">Tạo nhóm</div>
+									[disabled]="submitable() ? null : true"
+									class="submit">Tạo nhóm</button>
 								</div>
 							</form>
 

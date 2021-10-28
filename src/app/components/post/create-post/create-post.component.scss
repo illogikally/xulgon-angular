@@ -93,14 +93,18 @@
               cursor: pointer;
               border-radius: 5px;
               background-color: $btn-grey;
-
             }
 
             .privacy-opts {
               @extend %opts;
+              z-index: 1;
               bottom: auto;
               top: 150%;
               width: 400px;
+
+              i {
+                font-size: 20px;
+              }
             }
           }
         }

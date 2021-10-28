@@ -29,7 +29,6 @@ export class ChatNotificationComponent implements OnInit {
   private setTitle(): void {
     let regex = /\([\d ]+\)/g;
     let title = this.title.getTitle();
-    console.log(title);
     
     if (regex.test(title)) {
       let title = this.title.getTitle().replace(regex, this.unreadCount > 0 ? `(${this.unreadCount})` : '');

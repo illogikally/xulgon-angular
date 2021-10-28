@@ -1,6 +1,7 @@
 @import "src/styles";
 
 .notif {
+
 	.button {
 		@extend %fc;
 		width: 40px;
@@ -28,8 +29,10 @@
 		width: 360px;
 		top: 54px;
 		bottom: 20px;
+		cursor: auto;
 		user-select: none;
 		right: 15px;
+
 		&__inner {
 			@include card(10px);
 			box-shadow: 0 0 4px 1px rgba(#000, .2);

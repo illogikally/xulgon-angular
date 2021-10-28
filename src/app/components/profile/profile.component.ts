@@ -55,23 +55,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    
-    console.log('destroyed');
-    
     this.destroyed$.next(true);
     this.destroyed$.complete();
     this.renderer.setStyle(document.body, 'position', '');
+    console.log('profile destroy');
+    
   }
 
   ngOnInit(): void {
-    this.initDefaultTab();
-    
+    // this.router.events
+    // .pipe(takeUntil(this.destroyed$))
+    // .subscribe(_ => {
+    //   this.initDefaultTab();
+    // });
 
-    this.router.events
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe(event => {
-      this.initDefaultTab();
-    });
+    console.log('init');
+    
 
     this.message$.updateCoverPhoto
     .pipe(takeUntil(this.destroyed$))
@@ -85,18 +84,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.userProfile.avatar.url = url;
     });
 
-    this.activateRoute.params
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe(params => {
-      const id = params['id'];
-      if (id == null || !/\d+/g.test(id)) {
-        this.pageError();
-        return;
-      }
-      
+    const id = Number(this.activateRoute.snapshot.paramMap.get('id'));
+    if (id !== NaN) {
       this.isBlocked(id);
       this.loadProfile(id);
-    });
+    }
+    // this.activateRoute.params
+    // .pipe(takeUntil(this.destroyed$))
+    // .subscribe(params => {
+    //   const id = params['id'];
+    //   if (!id || !/\d+/g.test(id)) {
+    //     this.pageError();
+    //     return;
+    //   }
+      
+    //   this.isBlocked(id);
+    //   this.loadProfile(id);
+    // });
 
     // this.message$.onFriendRequestChange()
     // .pipe(takeUntil(this.destroyed$))
@@ -158,14 +162,31 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.userProfile = resp;
       this.message$.sendLoadedProfile(this.userProfile);
       this.profileLoaded.emit(this.userProfile);
+      this.profileLoaded.emit({} as UserProfile);
     }, _ => {
       this.pageError();
     });
   }
 
+  tab(tab: string): boolean {
+    let url = window.location.href;
+    if (!tab) return new RegExp('\\d+$').test(url);
+    return new RegExp(tab).test(url);
+  }
+
+  navigate(tab: string, event: Event): void {
+    this.router.navigate([tab], 
+      {relativeTo: this.activateRoute});
+        // , skipLocationChange: true});
+
+    // tab = tab === './' ? '' : '/' + tab;
+    // this.location.go(`/${this.userProfile.id}${tab}`)
+    event.stopPropagation();
+  }
+
   pageError(): void {
     this.pageNotFound = true;
-    this.renderer.setStyle(document.body, 'position', 'fixed');
+    // this.renderer.setStyle(document.body, 'position', 'fixed');
   }
 
   sendFriendRequest(): void {

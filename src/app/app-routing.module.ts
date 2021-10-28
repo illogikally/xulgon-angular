@@ -5,7 +5,6 @@ import { AuthenticationGuard } from './components/authentication/authentication.
 import { ProfileComponent } from './components/profile/profile.component';
 import { FriendRequestComponent } from './components/friend-request/friend-request.component';
 import { NewsFeedComponent } from './components/news-feed/news-feed.component';
-import { GroupComponent } from './components/group/group.component';
 import { GroupGeneralComponent } from './components/group/group-general/group-general.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
@@ -13,11 +12,14 @@ import { JoinRequestListComponent } from './components/group/join-request-list/j
 import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
 import { LoggedInComponent } from './components/common/logged-in/logged-in.component';
 import { PostViewComponent } from './components/post-view/post-view.component';
-import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
 import { SearchComponent } from './components/search/search.component';
 import { ByPeopleComponent } from './components/search/by-people/by-people.component';
 import { ByPostsComponent } from './components/search/by-posts/by-posts.component';
 import { ByGroupsComponent } from './components/search/by-groups/by-groups.component';
+import { ProfileAboutComponent } from './components/profile/profile-about/profile-about.component';
+import { FriendListComponent } from './components/profile/friend-list/friend-list.component';
+import { PhotoListComponent } from './components/profile/photo-list/photo-list.component';
+import { ProfileTimelineComponent } from './components/profile/profile-timeline/profile-timeline.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -32,7 +34,23 @@ const routes: Routes = [
         path: 'permalink/:id', 
         component: PostViewComponent
       },
-      { path: 'friends', component: FriendRequestComponent },
+      { 
+        path: 'friends',
+        component: FriendRequestComponent,
+        // children: [
+        //   { 
+        //     path: ':id', 
+        //     component: ProfileComponent,
+        //     children: [
+        //       { path: '', component: ProfileTimelineComponent},
+        //       { path: 'about', component: ProfileAboutComponent},
+        //       { path: 'friends', component: FriendListComponent},
+        //       { path: 'photos', component: PhotoListComponent}
+        //     ]
+            
+        //   }
+        // ]
+      },
       { 
         path: 'search',
         component: SearchComponent,
@@ -65,14 +83,27 @@ const routes: Routes = [
       },
       { 
         path: ':id', 
+        component: ProfileComponent,
         children: [
-          { path: '', component: ProfileComponent },
-          { path: 'about', component: ProfileComponent},
-          { path: 'friends', component:  ProfileComponent},
-          { path: 'photos', component: ProfileComponent }
+          { path: '', component: ProfileTimelineComponent},
+          { path: 'about', component: ProfileAboutComponent},
+          { path: 'friends', component:  FriendListComponent},
+          { path: 'photos', component: PhotoListComponent}
         ]
         
       },
+      // { 
+      //   path: ':id', 
+      //   component: ProfileComponent,
+      //   outlet: 'profile',
+      //   children: [
+      //     { path: '', component: ProfileTimelineComponent},
+      //     { path: 'about', component: ProfileAboutComponent},
+      //     { path: 'friends', component:  FriendListComponent},
+      //     { path: 'photos', component: PhotoListComponent}
+      //   ]
+        
+      // },
       { path: '**', component: ErrorPageComponent}
     ]
   },

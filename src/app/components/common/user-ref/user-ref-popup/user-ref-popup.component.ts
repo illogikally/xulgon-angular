@@ -32,28 +32,39 @@ export class UserRefPopupComponent implements OnInit {
     });
   }
 
+  move(rect: DOMRect): void {
+    // let thisRect = this.self.nativeElement.getBoundingClientRect();
+    // let thisHeight  = this.self.nativeElement.offsetHeight;
+    // let y           = rect.top < window.innerHeight/2 ? rect.bottom-1 : rect.top-thisHeight+1;
+    // this.setSelfStyle('top'       , y + 'px');
+    
+  }
+
   show(rect: DOMRect): void {
     
     let targetWidth = rect.bottom - rect.top;
-    let thisWidth = this.self.nativeElement.offsetWidth;
-    let thisHeight = this.self.nativeElement.offsetHeight;
-    let x = rect.x - (thisWidth-targetWidth) / 2;
-    
-    let y = rect.top < window.innerHeight/2 ?  rect.bottom-1 : rect.top-thisHeight+1;
+    let thisWidth   = this.self.nativeElement.offsetWidth;
+    let thisHeight  = this.self.nativeElement.offsetHeight;
+    let x           = rect.x - (thisWidth-targetWidth) / 2;
+    let y           = rect.top < window.innerHeight/2 ? rect.bottom-1 : rect.top-thisHeight+1;
 
-    this.renderer.setStyle(this.self.nativeElement, 'left', x + 'px');
-    this.renderer.setStyle(this.self.nativeElement, 'top', y + 'px');
-    this.renderer.setStyle(this.self.nativeElement, 'transition', 'opacity .1s linear .5s');
-    this.renderer.setStyle(this.self.nativeElement, 'visibility', 'visible');
-    this.renderer.setStyle(this.self.nativeElement, 'opacity', '1');
+    this.setSelfStyle('left'      , x + 'px')
+    this.setSelfStyle('top'       , y + 'px');
+    this.setSelfStyle('transition', 'opacity .1s linear .5s');
+    this.setSelfStyle('visibility', 'visible');
+    this.setSelfStyle('opacity'   , '1');
   }
 
   hide(): void {
-    this.renderer.setStyle(this.self.nativeElement, 'transition', 'none');
-    this.renderer.setStyle(this.self.nativeElement, 'visibility', 'hidden');
-    this.renderer.setStyle(this.self.nativeElement, 'opacity', '0');
+    this.setSelfStyle('transition', 'none');
+    this.setSelfStyle('visibility', 'hidden');
+    this.setSelfStyle('opacity'   , '0');
     this.moreActionOptsVisible = false;
     this.friendOptsVisible = false;
+  }
+
+  private setSelfStyle(style: string, value: string){
+    this.renderer.setStyle(this.self.nativeElement, style, value);
   }
 
   mouseLeave(): void {

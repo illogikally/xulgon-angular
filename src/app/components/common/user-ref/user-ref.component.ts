@@ -19,6 +19,7 @@ import { UserDto } from '../user-dto';
     ])
   ]
 })
+
 export class UserRefComponent implements OnInit {
 
   @Input() userDto!: UserDto;
@@ -50,6 +51,7 @@ export class UserRefComponent implements OnInit {
     this.popupVisibility.emit({
       msg: 'show',
       rect: this.self.nativeElement.getBoundingClientRect(),
+      self: this.self.nativeElement,
       userDto: this.userDto
     });
   }
