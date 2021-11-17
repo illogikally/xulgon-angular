@@ -14,6 +14,8 @@ export class GroupCreatePostComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.groupResponse);
+    
   }
 
 }

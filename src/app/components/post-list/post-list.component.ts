@@ -15,7 +15,7 @@ import { UserService } from '../common/user.service';
 })
 export class PostListComponent implements OnInit, OnDestroy {
 
-  @Input() pageId!: number;
+  @Input() pageId!: number ;
   @Input() posts: Post[] | undefined;
 
   isLoadingPost = true;
@@ -36,6 +36,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log(this.posts);
+    
     this.message$.postDeleted.asObservable()
     .subscribe(id => {
       this.posts = this.posts?.filter(post => post.id != id);

@@ -32,6 +32,8 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
 
     this.user$.getNewsFeed().subscribe(posts => {
       this.posts = posts;
+    }, error => {
+      console.log(error);
     });
   }
 

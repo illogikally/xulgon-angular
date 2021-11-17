@@ -15,8 +15,10 @@ export class GroupFeedComponent implements OnInit {
     private user$: UserService) { }
 
   ngOnInit(): void {
-    this.user$.getGroupFeed().subscribe(groupFeedPosts => {
-      this.groupFeedPosts = groupFeedPosts;
+    this.user$.getGroupFeed().subscribe(posts => {
+      console.log('group feed', posts);
+      
+      this.groupFeedPosts = posts;
     })
   }
 

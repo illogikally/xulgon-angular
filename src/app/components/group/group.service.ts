@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Post } from '../post/post';
 import { GroupResponse } from './group-response';
 
 @Injectable({
@@ -37,6 +38,10 @@ export class GroupService {
 
   kick(userId: number, groupId: number): Observable<any> {
     return this.http.put<any>(this.groupUrl + `${groupId}/kick/${userId}`, {});
+  }
+
+  getTimeline(groupId: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`http://localhost:8080/api/pages/${groupId}/posts`);
   }
 
 }

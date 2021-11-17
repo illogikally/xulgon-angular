@@ -15,11 +15,10 @@ export class ChatNotificationComponent implements OnInit {
 
   unreadCount!: number;
   latestConversations = new Array<ConversationNotif>();
-  
   conversationRead = new EventEmitter<number>();
 
 
-  @ViewChild('popup', {static: true}) popup!: ElementRef;
+  @ViewChild('popup', { static: true }) popup!: ElementRef;
   constructor(private chatService: ChatService,
     private title: Title,
     private auth$: AuthenticationService,
@@ -29,7 +28,7 @@ export class ChatNotificationComponent implements OnInit {
   private setTitle(): void {
     let regex = /\([\d ]+\)/g;
     let title = this.title.getTitle();
-    
+
     if (regex.test(title)) {
       let title = this.title.getTitle().replace(regex, this.unreadCount > 0 ? `(${this.unreadCount})` : '');
       this.title.setTitle(title);
@@ -43,7 +42,7 @@ export class ChatNotificationComponent implements OnInit {
     this.conversationRead.subscribe(messageId => {
       this.unreadCount--;
       this.markAsRead(messageId);
-      
+
       this.setTitle();
     });
 
@@ -56,23 +55,19 @@ export class ChatNotificationComponent implements OnInit {
       let chatMsg: ChatMessage = JSON.parse(msg.body);
       let conversation = this.latestConversations.find(conv => conv.id == chatMsg.conversationId)
       if (conversation) {
-        if (chatMsg.userId !== this.auth$.getUserId() 
-        && (conversation.latestMessage.userId !== chatMsg.userId 
-        || conversation.latestMessage.isRead === true)) {
+        if (chatMsg.userId !== this.auth$.getUserId()
+          && (conversation.latestMessage.userId !== chatMsg.userId
+            || conversation.latestMessage.isRead === true)) {
           this.unreadCount++;
           this.setTitle();
-          
-          
-
         }
         conversation.latestMessage = chatMsg;
       }
-    }); 
-
+    });
   }
 
   loadConversations(): void {
-    this.chatService.getLatest().subscribe(latest => { 
+    this.chatService.getLatest().subscribe(latest => {
       this.latestConversations = this.latestConversations.concat(latest);
     })
   }
@@ -82,7 +77,9 @@ export class ChatNotificationComponent implements OnInit {
   }
 
   togglePopup(): void {
-    this.renderer.setStyle(this.popup.nativeElement, 'display', this.popup.nativeElement.style.display == 'block' ? 'none' : 'block');
+    this.renderer.setStyle(this.popup.nativeElement,
+      'display',
+      this.popup.nativeElement.style.display == 'block' ? 'none' : 'block');
   }
 
   markAsRead(messageId: number): void {

@@ -16,7 +16,9 @@
 		*ngIf="groupResponse?.isMember"
 		[groupResponse]="groupResponse"
 		></app-group-create-post>
-		<app-post-list></app-post-list>
+		<app-post-list
+		[posts]="posts"
+		></app-post-list>
 	</div>
 	<div class="timeline-sidebar">
 

@@ -145,11 +145,11 @@ import { MessageService } from './components/common/message.service';
     NgxWebstorageModule.forRoot(),
   ],
   providers: [
-    {
-      provide: RouteReuseStrategy,
-      useClass: MyReuseStrategy,
-      deps: [MessageService]
-    },
+    // {
+    //   provide: RouteReuseStrategy,
+    //   useClass: MyReuseStrategy,
+    //   deps: [MessageService]
+    // },
     {
       provide: InjectableRxStompRpcConfig,
       useClass: MyRxStompConfig,

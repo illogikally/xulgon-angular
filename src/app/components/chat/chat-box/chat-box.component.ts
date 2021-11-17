@@ -60,7 +60,6 @@ export class ChatBoxComponent implements OnInit {
 
   loadMessages(): void {
     this.messages = [];
-
     this.http.get<any>(`http://localhost:8080/api/messages/with/${this.user.id}`).subscribe(resp => {
       this.messages = resp;
       this.markConversationAsRead();
@@ -72,7 +71,9 @@ export class ChatBoxComponent implements OnInit {
   }
 
   markConversationAsRead(): void {
-    if (this.messages[0]?.isRead === true || this.messages[0]?.userId === this.auth$.getUserId()) return;
+    if (this.messages[0]?.isRead === true 
+      || this.messages[0]?.userId === this.auth$.getUserId()) 
+      return;
     this.messages[0].isRead = true;
     console.log('mark as read');
     
@@ -80,6 +81,9 @@ export class ChatBoxComponent implements OnInit {
   }
 
   sendMessage(): void {
+    if (this.msgForm.get('input')?.value == '') {
+      return;
+    }
     let messageRequest = {
       message: this.msgForm.get('input')?.value,
       receiverId: this.user.id,

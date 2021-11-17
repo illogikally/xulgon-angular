@@ -40,15 +40,17 @@
             [userDto]="post.user"></app-user-ref>
           </div>
           <span
-          *ngIf="showGroup && post.pageType == 'GROUP'"
-          >
-            <span><i class='bx bxs-right-arrow' ></i></span>
-            <span>{{ post.pageName }}</span>
+          *ngIf="showGroup && post.pageType == 'GROUP'">
+            <span><i class='bx bxs-right-arrow'></i></span>
+            <a routerLink="/groups/{{ post.pageId }}">
+              <span>{{ post.pageName }}</span>
+            </a>
+            
           </span>
         </div>
         <div class="date--privacy">
           <span>{{ post.createdAt }}</span>
-          <span class="privacy">
+          <span class="">
             <i 
             *ngIf="post.privacy == 'FRIEND'"
             class='bx bxs-group' ></i>
@@ -72,21 +74,20 @@
   <div class="post-body">
     <div class="post-text">{{ post.body }}</div>
     <div *ngIf="post.photos?.length > 0" class="post-media">
-      
+      <div>
+        <div *ngFor="let photo of post.photos.slice(0, 2)">
           <div>
-            <div *ngFor="let photo of post.photos.slice(0, 2)">
-              <div>
-                <app-photo [style]="'width'" [photo]="photo"></app-photo>
-              </div>
-            </div>
+            <app-photo [style]="'width'" [photo]="photo"></app-photo>
           </div>
+        </div>
+      </div>
+      <div>
+        <div *ngFor="let photo of post.photos.slice(2, 4)">
           <div>
-            <div *ngFor="let photo of post.photos.slice(2, 4)">
-              <div>
-                <app-photo [style]="'width'" [photo]="photo"></app-photo>
-              </div>
-            </div>
+            <app-photo [style]="'width'" [photo]="photo"></app-photo>
           </div>
+        </div>
+      </div>
     </div>
     
   </div>
@@ -97,8 +98,17 @@
       </div>
     </div>
     <div class="comment-share-count">
-      <span (click)="toggleComment()" *ngIf="post.commentCount > 0" class="comment-count">{{ post.commentCount }} bình luận</span>
-      <span *ngIf="post.shareCount > 0" class="share-count">{{ post.shareCount }} lượt chia sẻ</span>
+      <span 
+      (click)="toggleComment()" 
+      *ngIf="post.commentCount > 0" 
+      class="comment-count">
+        {{ post.commentCount }} bình luận
+      </span>
+      <span 
+      *ngIf="post.shareCount > 0" 
+      class="share-count">
+        {{ post.shareCount }} lượt chia sẻ
+      </span>
     </div>
   </div>
 
