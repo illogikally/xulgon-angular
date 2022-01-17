@@ -1,18 +1,18 @@
 <div class="post">
-  <div 
-  (click)="isPostOptsVisible = !isPostOptsVisible"
-  class="options">
-    <i class='bx bx-dots-horizontal-rounded' ></i>
-    <div 
-    (clickOutside)="isPostOptsVisible = false"
-    [delayClickOutsideInit]="true"
-    *ngIf="isPostOptsVisible"
-    class="options-list">
-      <div 
-      (click)="delete()"
-      *ngIf="post.user.id == loggedInUserId || groupReponse?.role == 'ADMIN'"
+  <div
+    (click)="isPostOptsVisible = !isPostOptsVisible"
+    class="options">
+    <i class='bx bx-dots-horizontal-rounded'></i>
+    <div
+      (clickOutside)="isPostOptsVisible = false"
+      [delayClickOutsideInit]="true"
+      *ngIf="isPostOptsVisible"
+      class="options-list">
+      <div
+        (click)="delete()"
+        *ngIf="post.user.id == loggedInUserId || groupReponse?.role == 'ADMIN'"
       >
-        <i class='bx bx-trash' ></i>
+        <i class='bx bx-trash'></i>
         <span>Xoá bài viết</span>
       </div>
       <!-- <div>
@@ -29,43 +29,43 @@
     <div class="avatar-name">
       <div class="post-avatar">
         <app-user-ref
-        borderRadius="50%"
-        [userDto]="post.user"
+          borderRadius="50%"
+          [userDto]="post.user"
         ></app-user-ref>
       </div>
       <div class="name-date" style="position: relative;">
         <div class="name--page">
           <div class="name">
             <app-user-ref
-            [userDto]="post.user"></app-user-ref>
+              [userDto]="post.user"></app-user-ref>
           </div>
           <span
-          *ngIf="showGroup && post.pageType == 'GROUP'">
+            *ngIf="showGroup && post.pageType == 'GROUP'">
             <span><i class='bx bxs-right-arrow'></i></span>
             <a routerLink="/groups/{{ post.pageId }}">
               <span>{{ post.pageName }}</span>
             </a>
-            
+
           </span>
         </div>
         <div class="date--privacy">
           <span>{{ post.createdAt }}</span>
-          <span class="">
-            <i 
-            *ngIf="post.privacy == 'FRIEND'"
-            class='bx bxs-group' ></i>
+          <span class="privacy">
+            <i
+              *ngIf="post.privacy == 'FRIEND'"
+              class='bx bxs-group'></i>
 
-            <i class='bx bx-globe' 
-            *ngIf="post.privacy == 'PUBLIC'"
+            <i class='bx bx-globe'
+               *ngIf="post.privacy == 'PUBLIC'"
             ></i>
 
-            <i class='bx bxs-lock-alt' 
-            *ngIf="post.privacy == 'ME'"
+            <i class='bx bxs-lock-alt'
+               *ngIf="post.privacy == 'ME'"
             ></i>
 
-            <i 
-            *ngIf="post.privacy == 'GROUP'"
-            class='bx bxs-network-chart' ></i>
+            <i
+              *ngIf="post.privacy == 'GROUP'"
+              class='bx bxs-network-chart'></i>
           </span>
         </div>
       </div>
@@ -73,7 +73,7 @@
   </div>
   <div class="post-body">
     <div class="post-text">{{ post.body }}</div>
-    <div *ngIf="post.photos?.length > 0" class="post-media">
+    <div *ngIf="post.photos.length > 0" class="post-media">
       <div>
         <div *ngFor="let photo of post.photos.slice(0, 2)">
           <div>
@@ -81,7 +81,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div *ngIf="post.photos.length > 2">
         <div *ngFor="let photo of post.photos.slice(2, 4)">
           <div>
             <app-photo [style]="'width'" [photo]="photo"></app-photo>
@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-    
+
   </div>
   <div class="post-meta">
     <div>
@@ -98,15 +98,15 @@
       </div>
     </div>
     <div class="comment-share-count">
-      <span 
-      (click)="toggleComment()" 
-      *ngIf="post.commentCount > 0" 
-      class="comment-count">
+      <span
+        (click)="toggleComment()"
+        *ngIf="post.commentCount > 0"
+        class="comment-count">
         {{ post.commentCount }} bình luận
       </span>
-      <span 
-      *ngIf="post.shareCount > 0" 
-      class="share-count">
+      <span
+        *ngIf="post.shareCount > 0"
+        class="share-count">
         {{ post.shareCount }} lượt chia sẻ
       </span>
     </div>
@@ -115,10 +115,10 @@
   <div class="post-actions">
     <div (click)="react()" class="reaction-action">
       <span
-      [ngStyle]="{'color': post.isReacted ? '#1876F2' : 'inherit'}">
+        [ngStyle]="{'color': post.isReacted ? '#1876F2' : 'inherit'}">
 
-        <i *ngIf="!post.isReacted" class='bx bx-like' ></i>
-        <i *ngIf="post.isReacted" class='bx bxs-like'></i> 
+        <i *ngIf="!post.isReacted" class='bx bx-like'></i>
+        <i *ngIf="post.isReacted" class='bx bxs-like'></i>
         <span>Thích</span>
       </span>
     </div>
@@ -127,19 +127,19 @@
         <i class='bx bx-message-alt'></i> Bình luận
       </span>
     </div>
-    <!-- <div *ngIf="post.privacy == 'PUBLIC'" class="share-action">
+    <div *ngIf="post.privacy == 'PUBLIC'" class="share-action">
       <span>
         <i class='bx bx-share'></i>
         <span>Chia sẻ</span>
       </span>
-    </div> -->
+    </div>
   </div>
-  <div 
-  *ngIf="showComment" 
-  class="comments">
-    <app-comment-list 
-    [postId]="post.id"
-    [contentId]="post.id"></app-comment-list>
+  <div
+    [ngClass]="{none: showComment}"
+    class="comments">
+    <app-comment-list
+      [postId]="post.id"
+      [contentId]="post.id"></app-comment-list>
     <!-- [comments]="post.comments"  -->
   </div>
 </div>

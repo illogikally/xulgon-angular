@@ -1,9 +1,6 @@
-import { tokenize } from '@angular/compiler/src/ml_parser/lexer';
-import { Inject, Injectable, Injector } from '@angular/core';
 import { InjectableRxStompConfig } from '@stomp/ng2-stompjs';
 import { RxStomp } from '@stomp/rx-stomp';
-import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
-import * as SockJS from 'sockjs-client';
+// import * as SockJS from 'sockjs-client';
 import { AuthenticationService } from './components/authentication/authentication.service';
 
 
@@ -11,7 +8,8 @@ import { AuthenticationService } from './components/authentication/authenticatio
 export class MyRxStompConfig extends InjectableRxStompConfig {
   constructor(private auth$: AuthenticationService) {
     super();
-    this.webSocketFactory = () => new SockJS('http://localhost:8080/ws');
+    // this.webSocketFactory = () => new SockJS('http://localhost:8080/ws');
+    this.webSocketFactory = () => new WebSocket('ws://localhost:8080/ws/websocket');
     // this.connectHeaders = {
     //   'X-Authorization': this.auth$.getWebsocketToken()
     // },

@@ -1,11 +1,10 @@
-import { LocationStrategy } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { MessageService } from '../common/message.service';
-import { UserProfile } from '../profile/user-profile';
-import { FriendRequestDto } from './friend-request-dto';
+import {LocationStrategy} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {MessageService} from '../common/message.service';
+import {FriendRequestDto} from './friend-request-dto';
 
 @Component({
   selector: 'app-friend-request',
@@ -19,15 +18,15 @@ export class FriendRequestComponent implements OnInit {
   isProfilePicked: boolean = false;
 
   constructor(private auth: AuthenticationService,
-    private locationStrategy: LocationStrategy,
-    private messageService: MessageService,
-    private title: Title,
-    private http: HttpClient) { 
-      // history.pushState(null, this.title.getTitle(), window.location.href);
-      // this.locationStrategy.onPopState(() => {
-      //   history.pushState(null, this.title.getTitle(), window.location.href);
-      // });
-    }
+              private locationStrategy: LocationStrategy,
+              private messageService: MessageService,
+              private title: Title,
+              private http: HttpClient) {
+    // history.pushState(null, this.title.getTitle(), window.location.href);
+    // this.locationStrategy.onPopState(() => {
+    //   history.pushState(null, this.title.getTitle(), window.location.href);
+    // });
+  }
 
   ngOnInit(): void {
     this.title.setTitle('Friends')
@@ -40,9 +39,9 @@ export class FriendRequestComponent implements OnInit {
 
     let userId: number = this.auth.getUserId();
     this.http.get<FriendRequestDto[]>(`http://localhost:8080/api/users/${userId}/friend-requests`)
-        .subscribe(resp => {
-          this.friendRequests = resp;
-        })
+      .subscribe(resp => {
+        this.friendRequests = resp;
+      })
   }
 
   preventDefault(event: any): void {
@@ -50,8 +49,8 @@ export class FriendRequestComponent implements OnInit {
   }
 
   deleteRequest(request: FriendRequestDto): void {
-    this.friendRequests = this.friendRequests .filter(
-        req => req.id !== request.id
+    this.friendRequests = this.friendRequests.filter(
+      req => req.id !== request.id
     );
   }
 

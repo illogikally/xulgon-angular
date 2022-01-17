@@ -30,7 +30,7 @@
 
   .viewer-sidebar {
     @include scrollbar(15px);
-    flex: 0 0 360px; 
+    flex: 0 0 360px;
     overflow-y: auto;
     height: 100%;
     background-color: #fff;

@@ -1,34 +1,34 @@
-<div 
-(click)="chatboxClick()"
-class="chat-box">
-	<div class="content">
-		<div class="title">
-			<div class="avatar">
-				<div class="avatar-container">
-					<img [src]="user?.avatarUrl">
-				</div>
-			</div>
-			<div class="name">
-				{{ user?.username }}
-			</div>
-			<div 
-			(click)="close()"
-			class="x-btn">
-				<i class='bx bx-x' ></i>
-			</div>
-		</div>
-		<div class="msg" >
-			<app-chat-msg
-			*ngFor="let message of messages; let i = index"
-			[avatarUrl]="user?.avatarUrl"
-			[thisMsg]="messages[i]"
-			[nextMsg]="i == 0 ? null : messages[i-1]"
-			[prevMsg]="messages[i+1]"
-			></app-chat-msg>
-		</div>
-		<form [formGroup]="msgForm" (keyup.enter)="sendMessage()" class="input-bar">
-			<input type="text" class="input" formControlName="input" placeholder="Aa">
-			<i class='bx bxs-send' ></i>
-		</form>
-	</div>
+<div
+  (click)="chatboxClick()"
+  class="chat-box">
+  <div class="content">
+    <div class="title">
+      <div class="avatar">
+        <div class="avatar-container">
+          <img [src]="user?.avatarUrl">
+        </div>
+      </div>
+      <div class="name">
+        {{ user?.username }}
+      </div>
+      <div
+        (click)="close()"
+        class="x-btn">
+        <i class='bx bx-x'></i>
+      </div>
+    </div>
+    <div class="msg">
+      <app-chat-msg
+        *ngFor="let message of messages; let i = index"
+        [avatarUrl]="user?.avatarUrl"
+        [thisMsg]="messages[i]"
+        [nextMsg]="i == 0 ? null : messages[i-1]"
+        [prevMsg]="messages[i+1]"
+      ></app-chat-msg>
+    </div>
+    <form [formGroup]="msgForm" (keyup.enter)="sendMessage()" class="input-bar">
+      <input type="text" class="input" formControlName="input" placeholder="Aa">
+      <i class='bx bxs-send'></i>
+    </form>
+  </div>
 </div>

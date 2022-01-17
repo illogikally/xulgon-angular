@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ByPeopleComponent } from './by-people.component';
+import {ByPeopleComponent} from './by-people.component';
 
 describe('ByPeopleComponent', () => {
   let component: ByPeopleComponent;
@@ -8,9 +8,9 @@ describe('ByPeopleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ByPeopleComponent ]
+      declarations: [ByPeopleComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

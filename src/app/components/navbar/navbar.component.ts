@@ -1,10 +1,9 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { MessageService } from '../common/message.service';
+import {Location} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {MessageService} from '../common/message.service';
 
 @Component({
   selector: 'app-navbar',
@@ -23,9 +22,9 @@ export class NavbarComponent implements OnInit {
   loggedInUserProfileId!: any;
 
   constructor(private messageService: MessageService,
-    private location: Location,
-    private router: Router,
-    private auth: AuthenticationService) { 
+              private location: Location,
+              private router: Router,
+              private auth: AuthenticationService) {
     this.loggedInUsername = this.auth.getFirstName();
     this.loggedInUserId = this.auth.getUserId();
     this.loggedInUserAvatarUrl = this.auth.getAvatarUrl();

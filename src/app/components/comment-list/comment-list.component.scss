@@ -51,7 +51,6 @@
       background-color: #ccc;
     }
   }
-
 }
 
 .upload-image-container {
@@ -71,13 +70,14 @@
     }
 
   }
-    .reset {
-      @include x-btn(20px, #000, #eee);
-      position: absolute;
-      font-size: 20px;
-      right: 5px;
-      top: 5px;
-    }
+
+  .reset {
+    @include x-btn(20px, #000, #eee);
+    position: absolute;
+    font-size: 20px;
+    right: 5px;
+    top: 5px;
+  }
 }
 
 input[type=file] {

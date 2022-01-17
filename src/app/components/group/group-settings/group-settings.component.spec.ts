@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroupSettingsComponent } from './group-settings.component';
+import {GroupSettingsComponent} from './group-settings.component';
 
 describe('GroupSettingsComponent', () => {
   let component: GroupSettingsComponent;
@@ -8,9 +8,9 @@ describe('GroupSettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GroupSettingsComponent ]
+      declarations: [GroupSettingsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

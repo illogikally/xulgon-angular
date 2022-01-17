@@ -1,32 +1,48 @@
 import { JsonpClientBackend } from "@angular/common/http";
-import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteConfigLoadEnd, RouteReuseStrategy } from "@angular/router";
+import { ComponentRef } from "@angular/core";
+import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from "@angular/router";
 import { withLatestFrom } from "rxjs/operators";
 import { MessageService } from "./components/common/message.service";
 import { FriendListComponent } from "./components/profile/friend-list/friend-list.component";
 
 interface RouteStorageObject {
 	snapshot: ActivatedRouteSnapshot;
-	handle: DetachedRouteHandle | null;
+	handle: DetachedRouteHandleExt | null;
 }
 
+interface DetachedRouteHandleExt extends DetachedRouteHandle {
+	componentRef: ComponentRef<any>;
+}
+
+interface RouteCacheRecord {
+	handle: DetachedRouteHandleExt;
+/**
+* For unclear reasons, when the navigation starts, "retrieve" is called
+* without calling "shouldAttach" first (from "createRouterState").
+* This flag is used to ignore those calls. :-
+* */
+	shouldAttachCalled: boolean;
+}
 export class MyReuseStrategy implements RouteReuseStrategy {
 	storedRoutes: { [key: string]: RouteStorageObject } = {};
 
 	shouldDetach(route: ActivatedRouteSnapshot): boolean {
 		if (!route.routeConfig) {
 			return false;
-
 		}
+
 		return true;
 	}
 
-	store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void {
+	store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandleExt | null): void {
 		let storedRoute: RouteStorageObject = {
 			snapshot: route,
 			handle: handle
 		}
 
 		if (!handle) return;
+
+		this.callHook(handle, 'onDetach');
 
 		console.groupCollapsed('========= STORE ============');
 		console.log('Stored route: ', storedRoute, "\npath: ", this.getKey(route));
@@ -44,6 +60,7 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 		if (canAttach) {
 			console.groupCollapsed('========= ATTACH ===========')
 			console.log('param comparison:');
+			let storedRoute = this.storedRoutes[this.getKey(route)];
 			console.log(this.compareObjects(route.params, 
 				this.storedRoutes[this.getKey(route)].snapshot.params));
 			console.log('query param comparison');
@@ -55,7 +72,16 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 			let queryParamsMatch: boolean = this.compareObjects(route.queryParams, 
 				this.storedRoutes[this.getKey(route)].snapshot.queryParams);
 			console.groupEnd();
-			return paramsMatch && queryParamsMatch;
+
+			if (paramsMatch && queryParamsMatch) {
+				console.log(route, this.storedRoutes[this.getKey(route)].snapshot);
+			}
+
+			let shouldAttach =  paramsMatch && queryParamsMatch;
+			if (shouldAttach) {
+				this.callHook(storedRoute.handle, 'onAttach');
+			}
+			return shouldAttach
 		}
 		return false;
 	}
@@ -71,16 +97,8 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 	}
 
 	shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-		// console.log("deciding to reuse", "future", future, "current", curr.routeConfig, "return: ");
-		// console.groupCollapsed('========== REUSE ============')
-		// console.log(future.routeConfig, curr.routeConfig);
-		
-
-
 		let should = (future.routeConfig === curr.routeConfig 
 			&& this.compareObjects(future.params, curr.params)); 
-		// console.log(should);
-		// console.groupEnd();
 		return should;
 	}
 
@@ -128,20 +146,35 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 		return path;
 	}
 
+	private callHook(detachedTree: DetachedRouteHandleExt | null, hookName: string): void {
+    const componentRef = detachedTree?.componentRef;
+    if (
+        componentRef &&
+        componentRef.instance &&
+        typeof componentRef.instance[hookName] === 'function'
+    ) {
+				console.log('call hoollslsl');
+				
+        componentRef.instance[hookName]();
+    }
+	}
+
 	private getPath(route: ActivatedRouteSnapshot): string {
 		return route.pathFromRoot
-		.map(route => route.routeConfig?.path as string + JSON.stringify(route.params))
-		.join("");
+		.map(route => route.routeConfig?.path as string + route.routeConfig?.component?.name + JSON.stringify(route.params))
+		.join("->");
 	}
 
 	private getChildrenPath(route: ActivatedRouteSnapshot): string {
 		let path = '';
 
+
 		// while (route.children) {
 			route.children.forEach(child => {
-				path += child.routeConfig?.path as string + JSON.stringify(route.params);
+				path += child.routeConfig?.path as string + route.routeConfig?.component?.name + JSON.stringify(route.params);
 			});
 		// }
+		
 
 		return path;
 	}

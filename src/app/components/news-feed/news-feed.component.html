@@ -1,7 +1,8 @@
 <div class="news-feed">
   <div style="width: 680px">
-    <app-post-list 
-    [showGroup]="true"
-    [posts]="posts"></app-post-list>
+    <app-post-list
+      [isLoading]="isLoadingPosts"
+      [showGroup]="true"
+      [posts]="posts"></app-post-list>
   </div>
 </div>

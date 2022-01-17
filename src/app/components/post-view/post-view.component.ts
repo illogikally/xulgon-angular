@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '../common/message.service';
-import { Post } from '../post/post';
-import { PostService } from '../post/post.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {MessageService} from '../common/message.service';
+import {Post} from '../post/post';
+import {PostService} from '../post/post.service';
 
 @Component({
   selector: 'app-post-view',
@@ -12,9 +12,11 @@ import { PostService } from '../post/post.service';
 export class PostViewComponent implements OnInit {
 
   post!: Post;
+
   constructor(private activatedRoute: ActivatedRoute,
-    private message$: MessageService,
-    private post$: PostService) { }
+              private message$: MessageService,
+              private post$: PostService) {
+  }
 
   ngOnInit(): void {
     let postId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -26,6 +28,7 @@ export class PostViewComponent implements OnInit {
     this.isCommentNotif();
 
   }
+
   isCommentNotif(): void {
     let commentId = this.activatedRoute.snapshot.queryParamMap.get('comment_id');
     if (commentId == null || !/\d+/g.test(commentId)) return;

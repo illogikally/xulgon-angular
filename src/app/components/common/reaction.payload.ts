@@ -1,4 +1,4 @@
-import { ReactionType } from "./reaction-type";
+import {ReactionType} from "./reaction-type";
 
 export interface ReactionPayload {
   type: ReactionType;

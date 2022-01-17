@@ -1,10 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Event } from '@angular/router';
-import { MessageService } from '../../common/message.service';
-import { PhotoViewResponse } from '../../common/photo/photo-view-response';
-import { UserProfile } from '../user-profile';
+import {HttpClient} from '@angular/common/http';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MessageService} from '../../common/message.service';
+import {PhotoViewResponse} from '../../common/photo/photo-view-response';
+import {UserProfile} from '../user-profile';
 
 @Component({
   selector: 'app-pick-avatar',
@@ -27,8 +26,9 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
 
 
   constructor(private http: HttpClient,
-    private renderer: Renderer2,
-    private messageService: MessageService) { }
+              private renderer: Renderer2,
+              private messageService: MessageService) {
+  }
 
   ngOnDestroy(): void {
     this.renderer.setStyle(document.body, 'position', 'relative');
@@ -38,7 +38,7 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
     this.renderer.setStyle(document.body, 'position', 'fixed');
     this.uploadFileForm = new FormGroup({
       fileInput: new FormControl('')
-    }); 
+    });
 
     this.messageService.updateAvatarOrCover.subscribe(msg => {
       if (msg == 'avatar') {
@@ -49,19 +49,19 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
         this.updateType = 'cover';
       }
     });
-    
+
     this.messageService.onProfileLoaded().subscribe(profile => {
       this.userProfile = profile;
       this.http.get<PhotoViewResponse[]>(`http://localhost:8080/api/pages/${profile.id}/photos`)
-          .subscribe(photos => {
-            this.photos = photos;
-          });
-    }); 
+        .subscribe(photos => {
+          this.photos = photos;
+        });
+    });
   }
 
   photoPicked(photo: PhotoViewResponse): void {
     console.log('picke');
-    
+
     this.pickedPhoto = photo;
   }
 
@@ -70,9 +70,9 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
       this.photoBlob = event.target.files[0];
       var reader = new FileReader();
 
-      reader.readAsDataURL(event.target.files[0]); 
+      reader.readAsDataURL(event.target.files[0]);
 
-      reader.onload = (event) => { 
+      reader.onload = (event) => {
         let img = new Image();
         img.src = event.target?.result as string;
         img.onload = () => {
@@ -102,14 +102,12 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
         this.http.put(dest + 'update-avatar', this.pickedPhoto?.id).subscribe(_ => {
           this.messageService.updateAvatar.next(this.pickedPhoto?.url);
         })
-      }
-      else {
+      } else {
         this.http.put(dest + 'update-cover', this.pickedPhoto?.id).subscribe(_ => {
           this.messageService.updateCoverPhoto.next(this.pickedPhoto?.url);
         })
       }
-    }
-    else {
+    } else {
       let formData = new FormData();
       let photoRequest = new Blob([JSON.stringify({
         privacy: 'PUBLIC',
@@ -123,8 +121,7 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
         this.http.put<PhotoViewResponse>(dest + 'upload-avatar', formData).subscribe(resp => {
           this.messageService.updateAvatar.next(resp.url);
         });
-      }
-      else {
+      } else {
         this.http.put<PhotoViewResponse>(dest + 'upload-cover', formData).subscribe(resp => {
           this.messageService.updateCoverPhoto.next(resp.url);
         });

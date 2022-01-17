@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PostViewComponent } from './post-view.component';
+import {PostViewComponent} from './post-view.component';
 
 describe('PostViewComponent', () => {
   let component: PostViewComponent;
@@ -8,9 +8,9 @@ describe('PostViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PostViewComponent ]
+      declarations: [PostViewComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

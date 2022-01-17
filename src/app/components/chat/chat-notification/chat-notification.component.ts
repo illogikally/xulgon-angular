@@ -1,10 +1,10 @@
-import { Component, ElementRef, EventEmitter, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { ChatService } from '../../service/chat.service';
-import { ChatMessage } from '../chat-msg';
-import { ConversationNotif } from '../conversation-notif';
+import {Component, ElementRef, EventEmitter, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {RxStompService} from '@stomp/ng2-stompjs';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {ChatService} from '../../service/chat.service';
+import {ChatMessage} from '../chat-msg';
+import {ConversationNotif} from '../conversation-notif';
 
 @Component({
   selector: 'app-chat-notification',
@@ -18,12 +18,14 @@ export class ChatNotificationComponent implements OnInit {
   conversationRead = new EventEmitter<number>();
 
 
-  @ViewChild('popup', { static: true }) popup!: ElementRef;
+  @ViewChild('popup', {static: true}) popup!: ElementRef;
+
   constructor(private chatService: ChatService,
-    private title: Title,
-    private auth$: AuthenticationService,
-    private rxStomp$: RxStompService,
-    private renderer: Renderer2) { }
+              private title: Title,
+              private auth$: AuthenticationService,
+              private rxStomp$: RxStompService,
+              private renderer: Renderer2) {
+  }
 
   private setTitle(): void {
     let regex = /\([\d ]+\)/g;
@@ -32,10 +34,10 @@ export class ChatNotificationComponent implements OnInit {
     if (regex.test(title)) {
       let title = this.title.getTitle().replace(regex, this.unreadCount > 0 ? `(${this.unreadCount})` : '');
       this.title.setTitle(title);
-    }
-    else if (this.unreadCount > 0)
+    } else if (this.unreadCount > 0)
       this.title.setTitle(`(${this.unreadCount}) ${this.title.getTitle()}`)
   }
+
   ngOnInit(): void {
     this.loadConversations();
 

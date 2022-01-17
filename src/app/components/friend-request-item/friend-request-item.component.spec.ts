@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FriendRequestItemComponent } from './friend-request-item.component';
+import {FriendRequestItemComponent} from './friend-request-item.component';
 
 describe('FriendRequestItemComponent', () => {
   let component: FriendRequestItemComponent;
@@ -8,9 +8,9 @@ describe('FriendRequestItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FriendRequestItemComponent ]
+      declarations: [FriendRequestItemComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

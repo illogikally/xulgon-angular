@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SquareImageComponent } from './square-image.component';
+import {SquareImageComponent} from './square-image.component';
 
 describe('SquareImageComponent', () => {
   let component: SquareImageComponent;
@@ -8,9 +8,9 @@ describe('SquareImageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SquareImageComponent ]
+      declarations: [SquareImageComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

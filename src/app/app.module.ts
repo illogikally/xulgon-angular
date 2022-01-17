@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -145,11 +144,11 @@ import { MessageService } from './components/common/message.service';
     NgxWebstorageModule.forRoot(),
   ],
   providers: [
-    // {
-    //   provide: RouteReuseStrategy,
-    //   useClass: MyReuseStrategy,
-    //   deps: [MessageService]
-    // },
+    {
+      provide: RouteReuseStrategy,
+      useClass: MyReuseStrategy,
+      deps: [MessageService]
+    },
     {
       provide: InjectableRxStompRpcConfig,
       useClass: MyRxStompConfig,

@@ -1,15 +1,13 @@
-import { Component, OnInit, Input, ViewChild, EventEmitter, AfterViewInit} from '@angular/core';
-import { ReactionType } from '../common/reaction-type';
-import { ReactionPayload } from '../common/reaction.payload';
-import { ReactionService } from '../common/reaction.service';
-import { Post } from './post';
-import { CommentListComponent } from '../comment-list/comment-list.component'
-import { MessageService } from '../common/message.service';
-import { PhotoViewResponse } from '../common/photo/photo-view-response';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { GroupResponse } from '../group/group-response';
-import { HttpClient } from '@angular/common/http';
-import { CommentResponse } from '../comment-list/comment/comment-response';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {ReactionType} from '../common/reaction-type';
+import {ReactionPayload} from '../common/reaction.payload';
+import {ReactionService} from '../common/reaction.service';
+import {Post} from './post';
+import {MessageService} from '../common/message.service';
+import {PhotoViewResponse} from '../common/photo/photo-view-response';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {GroupResponse} from '../group/group-response';
+import {HttpClient} from '@angular/common/http';
 
 
 @Component({
@@ -27,24 +25,29 @@ export class PostComponent implements OnInit {
   @Input() showGroup!: boolean;
 
   isPostOptsVisible = false;
-
   loggedInUserId: number;
-
   groupReponse!: GroupResponse;
-  
+
 
   constructor(private reactionService: ReactionService,
-    private http: HttpClient,
-    private authService: AuthenticationService,
-    private messageService: MessageService) { 
-      this.loggedInUserId = authService.getUserId();
+              private http: HttpClient,
+              private authService: AuthenticationService,
+              private messageService: MessageService) {
+    this.loggedInUserId = authService.getUserId();
   }
 
   ngOnInit(): void {
-    this.messageService.groupLoaded.subscribe(group => {
-      if (!group) return;
-      this.groupReponse = group;
-    });
+    this.messageService.groupLoaded
+      .subscribe(group => {
+        if (!group) return;
+        this.groupReponse = group;
+      });
+
+    console.log(this.showGroup, 'group response')
+
+    if (this.showGroup) {
+      this.showComment = !this.showComment;
+    }
 
     this.messageService.onNewMessge().subscribe(msg => {
       if (msg == "Comment added") {
@@ -52,7 +55,6 @@ export class PostComponent implements OnInit {
       }
     });
   }
-
 
   toggleComment(): void {
     this.showComment = !this.showComment;

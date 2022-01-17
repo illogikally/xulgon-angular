@@ -2,52 +2,52 @@
 
 .notif {
 
-	.button {
-		@extend %fc;
-		width: 40px;
-		height: 40px;
-		position: relative;
+  .button {
+    @extend %fc;
+    width: 40px;
+    height: 40px;
+    position: relative;
 
-		.unread {
-			@extend %fc;
-			position: absolute;
-			width: 19px;
-			height: 19px;
-			font-size: 13px;
-			font-weight: 500;
-			border-radius: 50%;
-			background-color: #F02849;
-			color: #fff;
-			top: -5%;
-			right: -20%;
-		}
-	}
+    .unread {
+      @extend %fc;
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 50%;
+      background-color: #F02849;
+      color: #fff;
+      top: -5%;
+      right: -20%;
+    }
+  }
 
-	.popup {
-		box-sizing: border-box;
-		position: fixed;
-		width: 360px;
-		top: 54px;
-		bottom: 20px;
-		cursor: auto;
-		user-select: none;
-		right: 15px;
+  .popup {
+    box-sizing: border-box;
+    position: fixed;
+    width: 360px;
+    top: 54px;
+    bottom: 20px;
+    cursor: auto;
+    user-select: none;
+    right: 15px;
 
-		&__inner {
-			@include card(10px);
-			box-shadow: 0 0 4px 1px rgba(#000, .2);
-			padding: 15px;
+    &__inner {
+      @include card(10px);
+      box-shadow: 0 0 4px 1px rgba(#000, .2);
+      padding: 15px;
 
-			.title {
-				font-weight: 700;
-				font-size: 24px;
-				padding: 10px 0;
-			}
+      .title {
+        font-weight: 700;
+        font-size: 24px;
+        padding: 10px 0;
+      }
 
-			.notif-items {
-				font-size: 15px;
-				margin-bottom: 10px;
-			}
-		}
-	}
+      .notif-items {
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+    }
+  }
 }

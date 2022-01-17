@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { GroupResponse } from '../../group-response';
+import {Component, Input, OnInit} from '@angular/core';
+import {GroupResponse} from '../../group-response';
 
 @Component({
   selector: 'app-group-create-post',
@@ -11,11 +11,12 @@ export class GroupCreatePostComponent implements OnInit {
   createPostVisible = false;
   @Input() groupResponse!: GroupResponse;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     console.log(this.groupResponse);
-    
+
   }
 
 }

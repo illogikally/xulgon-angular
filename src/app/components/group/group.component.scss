@@ -23,12 +23,13 @@
     .title {
       font-size: 24px;
       font-weight: 700;
-      
+
     }
+
     .group-meta {
 
       border-bottom: 1px solid rgba(#333, .2);
-      padding:  16px 5px;
+      padding: 16px 5px;
       display: flex;
       position: relative;
 
@@ -101,7 +102,7 @@
         }
       }
     }
-    
+
     .tools {
 
       .tools-title {
@@ -119,6 +120,7 @@
         &:hover {
           background-color: #eee;
         }
+
         .icon {
           @extend %fc;
           width: 36px;
@@ -138,6 +140,7 @@
       }
     }
   }
+
   .group-content {
     flex-grow: 1;
   }

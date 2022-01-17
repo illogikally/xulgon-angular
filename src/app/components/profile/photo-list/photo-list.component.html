@@ -4,9 +4,9 @@
     <a routerLink="/6">Fuck you angular</a>
   </div>
   <div class="content">
-    <app-photo-list-item 
-    *ngFor="let photo of photos" 
-    (photoDeleted)="photoDeleted($event)"
-    [photo]="photo"> </app-photo-list-item>
+    <app-photo-list-item
+      *ngFor="let photo of photos"
+      (photoDeleted)="photoDeleted($event)"
+      [photo]="photo"></app-photo-list-item>
   </div>
 </div>

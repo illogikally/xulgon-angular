@@ -1,68 +1,68 @@
 <div class="group-timeline">
-	
-	<div class="content">
-		<div 
-		*ngIf="!groupResponse?.isMember && groupResponse?.isPrivate"
-		class="private-group-warn">
-			<div class="lock">
-				<img src="assets/lock.jpg" />
-			</div>	
-			<div class="text">
-				<div>Đây là nhóm riêng tư. </div>
-				<div>Hãy tham gia nhóm để xem bài viết của các thành viên</div>
-			</div>
-		</div>
-		<app-group-create-post
-		*ngIf="groupResponse?.isMember"
-		[groupResponse]="groupResponse"
-		></app-group-create-post>
-		<app-post-list
-		[posts]="posts"
-		></app-post-list>
-	</div>
-	<div class="timeline-sidebar">
 
-			<div class="group-meta">
-				<div class="about mb-20">
-					<div class="w-500 f-17 mb-20">Giới thiệu</div>
-					<span>{{ groupResponse?.about }}</span>
-					
-				</div>
-				<div class="hidden">
-					<!-- <div>
+  <div class="content">
+    <div
+      *ngIf="!groupResponse?.isMember && groupResponse?.isPrivate"
+      class="private-group-warn">
+      <div class="lock">
+        <img src="assets/lock.jpg"/>
+      </div>
+      <div class="text">
+        <div>Đây là nhóm riêng tư.</div>
+        <div>Hãy tham gia nhóm để xem bài viết của các thành viên</div>
+      </div>
+    </div>
+    <app-group-create-post
+      *ngIf="groupResponse?.isMember"
+      [groupResponse]="groupResponse"
+    ></app-group-create-post>
+    <app-post-list
+      [posts]="posts"
+    ></app-post-list>
+  </div>
+  <div class="timeline-sidebar">
 
-						<span>Ẩn</span>	
-					</div>
-					<div>
-						<span>Hiển thị</span>
-					</div> -->
-				</div>
-				<div class="privacy">
-		
-	
-					<div *ngIf="groupResponse?.isPrivate">
-						<div class="f-17">
-							<i class='bx bxs-lock-alt' ></i>
-						</div>
-						<div>
-							<div class="f-17 w-500">Riêng tư</div>
-							<div>Chỉ thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng.</div>
-						</div>
-					</div>
+    <div class="group-meta">
+      <div class="about mb-20">
+        <div class="w-500 f-17 mb-20">Giới thiệu</div>
+        <span>{{ groupResponse?.about }}</span>
 
-					<div *ngIf="!groupResponse?.isPrivate">
-						<div class="f-17">
-							<i class='bx bx-globe' ></i>
-						</div>
-						<div>
-							<div class="f-17 w-500">Công khai</div>
-							<div>Ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng.</div>
-						</div>
-					</div>
-				</div>
-			
-		</div>
-		
-		</div>
+      </div>
+      <div class="hidden">
+        <!-- <div>
+
+          <span>Ẩn</span>
+        </div>
+        <div>
+          <span>Hiển thị</span>
+        </div> -->
+      </div>
+      <div class="privacy">
+
+
+        <div *ngIf="groupResponse?.isPrivate">
+          <div class="f-17">
+            <i class='bx bxs-lock-alt'></i>
+          </div>
+          <div>
+            <div class="f-17 w-500">Riêng tư</div>
+            <div>Chỉ thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng.</div>
+          </div>
+        </div>
+
+        <div *ngIf="!groupResponse?.isPrivate">
+          <div class="f-17">
+            <i class='bx bx-globe'></i>
+          </div>
+          <div>
+            <div class="f-17 w-500">Công khai</div>
+            <div>Ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
 
 </div>

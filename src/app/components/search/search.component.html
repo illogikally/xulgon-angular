@@ -1,58 +1,58 @@
 <div class="search">
-	<div class="search__inner">
-		<div class="sidebar-container">
-			<div class="sidebar">
-				<div class="sidebar__title">
-					Kết quả tìm kiếm
-				</div>
-				<div class="filters">
-					<div class="title">
-						Bộ lọc
-					</div>
-					<div 
-					routerLinkActive="active"
-					routerLink="/search/people"
-					class="by-people filter">
-						<div class="icon-container">
-							<div class="icon">
-								<i class='bx bxs-group'></i>
-							</div>
-						</div>
-						<div class="name">
-							Mọi người
-						</div>
-					</div>
-					<div 
-					routerLink="/search/posts"
-					routerLinkActive="active"
-					class="by-post filter">
-						<div class="icon-container">
-							<div class="icon">
-								<i class='bx bxs-book-content' ></i>
-							</div>
-						</div>
-						<div class="name">
-							Bài viết
-						</div>
-					</div>
-					<div 
-					routerLink="/search/groups"
-					routerLinkActive="active"
-					class="by-group filter">
-						<div class="icon-container">
-							<div class="icon">
-								<i class='bx bxs-network-chart' ></i>
-							</div>
-						</div>
-						<div class="name">
-							Nhóm
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="content">
-			<router-outlet></router-outlet>
-		</div>
-	</div>
+  <div class="search__inner">
+    <div class="sidebar-container">
+      <div class="sidebar">
+        <div class="sidebar__title">
+          Kết quả tìm kiếm
+        </div>
+        <div class="filters">
+          <div class="title">
+            Bộ lọc
+          </div>
+          <div
+            routerLinkActive="active"
+            routerLink="/search/people"
+            class="by-people filter">
+            <div class="icon-container">
+              <div class="icon">
+                <i class='bx bxs-group'></i>
+              </div>
+            </div>
+            <div class="name">
+              Mọi người
+            </div>
+          </div>
+          <div
+            routerLink="/search/posts"
+            routerLinkActive="active"
+            class="by-post filter">
+            <div class="icon-container">
+              <div class="icon">
+                <i class='bx bxs-book-content'></i>
+              </div>
+            </div>
+            <div class="name">
+              Bài viết
+            </div>
+          </div>
+          <div
+            routerLink="/search/groups"
+            routerLinkActive="active"
+            class="by-group filter">
+            <div class="icon-container">
+              <div class="icon">
+                <i class='bx bxs-network-chart'></i>
+              </div>
+            </div>
+            <div class="name">
+              Nhóm
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

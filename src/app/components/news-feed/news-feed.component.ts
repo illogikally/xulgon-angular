@@ -1,12 +1,11 @@
-import { NumberFormatStyle } from '@angular/common';
-import { HttpClient, HttpRequest } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { MessageService } from '../common/message.service';
-import { UserService } from '../common/user.service';
-import { Post } from '../post/post';
-import { UserProfile } from '../profile/user-profile';
+import {HttpClient} from '@angular/common/http';
+import { getSafePropertyAccessString } from '@angular/compiler';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {UserService} from '../common/user.service';
+import {Post} from '../post/post';
 
 @Component({
   selector: 'app-news-feed',
@@ -16,25 +15,70 @@ import { UserProfile } from '../profile/user-profile';
 export class NewsFeedComponent implements OnInit, OnDestroy {
 
   pageId: number;
-  posts!: Post[];
-  constructor(private auth$: AuthenticationService,
+  posts: Post[] = [];
+  isLoadingPosts = false;
+  isAllPostsLoaded = false;
+  isAttached = true;
+
+  constructor(
+    private auth$: AuthenticationService,
     private user$: UserService,
     private title: Title,
-    private http: HttpClient) {
-    this.pageId = auth$.getProfileId();
+    private router: Router, 
+    private http: HttpClient) { 
+      this.title.setTitle('Xulgon');
+      this.pageId = auth$.getProfileId();
   }
 
   ngOnDestroy() {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Xulgon');
-
-    this.user$.getNewsFeed().subscribe(posts => {
-      this.posts = posts;
-    }, error => {
-      console.log(error);
-    });
+    this.getPosts();
   }
 
+  @HostListener('window:scroll', [])
+  loadOnScroll(): void {
+    if (
+      window.scrollY >= document.body.scrollHeight - 1.2*window.innerHeight
+      && !this.isLoadingPosts
+      && !this.isAllPostsLoaded
+      && this.isAttached
+      ) {
+        this.getPosts();
+        console.log(this.posts);
+        
+    }
+  }
+
+  onAttach(): void {
+    this.title.setTitle('Xulgon');
+    this.isAttached = true;
+  }
+
+  onDetach(): void {
+    this.isAttached = false;
+  }
+
+  getPosts(): void {
+    this.isLoadingPosts = true;
+    const size = 5;
+    const offset = this.posts.length;
+
+    this.user$
+      .getNewsFeed(size, offset)
+      .subscribe(posts => {
+        if (posts.length == 0) 
+          this.isAllPostsLoaded = true;
+
+        console.log(posts.length);
+        
+        console.log(offset, size, 'offset, size');
+        this.posts = this.posts.concat(posts);
+        console.log(this.posts);
+        this.isLoadingPosts = false;
+      }, error => {
+        console.log(error);
+      });
+  }
 }

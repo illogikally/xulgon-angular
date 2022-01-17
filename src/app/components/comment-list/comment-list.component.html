@@ -1,37 +1,38 @@
 <div class="comment-list">
 
   <div class="comments">
-    <app-comment  
-    *ngFor="let comment of comments" 
-    [commentResponse]="comment"></app-comment>
+    <app-comment
+      *ngFor="let comment of comments"
+      [commentResponse]="comment"></app-comment>
   </div>
 
+  <div (click)="getComments()">tai them comment</div>
   <form [formGroup]="commentForm" (keyup.enter)="submit()">
     <div class="input-container">
       <div class="input-avatar">
         <div class="avatar-container">
           <img [src]="loggedInUserAvatarUrl">
-        </div> 
+        </div>
       </div>
-      <input 
-      type="text" 
-      placeholder="Bình luận..." 
-      autocomplete="off" 
-      formControlName="comment" />
+      <input
+        type="text"
+        placeholder="Bình luận..."
+        autocomplete="off"
+        formControlName="comment"/>
 
-      <div 
-      *ngIf="!file"
-      (click)="uploadImage.click()"
-      class="add-image-btn">
+      <div
+        *ngIf="!file"
+        (click)="uploadImage.click()"
+        class="add-image-btn">
         <i class='bx bxs-image'></i>
       </div>
     </div>
-    <div  *ngIf="file" class="upload-image-container">
-      <div 
-      class="upload-image-thumb">
-        <img 
-        [ngClass]="sizeRatio < 1 ? 'full-width' : 'full-height'"
-        [src]="imgUrl">
+    <div *ngIf="file" class="upload-image-container">
+      <div
+        class="upload-image-thumb">
+        <img
+          [ngClass]="sizeRatio < 1 ? 'full-width' : 'full-height'"
+          [src]="imgUrl">
 
       </div>
       <div (click)="clearInput()" class="reset">
@@ -39,11 +40,11 @@
       </div>
 
     </div>
-    <input 
-    type="file" 
-    accept="image/*" 
-    #uploadImage
-    formControlName="fileInput" 
-    (change)="onSelectImage($event)"/>
+    <input
+      type="file"
+      accept="image/*"
+      #uploadImage
+      formControlName="fileInput"
+      (change)="onSelectImage($event)"/>
   </form>
 </div>

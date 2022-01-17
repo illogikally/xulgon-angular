@@ -1,7 +1,7 @@
 <div class="create-post-container">
   <form class="create-post" enctype="multipart/form-data" [formGroup]="postForm" (ngSubmit)="submit()">
     <div class="flex-center post-title">
-      <span>Tạo bài viết</span> 
+      <span>Tạo bài viết</span>
       <div (click)="closeSelf()" class="x-btn"><i class='bx bx-x'></i></div>
     </div>
     <div class="create-post-body">
@@ -12,59 +12,59 @@
         <div class="name--privacy">
           <div class="name">{{ userFullName }}</div>
           <div class="privacy">
-            <span 
-            *ngIf="groupResponse"
-            class="page-target">
+            <span
+              *ngIf="groupResponse"
+              class="page-target">
               <span *ngIf="groupResponse?.isPrivate">
-                <i class='bx bxs-network-chart' ></i>
+                <i class='bx bxs-network-chart'></i>
               </span>
               <span *ngIf="!groupResponse?.isPrivate">
-                <i class='bx bx-globe' ></i>
+                <i class='bx bx-globe'></i>
               </span>
               {{groupResponse?.name}}
             </span>
-            <span 
-            *ngIf="!groupResponse"
-            (click)="showPrivacyOpts()"
-            #privacyBtn>
+            <span
+              *ngIf="!groupResponse"
+              (click)="showPrivacyOpts()"
+              #privacyBtn>
               <span
-              *ngIf="privacy == 'PUBLIC'">
+                *ngIf="privacy == 'PUBLIC'">
                 <i class='bx bx-globe'></i>
                 <span style="padding: 0 3px">Công khai</span>
               </span>
               <span
-              *ngIf="privacy == 'FRIEND'">
-                <i class='bx bx-group' ></i>
+                *ngIf="privacy == 'FRIEND'">
+                <i class='bx bx-group'></i>
                 <span style="padding: 0 3px">Bạn bè</span>
               </span>
               <span
-              *ngIf="privacy == 'ME'">
-                <i class='bx bxs-lock-alt' ></i>
+                *ngIf="privacy == 'ME'">
+                <i class='bx bxs-lock-alt'></i>
                 <span style="padding: 0 3px">Mình tôi</span>
               </span>
               <i style="font-size: 9px; margin-left: 2px" class='bx bxs-down-arrow'></i>
             </span>
-            <div 
-            (clickOutside)="clickOutsidePrivacyOpts()"
-            *ngIf="isPrivacyOptsVisible"
-            [delayClickOutsideInit]="true"
-            class="privacy-opts">
-              <div 
-              (click)="setPrivacy('PUBLIC')"
-              class="public">
-                <i class='bx bx-globe' ></i>
-                <span>Công khai <br /><span class="secondary-text">(Ai cũng có thể xem bài viết này)</span></span>
+            <div
+              (clickOutside)="clickOutsidePrivacyOpts()"
+              *ngIf="isPrivacyOptsVisible"
+              [delayClickOutsideInit]="true"
+              class="privacy-opts">
+              <div
+                (click)="setPrivacy('PUBLIC')"
+                class="public">
+                <i class='bx bx-globe'></i>
+                <span>Công khai <br/><span class="secondary-text">(Ai cũng có thể xem bài viết này)</span></span>
               </div>
-              <div 
-              (click)="setPrivacy('FRIEND')"
-              class="friend">
-                <i class='bx bx-group' ></i>
-                <span>Bạn bè <br /><span class="secondary-text">(Chỉ bạn của tôi mới xem được bài viết này)</span></span>
+              <div
+                (click)="setPrivacy('FRIEND')"
+                class="friend">
+                <i class='bx bx-group'></i>
+                <span>Bạn bè <br/><span class="secondary-text">(Chỉ bạn của tôi mới xem được bài viết này)</span></span>
               </div>
-              <div 
-              (click)="setPrivacy('ME')"
-              class="me">
-                <i class='bx bxs-lock-alt' ></i>
+              <div
+                (click)="setPrivacy('ME')"
+                class="me">
+                <i class='bx bxs-lock-alt'></i>
                 <span>Chỉ mình tôi</span>
               </div>
 
@@ -74,42 +74,44 @@
       </div>
       <div class="post-content">
         <div class="post-text">
-          <textarea 
-          spellcheck="false"
-          formControlName="textarea" autofocus (input)="autoGrow($event)"></textarea>
+          <textarea
+            spellcheck="false"
+            formControlName="textarea" autofocus (input)="autoGrow($event)"></textarea>
         </div>
-        <div 
-        *ngIf="photos.length > 0" 
-        class="post-photos">
-          <div 
-          (click)="abort()"
-          class="x-btn">
+        <div
+          *ngIf="photos.length > 0"
+          class="post-photos">
+          <div
+            (click)="abort()"
+            class="x-btn">
             <i class='bx bx-x'></i>
           </div>
           <div>
             <div *ngFor="let photo of photos.slice(2, 4)">
               <div>
-                <img [src]="photo.url" >
+                <img [src]="photo.url">
               </div>
             </div>
           </div>
           <div>
             <div *ngFor="let photo of photos.slice(0, 2)">
               <div>
-                <img [src]="photo.url" >
+                <img [src]="photo.url">
               </div>
             </div>
           </div>
         </div>
       </div>
-        <div class="post-addition">
-          <div>Thêm vào bài viết</div>
-          <div>
-            <input formControlName="fileInput" accept="image/*"  type="file" (change)="onSelectImage($event)" #uploadImage>
-            <div (click)="uploadImage.click()" class="upload-image"><i class='bx bxs-file-image' ></i></div>
-          </div>
+      <div class="post-addition">
+        <div>Thêm vào bài viết</div>
+        <div>
+          <input formControlName="fileInput" accept="image/*" type="file" (change)="onSelectImage($event)" #uploadImage>
+          <div (click)="uploadImage.click()" class="upload-image"><i class='bx bxs-file-image'></i></div>
         </div>
-        <button type="submit" class="btn-post" [attr.disabled]="(photos.length == 0 && postForm.get('textarea')?.value == '') ? true : null" >Đăng</button>
+      </div>
+      <button type="submit" class="btn-post"
+              [attr.disabled]="(photos.length == 0 && postForm.get('textarea')?.value == '') ? true : null">Đăng
+      </button>
     </div>
   </form>
 </div>

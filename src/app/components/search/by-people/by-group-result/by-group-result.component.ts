@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { GroupResponse } from 'src/app/components/group/group-response';
+import {Component, Input, OnInit} from '@angular/core';
+import {GroupResponse} from 'src/app/components/group/group-response';
 
 @Component({
   selector: 'app-by-group-result',
@@ -10,7 +10,8 @@ export class ByGroupResultComponent implements OnInit {
 
   @Input() result!: GroupResponse;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

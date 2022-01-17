@@ -23,7 +23,12 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
     const authenticationToken = this.auth$.getToken();
 
+
     if (authenticationToken) {
+      if (new Date().getTime() - Number(this.auth$.getExpiresAt()) >= -10_000) {
+        return this.handleAuthErrors(req, next);
+      }
+
       return next.handle(this.addToken(req, authenticationToken))
         .pipe(catchError(error => {
           if (error instanceof HttpErrorResponse

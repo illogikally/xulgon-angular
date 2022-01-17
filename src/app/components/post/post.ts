@@ -1,5 +1,4 @@
-import { CommentResponse } from "../comment-list/comment/comment-response";
-import { UserDto } from "../common/user-dto";
+import {UserDto} from "../common/user-dto";
 
 export interface Post {
   id: number;

@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Post } from '../post/post';
-import { GroupResponse } from './group-response';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Post} from '../post/post';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,9 @@ import { GroupResponse } from './group-response';
 export class GroupService {
 
   groupUrl = 'http://localhost:8080/api/groups/'
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient) {
+  }
 
   getJoinRequests(groupId: number): Observable<any[]> {
     return this.http.get<any[]>(this.groupUrl + `${groupId}/join-requests`);

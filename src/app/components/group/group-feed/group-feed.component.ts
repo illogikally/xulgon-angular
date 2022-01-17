@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { MessageService } from '../../common/message.service';
-import { UserService } from '../../common/user.service';
-import { Post } from '../../post/post';
+import {Component, OnInit} from '@angular/core';
+import {MessageService} from '../../common/message.service';
+import {UserService} from '../../common/user.service';
+import {Post} from '../../post/post';
 
 @Component({
   selector: 'app-group-feed',
@@ -11,13 +11,15 @@ import { Post } from '../../post/post';
 export class GroupFeedComponent implements OnInit {
 
   groupFeedPosts!: Post[];
+
   constructor(private message$: MessageService,
-    private user$: UserService) { }
+              private user$: UserService) {
+  }
 
   ngOnInit(): void {
     this.user$.getGroupFeed().subscribe(posts => {
       console.log('group feed', posts);
-      
+
       this.groupFeedPosts = posts;
     })
   }

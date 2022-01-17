@@ -1,37 +1,38 @@
 @import "src/styles";
 
 .user-ref-container {
-	position: relative;
-	cursor: pointer;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
 }
 
 .user-ref-a {
-	display: inline-block;
-	position: relative;
-	cursor: pointer;
-	z-index: 1;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  z-index: 1;
 
-	&:hover {
-		text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
 
-	}
+  }
 
 
-	.username {
-		position: relative;	
-		left: 0;
-	}
+  .username {
+    position: relative;
+    left: 0;
+  }
 
-	.avatar-container {
-		border: 1px solid rgba(#333, .2);
-		width: 100%;
-		aspect-ratio: 1;
-		overflow: hidden;
+  .avatar-container {
+    border: 1px solid rgba(#333, .2);
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
 
-		img {
-			object-fit: cover;
-			width: 100%;
-			aspect-ratio: 1;
-		}
-	}
+    img {
+      object-fit: cover;
+      width: 100%;
+      aspect-ratio: 1;
+    }
+  }
 }

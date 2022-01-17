@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { MessageService } from '../../common/message.service';
-import { GroupService } from '../group.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ReplaySubject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {MessageService} from '../../common/message.service';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-join-request-list',
@@ -17,7 +17,8 @@ export class JoinRequestListComponent implements OnInit, OnDestroy {
   private destroyed$ = new ReplaySubject<boolean>(1);
 
   constructor(private groupService: GroupService,
-    private messageService: MessageService) { }
+              private messageService: MessageService) {
+  }
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
@@ -26,15 +27,15 @@ export class JoinRequestListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.messageService.groupLoaded
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe(group => {
-      if (!group) return;
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(group => {
+        if (!group) return;
 
-      this.groupService.getJoinRequests(group.id).subscribe(requests => {
-        this.joinRequests = requests;
-        this.dummy = this.joinRequests;
-      })
-    });
+        this.groupService.getJoinRequests(group.id).subscribe(requests => {
+          this.joinRequests = requests;
+          this.dummy = this.joinRequests;
+        })
+      });
   }
 
   deleteRequest(requestId: number): void {
@@ -46,8 +47,8 @@ export class JoinRequestListComponent implements OnInit, OnDestroy {
 
     this.joinRequests = this.dummy.filter((req: any) => {
       let name = req.user.username.normalize("NFD")
-            .replace(/\p{Diacritic}/gu, '')
-            .toLowerCase();
+        .replace(/\p{Diacritic}/gu, '')
+        .toLowerCase();
       return name.includes(pattern);
     });
   }

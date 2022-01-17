@@ -1,4 +1,4 @@
 export interface GroupRequest {
-	isHidden: boolean;
-	name: string;
+  isHidden: boolean;
+  name: string;
 }

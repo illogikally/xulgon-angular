@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
-import { PhotoViewResponse } from '../common/photo/photo-view-response';
-import { Location } from '@angular/common';
-import { NavigationStart, Router } from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
+import {PhotoViewResponse} from '../common/photo/photo-view-response';
+import {Location} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-photo-viewer',
@@ -11,14 +11,15 @@ import { NavigationStart, Router } from '@angular/router';
 })
 export class PhotoViewerComponent implements OnInit, OnDestroy {
 
-  @Input() photoResponse!: PhotoViewResponse | undefined; 
+  @Input() photoResponse!: PhotoViewResponse | undefined;
   @Output() closeMe: EventEmitter<boolean> = new EventEmitter();
   prevUrl: string[] = [];
-  
+
   constructor(private http: HttpClient,
-    private router: Router,
-    private renderer: Renderer2,
-    private location: Location) { }
+              private router: Router,
+              private renderer: Renderer2,
+              private location: Location) {
+  }
 
   ngOnDestroy(): void {
     this.renderer.setStyle(document.body, 'overflow-y', 'scroll');
@@ -33,9 +34,9 @@ export class PhotoViewerComponent implements OnInit, OnDestroy {
 
 
     this.http.get<PhotoViewResponse>("http://localhost:8080/api/photos/" + this.photoResponse?.id)
-        .subscribe(resp => {
-          this.photoResponse = resp;
-        });
+      .subscribe(resp => {
+        this.photoResponse = resp;
+      });
     this.prevUrl.push(window.location.href.replace(/https?:\/\/.*?\//g, ''));
     this.location.go(`photos/${this.photoResponse?.id}`);
   }

@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { Post } from '../../post/post';
-import { PostService } from '../../post/post.service';
-import { GroupResponse } from '../group-response';
-import { GroupService } from '../group.service';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Post} from '../../post/post';
+import {GroupResponse} from '../group-response';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-timeline',
@@ -13,17 +12,20 @@ import { GroupService } from '../group.service';
 export class GroupTimelineComponent implements OnInit {
 
   @Input() groupResponse!: GroupResponse;
-  posts: Post[] | undefined;
+  posts: Post[] = [];
 
   constructor(private group$: GroupService,
-    private route: ActivatedRoute) { }
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
-    console.log(this.groupResponse);
-    
-    this.group$.getTimeline(this.route.snapshot.paramMap.get('id') as unknown as number).subscribe(posts => {
-      this.posts = posts;
-    });
+    let profileId = Number(this.route.snapshot.paramMap.get('id'))
+    this.group$
+      .getTimeline(profileId)
+      .subscribe(posts => {
+        this.posts = posts;
+      });
+    console.log(this.route.url);
   }
 
 }

@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '../common/message.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {MessageService} from '../common/message.service';
 
 @Component({
   selector: 'app-search',
@@ -10,7 +10,8 @@ import { MessageService } from '../common/message.service';
 export class SearchComponent implements OnInit, OnDestroy {
 
   constructor(private message$: MessageService,
-    private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnDestroy() {
     this.message$.generalSearch.next('');
@@ -21,7 +22,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   search(): void {
-    this.activatedRoute.queryParamMap.subscribe(params => { 
+    this.activatedRoute.queryParamMap.subscribe(params => {
       let q = params.get('q');
       if (!q) return;
       this.message$.generalSearch.next(q);

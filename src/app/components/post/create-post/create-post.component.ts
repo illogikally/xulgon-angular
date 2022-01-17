@@ -1,11 +1,20 @@
-import { HttpClient } from '@angular/common/http';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { MessageService } from '../../common/message.service';
-import { GroupResponse } from '../../group/group-response';
-import { Post } from '../post';
+import {HttpClient} from '@angular/common/http';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {MessageService} from '../../common/message.service';
+import {GroupResponse} from '../../group/group-response';
+import {Post} from '../post';
 
 @Component({
   selector: 'app-create-post',
@@ -24,18 +33,18 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   isPrivacyOptsVisible = false;
   privacy = 'FRIEND';
 
-  @Input() groupResponse!: GroupResponse; 
+  @Input() groupResponse!: GroupResponse;
 
   @Output() closeMe: EventEmitter<void> = new EventEmitter();
   @ViewChild('privacyBtn') privacyBtn!: ElementRef;
 
   constructor(private http: HttpClient,
-    private messageService: MessageService,
-    private renderer: Renderer2,
-    private auth: AuthenticationService) { 
-      this.avatarUrl = auth.getAvatarUrl();
-      this.userFullName = auth.getUserFullName() as string;
-      
+              private messageService: MessageService,
+              private renderer: Renderer2,
+              private auth: AuthenticationService) {
+    this.avatarUrl = auth.getAvatarUrl();
+    this.userFullName = auth.getUserFullName() as string;
+
   }
 
   ngOnDestroy(): void {
@@ -58,7 +67,7 @@ export class CreatePostComponent implements OnDestroy, OnInit {
 
       reader.readAsDataURL(event.target.files[0]);
 
-      reader.onload = (event) => { 
+      reader.onload = (event) => {
         let img = new Image();
         img.src = event.target?.result as string;
         img.onload = () => {
@@ -67,12 +76,12 @@ export class CreatePostComponent implements OnDestroy, OnInit {
 
         this.photos.push({
           url: event.target?.result as string,
-          sizeRatio: this.sizeRatios[this.sizeRatios.length-1]
+          sizeRatio: this.sizeRatios[this.sizeRatios.length - 1]
         });
       }
     }
   }
-  
+
   autoGrow(event: any) {
     event.target.style.height = event.target.scrollHeight + "px";
   }
@@ -80,8 +89,8 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   submit(): void {
     let formData = new FormData();
 
-    let targetPage = this.groupResponse ? 
-        this.groupResponse.id : this.auth.getProfileId();
+    let targetPage = this.groupResponse ?
+      this.groupResponse.id : this.auth.getProfileId();
     this.privacy = !this.groupResponse ? this.privacy : this.groupResponse.isPrivate ? 'GROUP' : 'PUBLIC';
 
     let postRequest = new Blob([JSON.stringify({
@@ -101,12 +110,12 @@ export class CreatePostComponent implements OnDestroy, OnInit {
       formData.append('photos', new Blob([]));
     }
     console.log(formData.get('photos'));
-    
+
     let photoRequestBlob = new Blob([JSON.stringify(photoRequests)], {type: 'application/json'});
     formData.append('photoRequest', photoRequestBlob);
     this.http.post<Post>("http://localhost:8080/api/posts", formData).subscribe(resp => {
       this.messageService.sendCreatedPost(resp);
-    }); 
+    });
 
     this.closeMe.emit();
   }

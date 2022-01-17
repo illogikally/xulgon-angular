@@ -1,35 +1,35 @@
 <div class="notif">
-	<div 
-	(click)="popupVisible = !popupVisible"
-	id="notifButton"
-	class="button">
-		<i class='bx bxs-bell' ></i>
-		<div 
-		*ngIf="unreadCount > 0"
-		class="unread">
-			{{ unreadCount }}
-		</div>
-		<div class="markAsRead">
+  <div
+    (click)="popupVisible = !popupVisible"
+    id="notifButton"
+    class="button">
+    <i class='bx bxs-bell'></i>
+    <div
+      *ngIf="unreadCount > 0"
+      class="unread">
+      {{ unreadCount }}
+    </div>
+    <div class="markAsRead">
 
-		</div>
-	</div>
-	<div 
-	[ngStyle]="{'display': popupVisible ? 'block' : 'none'}"
-	class="popup">
-		<div 
-		(clickOutside)="popupVisible = false"
-		[exclude]="'#notifButton'"
-		class="popup__inner">
-			<div class="title">
-				<span>Thông báo</span>
-			</div>
-			<div class="notif-items">
-				<app-notif-item
-				[notifRead]="notifRead"
-				*ngFor="let notif of notifItems"
-				[notif]="notif"
-				></app-notif-item>
-			</div>
-		</div>
-	</div>
+    </div>
+  </div>
+  <div
+    [ngStyle]="{'display': popupVisible ? 'block' : 'none'}"
+    class="popup">
+    <div
+      (clickOutside)="popupVisible = false"
+      [exclude]="'#notifButton'"
+      class="popup__inner">
+      <div class="title">
+        <span>Thông báo</span>
+      </div>
+      <div class="notif-items">
+        <app-notif-item
+          [read]="notifRead"
+          *ngFor="let notif of notifItems"
+          [notification]="notif"
+        ></app-notif-item>
+      </div>
+    </div>
+  </div>
 </div>

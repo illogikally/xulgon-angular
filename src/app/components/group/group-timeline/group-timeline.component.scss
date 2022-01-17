@@ -1,48 +1,51 @@
 @import "src/styles";
 
 .group-timeline {
-	display: grid;
-	grid-template-columns: 1fr 360px;
-	gap: 17px;
-	padding-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 17px;
+  padding-bottom: 20px;
 
-	.content {
+  .content {
 
-		.private-group-warn {
-			@extend %fc;
-			@include card(10px);
-			height: 400px;
-			flex-direction: column;
+    .private-group-warn {
+      @extend %fc;
+      @include card(10px);
+      height: 400px;
+      flex-direction: column;
 
 
-			.lock {
-				width: 100px;
-				height: 100px;
+      .lock {
+        width: 100px;
+        height: 100px;
 
-				img {
-					object-fit: cover;
-					width: 100%;
-					aspect-ratio: 1;
-				}
-			}
-			.text {
-				@extend %fc;
-				flex-direction: column;
-				font-weight: 500;
-			}
-		}
-	}
-	.timeline-sidebar {
-			.group-meta {
-				@include card(10px);
-				padding: 15px;
-				.privacy {
-					> * {
-						display: grid;
-						grid-template-columns: 30px 1fr;
-					}
-				}
-			}
-	}
+        img {
+          object-fit: cover;
+          width: 100%;
+          aspect-ratio: 1;
+        }
+      }
+
+      .text {
+        @extend %fc;
+        flex-direction: column;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .timeline-sidebar {
+    .group-meta {
+      @include card(10px);
+      padding: 15px;
+
+      .privacy {
+        > * {
+          display: grid;
+          grid-template-columns: 30px 1fr;
+        }
+      }
+    }
+  }
 }
 

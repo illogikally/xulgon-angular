@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { GroupResponse } from '../group/group-response';
-import { Post } from '../post/post';
-import { UserProfile } from '../profile/user-profile';
-import { UserBasic } from './user-basic';
-import { UserDto } from './user-dto';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {GroupResponse} from '../group/group-response';
+import {Post} from '../post/post';
+import {UserProfile} from '../profile/user-profile';
+import {UserBasic} from './user-basic';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
 
-  constructor() { }
+  constructor() {
+  }
 
   private subject = new Subject<string>();
   private friendRequestChange = new Subject<number>();
@@ -29,6 +29,7 @@ export class MessageService {
   updateAvatar = new Subject<string>();
   // pageId = new BehaviorSubject<number | undefined>(undefined);
   private pageId = new BehaviorSubject<number | undefined>(undefined);
+
   loadPostsByPageId(pageId: number | undefined): void {
     this.pageId.next(pageId);
   }

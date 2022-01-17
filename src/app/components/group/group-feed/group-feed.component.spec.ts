@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroupFeedComponent } from './group-feed.component';
+import {GroupFeedComponent} from './group-feed.component';
 
 describe('GroupFeedComponent', () => {
   let component: GroupFeedComponent;
@@ -8,9 +8,9 @@ describe('GroupFeedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GroupFeedComponent ]
+      declarations: [GroupFeedComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

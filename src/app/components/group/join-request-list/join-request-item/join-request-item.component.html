@@ -1,33 +1,33 @@
 <div class="join-request-item">
-	<div class="content">
-		<div>
-			<div class="avatar">
-				<app-user-ref
-				borderRadius="50%"
-				[userDto]="request.user"
-				></app-user-ref>
-			</div>
-			<div class="name--time-ago">
-				<div class="name">
-					<app-user-ref [userDto]="request.user"></app-user-ref>
+  <div class="content">
+    <div>
+      <div class="avatar">
+        <app-user-ref
+          borderRadius="50%"
+          [userDto]="request.user"
+        ></app-user-ref>
+      </div>
+      <div class="name--time-ago">
+        <div class="name">
+          <app-user-ref [userDto]="request.user"></app-user-ref>
 
-				</div>
-				<div class="time-ago">
-					Đã yêu cầu {{ request.createdAgo }}
-				</div>
-			</div>
-		</div>
-		<div class="actions">
-			<div 
-			(click)="accept()"
-			class="accept">
-				Phê duyệt
-			</div>
-			<div 
-			(click)="decline()"
-			class="decline">
-				Từ chối
-			</div>
-		</div>
-	</div>
+        </div>
+        <div class="time-ago">
+          Đã yêu cầu {{ request.createdAgo }}
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div
+        (click)="accept()"
+        class="accept">
+        Phê duyệt
+      </div>
+      <div
+        (click)="decline()"
+        class="decline">
+        Từ chối
+      </div>
+    </div>
+  </div>
 </div>

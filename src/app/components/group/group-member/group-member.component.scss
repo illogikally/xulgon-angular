@@ -1,82 +1,89 @@
 @import "src/styles";
 
 .group-member {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 
-	&__inner {
-		@include card(10px);
-		padding: 15px;
-		width: 500px;
+  &__inner {
+    @include card(10px);
+    padding: 15px;
+    width: 500px;
 
-		.title-search {
-			padding-bottom: 15px;
-			border-bottom: 1px solid rgba(#333, .2);
-			.title {
-				font-size: 17px;
-				font-weight: 500;
-				margin-bottom: 10px;
-			}
-			.search {
-				@extend %input-group;
-				height: 35px;
-			}
-		}
-		.body {
-			.admins {
-				border-bottom: 1px solid rgba(#333, .2);
-			}
-				.title {
-					margin: 10px 0;
-					font-weight: 500;
-					font-size: 15px;
-				}
-			.member {
-				font-weight: 500;
-				display: flex;
-				align-items: center;
-				margin-bottom: 10px;
-				position: relative;
-				font-size: 15px;
+    .title-search {
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(#333, .2);
 
-				.opts {
-					position: absolute;
-					display: flex;
-					justify-content: center;
-					right: 10px;
+      .title {
+        font-size: 17px;
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
 
-					.btn {
-						@include button($btn-grey, #050505);
-						width: 20px;
-					}
+      .search {
+        @extend %input-group;
+        height: 35px;
+      }
+    }
 
-					.opts-popup {
-						@extend %opts;
-						top: 110%;
-						right: 0;
-						bottom: auto;
+    .body {
+      .admins {
+        border-bottom: 1px solid rgba(#333, .2);
+      }
 
-					}
-				}
-				.avatar {
-					margin-right: 15px;
-					.avatar-cont {
-						width: 60px;
-						height: 60px;
-						border-radius: 50%;
-						overflow: hidden;
-						border: 1px solid rgba(#333, .2);
+      .title {
+        margin: 10px 0;
+        font-weight: 500;
+        font-size: 15px;
+      }
 
-						img {
-							object-fit: cover;
-							aspect-ratio: 1;
-							width: 100%;
-						}
-					}
-				}
-			}
-		}
-	}
+      .member {
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        position: relative;
+        font-size: 15px;
+
+        .opts {
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          right: 10px;
+
+          .btn {
+            @include button($btn-grey, #050505);
+            width: 20px;
+          }
+
+          .opts-popup {
+            @extend %opts;
+            top: 110%;
+            right: 0;
+            bottom: auto;
+
+          }
+        }
+
+        .avatar {
+          margin-right: 15px;
+
+          .avatar-cont {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid rgba(#333, .2);
+
+            img {
+              object-fit: cover;
+              aspect-ratio: 1;
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
 }

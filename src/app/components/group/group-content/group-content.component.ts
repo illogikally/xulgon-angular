@@ -1,19 +1,19 @@
-import { Location, LocationStrategy } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ReplaySubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { MessageService } from '../../common/message.service';
-import { GroupResponse } from '../group-response';
-import { GroupService } from '../group.service';
+import {Location} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {Component, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ReplaySubject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {MessageService} from '../../common/message.service';
+import {GroupResponse} from '../group-response';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-content',
   templateUrl: './group-content.component.html',
   styleUrls: ['./group-content.component.scss']
 })
-export class GroupContentComponent implements OnInit, OnDestroy{
+export class GroupContentComponent implements OnInit, OnDestroy {
 
   groupResponse!: GroupResponse;
   loadedTabs = new Set<string>();
@@ -23,12 +23,13 @@ export class GroupContentComponent implements OnInit, OnDestroy{
   private destroyed$ = new ReplaySubject<boolean>(1);
 
   constructor(private location: Location,
-    private group$: GroupService,
-    private message$: MessageService,
-    private renderer: Renderer2,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private http: HttpClient) { }
+              private group$: GroupService,
+              private message$: MessageService,
+              private renderer: Renderer2,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private http: HttpClient) {
+  }
 
   ngOnDestroy() {
     // this.message$.groupLoaded.next(null);
@@ -39,15 +40,17 @@ export class GroupContentComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.initDefaultTab();
 
-    this.message$.groupLoaded
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe(groupResponse => {
-      if (!groupResponse) return;
-      console.log(groupResponse);
-      
+    console.log('group content');
 
-      this.groupResponse = groupResponse;
-    });
+    this.message$.groupLoaded
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(groupResponse => {
+        if (!groupResponse) return;
+        console.log('group content', groupResponse);
+
+
+        this.groupResponse = groupResponse;
+      });
   }
 
   initDefaultTab(): void {
@@ -74,16 +77,16 @@ export class GroupContentComponent implements OnInit, OnDestroy{
 
   sendJoinRequest(): void {
     this.http.post(`http://localhost:8080/api/groups/${this.groupResponse.id}/join-requests`, {})
-        .subscribe(_ => {
-          this.groupResponse.isRequestSent = true;
-        });
+      .subscribe(_ => {
+        this.groupResponse.isRequestSent = true;
+      });
   }
 
   cancelJoinRequest(): void {
     this.http.delete(`http://localhost:8080/api/groups/${this.groupResponse.id}/join-requests`)
-        .subscribe(_ => {
-          this.groupResponse.isRequestSent = false;
-        });
+      .subscribe(_ => {
+        this.groupResponse.isRequestSent = false;
+      });
   }
 
   toggleMoreActions() {

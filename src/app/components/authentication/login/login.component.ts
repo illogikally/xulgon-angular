@@ -1,11 +1,11 @@
-import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
-import { AuthenticationService } from '../authentication.service';
-import { LoginRequest } from './login-request';
+import {Location} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {throwError} from 'rxjs';
+import {AuthenticationService} from '../authentication.service';
+import {LoginRequest} from './login-request';
 
 @Component({
   selector: 'app-login',
@@ -22,9 +22,9 @@ export class LoginComponent implements OnInit {
   registerError: boolean | undefined;
 
   constructor(private auth$: AuthenticationService,
-    private http: HttpClient,
-    private location: Location,
-    private router: Router ){
+              private http: HttpClient,
+              private location: Location,
+              private router: Router) {
     this.loginRequest = {
       username: '',
       password: ''
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     if (this.auth$.getToken()) {
       this.router.navigateByUrl("/");
     }
-    
+
     if (/login/g.test(window.location.href)) {
       this.isLogin = true;
     }
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     this.registerForm = new FormGroup({
       username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
-      firstName: new FormControl('', [Validators.required, 
+      firstName: new FormControl('', [Validators.required,
         Validators.pattern('[a-zA-Z ]+')]),
       lastName: new FormControl('', Validators.required),
     });
@@ -65,30 +65,30 @@ export class LoginComponent implements OnInit {
 
     this.http.post('http://localhost:8080/api/authentication/account/register', registerDto).subscribe(_ => {
       console.log('registered');
-      this.registerError = false; 
-      
+      this.registerError = false;
+
     }, error => {
       this.registerError = true;
     })
-    
-    
+
+
   }
 
   login(): void {
     console.log('login');
-    
+
     this.loginRequest.username = this.loginForm.get('username')?.value;
     this.loginRequest.password = this.loginForm.get('password')?.value;
-    
+
     this.auth$.login(this.loginRequest)
       .subscribe(_ => {
         this.loginError = false;
         console.log('heh');
         this.router.navigateByUrl('');
-      }, error => { 
+      }, error => {
         this.loginError = true;
         throwError(error);
-    });
+      });
   }
 
   showLogin(event: any): void {

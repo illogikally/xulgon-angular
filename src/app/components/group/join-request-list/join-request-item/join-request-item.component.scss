@@ -1,50 +1,50 @@
 @import "src/styles";
 
 .join-request-item {
-	@include card(10px);
-	padding: 15px;
+  @include card(10px);
+  padding: 15px;
 
-	.content {
-		display: flex;
-		justify-content: space-between;
+  .content {
+    display: flex;
+    justify-content: space-between;
 
-		> div {
-			display: flex;
+    > div {
+      display: flex;
 
-			.avatar {
-				width: 60px;
-				height: 60px;;
-				margin-right: 10px;
-			}
+      .avatar {
+        width: 60px;
+        height: 60px;;
+        margin-right: 10px;
+      }
 
-			.name--time-ago {
-				display: flex;
-				flex-direction: column;
-				justify-content: space-around;
+      .name--time-ago {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
 
-				.name {
-					font-weight: 500;
-				}
+        .name {
+          font-weight: 500;
+        }
 
-				.time-ago {
-					color: var(--secondary-text);
-				}
-			}
-		}
+        .time-ago {
+          color: var(--secondary-text);
+        }
+      }
+    }
 
-		.actions {
-			display: flex;
-			align-items: center;
+    .actions {
+      display: flex;
+      align-items: center;
 
-			.accept {
-				@include button($btn-blue, #fff);
-				padding: 0 30px;
-				margin-right: 15px;
-			}
+      .accept {
+        @include button($btn-blue, #fff);
+        padding: 0 30px;
+        margin-right: 15px;
+      }
 
-			.decline {
-				@include button($btn-grey, #050505);
-			}
-		}
-	}
+      .decline {
+        @include button($btn-grey, #050505);
+      }
+    }
+  }
 }

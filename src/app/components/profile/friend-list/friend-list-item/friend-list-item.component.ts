@@ -1,8 +1,9 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
-import { MessageService } from 'src/app/components/common/message.service';
-import { UserDto } from 'src/app/components/common/user-dto';
-import { UserService } from 'src/app/components/common/user.service';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
+import {MessageService} from 'src/app/components/common/message.service';
+import {UserDto} from 'src/app/components/common/user-dto';
+import {UserService} from 'src/app/components/common/user.service';
 
 @Component({
   selector: 'app-friend-list-item',
@@ -15,7 +16,7 @@ export class FriendListItemComponent implements OnInit {
   @Input() pageId!: number;
   @ViewChild('optionsBtn') optionsBtn!: ElementRef;
   @Output() removeItem: EventEmitter<UserDto> = new EventEmitter();
-  
+
   isOptionsVisible: boolean = false;
   loggedInUserId!: number;
   loggedInProfileId!: number;
@@ -23,8 +24,11 @@ export class FriendListItemComponent implements OnInit {
   profileId!: number;
 
   constructor(private userService: UserService,
-    private message$: MessageService,
-    private auth: AuthenticationService) { }
+              private route: ActivatedRoute,
+              private router: Router,
+              private message$: MessageService,
+              private auth: AuthenticationService) {
+  }
 
   ngOnInit(): void {
     this.message$.onLoadPostsByPageId().subscribe(pageId => {
@@ -41,7 +45,7 @@ export class FriendListItemComponent implements OnInit {
 
   hideOptions(event: any): void {
     let btnAndChildren = [...this.optionsBtn.nativeElement.children,
-                            this.optionsBtn.nativeElement];
+      this.optionsBtn.nativeElement];
 
     if (!btnAndChildren.includes(event.target)) {
       this.isOptionsVisible = false;

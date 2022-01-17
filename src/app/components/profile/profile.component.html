@@ -1,218 +1,213 @@
 <div class="user-profile">
 
-<div  class="profile-header">
-  <div class="flex-center">
-    <div class="cover-avatar">
-      <div class="cover">
-        <img [src]="userProfile?.coverPhotoUrl ">
-        <div 
-        *ngIf="userProfile?.id == loggedInUserProfileId"
-        (click)="showUpdateProfilePic('cover')"
-        class="change-cover">
-          <i class='bx bxs-camera'></i>
-          <span>Thay ảnh bìa</span>
+  <div class="profile-header">
+    <div class="flex-center">
+      <div class="cover-avatar">
+        <div class="cover">
+          <img [src]="profileHeader?.profileCoverUrl">
+          <div
+            *ngIf="userProfile?.id == loggedInUserProfileId"
+            (click)="showUpdateProfilePic('cover')"
+            class="change-cover">
+            <i class='bx bxs-camera'></i>
+            <span>Thay ảnh bìa</span>
+          </div>
+        </div>
+        <div class="avatar-container flex-center">
+          <div class="avatar">
+            <app-photo [photo]="profileHeader?.avatar"></app-photo>
+          </div>
+          <div
+            *ngIf="userProfile?.id == loggedInUserProfileId"
+            (click)="showUpdateProfilePic('avatar')"
+            class="change-avatar">
+            <i class='bx bxs-camera'></i>
+
+          </div>
         </div>
       </div>
-      <div class="avatar-container flex-center">
-        <div class="avatar">
-          <app-photo [photo]="userProfile?.avatar"></app-photo>
-        </div>
-        <div 
-        *ngIf="userProfile?.id == loggedInUserProfileId"
-        (click)="showUpdateProfilePic('avatar')"
-        class="change-avatar">
-          <i class='bx bxs-camera'></i>
-          
+    </div>
+    <div class="flex-center">
+        <!-- [ngClass]="{loading: userProfile === undefined}" -->
+      <h1
+        class="profile-name flex-center">
+        {{ profileHeader?.profileName }}
+      </h1>
+    </div>
+    <div class="flex-center">
+      <div class="actions-menu">
+        <ul class="profile-menu">
+          <!-- [routerLink]="['./']" -->
+          <li
+            routerLink="./"
+            routerLinkActive="tab-active"
+            [routerLinkActiveOptions]="{exact: true}"
+          >
+            <a
+              (click)="navigate('./', $event)"
+            >
+              <div class="flex-center">
+                <span>Bài viết</span>
+              </div>
+            </a>
+          </li>
+          <li
+          [routerLink]="['about']"
+          (click)="navigate('about', $event)"
+          routerLinkActive="tab-active" >
+            <a>
+              <div class="flex-center">
+                <span>Giới thiệu</span>
+              </div>
+            </a>
+          </li>
+
+          <!-- [routerLink]="['friends']" -->
+          <li
+            [routerLink]="['friends']"
+            routerLinkActive="tab-active">
+            <a
+              (click)="navigate('friends', $event)"
+            >
+              <div class="flex-center">
+                <span>Bạn bè</span>
+              </div>
+            </a>
+          </li>
+          <li
+            [routerLink]="['photos']"
+            routerLinkActive="tab-active">
+            <!-- [ngClass]="{'tab-active': tab('photos')}" -->
+            <a
+              (click)="navigate('photos', $event)">
+              <div class="flex-center">
+                Ảnh
+              </div>
+            </a>
+          </li>
+        </ul>
+        <div
+          class="profile-actions">
+          <button
+          *ngIf="userProfile?.friendshipStatus == 'NULL'"
+          (click)="sendFriendRequest()"
+          id="add-friend">
+            <i class='bx bxs-user-plus'></i><span>Thêm bạn bè</span>
+          </button>
+
+          <button
+          *ngIf="userProfile?.friendshipStatus == 'FRIEND'"
+          (click)="isFriendOptsVisible = !isFriendOptsVisible"
+          #friend
+          id="friend-opts">
+            <i class='bx bxs-user-check'></i><span>Bạn bè</span>
+            <div
+              (clickOutside)="isFriendOptsVisible = false"
+              [delayClickOutsideInit]="true"
+              *ngIf="isFriendOptsVisible"
+              class="button-opts">
+              <div (click)="unfriend()">
+                <i class='bx bx-user-x'></i>
+                <span>Huỷ bỏ bạn bè</span>
+              </div>
+            </div>
+          </button>
+
+          <button
+            *ngIf="userProfile?.friendshipStatus == 'SENT'"
+            (click)="deleteFriendRequest()"
+            id="delete-friend-request">
+            <i class='bx bxs-user-x'></i><span>Huỷ lời mời</span>
+          </button>
+
+          <button
+          *ngIf="userProfile?.friendshipStatus == 'RECEIVED'"
+          (click)="onReplyFriendRequestClicked()"
+          #replyFriendRequest
+          id="reply-friend-request">
+            <i class='bx bxs-user-check'></i><span>Trả lời</span>
+            <div
+              (clickOutside)="closeReplyFriendRequestOpts($event)"
+              [delayClickOutsideInit]="true"
+              *ngIf="showReplyRequestOpts"
+              class="button-opts">
+              <div (click)="acceptFriendRequest()">Đồng ý</div>
+              <div (click)="deleteFriendRequest()">Xoá lời mời</div>
+            </div>
+          </button>
+
+          <button
+          id="send-message"
+          (click)="openChatBox()"
+          *ngIf="userProfile?.friendshipStatus != undefined">
+            <i class='bx bxs-message-square-dots'></i>
+            <span>Nhắn tin</span>
+          </button>
+
+          <button
+            *ngIf="userProfile?.friendshipStatus"
+            (click)="moreActionOptsVisible = !moreActionOptsVisible"
+            id="more-action">
+            <i class='bx bx-dots-horizontal-rounded'></i>
+            <div
+              *ngIf="moreActionOptsVisible"
+              (clickOutside)="moreActionOptsVisible = false"
+              [delayClickOutsideInit]="true"
+              class="opts">
+              <div
+                *ngIf="!userProfile.blocked"
+                (click)="block()"
+              >
+                <i class='bx bx-block'></i>
+                <span>Chặn người này</span>
+              </div>
+              <div
+                *ngIf="userProfile.blocked"
+                (click)="unblock()"
+              >
+                <i class='bx bx-block'></i>
+                <span>Gỡ chặn người này</span>
+              </div>
+
+            </div>
+          </button>
         </div>
       </div>
     </div>
   </div>
-  <div class="flex-center">
-    <h1 
-    [ngClass]="{loading: userProfile === undefined}" 
-    class="profile-name flex-center">
-      {{ userProfile?.fullName }}
-    </h1>
-  </div>
-  <div class="flex-center">
-    <div class="actions-menu">
-      <ul class="profile-menu">
-        <!-- [routerLink]="['./']" -->
-        <li
-        [routerLink]="['./']"
-        routerLinkActive="tab-active"
-        [routerLinkActiveOptions]="{exact: true}"
-        > 
-          <a
-          (click)="navigate('./', $event)"
-          >
-            <div class="flex-center">
-              <span>Bài viết</span> 
-            </div>
-          </a>
-        </li>
-        <li
-        [routerLink]="['about']"
-        (click)="navigate('about', $event)"
-        routerLinkActive="tab-active"
-        >
-          <a>
-            <div class="flex-center">
-              <span>Giới thiệu</span>
-            </div>
-          </a>
-        </li>
+  <div class="profile-body">
+    <div class="content-container">
+      <router-outlet></router-outlet>
 
-        <!-- [routerLink]="['friends']" -->
-        <li
-        [routerLink]="['friends']"
-        routerLinkActive="tab-active">
-          <a
-          (click)="navigate('friends', $event)"
-          >
-            <div class="flex-center">
-              <span>Bạn bè</span>
-            </div>
-          </a>
-        </li>
-        <li
-        [routerLink]="['photos']"
-        routerLinkActive="tab-active">
-        <!-- [ngClass]="{'tab-active': tab('photos')}" -->
-          <a 
-          (click)="navigate('photos', $event)">
-            <div class="flex-center">
-              Ảnh
-            </div>
-          </a>
-        </li>
-      </ul>
-      <div 
-      class="profile-actions">
-        <button 
-        *ngIf="userProfile?.friendshipStatus == 'NULL'"
-        (click)="sendFriendRequest()" 
-        id="add-friend">
-          <i class='bx bxs-user-plus' ></i><span>Thêm bạn bè</span>
-        </button>
+      <!-- <app-profile-timeline *ngIf="loadedTabs.has('')"
+      [timeline]="timeline"
+      [userProfile]="userProfile"
+      [ngClass]="{'none': currentTab != ''}"
+      ></app-profile-timeline>
 
-        <button 
-        *ngIf="userProfile?.friendshipStatus == 'FRIEND'"
-        (click)="isFriendOptsVisible = !isFriendOptsVisible" 
-        #friend
-        id="friend-opts">
-          <i class='bx bxs-user-check' ></i><span>Bạn bè</span>
-          <div  
-          (clickOutside)="isFriendOptsVisible = false"
-          [delayClickOutsideInit]="true"
-          *ngIf="isFriendOptsVisible" 
-          class="button-opts">
-            <div (click)="unfriend()">
-              <i class='bx bx-user-x' ></i>
-              <span>Huỷ bỏ bạn bè</span>
-            </div>
-          </div>
-        </button>
+      <app-friend-list
+      [ngClass]="{'none': currentTab != 'friends'}"
+      [profileId]="userProfile?.id" *ngIf="loadedTabs.has('friends')">
+      </app-friend-list>
 
-        <button 
-        *ngIf="userProfile?.friendshipStatus == 'SENT'"
-        (click)="deleteFriendRequest()" 
-        id="delete-friend-request">
-          <i class='bx bxs-user-x' ></i><span>Huỷ lời mời</span>
-        </button>
+      <app-photo-list *ngIf="loadedTabs.has('photos')"
+      [ngClass]="{'none': currentTab != 'photos'}"
+      >
+      </app-photo-list>
 
-        <button 
-        *ngIf="userProfile?.friendshipStatus == 'RECEIVED'"
-        (click)="onReplyFriendRequestClicked()" 
-        #replyFriendRequest
-        id="reply-friend-request">
-          <i class='bx bxs-user-check' ></i><span>Trả lời</span>
-          <div  
-          (clickOutside)="closeReplyFriendRequestOpts($event)"
-          [delayClickOutsideInit]="true"
-          *ngIf="showReplyRequestOpts" 
-          class="button-opts">
-            <div (click)="acceptFriendRequest()">Đồng ý</div>
-            <div (click)="deleteFriendRequest()">Xoá lời mời</div>
-          </div>
-        </button>
+      <app-profile-about *ngIf="loadedTabs.has('about')"
+      [ngClass]="{'none': currentTab != 'about'}"
+      >
 
-        <button 
-        id="send-message"
-        (click)="openChatBox()"
-        *ngIf="userProfile?.friendshipStatus != undefined">
-          <i class='bx bxs-message-square-dots' ></i>
-          <span>Nhắn tin</span>
-        </button>
+      </app-profile-about> -->
 
-        <button
-        *ngIf="userProfile?.friendshipStatus"
-        (click)="moreActionOptsVisible = !moreActionOptsVisible"
-        id="more-action">
-          <i class='bx bx-dots-horizontal-rounded'></i>
-          <div 
-          *ngIf="moreActionOptsVisible"
-          (clickOutside)="moreActionOptsVisible = false"
-          [delayClickOutsideInit]="true"
-          class="opts">
-            <div
-            *ngIf="!userProfile.blocked"
-            (click)="block()"
-            >
-              <i class='bx bx-block' ></i>
-              <span>Chặn người này</span>
-            </div>
-            <div
-            *ngIf="userProfile.blocked"
-            (click)="unblock()"
-            >
-              <i class='bx bx-block' ></i>
-              <span>Gỡ chặn người này</span>
-            </div>
-
-          </div>
-        </button>
-      </div>
     </div>
   </div>
-</div>
-<div class="profile-body">
-  <div class="content-container">
-    <router-outlet></router-outlet>
-
-    <!-- <app-profile-timeline
-    *ngIf="loadedTabs.has('')"
-    [timeline]="timeline"
-    [userProfile]="userProfile"
-    [ngClass]="{'none': currentTab != ''}"
-    ></app-profile-timeline>
-
-    <app-friend-list
-    [ngClass]="{'none': currentTab != 'friends'}"
-    [profileId]="userProfile?.id"
-    *ngIf="loadedTabs.has('friends')">
-    </app-friend-list>
-
-    <app-photo-list
-    *ngIf="loadedTabs.has('photos')"
-    [ngClass]="{'none': currentTab != 'photos'}"
-    >
-    </app-photo-list>
-
-    <app-profile-about
-    *ngIf="loadedTabs.has('about')"
-    [ngClass]="{'none': currentTab != 'about'}"
-    >
-
-    </app-profile-about> -->
-
-  </div>
-</div>
-<div *ngIf="pageNotFound == undefined" class="loading-page">
+  <div *ngIf="pageNotFound == undefined" class="loading-page">
   </div>
 </div>
 <app-error-page *ngIf="pageNotFound"></app-error-page>
 <app-pick-avatar
-*ngIf="isUpdateAvatar"
-(closeMe)="isUpdateAvatar = false"
+  *ngIf="isUpdateAvatar"
+  (closeMe)="isUpdateAvatar = false"
 ></app-pick-avatar>

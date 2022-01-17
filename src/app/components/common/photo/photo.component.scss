@@ -3,6 +3,7 @@
 a {
   @extend %fz;
 
+  display: block;
   img {
     object-fit: cover;
     background-color: #ddd;

@@ -1,12 +1,10 @@
-import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { filter, take } from 'rxjs/operators';
-import { MessageService } from '../../common/message.service';
-import { UserDto } from '../../common/user-dto';
-import { UserProfile } from '../user-profile';
+import {Location} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {MessageService} from '../../common/message.service';
+import {UserDto} from '../../common/user-dto';
 
 @Component({
   selector: 'app-friend-list',
@@ -21,19 +19,19 @@ export class FriendListComponent implements OnInit {
   searchForm!: FormGroup;
 
   constructor(private http: HttpClient,
-    private messageService: MessageService,
-    private location: Location,
-    private activatedRoute: ActivatedRoute) {
+              private messageService: MessageService,
+              private location: Location,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     let id = Number(this.activatedRoute.parent?.snapshot.paramMap.get('id'));
     if (id !== NaN) {
       this.http.get<UserDto[]>(`http://localhost:8080/api/profiles/${id}/friends`)
-      .subscribe(resp => {
-        this.friends = resp;
-        this.friendsCopy =  this.friends;
-      });
+        .subscribe(resp => {
+          this.friends = resp;
+          this.friendsCopy = this.friends;
+        });
     }
     // this.messageService.onProfileLoaded()
     // .pipe(
@@ -51,8 +49,8 @@ export class FriendListComponent implements OnInit {
     this.searchForm.get('searchInput')?.valueChanges.subscribe(value => {
       this.friends = this.friendsCopy.filter(friend => {
         let name = friend.username.normalize("NFD")
-              .replace(/\p{Diacritic}/gu, '')
-              .toLowerCase();
+          .replace(/\p{Diacritic}/gu, '')
+          .toLowerCase();
 
         return name.includes(value.toLowerCase());
       });

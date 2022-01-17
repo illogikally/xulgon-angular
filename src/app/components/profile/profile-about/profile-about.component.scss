@@ -1,63 +1,67 @@
 @import "src/styles";
 
 .profile-about {
-	@include card(10px);
-	padding: 15px;
-	.content {
-		.info.hometown {
+  @include card(10px);
+  padding: 15px;
 
-			> div {
-			display: flex;
-			align-items: center;
-			margin-bottom: 5px;
+  .content {
+    .info.hometown {
 
-				font-weight: 500;
-				font-size: 15px;
-			> i {
-				margin-right: 10px;
-				font-size: 30px;
-			}
+      > div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
 
-				div {
-					width: 35px;
-					height: 35px;
-					border-radius: 50%;
-					background-color: $btn-grey;
-					@extend %fc;
-					margin-left: 20px;
-					i {
-						font-size: 25px;
-					}
-				}
-			}
-		}
+        font-weight: 500;
+        font-size: 15px;
 
-		.add {
-			color: $btn-blue;
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-			&:hover {
-				.text {
-					text-decoration: underline;
-				}
-			}
+        > i {
+          margin-right: 10px;
+          font-size: 30px;
+        }
 
-			.icon {
-				@extend %fc;
-				margin-right: 10px;
+        div {
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+          background-color: $btn-grey;
+          @extend %fc;
+          margin-left: 20px;
 
-				.icon-cont {
-					font-size: 20px;
-					@extend %fc;
-					width: 30px;
-					height: 30px;
-					border: 1px solid $btn-blue;
-					border-radius: 50%;
-				}
-			}
+          i {
+            font-size: 25px;
+          }
+        }
+      }
+    }
 
-			display: flex;
-		}
-	}
+    .add {
+      color: $btn-blue;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        .text {
+          text-decoration: underline;
+        }
+      }
+
+      .icon {
+        @extend %fc;
+        margin-right: 10px;
+
+        .icon-cont {
+          font-size: 20px;
+          @extend %fc;
+          width: 30px;
+          height: 30px;
+          border: 1px solid $btn-blue;
+          border-radius: 50%;
+        }
+      }
+
+      display: flex;
+    }
+  }
 }

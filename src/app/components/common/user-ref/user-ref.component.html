@@ -1,26 +1,26 @@
-<div 
-(mouseenter)="onMouseEnter()"
-(mouseleave)="onMouseLeave()"
-(click)="onMouseLeave()"
-class="user-ref-container">
-	<a 
-	class="user-ref-a"
-	routerLink="/{{ userDto?.profileId }}">
-		<div 
-		*ngIf="borderRadius"
-		class="avatar-container" 
-		#avatarContainer>
-			<img [src]="userDto?.avatarUrl">
-		</div>
-		<div 
-		class="username"
-		*ngIf="!borderRadius"
-		>
-		{{ userDto?.username }}
-	</div>
-	</a>
-		<app-user-ref-popup
-		[userDto]="userDto"
-		[visibility]="popupVisibility"
-		></app-user-ref-popup>
+<div
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+  (click)="onMouseLeave()"
+  class="user-ref-container">
+  <a
+    class="user-ref-a"
+    routerLink="/{{ userDto?.profileId }}">
+    <div
+      *ngIf="borderRadius"
+      class="avatar-container"
+      #avatarContainer>
+      <img [src]="userDto?.avatarUrl">
+    </div>
+    <div
+      class="username"
+      *ngIf="!borderRadius"
+    >
+      {{ userDto?.username }}
+    </div>
+  </a>
+  <app-user-ref-popup
+    [userDto]="userDto"
+    [visibility]="popupVisibility"
+  ></app-user-ref-popup>
 </div>

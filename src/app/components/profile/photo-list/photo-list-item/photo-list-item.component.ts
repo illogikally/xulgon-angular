@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
+import {HttpClient} from '@angular/common/http';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
 
 @Component({
   selector: 'app-photo-list-item',
@@ -17,7 +17,7 @@ export class PhotoListItemComponent implements OnInit {
   @ViewChild('optionsBtn') optionsBtn!: ElementRef;
 
   constructor(private auth: AuthenticationService,
-    private http: HttpClient) { 
+              private http: HttpClient) {
     this.loggedInUserId = auth.getUserId();
   }
 
@@ -29,9 +29,9 @@ export class PhotoListItemComponent implements OnInit {
   }
 
   hideOptions(event: any): void {
-    
+
     let btnAndChildren = [...this.optionsBtn.nativeElement.children,
-        this.optionsBtn.nativeElement];
+      this.optionsBtn.nativeElement];
     if (!btnAndChildren.includes(event.target)) {
       this.isOptionsVisible = false;
     }

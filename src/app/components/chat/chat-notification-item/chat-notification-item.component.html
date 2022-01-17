@@ -1,43 +1,43 @@
 <div
-(click)="openChatBox($event)"
-class="chat-noti-item">
-	<div class="content">
-		<div class="avatar">
-			<div class="avatar-container">
-				<img [src]="conversation.user.avatarUrl"/>
-			</div>
-		</div>
-		<div class="body">
-			<div class="name">{{ conversation.user.username }}</div>
-			<div class="msg--ago">
-				<span 
-				[ngStyle]="{'color': isConversationRead() ? 'inherit' : '#1877f2' }"
-				class="msg">
+  (click)="openChatBox($event)"
+  class="chat-noti-item">
+  <div class="content">
+    <div class="avatar">
+      <div class="avatar-container">
+        <img [src]="conversation.user.avatarUrl"/>
+      </div>
+    </div>
+    <div class="body">
+      <div class="name">{{ conversation.user.username }}</div>
+      <div class="msg--ago">
+				<span
+          [ngStyle]="{'color': isConversationRead() ? 'inherit' : '#1877f2' }"
+          class="msg">
 					<span
-					*ngIf="conversation.latestMessage.userId == loggedInUserId"
-					>Bạn: </span>
-					{{ conversation.latestMessage.message }}
+            *ngIf="conversation.latestMessage.userId == loggedInUserId"
+          >Bạn: </span>
+          {{ conversation.latestMessage.message }}
 				</span>
-				<span>&nbsp;·&nbsp;</span> 
-				<span class="ago">{{ conversation.latestMessage.createdAgo }}</span>
-			</div>
-		</div>
-	</div>
-	<!-- <div 
-	#opts
-	class="opts">
-		<div class="opts-btn">
-			<i class='bx bx-dots-horizontal-rounded'></i>
-			<div class="opts-popup">
-				<div>Đánh dấu là đã đọc</div>
-			</div>
-		</div>
-	</div> -->
-	<div 
-	[ngClass]="isConversationRead() ? 'hidden' : 'visible'"
-	#markAsRead
-	(click)="read()"
-	class="mark-as-read">
+        <span>&nbsp;·&nbsp;</span>
+        <span class="ago">{{ conversation.latestMessage.createdAgo }}</span>
+      </div>
+    </div>
+  </div>
+  <!-- <div
+  #opts
+  class="opts">
+    <div class="opts-btn">
+      <i class='bx bx-dots-horizontal-rounded'></i>
+      <div class="opts-popup">
+        <div>Đánh dấu là đã đọc</div>
+      </div>
+    </div>
+  </div> -->
+  <div
+    [ngClass]="isConversationRead() ? 'hidden' : 'visible'"
+    #markAsRead
+    (click)="read()"
+    class="mark-as-read">
 
-	</div>
+  </div>
 </div>

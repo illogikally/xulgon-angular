@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ByGroupResultComponent } from './by-group-result.component';
+import {ByGroupResultComponent} from './by-group-result.component';
 
 describe('ByGroupResultComponent', () => {
   let component: ByGroupResultComponent;
@@ -8,9 +8,9 @@ describe('ByGroupResultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ByGroupResultComponent ]
+      declarations: [ByGroupResultComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

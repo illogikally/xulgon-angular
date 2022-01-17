@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ChatNotificationItemComponent } from './chat-notification-item.component';
+import {ChatNotificationItemComponent} from './chat-notification-item.component';
 
 describe('ChatNotificationItemComponent', () => {
   let component: ChatNotificationItemComponent;
@@ -8,9 +8,9 @@ describe('ChatNotificationItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatNotificationItemComponent ]
+      declarations: [ChatNotificationItemComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

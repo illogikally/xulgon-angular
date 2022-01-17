@@ -1,7 +1,7 @@
-<app-post-skeleton *ngIf="!posts" ></app-post-skeleton>
-<app-post-skeleton *ngIf="!posts" ></app-post-skeleton>
 <div *ngFor="let post of posts" class="post-container">
-  <app-post 
-  [showGroup]="showGroup"
-  [post]="post"></app-post>
+  <app-post
+    [showGroup]="showGroup"
+    [post]="post"></app-post>
 </div>
+<app-post-skeleton *ngIf="isLoading"></app-post-skeleton>
+<app-post-skeleton *ngIf="isLoading"></app-post-skeleton>

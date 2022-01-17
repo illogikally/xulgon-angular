@@ -1,85 +1,85 @@
 @import "src/styles";
 
-  .content {
-    width: 892px;
-    display: grid;
-    grid-template-columns: 360px 1fr;
-    grid-gap: 17px;
+.content {
+  width: 892px;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  grid-gap: 17px;
 
-    .sidebar-container {
-      font-weight: 500;
+  .sidebar-container {
+    font-weight: 500;
+  }
+
+  .sidebar {
+    font-weight: 500;
+
+
+    > * {
+      @include card(10px);
+      background-color: #fff;
+      padding: 15px 15px;
+      margin-bottom: 20px;
     }
-    
-    .sidebar {
-      font-weight: 500;
 
-    
+    .intro {
+      max-height: 500px;
+      font-size: 16px;
 
-      > * {
-        @include card(10px);
-        background-color: #fff;
-        padding: 15px 15px;
-        margin-bottom: 20px;
+      > div {
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+
+        i {
+          font-size: 27px;
+          margin-right: 10px;
+        }
       }
+    }
 
-      .intro {
-        max-height: 500px;
-        font-size: 16px;
+    .photo-intro {
+      max-height: 600px;
+
+
+      .photo {
+        display: grid;
+        grid-gap: 3px;
+        border-radius: 10px;
+        overflow: hidden;
+        grid-template-columns: repeat(3, 1fr);
 
         > div {
-          margin-bottom: 5px;
-          display: flex;
-          align-items: center;
-
-          i {
-            font-size: 27px;
-            margin-right: 10px;
-          }
-        }
-      }
-
-      .photo-intro {
-        max-height: 600px;
-
-
-        .photo {
-          display: grid;
-          grid-gap: 3px;
-          border-radius: 10px;
+          width: 100%;
+          aspect-ratio: 1;
           overflow: hidden;
-          grid-template-columns: repeat(3, 1fr);
-          
-          > div {
-            width: 100%;
-            aspect-ratio: 1;
-            overflow: hidden;
-          }
-
         }
 
       }
 
-      .friend-intro {
-        max-height: 600px;
-
-        .friend {
-          display: grid;
-          grid-gap: 10px;
-          grid-template-columns: repeat(3, 1fr);
-
-          .img-container {
-            width: 100%;
-            aspect-ratio: 1;
-          }
-          .common-friend-count {
-            font-size: 14px;
-            font-weight: 400;
-          }
-        }
-      }
     }
 
-    .timeline {
-      flex-grow: 1;
+    .friend-intro {
+      max-height: 600px;
+
+      .friend {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: repeat(3, 1fr);
+
+        .img-container {
+          width: 100%;
+          aspect-ratio: 1;
+        }
+
+        .common-friend-count {
+          font-size: 14px;
+          font-weight: 400;
+        }
+      }
     }
   }
+
+  .timeline {
+    flex-grow: 1;
+  }
+}

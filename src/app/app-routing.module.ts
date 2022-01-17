@@ -20,26 +20,28 @@ import { ProfileAboutComponent } from './components/profile/profile-about/profil
 import { FriendListComponent } from './components/profile/friend-list/friend-list.component';
 import { PhotoListComponent } from './components/profile/photo-list/photo-list.component';
 import { ProfileTimelineComponent } from './components/profile/profile-timeline/profile-timeline.component';
+import { GroupComponent } from './components/group/group.component';
+import { ProfileHeaderResolver } from './components/profile/profile-header.resolver';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: LoginComponent },
-  { 
-    path: '', 
+  {
+    path: '',
     component: LoggedInComponent,
     canActivate: [AuthenticationGuard],
     children: [
       { path: '', component: NewsFeedComponent },
-      { 
-        path: 'permalink/:id', 
+      {
+        path: 'permalink/:id',
         component: PostViewComponent
       },
-      { 
+      {
         path: 'friends',
         component: FriendRequestComponent,
         // children: [
-        //   { 
-        //     path: ':id', 
+        //   {
+        //     path: ':id',
         //     component: ProfileComponent,
         //     children: [
         //       { path: '', component: ProfileTimelineComponent},
@@ -47,11 +49,10 @@ const routes: Routes = [
         //       { path: 'friends', component: FriendListComponent},
         //       { path: 'photos', component: PhotoListComponent}
         //     ]
-            
         //   }
         // ]
       },
-      { 
+      {
         path: 'search',
         component: SearchComponent,
         children: [
@@ -62,14 +63,15 @@ const routes: Routes = [
         ]
 
       },
-      { 
-        path: 'groups', 
+      {
+        path: 'groups',
         children: [
 
           { path: '', redirectTo: 'feed', pathMatch: 'full'},
           { path: 'feed', component: GroupGeneralComponent },
           {
-            path: ':id', 
+            path: ':id',
+            component: GroupComponent,
             children: [
               { path: '', component: GroupContentComponent},
               { path: 'about', component: GroupContentComponent},
@@ -81,19 +83,22 @@ const routes: Routes = [
           }
         ]
       },
-      { 
-        path: ':id', 
+      {
+        path: ':id',
         component: ProfileComponent,
+        resolve: {
+          header: ProfileHeaderResolver
+        },
         children: [
-          { path: '', component: ProfileTimelineComponent},
+          { path: '', component: ProfileTimelineComponent, pathMatch: 'full'},
           { path: 'about', component: ProfileAboutComponent},
           { path: 'friends', component:  FriendListComponent},
           { path: 'photos', component: PhotoListComponent}
         ]
-        
+
       },
-      // { 
-      //   path: ':id', 
+      // {
+      //   path: ':id',
       //   component: ProfileComponent,
       //   outlet: 'profile',
       //   children: [
@@ -102,7 +107,6 @@ const routes: Routes = [
       //     { path: 'friends', component:  FriendListComponent},
       //     { path: 'photos', component: PhotoListComponent}
       //   ]
-        
       // },
       { path: '**', component: ErrorPageComponent}
     ]

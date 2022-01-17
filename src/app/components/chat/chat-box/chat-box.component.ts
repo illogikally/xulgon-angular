@@ -1,11 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { RxStomp } from '@stomp/rx-stomp';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { MessageService } from '../../common/message.service';
-import { ChatMessage } from '../chat-msg';
+import {HttpClient} from '@angular/common/http';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {RxStompService} from '@stomp/ng2-stompjs';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {MessageService} from '../../common/message.service';
+import {ChatMessage} from '../chat-msg';
 
 @Component({
   selector: 'app-chat-box',
@@ -21,16 +20,16 @@ export class ChatBoxComponent implements OnInit {
   @Input() markAsRead!: EventEmitter<number>;
 
   constructor(private message$: MessageService,
-    private auth$: AuthenticationService,
-    private renderer: Renderer2,
-    private self: ElementRef,
-    private rxStomp: RxStompService,
-    private http: HttpClient) {
-    
+              private auth$: AuthenticationService,
+              private renderer: Renderer2,
+              private self: ElementRef,
+              private rxStomp: RxStompService,
+              private http: HttpClient) {
+
     this.msgForm = new FormGroup({
       input: new FormControl('')
     });
-    
+
   }
 
   ngOnInit(): void {
@@ -71,12 +70,12 @@ export class ChatBoxComponent implements OnInit {
   }
 
   markConversationAsRead(): void {
-    if (this.messages[0]?.isRead === true 
-      || this.messages[0]?.userId === this.auth$.getUserId()) 
+    if (this.messages[0]?.isRead === true
+      || this.messages[0]?.userId === this.auth$.getUserId())
       return;
     this.messages[0].isRead = true;
     console.log('mark as read');
-    
+
     this.markAsRead.emit(this.messages[0].id);
   }
 
@@ -93,7 +92,7 @@ export class ChatBoxComponent implements OnInit {
     this.msgForm.get('input')?.setValue('');
 
     this.rxStomp.publish({
-      destination: '/app/chat', 
+      destination: '/app/chat',
       body: JSON.stringify(messageRequest)
     });
   }

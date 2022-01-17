@@ -1,25 +1,26 @@
 @import "src/styles";
 
 .result {
-	@include card(10px);
-	padding: 15px;
-	display: flex;
+  @include card(10px);
+  padding: 15px;
+  display: flex;
 
-	.avatar-container {
-		margin-right: 10px;
+  .avatar-container {
+    margin-right: 10px;
 
-		.avatar {
-			width: 60px;
-			height: 60px;
-		}
-	}
-	.infos {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
+    .avatar {
+      width: 60px;
+      height: 60px;
+    }
+  }
 
-		.name {
-			font-weight: 500;
-		}
-	}
+  .infos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .name {
+      font-weight: 500;
+    }
+  }
 }

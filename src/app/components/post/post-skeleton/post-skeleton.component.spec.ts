@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PostSkeletonComponent } from './post-skeleton.component';
+import {PostSkeletonComponent} from './post-skeleton.component';
 
 describe('PostSkeletonComponent', () => {
   let component: PostSkeletonComponent;
@@ -8,9 +8,9 @@ describe('PostSkeletonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PostSkeletonComponent ]
+      declarations: [PostSkeletonComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

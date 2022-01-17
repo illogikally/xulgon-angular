@@ -1,44 +1,43 @@
-
-<div 
-class="chat-notif">
-	<div 
-	(click)="togglePopup()"
-	id="chatNotifButton"
-	class="button">
-		<i class='bx bxs-message-square-dots' ></i>
-		<div 
-		*ngIf="unreadCount > 0"
-		class="unread">
-			<span>{{ unreadCount }}</span>
-		</div>
-	</div>
-	<div 
-	#popup
-	class="chat-notif-popup">
-		<div 
-		(clickOutside)="hidePopup()"
-		[exclude]="'#chatNotifButton'"
-		class="content">
-			<div class="title">
-				<h2>Nhắn tin</h2>
-			</div>
-			<div class="search">
-				<div class="input-group">
-					<i class='bx bx-search' ></i>
-					<input type="text" class="input" placeholder="Tìm kiếm...">
-				</div>
-			</div>
-			<div class="notis">
-				<app-chat-notification-item
-				(close)="hidePopup()"
-				[conversationRead]="conversationRead"
-				*ngFor="let conversation of latestConversations"
-				[conversation]="conversation"
-				></app-chat-notification-item>
-			</div>
-		</div>
-	</div>
+<div
+  class="chat-notif">
+  <div
+    (click)="togglePopup()"
+    id="chatNotifButton"
+    class="button">
+    <i class='bx bxs-message-square-dots'></i>
+    <div
+      *ngIf="unreadCount > 0"
+      class="unread">
+      <span>{{ unreadCount }}</span>
+    </div>
+  </div>
+  <div
+    #popup
+    class="chat-notif-popup">
+    <div
+      (clickOutside)="hidePopup()"
+      [exclude]="'#chatNotifButton'"
+      class="content">
+      <div class="title">
+        <h2>Nhắn tin</h2>
+      </div>
+      <div class="search">
+        <div class="input-group">
+          <i class='bx bx-search'></i>
+          <input type="text" class="input" placeholder="Tìm kiếm...">
+        </div>
+      </div>
+      <div class="notis">
+        <app-chat-notification-item
+          (close)="hidePopup()"
+          [conversationRead]="conversationRead"
+          *ngFor="let conversation of latestConversations"
+          [conversation]="conversation"
+        ></app-chat-notification-item>
+      </div>
+    </div>
+  </div>
 </div>
 <app-chat-box
-[markAsRead]="conversationRead"
+  [markAsRead]="conversationRead"
 ></app-chat-box>

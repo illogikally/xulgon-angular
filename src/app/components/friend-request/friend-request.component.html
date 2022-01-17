@@ -1,24 +1,24 @@
 <div class="friend-request">
   <div class="sidebar-container">
     <div class="sidebar">
-      <div class="title">Lời mời kết bạn</div> 
+      <div class="title">Lời mời kết bạn</div>
       <ul class="content">
-        <app-friend-request-item 
-        (profilePicked)="profilePicked()"
-        (onDeleteRequest)="deleteRequest(request)"
-        *ngFor="let request of friendRequests" 
-        [request]="request"></app-friend-request-item>  
-        
+        <app-friend-request-item
+          (profilePicked)="profilePicked()"
+          (onDeleteRequest)="deleteRequest(request)"
+          *ngFor="let request of friendRequests"
+          [request]="request"></app-friend-request-item>
+
       </ul>
     </div>
   </div>
   <div class="user-profile">
-    <!-- <div 
+    <!-- <div
     *ngIf="!isProfilePicked"
     class="profile-place-holder">
       <h2>Chọn một profile mà bạn muốn xem trước.</h2>
     </div> -->
-    <router-outlet ></router-outlet>
+    <router-outlet></router-outlet>
     <!-- <app-profile></app-profile> -->
   </div>
 </div>

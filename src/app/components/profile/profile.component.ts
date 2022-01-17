@@ -1,17 +1,16 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ProfileService } from './profile.service';
-import { UserProfile } from './user-profile';
-import { MessageService } from '../common/message.service';
-import { UserService } from '../common/user.service';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { Location } from '@angular/common';
-import { Title } from '@angular/platform-browser';
-import { catchError, takeUntil } from 'rxjs/operators';
-import { Observable, ReplaySubject } from 'rxjs';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { Post } from '../post/post';
-import { PostService } from '../post/post.service';
+import {Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ProfileService} from './profile.service';
+import {UserProfile} from './user-profile';
+import {MessageService} from '../common/message.service';
+import {UserService} from '../common/user.service';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {Location} from '@angular/common';
+import {Title} from '@angular/platform-browser';
+import {takeUntil} from 'rxjs/operators';
+import {ReplaySubject} from 'rxjs';
+import {Post} from '../post/post';
+import {PostService} from '../post/post.service';
 
 @Component({
   selector: 'app-profile',
@@ -39,9 +38,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   isFriendOptsVisible = false;
   moreActionOptsVisible = false;
 
-  timeline: Post[] | undefined; 
-  
-  constructor(private activateRoute: ActivatedRoute,
+  profileHeader: any;
+  timeline: Post[] = new Array<Post>();
+
+  constructor(
+    private route: ActivatedRoute,
     private post$: PostService,
     private renderer: Renderer2,
     private userService: UserService,
@@ -50,16 +51,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private title: Title,
     private location: Location,
-    private message$: MessageService) {
-    this.loggedInUserProfileId = auth.getProfileId();
+    private message$: MessageService
+    ) {
+      this.loggedInUserProfileId = auth.getProfileId();
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
     this.renderer.setStyle(document.body, 'position', '');
-    console.log('profile destroy');
-    
+
   }
 
   ngOnInit(): void {
@@ -68,23 +69,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
     // .subscribe(_ => {
     //   this.initDefaultTab();
     // });
+    this.profileHeader = this.route.snapshot.data.header;
 
-    console.log('init');
-    
 
     this.message$.updateCoverPhoto
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe(url => {
-      this.userProfile.coverPhotoUrl = url;
-    });
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(url => {
+        this.userProfile.coverPhotoUrl = url;
+      });
 
     this.message$.updateAvatar
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe(url => {
-      this.userProfile.avatar.url = url;
-    });
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(url => {
+        this.userProfile.avatar.url = url;
+      });
 
-    const id = Number(this.activateRoute.snapshot.paramMap.get('id'));
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id !== NaN) {
       this.isBlocked(id);
       this.loadProfile(id);
@@ -97,7 +97,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     //     this.pageError();
     //     return;
     //   }
-      
+
     //   this.isBlocked(id);
     //   this.loadProfile(id);
     // });
@@ -106,7 +106,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     // .pipe(takeUntil(this.destroyed$))
     // .subscribe(profileId => {
     //   console.log('friend request chagne');
-      
+
     //   this.loadProfile(profileId);
     // });
 
@@ -124,9 +124,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   getTimeline(profileId: number): void {
-    this.post$.getPostsByPageId(profileId).subscribe(posts => {
-      this.timeline = posts;
-    });
+    // this.post$.getPostsByPageId(profileId).subscribe(posts => {
+    //   this.timeline = posts;
+    // });
+  }
+
+
+  getPosts(): void {
   }
 
   initDefaultTab(): void {
@@ -139,7 +143,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   setDefaultTab(tab: string): boolean {
     let url = window.location.href;
-    
+
     if (new RegExp('.*?/\\d+?/?' + tab).test(url)) {
       this.loadedTabs.add(tab);
       this.currentTab = tab;
@@ -150,22 +154,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   loadProfile(id: number): void {
     if (!id) return;
-    this.message$.loadPostsByPageId(id);
-    this.getTimeline(id);
 
     this.profileService.getUserProfile(id)
-    .subscribe(resp => {
-      this.pageNotFound = false;
-      if (resp.isBlocked) this.pageError();
-      this.title.setTitle(resp.fullName);
+      .subscribe(resp => {
+        this.pageNotFound = false;
+        if (resp.isBlocked) this.pageError();
+        this.title.setTitle(resp.fullName);
 
-      this.userProfile = resp;
-      this.message$.sendLoadedProfile(this.userProfile);
-      this.profileLoaded.emit(this.userProfile);
-      this.profileLoaded.emit({} as UserProfile);
-    }, _ => {
-      this.pageError();
-    });
+        this.userProfile = resp;
+        this.message$.sendLoadedProfile(this.userProfile);
+        this.profileLoaded.emit(this.userProfile);
+        this.profileLoaded.emit({} as UserProfile);
+      }, _ => {
+        this.pageError();
+      });
+    this.message$.loadPostsByPageId(id);
+  }
+
+  onAttach(): void {
+    this.title.setTitle(this.userProfile.fullName);
+
   }
 
   tab(tab: string): boolean {
@@ -175,9 +183,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   navigate(tab: string, event: Event): void {
-    this.router.navigate([tab], 
-      {relativeTo: this.activateRoute});
-        // , skipLocationChange: true});
+    this.router.navigate([tab],
+      {relativeTo: this.route});
+    // , skipLocationChange: true});
 
     // tab = tab === './' ? '' : '/' + tab;
     // this.location.go(`/${this.userProfile.id}${tab}`)
@@ -191,17 +199,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   sendFriendRequest(): void {
     this.userService.sendFriendRequest(this.userProfile.userId)
-        .subscribe(_ => {
-          this.userProfile.friendshipStatus = 'SENT';
-        });
+      .subscribe(_ => {
+        this.userProfile.friendshipStatus = 'SENT';
+      });
   }
 
   deleteFriendRequest(): void {
     this.userService.deleteFriendRequest(this.userProfile.userId)
-        .subscribe(_ => {
-          this.userProfile.friendshipStatus = 'NULL';
-          this.message$.sendDeleteFriendRequest(this.userProfile.userId);
-        });
+      .subscribe(_ => {
+        this.userProfile.friendshipStatus = 'NULL';
+        this.message$.sendDeleteFriendRequest(this.userProfile.userId);
+      });
   }
 
   onReplyFriendRequestClicked(): void {

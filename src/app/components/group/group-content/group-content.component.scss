@@ -112,15 +112,17 @@
               }
 
               .more-actions {
-                @extend %opts;  
+                @extend %opts;
                 top: 120%;
                 bottom: auto;
               }
             }
+
             .join-group {
               @include button($btn-blue, #fff);
               padding: 0 30px;
             }
+
             .cancel-request {
               @include button($btn-grey, #050505);
               padding: 0 30px;
@@ -129,12 +131,13 @@
         }
       }
     }
-  } 
-	.group-body {
+  }
+
+  .group-body {
     display: flex;
     margin-top: 17px;
     justify-content: center;
-    
+
     .content-container {
       width: 892px;
     }

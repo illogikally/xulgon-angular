@@ -1,22 +1,23 @@
 <div class="result">
-	<div class="avatar-container">
-		<div class="avatar">
-			<app-user-ref
-			[userDto]="result"
-			[borderRadius]="'50%'"
-			></app-user-ref>
-		</div>
-	</div>
-	<div class="infos">
+  <div class="avatar-container">
+    <div class="avatar">
+      <app-user-ref
+        [userDto]="result"
+        [borderRadius]="'50%'"
+      ></app-user-ref>
+    </div>
+  </div>
+  <div class="infos">
 
-		<div class="name">
-			<app-user-ref
-			[userDto]="result"
-			></app-user-ref>
-		</div>
-		<div 
-		*ngIf="result.commonFriendCount > 0"
-		class="commonFriendCount">{{ result.commonFriendCount }} bạn chung</div>
-	</div>
+    <div class="name">
+      <app-user-ref
+        [userDto]="result"
+      ></app-user-ref>
+    </div>
+    <div
+      *ngIf="result.commonFriendCount > 0"
+      class="commonFriendCount">{{ result.commonFriendCount }} bạn chung
+    </div>
+  </div>
 
 </div>

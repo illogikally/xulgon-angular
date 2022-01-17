@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { JoinRequestItemComponent } from './join-request-item.component';
+import {JoinRequestItemComponent} from './join-request-item.component';
 
 describe('JoinRequestItemComponent', () => {
   let component: JoinRequestItemComponent;
@@ -8,9 +8,9 @@ describe('JoinRequestItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ JoinRequestItemComponent ]
+      declarations: [JoinRequestItemComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

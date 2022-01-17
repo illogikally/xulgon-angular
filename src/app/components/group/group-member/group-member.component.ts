@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
-import { skipUntil, takeUntil } from 'rxjs/operators';
-import { MessageService } from '../../common/message.service';
-import { GroupResponse } from '../group-response';
-import { GroupService } from '../group.service';
+import {HttpClient} from '@angular/common/http';
+import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {ReplaySubject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {MessageService} from '../../common/message.service';
+import {GroupResponse} from '../group-response';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-member',
@@ -24,33 +24,35 @@ export class GroupMemberComponent implements OnInit, OnDestroy {
   memberOptsVisible = false;
 
   constructor(private http: HttpClient,
-    private renderer: Renderer2,
-    private group$: GroupService,
-    private messageService: MessageService) { }
+              private renderer: Renderer2,
+              private group$: GroupService,
+              private messageService: MessageService) {
+  }
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }
+
   ngOnInit(): void {
     this.messageService.groupLoaded.subscribe(group => {
       if (!group) return;
       this.groupProfile = group;
     });
     this.messageService.onLoadPostsByPageId()
-    .pipe(takeUntil(this.destroyed$))
-    .subscribe(id => {
-      if (!id) return;
-      this.groupId = id;
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(id => {
+        if (!id) return;
+        this.groupId = id;
 
-      this.http.get<any[]>(`http://localhost:8080/api/groups/${id}/members`).subscribe(members => {
-        this.members = members;
-        console.log(members);
-        
-        this.admins = members.filter(m => m.role == 'ADMIN');
-        this.members = members.filter(m => m.role == 'MEMBER');
+        this.http.get<any[]>(`http://localhost:8080/api/groups/${id}/members`).subscribe(members => {
+          this.members = members;
+          console.log(members);
+
+          this.admins = members.filter(m => m.role == 'ADMIN');
+          this.members = members.filter(m => m.role == 'MEMBER');
+        });
       });
-    });
   }
 
   promote(member: any): void {

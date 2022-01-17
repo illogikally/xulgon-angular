@@ -1,14 +1,13 @@
-import { group } from '@angular/animations';
-import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { MessageService } from '../../common/message.service';
-import { UserService } from '../../common/user.service';
-import { GroupResponse } from '../group-response';
-import { GroupService } from '../group.service';
+import {Location} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Title} from '@angular/platform-browser';
+import {Router} from '@angular/router';
+import {MessageService} from '../../common/message.service';
+import {UserService} from '../../common/user.service';
+import {GroupResponse} from '../group-response';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-general',
@@ -30,12 +29,12 @@ export class GroupGeneralComponent implements OnInit {
   createGroupPrivacyDropVisible = false;
 
   constructor(private http: HttpClient,
-    private router: Router,
-    private group$: GroupService,
-    private title$: Title,
-    private location: Location,
-    private user$: UserService,
-    private message$: MessageService) { 
+              private router: Router,
+              private group$: GroupService,
+              private title$: Title,
+              private location: Location,
+              private user$: UserService,
+              private message$: MessageService) {
 
     this.createGroupForm = new FormGroup({
       groupName: new FormControl('')
@@ -76,7 +75,7 @@ export class GroupGeneralComponent implements OnInit {
   }
 
   submitable(): boolean {
-    return !!this.createGroupForm.get('groupName')?.value 
-    && this.createGroupIsPrivate !== undefined;
+    return !!this.createGroupForm.get('groupName')?.value
+      && this.createGroupIsPrivate !== undefined;
   }
 }

@@ -1,10 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { UserDto } from '../common/user-dto';
-import { GroupResponse } from '../group/group-response';
-import { Post } from '../post/post';
-import { PostService } from '../post/post.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {UserDto} from '../common/user-dto';
+import {GroupResponse} from '../group/group-response';
+import {Post} from '../post/post';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,9 @@ import { PostService } from '../post/post.service';
 export class SearchService {
 
   searchApi = 'http://localhost:8080/api/search/'
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient) {
+  }
 
   byPeople(name: string): Observable<UserDto[]> {
     return this.http.get<UserDto[]>(this.searchApi + `people/${name}`);

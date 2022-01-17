@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UserDto } from 'src/app/components/common/user-dto';
+import {Component, Input, OnInit} from '@angular/core';
+import {UserDto} from 'src/app/components/common/user-dto';
 
 @Component({
   selector: 'app-by-people-result',
@@ -10,7 +10,8 @@ export class ByPeopleResultComponent implements OnInit {
 
   @Input() result!: UserDto;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

@@ -1,5 +1,5 @@
-import {ViewChild, Component, Input, OnInit, ElementRef, EventEmitter, Renderer2 } from '@angular/core';
-import { PhotoViewResponse } from './photo-view-response';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {PhotoViewResponse} from './photo-view-response';
 
 @Component({
   selector: 'app-photo',
@@ -16,7 +16,8 @@ export class PhotoComponent implements OnInit {
   showPhotoViewer: boolean = false;
   onPhotoClicked: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2) {
+  }
 
   ngOnInit(): void {
 
@@ -29,7 +30,7 @@ export class PhotoComponent implements OnInit {
 
   openPhotoView(event: any): void {
     event.preventDefault();
-    this.showPhotoViewer = true;    
+    this.showPhotoViewer = true;
   }
 
   closePhotoView(): void {

@@ -44,7 +44,7 @@ input {
   &:hover {
     border-color: #00a8cc;
   }
-  
+
   &:focus {
     box-shadow: 0 0 0 2px rgba(39, 94, 254, .3);
   }
@@ -81,6 +81,7 @@ label {
 
     .input-group {
       flex-basis: 49%;
+
       input {
         background-color: #fff;
       }
@@ -91,6 +92,7 @@ label {
 #login-form {
   margin-left: 100px;
   width: 300px;
+
   button {
     cursor: pointer;
     padding: 10px 20px;

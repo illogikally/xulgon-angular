@@ -1,9 +1,9 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '../../common/message.service';
-import { UserDto } from '../../common/user-dto';
-import { SearchService } from '../search.service';
+import {Location} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {MessageService} from '../../common/message.service';
+import {UserDto} from '../../common/user-dto';
+import {SearchService} from '../search.service';
 
 @Component({
   selector: 'app-by-people',
@@ -13,10 +13,12 @@ import { SearchService } from '../search.service';
 export class ByPeopleComponent implements OnInit {
 
   results!: UserDto[];
+
   constructor(private search$: SearchService,
-    private message$: MessageService,
-    private location: Location,
-    private activatedRoute: ActivatedRoute) { }
+              private message$: MessageService,
+              private location: Location,
+              private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.getResults();
@@ -28,7 +30,7 @@ export class ByPeopleComponent implements OnInit {
       this.location.go(`/search/people?q=${name}`);
       this.search$.byPeople(name).subscribe(results => {
         console.log(results);
-        
+
         this.results = results;
       });
     })
