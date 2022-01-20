@@ -42,17 +42,21 @@ export class AuthenticationService {
       const url = `${baseUrl}/login/oauth2/code/${provider}?code=${code}&state=${state}`;
       return this.http.get<any>(url)
         .pipe(map(data => {
-          this.store(data);
+          // this.store(data);
+          console.log(data)
           return true;
         }));
   }
 
-  getExpiresAt(): Date {
-    return new Date(this.storage$.retrieve('expiresAt'));
+  getExpiresAt(): number {
+    return this.storage$.retrieve('expiresAt');
   }
 
   async fetchToken(): Promise<string> {
-    if (this.getExpiresAt().getTime() - new Date().getTime() < 10_000) {
+    const expiresAt = this.getExpiresAt();
+    const current = new Date().getTime();
+    
+    if (expiresAt - current < 10_000) {
       return await this.refreshAuthToken()
         .pipe(switchMap((r: LoginResponse) => {
           return r.token;
@@ -63,6 +67,8 @@ export class AuthenticationService {
 
 
   store(res: LoginResponse): void {
+    console.log('expires at ', res.expiresAt);
+    
     this.storage$.store('avatarUrl', res.avatarUrl);
     this.storage$.store('expiresAt', res.expiresAt);
     this.storage$.store('profileId', res.profileId);

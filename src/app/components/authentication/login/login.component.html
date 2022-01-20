@@ -4,85 +4,94 @@
       <img src="assets/left.jpg">
     </div>
     <div class="form-container">
-      <form
+      <div>
+        <div class="oauth">
+          <button class="google-login">
+            <img src="assets/google.png" />
+            <span>Tiếp tục với Google</span>
+          </button>
+        </div>
+
+        <div class="hr">
+          <span>Hoặc</span>
+        </div>
+
+        <form
         *ngIf="!isLogin"
         id="login-form"
         [formGroup]="registerForm"
         (ngSubmit)="register()">
-        <h1>ĐĂNG KÝ</h1>
-        <div class="name">
-
+          <h2>ĐĂNG KÝ</h2>
+          <div class="name">
+            <div class="input-group">
+              <label for="username">HỌ</label>
+              <input 
+              type="text" 
+              autocomplete="off" 
+              [formControlName]="'lastName'" 
+              name="username" 
+              required />
+            </div>
+            <div class="input-group">
+              <label for="password">TÊN</label>
+              <input [formControlName]="'firstName'" required>
+            </div>
+          </div>
           <div class="input-group">
-            <label for="username">HỌ</label>
+            <label for="username">TÊN TÀI KHOẢN</label>
             <input 
             type="text" 
             autocomplete="off" 
-            [formControlName]="'lastName'" 
+            [formControlName]="'username'" 
             name="username" 
             required />
           </div>
           <div class="input-group">
-            <label for="password">TÊN</label>
-            <input [formControlName]="'firstName'" required>
+            <label for="password">MẬT KHẨU</label>
+            <input type="password" [formControlName]="'password'" required>
           </div>
-        </div>
-        <div class="input-group">
-          <label for="username">TÊN TÀI KHOẢN</label>
-          <input 
-          type="text" 
-          autocomplete="off" 
-          [formControlName]="'username'" 
-          name="username" 
-          required />
-        </div>
-        <div class="input-group">
-          <label for="password">MẬT KHẨU</label>
-          <input type="password" [formControlName]="'password'" required>
-        </div>
-        <button id="submit-button" type="submit">ĐĂNG KÝ</button>
-        <div class="login-failed" *ngIf="registerError">
-          <p class="register-success-text">Đăng kí thất bại</p>
-        </div>
-        <div style="color: green" *ngIf="registerError === false">
-          <p class="register-success-text">Đăng kí thành công</p>
-        </div>
-        <a
-          (click)="showLogin($event)"
-          href="http://locahost:4200/login">Đã có tài khoản? Nhấn vào đây để đăng nhập.</a>
-      </form>
-      <form
+          <button id="submit-button" type="submit">ĐĂNG KÝ</button>
+          <div class="login-failed" *ngIf="registerError">
+            <p class="register-success-text">Đăng kí thất bại</p>
+          </div>
+          <div style="color: green" *ngIf="registerError === false">
+            <p class="register-success-text">Đăng kí thành công</p>
+          </div>
+          <a
+            (click)="showLogin($event)"
+            href="http://locahost:4200/login">Đã có tài khoản? Nhấn vào đây để đăng nhập.</a>
+        </form>
 
-
-        *ngIf="isLogin"
-        id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
-        <h1>ĐĂNG NHẬP</h1>
-        <div class="input-group">
-          <label for="username">TÊN ĐĂNG NHẬP</label>
-          <input
-            type="text"
-            autocomplete="off"
-            [formControlName]="'username'"
-            name="username" required autofocus>
-          <!-- <div class="warning" *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched"> Tên đăng nhập không hợp lệ</div>    -->
-        </div>
-        <div class="input-group">
-          <label for="password">MẬT KHẨU</label>
-          <input
-            type="password"
-            [formControlName]="'password'"
-            name="password" required>
-        </div>
-        <a  href="http://localhost:8080/oauth2/authorization/google">google</a>
-        <button id="submit-button" type="submit">ĐĂNG NHẬP</button>
-        <div class="login-failed" *ngIf="this.loginError">
-          <p class="register-success-text">Sai tên tài khoản hoặc mật khẩu</p>
-        </div>
-        <a
-          (click)="showRegister($event)"
-          href="http://localhost:4200/signup">Chưa có tài khoản? Đăng ký tại đây</a>
-      </form>
+        <form
+          *ngIf="isLogin"
+          id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+          <h2>ĐĂNG NHẬP</h2>
+          <div class="input-group">
+            <label for="username">TÊN ĐĂNG NHẬP</label>
+            <input
+              type="text"
+              autocomplete="off"
+              [formControlName]="'username'"
+              name="username" required autofocus>
+            <!-- <div class="warning" *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched"> Tên đăng nhập không hợp lệ</div>    -->
+          </div>
+          <div class="input-group">
+            <label for="password">MẬT KHẨU</label>
+            <input
+              type="password"
+              [formControlName]="'password'"
+              name="password" required>
+          </div>
+          <button id="submit-button" type="submit">ĐĂNG NHẬP</button>
+          <div class="login-failed" *ngIf="this.loginError">
+            <p class="register-success-text">Sai tên tài khoản hoặc mật khẩu</p>
+          </div>
+          <a
+            (click)="showRegister($event)"
+            href="http://localhost:4200/signup">Chưa có tài khoản? Đăng ký tại đây</a>
+        </form>
+      </div>
     </div>
 
   </div>
-
 </div>
