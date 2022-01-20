@@ -71,6 +71,7 @@ import { ByGroupResultComponent } from './components/search/by-people/by-group-r
 import { RouteReuseStrategy } from '@angular/router';
 import { MyReuseStrategy } from './my-reuse-trategy';
 import { MessageService } from './components/common/message.service';
+import { Oauth2CallbackComponent } from './components/authentication/login/oauth2-callback/oauth2-callback.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +132,7 @@ import { MessageService } from './components/common/message.service';
     ResultComponent,
     ByPeopleResultComponent,
     ByGroupResultComponent,
+    Oauth2CallbackComponent,
   ],
   imports: [
     FormsModule,

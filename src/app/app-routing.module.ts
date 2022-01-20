@@ -22,10 +22,12 @@ import { PhotoListComponent } from './components/profile/photo-list/photo-list.c
 import { ProfileTimelineComponent } from './components/profile/profile-timeline/profile-timeline.component';
 import { GroupComponent } from './components/group/group.component';
 import { ProfileHeaderResolver } from './components/profile/profile-header.resolver';
+import { Oauth2CallbackComponent } from './components/authentication/login/oauth2-callback/oauth2-callback.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: LoginComponent },
+  { path: 'oauth2-callback', component: Oauth2CallbackComponent },
   {
     path: '',
     component: LoggedInComponent,

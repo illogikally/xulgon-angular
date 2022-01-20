@@ -73,7 +73,9 @@ export class PostComponent implements OnInit {
   }
 
   comment(): void {
-    this.showComment = true;
+    console.log('show comment true');
+    
+    this.showComment = false;
     this.onInputFocus.emit(true);
   }
 

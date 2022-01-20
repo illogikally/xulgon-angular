@@ -149,12 +149,9 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 	private callHook(detachedTree: DetachedRouteHandleExt | null, hookName: string): void {
     const componentRef = detachedTree?.componentRef;
     if (
-        componentRef &&
-        componentRef.instance &&
-        typeof componentRef.instance[hookName] === 'function'
-    ) {
-				console.log('call hoollslsl');
-				
+			componentRef &&
+			componentRef.instance &&
+			typeof componentRef.instance[hookName] === 'function') {
         componentRef.instance[hookName]();
     }
 	}

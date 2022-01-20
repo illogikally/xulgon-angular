@@ -2,26 +2,28 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http'
 import {Observable} from 'rxjs';
 import {CommentResponse} from './comment-response';
+import {environment} from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
 
-  constructor(private http: HttpClient) {
-  }
+  private baseApiUrl = environment.baseApiUrl;
 
-  getCommentsByContent (
-    contentId: number, 
-    offset: number, 
-    size: number
+  constructor(private http: HttpClient) {}
+
+  getCommentsByContent(
+    contentId: number,
+    offset   : number,
+    size     : number
     ): Observable<CommentResponse[]> {
-      return this.http.get<CommentResponse[]>(
-        `http://localhost:8080/api/contents/${contentId}/comments?offset=${offset}&size=${size}`
-      );
+      const url = `${this.baseApiUrl}/contents/${contentId}/comments?offset=${offset}&size=${size}`;
+      return this.http.get<CommentResponse[]>(url);
   }
 
   createComment(commentRequest: FormData): Observable<CommentResponse> {
-    return this.http.post<CommentResponse>("http://localhost:8080/api/comments", commentRequest);
+    const url = `${this.baseApiUrl}/comments`;
+    return this.http.post<CommentResponse>(url, commentRequest);
   }
 }

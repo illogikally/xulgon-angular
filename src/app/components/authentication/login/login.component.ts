@@ -1,6 +1,6 @@
 import {Location} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {throwError} from 'rxjs';
@@ -55,6 +55,13 @@ export class LoginComponent implements OnInit {
 
   }
 
+  @HostListener('window:popstate', [])
+  onPopState(): void {
+    if (this.auth$.getToken()) {
+      location.href = '/';
+    }
+  }
+
   register(): void {
     let registerDto = {
       username: this.registerForm.get('username')?.value,
@@ -70,8 +77,6 @@ export class LoginComponent implements OnInit {
     }, error => {
       this.registerError = true;
     })
-
-
   }
 
   login(): void {
@@ -83,8 +88,7 @@ export class LoginComponent implements OnInit {
     this.auth$.login(this.loginRequest)
       .subscribe(_ => {
         this.loginError = false;
-        console.log('heh');
-        this.router.navigateByUrl('');
+        location.href = '';
       }, error => {
         this.loginError = true;
         throwError(error);

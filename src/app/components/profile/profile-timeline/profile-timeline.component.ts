@@ -1,6 +1,6 @@
 import {Location} from '@angular/common';
 import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ReplaySubject, Subject} from 'rxjs';
 import {AuthenticationService} from '../../authentication/authentication.service';
@@ -18,28 +18,30 @@ import {UserProfile} from '../user-profile';
 export class ProfileTimelineComponent implements OnInit, OnDestroy {
 
   @Input() userProfile!: UserProfile;
-  timeline: Post[] = new Array<Post>();
 
-  loggedInUserId: number;
-  pageId: number;
+  principleId: number;
+  pageId     : number;
+
+  timeline: Post[] = [];
   isLoadingPosts = false;
-  initialHide = true;
-  isLoadedAll = false;
+  initialHide    = true;
+  isLoadedAll    = false;
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
   constructor(
-    private title: Title,
+    private title   : Title,
     private message$: MessageService,
     private location: Location,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private post$: PostService,
+    private router  : Router,
+    private route   : ActivatedRoute,
+    private post$   : PostService,
     private profile$: ProfileService,
-    private auth: AuthenticationService
+    private auth$   : AuthenticationService
     ) {
-      this.loggedInUserId = this.auth.getUserId();
-      this.pageId = Number(this.activatedRoute.parent?.snapshot.paramMap.get('id'));
+      this.principleId = this.auth$.getUserId() as number;
+      const id = this.route.parent?.snapshot.paramMap.get('id');
+      this.pageId = Number(id);
   }
 
   ngOnDestroy() {
@@ -52,7 +54,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
     this.initialHide = false;
     // setTimeout(() => {
     //   this.initialHide = false;
-    // }, 500);
+    // }, 400);
 
     if (this.pageId !== NaN) {
       this.getPosts();
@@ -84,6 +86,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
     this.isLoadingPosts = true;
     const size = this.timeline.length ? 5 : 2;
     const offset = this.timeline.length;
+
     if (this.pageId !== NaN) {
       this.post$
         .getPostsByPageId(this.pageId, size, offset)
@@ -107,10 +110,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
       ) {
         this.getPosts();
     }
-
   }
-
-
 
   updateSticky = new Subject<boolean>();
 

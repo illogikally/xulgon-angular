@@ -1,7 +1,7 @@
 <div class="container">
   <div class="content">
     <div class="sidebar">
-      <img src="assets/bar.jpg">
+      <img src="assets/left.jpg">
     </div>
     <div class="form-container">
       <form
@@ -9,12 +9,17 @@
         id="login-form"
         [formGroup]="registerForm"
         (ngSubmit)="register()">
-        <h2>ĐĂNG KÝ</h2>
+        <h1>ĐĂNG KÝ</h1>
         <div class="name">
 
           <div class="input-group">
             <label for="username">HỌ</label>
-            <input type="text" autocomplete="off" [formControlName]="'lastName'" name="username" required>
+            <input 
+            type="text" 
+            autocomplete="off" 
+            [formControlName]="'lastName'" 
+            name="username" 
+            required />
           </div>
           <div class="input-group">
             <label for="password">TÊN</label>
@@ -23,7 +28,12 @@
         </div>
         <div class="input-group">
           <label for="username">TÊN TÀI KHOẢN</label>
-          <input type="text" autocomplete="off" [formControlName]="'username'" name="username" required>
+          <input 
+          type="text" 
+          autocomplete="off" 
+          [formControlName]="'username'" 
+          name="username" 
+          required />
         </div>
         <div class="input-group">
           <label for="password">MẬT KHẨU</label>
@@ -45,7 +55,7 @@
 
         *ngIf="isLogin"
         id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
-        <h2>ĐĂNG NHẬP</h2>
+        <h1>ĐĂNG NHẬP</h1>
         <div class="input-group">
           <label for="username">TÊN ĐĂNG NHẬP</label>
           <input
@@ -62,6 +72,7 @@
             [formControlName]="'password'"
             name="password" required>
         </div>
+        <a  href="http://localhost:8080/oauth2/authorization/google">google</a>
         <button id="submit-button" type="submit">ĐĂNG NHẬP</button>
         <div class="login-failed" *ngIf="this.loginError">
           <p class="register-success-text">Sai tên tài khoản hoặc mật khẩu</p>

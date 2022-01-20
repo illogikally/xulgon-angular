@@ -10,8 +10,8 @@ import { LoginResponse } from './components/authentication/login/login-response'
 })
 export class AuthenticationInterceptor implements HttpInterceptor {
 
-  isTokenRefreshing = false;
-  refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject(null);
+  private isTokenRefreshing = false;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(private auth$: AuthenticationService) { }
 
@@ -23,9 +23,8 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
     const authenticationToken = this.auth$.getToken();
 
-
     if (authenticationToken) {
-      if (new Date().getTime() - Number(this.auth$.getExpiresAt()) >= -10_000) {
+      if (this.auth$.getExpiresAt().getTime() - new Date().getTime() < 10_000) {
         return this.handleAuthErrors(req, next);
       }
 
@@ -43,34 +42,35 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   }
 
-  private handleAuthErrors(req: HttpRequest<any>, next: HttpHandler)
-    : Observable<HttpEvent<any>> {
+  private handleAuthErrors(
+    req: HttpRequest<any>, 
+    next: HttpHandler
+    ): Observable<HttpEvent<any>> {
+      if (!this.isTokenRefreshing) {
+        this.isTokenRefreshing = true;
+        this.refreshTokenSubject.next(null);
 
-    if (!this.isTokenRefreshing) {
-      this.isTokenRefreshing = true;
-      this.refreshTokenSubject.next(null);
-
-      return this.auth$.refreshAuthToken().pipe(
-        switchMap((refreshTokenResponse: LoginResponse) => {
-          this.isTokenRefreshing = false;
-          this.refreshTokenSubject.next(refreshTokenResponse.token);
-          this.auth$.store(refreshTokenResponse);
-          return next.handle(this.addToken(req, refreshTokenResponse.token));
-        })
-      );
-    }
-    else {
-      return this.refreshTokenSubject.pipe(
-        filter(result => result !== null),
-        take(1),
-        switchMap(_ => {
-          return next.handle(this.addToken(req, this.auth$.getToken()))
-        })
-      );
-    }
+        return this.auth$.refreshAuthToken().pipe(
+          switchMap((refreshTokenResponse: LoginResponse) => {
+            this.isTokenRefreshing = false;
+            this.refreshTokenSubject.next(refreshTokenResponse.token);
+            this.auth$.store(refreshTokenResponse);
+            return next.handle(this.addToken(req, refreshTokenResponse.token));
+          })
+        );
+      }
+      else {
+        return this.refreshTokenSubject.pipe(
+          filter(result => result !== null),
+          take(1),
+          switchMap(_ => {
+            return next.handle(this.addToken(req, this.auth$.getToken()))
+          })
+        );
+      }
   }
 
-  addToken(req: HttpRequest<any>, authenticationToken: any) {
+  private addToken(req: HttpRequest<any>, authenticationToken: any) {
     return req.clone({
       headers: req.headers.set('Authorization', `Bearer ${authenticationToken}`)
     });

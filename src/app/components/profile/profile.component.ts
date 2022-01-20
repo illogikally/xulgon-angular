@@ -45,15 +45,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private post$: PostService,
     private renderer: Renderer2,
-    private userService: UserService,
-    private profileService: ProfileService,
+    private user$: UserService,
+    private profile$: ProfileService,
     private router: Router,
-    private auth: AuthenticationService,
+    private auth$: AuthenticationService,
     private title: Title,
     private location: Location,
     private message$: MessageService
     ) {
-      this.loggedInUserProfileId = auth.getProfileId();
+      this.loggedInUserProfileId = auth$.getProfileId();
   }
 
   ngOnDestroy(): void {
@@ -155,7 +155,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   loadProfile(id: number): void {
     if (!id) return;
 
-    this.profileService.getUserProfile(id)
+    this.profile$.getUserProfile(id)
       .subscribe(resp => {
         this.pageNotFound = false;
         if (resp.isBlocked) this.pageError();
@@ -198,14 +198,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   sendFriendRequest(): void {
-    this.userService.sendFriendRequest(this.userProfile.userId)
+    this.user$.sendFriendRequest(this.userProfile.userId)
       .subscribe(_ => {
         this.userProfile.friendshipStatus = 'SENT';
       });
   }
 
   deleteFriendRequest(): void {
-    this.userService.deleteFriendRequest(this.userProfile.userId)
+    this.user$.deleteFriendRequest(this.userProfile.userId)
       .subscribe(_ => {
         this.userProfile.friendshipStatus = 'NULL';
         this.message$.sendDeleteFriendRequest(this.userProfile.userId);
@@ -221,13 +221,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   unfriend(): void {
-    this.userService.unfriend(this.userProfile.userId).subscribe(_ => {
+    this.user$.unfriend(this.userProfile.userId).subscribe(_ => {
       this.userProfile.friendshipStatus = 'NULL';
     });
   }
 
   acceptFriendRequest(): void {
-    this.userService.acceptFriendRequest(this.userProfile.userId).subscribe(_ => {
+    this.user$.acceptFriendRequest(this.userProfile.userId).subscribe(_ => {
       this.userProfile.friendshipStatus = 'FRIEND';
       this.message$.sendDeleteFriendRequest(this.userProfile.userId);
     });
@@ -246,19 +246,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   block(): void {
-    this.userService.block(this.userProfile.userId).subscribe(_ => {
+    this.user$.block(this.userProfile.userId).subscribe(_ => {
       this.userProfile.blocked = true;
     });
   }
 
   unblock(): void {
-    this.userService.unblock(this.userProfile.userId).subscribe(_ => {
+    this.user$.unblock(this.userProfile.userId).subscribe(_ => {
       this.userProfile.blocked = false;
     });
   }
 
   isBlocked(profileId: number): void {
-    this.profileService.isBlocked(profileId).subscribe(isBlocked => {
+    this.profile$.isBlocked(profileId).subscribe(isBlocked => {
       // if (isBlocked) this.pageError();
       this.pageNotFound = isBlocked;
     })

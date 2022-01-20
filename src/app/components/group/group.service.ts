@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import { environment } from 'src/environments/environment';
 import {Post} from '../post/post';
 
 @Injectable({
@@ -8,41 +9,48 @@ import {Post} from '../post/post';
 })
 export class GroupService {
 
-  groupUrl = 'http://localhost:8080/api/groups/'
+  private baseApiUrl = environment.baseApiUrl;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getJoinRequests(groupId: number): Observable<any[]> {
-    return this.http.get<any[]>(this.groupUrl + `${groupId}/join-requests`);
+    const url = `${this.baseApiUrl}/groups/${groupId}/join-requests`;
+    return this.http.get<any[]>(url);
   }
 
   acceptRequest(requestId: number): Observable<any> {
-    return this.http.put<any>(`http://localhost:8080/api/group-join-requests/${requestId}/accept`, {});
+    const url = `${this.baseApiUrl}/group-join-requests/${requestId}/accept`;
+    return this.http.put<any>(url, {});
   }
 
   declineRequest(requestId: number): Observable<any> {
-    return this.http.delete<any>(`http://localhost:8080/api/group-join-requests/${requestId}`);
+    const url = `${this.baseApiUrl}/group-join-requests/${requestId}`;
+    return this.http.delete<any>(url);
   }
 
   createGroup(request: any): Observable<number> {
-    return this.http.post<number>(this.groupUrl, request);
+    const url = `${this.baseApiUrl}/groups`;
+    return this.http.post<number>(url, request);
   }
 
   leaveGroup(groupId: number): Observable<any> {
-    return this.http.delete<any>(this.groupUrl + `${groupId}/quit`);
+    const url = `${this.baseApiUrl}/groups/${groupId}/quit`;
+    return this.http.delete<any>(url);
   }
 
   promote(userId: number, groupId: number): Observable<any> {
-    return this.http.put<any>(this.groupUrl + `${groupId}/promote/${userId}`, {});
+    const url = `${this.baseApiUrl}/groups/${groupId}/promote/${userId}`;
+    return this.http.put<any>(url, {});
   }
 
   kick(userId: number, groupId: number): Observable<any> {
-    return this.http.put<any>(this.groupUrl + `${groupId}/kick/${userId}`, {});
+    const url = `${this.baseApiUrl}/groups/${groupId}/kick/${userId}`;
+    return this.http.put<any>(url, {});
   }
 
   getTimeline(groupId: number): Observable<Post[]> {
-    return this.http.get<Post[]>(`http://localhost:8080/api/pages/${groupId}/posts`);
+    const url = `http://localhost:8080/api/pages/${groupId}/posts`;
+    return this.http.get<Post[]>(url);
   }
 
 }

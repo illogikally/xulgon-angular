@@ -16,10 +16,11 @@ export class MyRxStompConfig extends InjectableRxStompConfig {
     this.beforeConnect = async (rxStomp: RxStomp) => {
       rxStomp.configure({
         connectHeaders: {
-          'X-Authorization': await this.auth$.stompBeforeConnect()
+          'X-Authorization': await this.auth$.fetchToken()
         }
       });
     }
+
     this.heartbeatIncoming = 0;
     this.heartbeatOutgoing = 20000;
     this.reconnectDelay = 200;

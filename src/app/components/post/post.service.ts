@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import { environment } from 'src/environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {Post} from './post';
 
@@ -9,20 +10,23 @@ import {Post} from './post';
 })
 export class PostService {
 
-  postApi = 'http://localhost:8080/api/posts/';
+  private baseApiUrl = environment.baseApiUrl;
 
-  constructor(private http: HttpClient, private authenticationService: AuthenticationService) {
+  constructor(
+    private http: HttpClient, 
+    ) {
   }
 
   getPostsByPageId(
     pageId: number,
     size  : number,
-    offset: number): Observable<Array<Post>> {
-      let url = `http://localhost:8080/api/pages/${pageId}/posts?size=${size}&offset=${offset}`;
+    offset: number
+    ): Observable<Array<Post>> {
+      let url = `${this.baseApiUrl}/pages/${pageId}/posts?size=${size}&offset=${offset}`;
       return this.http.get<Array<Post>>(url);
   }
 
   getPost(postId: number): Observable<Post> {
-    return this.http.get<Post>(this.postApi + postId);
+    return this.http.get<Post>(`${this.baseApiUrl}/posts/${postId}`);
   }
 }

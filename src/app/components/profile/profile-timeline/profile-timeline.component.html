@@ -59,7 +59,7 @@ class="content">
             <div class="username">{{ friend.username }}</div>
           </a>
           <div 
-          *ngIf="friend.commonFriendCount > 0 && friend.id != loggedInUserId" 
+          *ngIf="friend.commonFriendCount > 0 && friend.id != principleId" 
           class="common-friend-count">
             {{ friend.commonFriendCount }}
             <span> bạn chung</span>

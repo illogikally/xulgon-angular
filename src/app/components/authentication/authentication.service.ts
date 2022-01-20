@@ -6,6 +6,8 @@ import {LocalStorageService} from 'ngx-webstorage';
 import {map, switchMap, tap} from 'rxjs/operators'
 import {Observable, throwError} from 'rxjs';
 import {Router} from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -13,107 +15,117 @@ import {Router} from '@angular/router';
 
 export class AuthenticationService {
 
-  refreshToken = {
-    token: this.getRefreshToken(),
-    username: this.getUsername()
-  }
+  private baseApiUrl = environment.baseApiUrl;
 
-
-  constructor(private httpClient: HttpClient,
-              private router: Router,
-              private localStorage: LocalStorageService) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private storage$: LocalStorageService
+    ) {
   }
 
   login(loginRequest: LoginRequest): Observable<boolean> {
-    return this.httpClient.post<LoginResponse>("http://localhost:8080/api/authentication/token/retrieve", loginRequest)
+    const url = `${this.baseApiUrl}/authentication/token/retrieve`;
+    return this.http.post<LoginResponse>(url, loginRequest)
       .pipe(map(data => {
         this.store(data);
         return true;
       }));
   }
 
-  getExpiresAt(): string {
-    return this.localStorage.retrieve('expiresAt');
+  oauth2(
+    code: string, 
+    state: string,
+    provider: string
+    ): Observable<boolean> {
+      const baseUrl = 'http://localhost:8080'
+      const url = `${baseUrl}/login/oauth2/code/${provider}?code=${code}&state=${state}`;
+      return this.http.get<any>(url)
+        .pipe(map(data => {
+          this.store(data);
+          return true;
+        }));
   }
 
-  getWebsocketToken(): string {
-    console.log('get websocket token');
-    if (this.getExpiresAt() as unknown as number > new Date().getTime()) {
-      console.log('refresh');
-      this.refreshAuthToken().subscribe(() => {
-      });
+  getExpiresAt(): Date {
+    return new Date(this.storage$.retrieve('expiresAt'));
+  }
+
+  async fetchToken(): Promise<string> {
+    if (this.getExpiresAt().getTime() - new Date().getTime() < 10_000) {
+      return await this.refreshAuthToken()
+        .pipe(switchMap((r: LoginResponse) => {
+          return r.token;
+        })).toPromise();
     }
     return this.getToken();
   }
 
-  async stompBeforeConnect(): Promise<string> {
-    if (this.getExpiresAt() as unknown as number > new Date().getTime()) {
-      return await this.refreshAuthToken().pipe(switchMap((r: LoginResponse) => {
-        return r.token;
-      })).toPromise();
-    }
-    return this.getToken();
-  }
 
-
-  store(data: any): void {
-    this.localStorage.store('avatarUrl', data.avatarUrl);
-    this.localStorage.store('expiresAt', data.expiresAt);
-    this.localStorage.store('profileId', data.profileId);
-    this.localStorage.store('refreshToken', data.refreshToken);
-    this.localStorage.store('token', data.token);
-    this.localStorage.store('userFullName', data.userFullName);
-    this.localStorage.store('userId', data.userId);
-    this.localStorage.store('username', data.username);
+  store(res: LoginResponse): void {
+    this.storage$.store('avatarUrl', res.avatarUrl);
+    this.storage$.store('expiresAt', res.expiresAt);
+    this.storage$.store('profileId', res.profileId);
+    this.storage$.store('refreshToken', res.refreshToken);
+    this.storage$.store('token', res.token);
+    this.storage$.store('userFullName', res.userFullName);
+    this.storage$.store('userId', res.userId);
+    this.storage$.store('username', res.username);
   }
 
   refreshAuthToken(): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>('http://localhost:8080/api/authentication/token/refresh',
-      this.refreshToken).pipe(tap(data => {
-      this.localStorage.store('auth', data);
-      this.localStorage.store('expiresAt', data.expiresAt);
-      this.localStorage.store('token', data.token);
-    }));
+    const refreshRequest = {
+      token: this.getRefreshToken(),
+      username: this.getUsername()
+    }
+    const url = `${this.baseApiUrl}/authentication/token/refresh`;
+    return this.http.post<LoginResponse>(url, refreshRequest)
+      .pipe(tap(data => {
+        this.storage$.store('auth', data);
+        this.storage$.store('expiresAt', data.expiresAt);
+        this.storage$.store('token', data.token);
+      }));
   }
 
   getAuth(): LoginResponse | undefined {
-    return this.localStorage.retrieve('auth');
+    return this.storage$.retrieve('auth');
   }
+
 
   getUserFullName(): string | undefined {
     return this.getAuth()?.userFullName;
   }
 
   getFirstName(): string {
-    return this.localStorage.retrieve('userFullName').split(' ').slice(-1)[0];
+    return this.storage$.retrieve('userFullName').split(' ').slice(-1)[0];
   }
 
   getToken(): string {
-    return this.localStorage.retrieve('token');
+    return this.storage$.retrieve('token');
   }
 
   getProfileId(): number {
-    return this.localStorage.retrieve('profileId');
+    return this.storage$.retrieve('profileId');
   }
 
   getUsername(): string {
-    return this.localStorage.retrieve('username');
+    return this.storage$.retrieve('username');
   }
 
-  getRefreshToken(): string {
-    return this.localStorage.retrieve('refreshToken');
+  private getRefreshToken(): string {
+    return this.storage$.retrieve('refreshToken');
   }
 
   getAvatarUrl(): string {
-    return this.localStorage.retrieve('avatarUrl');
+    return this.storage$.retrieve('avatarUrl');
   }
 
   getUserId(): number {
-    return this.localStorage.retrieve('userId');
+    return this.storage$.retrieve('userId');
   }
 
   setAvatarUrl(url: string): void {
-    this.localStorage.store('avatarUrl', url);
+    this.storage$.store('avatarUrl', url);
   }
 
   isLoggedIn(): boolean {
@@ -121,19 +133,19 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    this.httpClient.post('http://localhost:8080/api/authentication/token/delete',
+    this.http.post('http://localhost:8080/api/authentication/token/delete',
       this.getRefreshToken(),
       {responseType: 'text'}
     ).subscribe(_ => {
-      this.localStorage.clear('avatarUrl');
-      this.localStorage.clear('expiresAt');
-      this.localStorage.clear('profileId');
-      this.localStorage.clear('refreshToken');
-      this.localStorage.clear('token');
-      this.localStorage.clear('userFullName');
-      this.localStorage.clear('userId');
-      this.localStorage.clear('username');
-      this.router.navigateByUrl('/login');
+      this.storage$.clear('avatarUrl');
+      this.storage$.clear('expiresAt');
+      this.storage$.clear('profileId');
+      this.storage$.clear('refreshToken');
+      this.storage$.clear('token');
+      this.storage$.clear('userFullName');
+      this.storage$.clear('userId');
+      this.storage$.clear('username');
+      location.href = '/login';
     }, error => {
       throwError(error);
     });
