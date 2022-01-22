@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import {GroupResponse} from '../group/group-response';
 import {Post} from '../post/post';
@@ -63,5 +64,22 @@ export class UserService {
   unfollow(userId: number): Observable<any> {
     const url = `${this.baseApiUrl}/users/${userId}/unfollow`;
     return this.http.delete<any>(url);
+  }
+
+  isUserExisted(username: string): Observable<boolean> {
+    console.log("Trigger API call");
+    const url = `${this.baseApiUrl}/users/existed?username=${username}`;
+    return this.http.get<boolean>(url);
+    // let existedUsers = ["trungvo", "tieppt", "chautran"];
+    // let isTaken = existedUsers.some(x => x === username);
+    // console.log(isTaken, 'valid');
+    
+    // return of(isTaken).pipe(delay(500));
+    // return of(isTaken);
+  }
+
+  isEmailExisted(email: string): Observable<boolean> {
+    const url = `${this.baseApiUrl}/users/existed?email=${email}`
+    return this.http.get<boolean>(url);
   }
 }

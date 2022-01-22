@@ -139,21 +139,25 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    this.http.post('http://localhost:8080/api/authentication/token/delete',
-      this.getRefreshToken(),
-      {responseType: 'text'}
-    ).subscribe(_ => {
-      this.storage$.clear('avatarUrl');
-      this.storage$.clear('expiresAt');
-      this.storage$.clear('profileId');
-      this.storage$.clear('refreshToken');
-      this.storage$.clear('token');
-      this.storage$.clear('userFullName');
-      this.storage$.clear('userId');
-      this.storage$.clear('username');
-      location.href = '/login';
-    }, error => {
-      throwError(error);
-    });
+    const url = `${this.baseApiUrl}/authentication/token/delete`;
+    this.http.post(url, this.getRefreshToken(), {responseType: 'text'})
+      .subscribe(_ => {
+        this.storage$.clear('avatarUrl');
+        this.storage$.clear('expiresAt');
+        this.storage$.clear('profileId');
+        this.storage$.clear('refreshToken');
+        this.storage$.clear('token');
+        this.storage$.clear('userFullName');
+        this.storage$.clear('userId');
+        this.storage$.clear('username');
+        location.href = '/login';
+      }, error => {
+        throwError(error);
+      });
+  }
+
+  register(req: any) {
+    const url = `${this.baseApiUrl}/authentication/account/register`;
+    return this.http.post(url, req);
   }
 }

@@ -29,9 +29,6 @@ export class GroupComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-    console.log('group init');
-
     this.route.paramMap.subscribe(params => {
       console.log('prams', params);
 

@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {CommentService} from './comment/comment.service';
 import {CommentResponse} from './comment/comment-response';
 import {FormControl, FormGroup} from '@angular/forms';
@@ -17,6 +17,7 @@ export class CommentListComponent implements OnInit {
   @Input() postId!: number;
   comments = new Array<CommentResponse>();
   commentsQueue = new Array<CommentResponse>();
+  @ViewChild('input') input!: ElementRef;
 
   showComment: boolean = true;
   commentForm!: FormGroup;
@@ -27,13 +28,15 @@ export class CommentListComponent implements OnInit {
   loggedInUserAvatarUrl: string;
 
 
-  constructor(private commentService: CommentService,
-              private http: HttpClient,
-              private selfRef: ElementRef,
-              private authService: AuthenticationService,
-              private renderer: Renderer2,
-              private message$: MessageService) {
-    this.loggedInUserAvatarUrl = authService.getAvatarUrl();
+  constructor(
+    private commentService: CommentService,
+    private http: HttpClient,
+    private selfRef: ElementRef,
+    private authService: AuthenticationService,
+    private renderer: Renderer2,
+    private message$: MessageService
+    ) {
+      this.loggedInUserAvatarUrl = authService.getAvatarUrl();
   }
 
   ngOnInit(): void {
@@ -115,5 +118,4 @@ export class CommentListComponent implements OnInit {
     this.imgUrl = '';
     this.file = undefined;
   }
-
 }

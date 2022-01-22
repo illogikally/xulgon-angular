@@ -1,10 +1,8 @@
-<div class="container">
+<div style="background-image: url('assets/bg.gif')" class="container">
   <div class="content">
-    <div class="sidebar">
-      <img src="assets/left.jpg">
-    </div>
+    <div class="sidebar" style="background-image: url('assets/rocket.jpg');"></div>
     <div class="form-container">
-      <div>
+      <div class="fc-container">
         <div class="oauth">
           <button class="google-login">
             <img src="assets/google.png" />
@@ -16,80 +14,203 @@
           <span>Hoặc</span>
         </div>
 
+        <div style="position: relative;">
         <form
         *ngIf="!isLogin"
+        [@.disabled]="disableAnimation"
+        [@slideInOutRight]
+        (@slideInOutRight.start)="calculateHeight($event)"
+        (@slideInOutRight.done)="discardHeight($event)"
         id="login-form"
         [formGroup]="registerForm"
         (ngSubmit)="register()">
-          <h2>ĐĂNG KÝ</h2>
-          <div class="name">
-            <div class="input-group">
-              <label for="username">HỌ</label>
-              <input 
-              type="text" 
-              autocomplete="off" 
-              [formControlName]="'lastName'" 
-              name="username" 
-              required />
-            </div>
-            <div class="input-group">
-              <label for="password">TÊN</label>
-              <input [formControlName]="'firstName'" required>
-            </div>
-          </div>
           <div class="input-group">
-            <label for="username">TÊN TÀI KHOẢN</label>
+            <span [ngClass]="{'focus': registerForm.get('lastName')?.value}">họ</span>
+            <input
+            [ngClass]="!registerForm.get('lastName')?.valid && registerForm.get('lastName')?.touched ? 'error' : ''"
+            autocomplete="off"
+            [formControlName]="'lastName'" 
+            name="username" 
+            required />
+          </div>
+
+          <div 
+          class="warning" 
+          *ngIf="!registerForm.get('lastName')?.value && registerForm.get('lastName')?.touched">
+            <i class='bx bx-error'></i>
+            <span>Họ không được bỏ trống</span>
+          </div>   
+
+          <div 
+          *ngIf="registerForm.get('lastName')?.validator"></div>
+          <div class="input-group">
+            <span [ngClass]="{'focus': registerForm.get('firstName')?.value}">tên</span>
             <input 
+            [ngClass]="!registerForm.get('firstName')?.valid && registerForm.get('firstName')?.touched ? 'error' : ''"
+            autocomplete="off"
+            autocomplete="off"
+            [formControlName]="'firstName'" 
+            required>
+          </div>
+
+          <div 
+          class="warning" 
+          *ngIf="!registerForm.get('firstName')?.value && registerForm.get('firstName')?.touched">
+            <i class='bx bx-error'></i>
+            <span>Tên không được bỏ trống</span>
+          </div>   
+
+          <div class="input-group">
+            <span [ngClass]="{'focus': registerForm.get('username')?.value}">tên đăng nhập</span>
+            <input 
+            [ngClass]="!registerForm.get('username')?.valid && registerForm.get('username')?.touched ? 'error' : ''"
             type="text" 
             autocomplete="off" 
             [formControlName]="'username'" 
             name="username" 
             required />
           </div>
+
+          <div 
+          class="warning" 
+          *ngIf="validatorHasError(registerForm.get('username'), 'userExisted')">
+            <i class='bx bx-error'></i>
+            <span>Tên đăng nhập đã tồn tại</span>
+          </div>   
+
+          <div 
+          class="warning"
+          *ngIf="validatorHasError(registerForm.get('username'), 'required')">
+            <i class='bx bx-error'></i>
+            <span>Tên đăng nhập không được bỏ trống</span>
+          </div>
+          <div 
+          class="warning"
+          *ngIf="validatorHasError(registerForm.get('username'), 'minlength')">
+            <i class='bx bx-error'></i>
+            <span>Tên đăng nhập quá ngắn</span>
+          </div>
+          <div 
+          class="warning"
+          *ngIf="validatorHasError(registerForm.get('username'), 'pattern')">
+            <i class='bx bx-error'></i>
+            <span>Tên đăng nhập chỉ được chứa số và chữ</span>
+          </div>
           <div class="input-group">
-            <label for="password">MẬT KHẨU</label>
-            <input type="password" [formControlName]="'password'" required>
+            <span [ngClass]="{'focus': registerForm.get('password')?.value}">mật khẩu</span>
+            <input 
+            [ngClass]="!registerForm.get('password')?.valid && registerForm.get('password')?.touched ? 'error' : ''"
+            type="password" 
+            [formControlName]="'password'" 
+            required>
           </div>
-          <button id="submit-button" type="submit">ĐĂNG KÝ</button>
-          <div class="login-failed" *ngIf="registerError">
-            <p class="register-success-text">Đăng kí thất bại</p>
+
+          <div 
+          class="warning" 
+          *ngIf="!registerForm.get('password')?.value && registerForm.get('password')?.touched">
+            <i class='bx bx-error'></i>
+            <span>Mật khẩu không được bỏ trống</span>
+          </div>   
+
+          <div 
+          class="warning" 
+          *ngIf="
+            registerForm.get('password')?.touched 
+            && registerForm.get('password')?.hasError('minlength')
+          ">
+            <i class='bx bx-error'></i>
+            <span>Mật khẩu phải dài ít nhất 6 kí tự</span>
+          </div>   
+
+          <div class="input-group">
+            <span [ngClass]="{'focus': registerForm.get('email')?.value}">email</span>
+            <input 
+            [ngClass]="!registerForm.get('email')?.valid && registerForm.get('email')?.touched ? 'error' : ''"
+            type="text" 
+            [formControlName]="'email'" 
+            required>
           </div>
-          <div style="color: green" *ngIf="registerError === false">
-            <p class="register-success-text">Đăng kí thành công</p>
+          <div 
+          class="warning" 
+          *ngIf="!registerForm.get('email')?.value && registerForm.get('email')?.touched">
+            <i class='bx bx-error'></i>
+            <span>Email không được bỏ trống</span>
+          </div>   
+          <div 
+          class="warning" 
+          *ngIf="validatorHasError(registerForm.get('email'), 'email')">
+            <i class='bx bx-error'></i>
+            <span>Email không hợp lệ</span>
+          </div>   
+          <div class="flex-center">
+            <button class="submit-btn register-btn" id="submit-button" type="submit">ĐĂNG KÝ</button>
+          </div>
+
+          <div class="result" *ngIf="registerError">
+            <i class='bx bx-x'></i>
+            <div>Đăng kí thất bại</div>
+          </div>
+
+          <div class="result" style="color: green" *ngIf="registerError === false">
+            <div>Đăng kí thành công</div>
           </div>
           <a
-            (click)="showLogin($event)"
-            href="http://locahost:4200/login">Đã có tài khoản? Nhấn vào đây để đăng nhập.</a>
+          style="color: #000"
+          (click)="showLogin($event)"
+          href="http://locahost:4200/login">Đã có tài khoản? Nhấn vào đây để đăng nhập.</a>
         </form>
 
         <form
-          *ngIf="isLogin"
-          id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
-          <h2>ĐĂNG NHẬP</h2>
+        *ngIf="isLogin"
+        [@slideInOutLeft]
+        [@.disabled]="disableAnimation"
+        (@slideInOutLeft.start)="calculateHeight($event)"
+        id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
           <div class="input-group">
-            <label for="username">TÊN ĐĂNG NHẬP</label>
+            <span [ngClass]="{'focus': loginForm.get('username')?.value}">TÊN ĐĂNG NHẬP</span>
             <input
-              type="text"
-              autocomplete="off"
-              [formControlName]="'username'"
-              name="username" required autofocus>
-            <!-- <div class="warning" *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched"> Tên đăng nhập không hợp lệ</div>    -->
+            [ngClass]="!loginForm.get('username')?.valid && loginForm.get('username')?.touched ? 'error' : ''"
+            type="text"
+            autocomplete="off"
+            [formControlName]="'username'"
+            name="username" 
+            required>
           </div>
+          <div 
+          class="warning" 
+          *ngIf="!loginForm.get('username')?.value && loginForm.get('username')?.touched">
+            <i class='bx bx-error'></i>
+            <span>Tên đăng nhập không được bỏ trống</span>
+          </div>   
+
           <div class="input-group">
-            <label for="password">MẬT KHẨU</label>
+            <span [ngClass]="{'focus': loginForm.get('password')?.value}">MẬT KHẨU</span>
             <input
-              type="password"
-              [formControlName]="'password'"
-              name="password" required>
+            [ngClass]="!loginForm.get('password')?.valid && loginForm.get('password')?.touched ? 'error' : ''"
+            type="password"
+            [formControlName]="'password'"
+            name="password" 
+            required>
           </div>
-          <button id="submit-button" type="submit">ĐĂNG NHẬP</button>
-          <div class="login-failed" *ngIf="this.loginError">
-            <p class="register-success-text">Sai tên tài khoản hoặc mật khẩu</p>
+          <div 
+          class="warning" 
+          *ngIf="validatorHasError(loginForm.get('password'), 'required')">
+            <i class='bx bx-error'></i>
+            <span>Mật khẩu không được bỏ trống</span>
+          </div>   
+          <div class="flex-center">
+            <button class="submit-btn login-btn" type="submit">ĐĂNG NHẬP</button>
+          </div>
+
+          <div class="result" *ngIf="loginError">
+            <i class='bx bx-x'></i>
+            <span>Sai tên tài khoản hoặc mật khẩu</span>
           </div>
           <a
-            (click)="showRegister($event)"
-            href="http://localhost:4200/signup">Chưa có tài khoản? Đăng ký tại đây</a>
+          (click)="showRegister($event)"
+          href="http://localhost:4200/register">Chưa có tài khoản? Đăng ký tại đây</a>
         </form>
+        </div>
       </div>
     </div>
 

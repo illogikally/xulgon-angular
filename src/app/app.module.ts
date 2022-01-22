@@ -19,7 +19,7 @@ import { CreatePostComponent } from './components/post/create-post/create-post.c
 import { PhotoComponent } from './components/common/photo/photo.component';
 import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer.component';
 import { FriendRequestComponent } from './components/friend-request/friend-request.component';
-import { FriendRequestItemComponent } from './components/friend-request-item/friend-request-item.component';
+import { FriendRequestItemComponent } from './components/friend-request/friend-request-item/friend-request-item.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { NewsFeedComponent } from './components/news-feed/news-feed.component';
