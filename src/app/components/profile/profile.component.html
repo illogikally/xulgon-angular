@@ -13,7 +13,7 @@
             <span>Thay ảnh bìa</span>
           </div>
         </div>
-        <div class="avatar-container flex-center">
+        <div  class="avatar-container flex-center">
           <div class="avatar">
             <app-photo [photo]="profileHeader?.avatar"></app-photo>
           </div>
@@ -35,9 +35,27 @@
       </h1>
     </div>
   </div>
-    <div class="actions-menu-container flex-center">
+    <div #actionMenu class="actions-menu-container flex-center">
       <div class="actions-menu">
-        <ul class="profile-menu">
+        <div  *ngIf="isTabMenuSticky" class="to-top">
+          <a 
+          href="/{{ profileHeader?.id }}"
+          (click)="scrollToTop($event)"
+          class="container">
+            <div class="content">
+              <div class="avatar-container">
+                <div class="avatar">
+                  <img [src]="profileHeader?.avatar.url">
+                </div>
+              </div>
+            
+              <div class="name">
+                <span>{{ userProfile?.fullName }}</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <ul *ngIf="!isTabMenuSticky" class="profile-menu">
           <!-- [routerLink]="['./']" -->
           <li
             routerLink="./"

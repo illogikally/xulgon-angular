@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProfileService} from './profile.service';
 import {UserProfile} from './user-profile';
@@ -17,13 +17,14 @@ import {PostService} from '../post/post.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() profileId!: number;
 
   @ViewChild('sidebar', {static: true}) sidebar!: ElementRef;
   @ViewChild('replyFriendRequest') replyRequestBtn!: ElementRef;
   @ViewChild('friend') friendBtn!: ElementRef;
+  @ViewChild('actionMenu', {static: true}) actionMenu!: ElementRef;
 
   profileLoaded: EventEmitter<UserProfile> = new EventEmitter();
 
@@ -41,9 +42,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   profileHeader: any;
   timeline: Post[] = new Array<Post>();
 
-  onAttach$ = new Subject<void>();
-  onDetach$ = new Subject<void>();
 
+  isTabMenuSticky = false;
   constructor(
     private route: ActivatedRoute,
     private postService: PostService,
@@ -55,8 +55,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private title: Title,
     private location: Location,
     private messageService: MessageService
-    ) {
-      this.loggedInUserProfileId = authService.getProfileId();
+  ) {
+    this.loggedInUserProfileId = authService.getProfileId();
   }
 
   ngOnDestroy(): void {
@@ -71,9 +71,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   onDetach() {
-    console.log('detached baby');
-    
     this.messageService.profileComponentDetached$.next(this.userProfile.id);
+  }
+
+  ngAfterViewInit(): void {
+    const el: HTMLElement = this.actionMenu.nativeElement;
+    const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting) {
+        this.isTabMenuSticky = false;
+        this.renderer.removeStyle(el, 'z-index');
+      } else  {
+        this.isTabMenuSticky = true;
+        this.renderer.setStyle(el, 'z-index', '2');
+      }
+    }, 
+    {
+      rootMargin: "-56px 0px 0px 0px",
+      threshold: [1]
+    });
+    observer.observe(el);
   }
 
   ngOnInit(): void {
@@ -82,7 +98,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     // .subscribe(_ => {
     //   this.initDefaultTab();
     // });
+
     this.profileHeader = this.route.snapshot.data.header;
+    // if (!actionMenu) return;
 
 
     this.messageService.updateCoverPhoto
@@ -272,6 +290,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       // if (isBlocked) this.pageError();
       this.pageNotFound = isBlocked;
     })
+  }
+
+  scrollToTop(event: any) {
+    event.preventDefault();
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
 }

@@ -43,8 +43,6 @@ export class PostComponent implements OnInit {
         this.groupReponse = group;
       });
 
-    console.log(this.showGroup, 'group response')
-
     if (this.showGroup) {
       this.showComment = !this.showComment;
     }
