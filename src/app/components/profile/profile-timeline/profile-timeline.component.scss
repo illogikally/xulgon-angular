@@ -12,17 +12,18 @@
 
   .sidebar {
     font-weight: 500;
-
+    width: 360px;
+    // height: auto;
 
     > * {
       @include card(10px);
       background-color: #fff;
       padding: 15px 15px;
-      margin-bottom: 20px;
+      // margin-bottom: 20px;
     }
 
     .intro {
-      max-height: 500px;
+      // max-height: 500px;
       font-size: 16px;
 
       > div {
@@ -80,6 +81,17 @@
   }
 
   .timeline {
-    flex-grow: 1;
+    // flex-grow: 1;
   }
+}
+
+.sidebar {
+  will-change: min-height;
+}
+
+.sidebar__inner {
+  transform: translate(0, 0); /* For browsers don't support translate3d. */
+  transform: translate3d(0, 0, 0);
+  box-sizing: border-box;
+  will-change: position, transform;
 }

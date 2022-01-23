@@ -9,7 +9,6 @@
 .profile-header {
   z-index: 1;
   width: 100%;
-  box-shadow: 0 1px 2px #00000033;
   background-color: #fff;
 
   .cover-avatar {
@@ -104,6 +103,15 @@
     height: 40px;
   }
 
+}
+
+.actions-menu-container {
+  background-color: #fff;
+  position: sticky;
+  top: 56px;
+  z-index: 100;
+  box-shadow: 0 1px 2px #00000033;
+}
   .actions-menu {
     height: 60px;
     width: 892px;
@@ -203,8 +211,6 @@
       }
     }
   }
-}
-
 .profile-body {
   margin-top: 17px;
   width: 100%;

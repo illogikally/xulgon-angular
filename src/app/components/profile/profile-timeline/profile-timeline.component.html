@@ -1,75 +1,76 @@
 <div [ngClass]="initialHide ? 'none' : 'kk'">
-<div 
-class="content">
-  <div
-    class="sidebar">
-    <!-- <div class="sidebar__inner"> -->
-
-    <div class="intro">
-
-      <h2>Giới thiệu</h2>
-      <div *ngIf="userProfile?.workplace">
-        <i class='bx bxs-building-house'></i>
-        <span>Làm việc tại {{ userProfile?.workplace }}</span>
-      </div>
-
-      <div *ngIf="userProfile?.school">
-        <i class='bx bxs-graduation'></i>
-        <span>Học tại {{ userProfile?.school }}</span>
-      </div>
-      <div *ngIf="userProfile?.hometown">
-        <i class='bx bx-current-location'></i>
-        <span>Đang sống tại {{ userProfile?.hometown }}</span>
-      </div>
-      <div>aldsjflakjdfasl</div>
-      <div>aldsjflakjdfasl</div>
-      <div>aldsjflakjdfasl</div>
-      <div>aldsjflakjdfasl</div>
-      <div>aldsjflakjdfasl</div>
-      <div>aldsjflakjdfasl</div>
-      <div>aldsjflakjdfasl</div>
-      <div>aldsjflakjdfasl</div>
-      <div>aldsjflakjdfasl</div>
-    </div>
-    <div class="photo-intro">
-      <div class="intro-title">
-        <h2>Ảnh</h2>
-      </div>
-      <div class="photo">
-        <div *ngFor="let photo of userProfile?.photos">
-          <app-photo
-            [photo]="photo"></app-photo>
+<div id="main-content" class="content">
+  <div 
+  id="sidebar" class="sidebar">
+    <div class="sidebar__inner">
+      <div class="intro">
+        <h2>Giới thiệu</h2>
+        <div *ngIf="userProfile?.workplace">
+          <i class='bx bxs-building-house'></i>
+          <span>Làm việc tại {{ userProfile?.workplace }}</span>
         </div>
-      </div>
-    </div>
-    <div class="friend-intro">
-      <div>
-        <h2>Bạn bè</h2>
-      </div>
-      <div class="friend">
 
-        <div *ngFor="let friend of userProfile?.friends">
-          <div class="img-container">
-            <app-user-ref
-              [userDto]="friend"
-              borderRadius="10px"
-            ></app-user-ref>
-          </div>
-          <a routerLink="/{{ friend?.id }}">
-            <div class="username">{{ friend.username }}</div>
-          </a>
-          <div 
-          *ngIf="friend.commonFriendCount > 0 && friend.id != principleId" 
-          class="common-friend-count">
-            {{ friend.commonFriendCount }}
-            <span> bạn chung</span>
+        <div *ngIf="userProfile?.school">
+          <i class='bx bxs-graduation'></i>
+          <span>Học tại {{ userProfile?.school }}</span>
+        </div>
+        <div *ngIf="userProfile?.hometown">
+          <i class='bx bx-current-location'></i>
+          <span>Đang sống tại {{ userProfile?.hometown }}</span>
+        </div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+        <div>aldsjflakjdfasl</div>
+      </div>
+      <div class="photo-intro">
+        <div class="intro-title">
+          <h2>Ảnh</h2>
+        </div>
+        <div class="photo">
+          <div *ngFor="let photo of userProfile?.photos">
+            <app-photo
+              [photo]="photo"></app-photo>
           </div>
         </div>
       </div>
+      <div class="friend-intro">
+        <div>
+          <h2>Bạn bè</h2>
+        </div>
+        <div class="friend">
+
+          <div *ngFor="let friend of userProfile?.friends">
+            <div class="img-container">
+              <app-user-ref
+                [userDto]="friend"
+                borderRadius="10px"
+              ></app-user-ref>
+            </div>
+            <a routerLink="/{{ friend?.id }}">
+              <div class="username">{{ friend.username }}</div>
+            </a>
+            <div 
+            *ngIf="friend.commonFriendCount > 0 && friend.id != principleId" 
+            class="common-friend-count">
+              {{ friend.commonFriendCount }}
+              <span> bạn chung</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- </div> -->
   </div>
-  <div class="timeline">
+
+  <div id="content" class="timeline">
     <div class="post-container">
       <app-post-list
         [isLoading]="isLoadingPosts"

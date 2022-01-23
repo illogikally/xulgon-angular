@@ -3,7 +3,7 @@ import {Location} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, HostListener, OnInit, Renderer2} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, of, throwError, timer} from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../../common/user.service';
@@ -82,45 +82,39 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private renderer: Renderer2,
-    private auth$: AuthenticationService,
+    private authService: AuthenticationService,
     private location: Location,
+    private route: ActivatedRoute,
     private router: Router,
-    private user$: UserService,
+    private userService: UserService,
+    private fb: FormBuilder
   ) {
-    this.loginForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
 
-    this.registerForm = new FormGroup({
-      username: new FormControl('', 
+    this.registerForm = this.fb.group({
+      username: [
+        '',
         [
           Validators.required, 
-          Validators.pattern('[a-zA-Z0-9]+'),
+          Validators.pattern('[a-z]+'),
           Validators.minLength(6)
         ],
         this.userExisted.bind(this)
-      ),
-      password: new FormControl('', 
-        [
-          Validators.required,
-          Validators.minLength(6)
-        ]
-      ),
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', 
-        [
-          Validators.required, 
-          Validators.pattern('')
-        ]
-      ),
-      email: new FormControl('', 
-        [
-          Validators.required,
-          Validators.email
-        ]
-      )
-    });
+      ],
+      password: [
+        '', 
+        [Validators.required, Validators.minLength(6)]
+      ],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: [
+        '', 
+        [Validators.required, Validators.email]
+      ]
+    })
   }
 
   private userExisted(
@@ -128,10 +122,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   ): Observable<ValidationErrors | null> | Promise<ValidationErrors | null> {
     return timer(300).pipe(
       switchMap(() => 
-        this.user$.isUserExisted(control.value).pipe(
-          tap(() => console.log('YEP')),
+        this.userService.isUserExisted(control.value).pipe(
           map(isTaken => isTaken ? {userExisted: true} : null),
-          // catchError(() => of(null))
+          catchError(() => of(null))
         )
       )
     )
@@ -160,11 +153,11 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
-    if (this.auth$.getToken()) {
+    if (this.authService.getToken()) {
       this.router.navigateByUrl("/");
     }
 
-    if (/login/g.test(window.location.href)) {
+    if (/login$/g.test(window.location.href)) {
       this.isLogin = true;
     }
 
@@ -177,7 +170,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   @HostListener('window:popstate', [])
   onPopState(): void {
-    if (this.auth$.getToken()) {
+    if (this.authService.getToken()) {
       location.href = '/';
     }
   }
@@ -192,6 +185,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       return;
     }
 
+
     let registerDto = {
       username: this.registerForm.get('username')?.value,
       password: this.registerForm.get('password')?.value,
@@ -200,10 +194,10 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       email: this.registerForm.get('email')?.value
     };
 
-    this.auth$.register(registerDto)
-      .subscribe(_ => {
+    this.authService.register(registerDto)
+      .subscribe(() => {
         this.registerError = false;
-      }, error => {
+      }, () => {
         this.registerError = true;
       })
   }
@@ -221,33 +215,32 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       password: this.loginForm.get('password')?.value
     }
 
-    this.auth$.login(loginRequest)
-      .subscribe(_ => {
+    this.authService.login(loginRequest)
+      .subscribe(() => {
         this.loginError = false;
         location.href = '';
-      }, _ => {
+      }, () => {
         this.loginError = true;
       });
   }
 
-  showLogin(event: any): void {
+  switchForm(event: any) {
     event.preventDefault();
     const container = document.querySelector<HTMLElement>('.fc-container');
-    if (container) {
-      const h = container.offsetHeight;
-      this.renderer.setStyle(container, 'height', h + 'px');
+    const height = container?.offsetHeight + 'px';
+    this.renderer.setStyle(container, 'height', height);
+    
+    if (this.isLogin) {
+      this.loginError = false;
+      this.loginForm.reset()
+      this.isLogin = false;
+      this.location.go('/register');
+    } else {
+      this.registerError = undefined;
+      this.registerForm.reset()
+      this.isLogin = true;
+      this.location.go('/login');
     }
-    this.registerForm.reset()
-    this.isLogin = true;
-    this.location.go('/login');
-  }
-
-  showRegister(event: any): void {
-    event.preventDefault();
-    this.loginError = false;
-    this.loginForm.reset()
-    this.isLogin = false;
-    this.location.go('/register');
   }
 
   validatorHasError(control: AbstractControl | null, error?: string): boolean {

@@ -94,7 +94,7 @@
           class="warning"
           *ngIf="validatorHasError(registerForm.get('username'), 'pattern')">
             <i class='bx bx-error'></i>
-            <span>Tên đăng nhập chỉ được chứa số và chữ</span>
+            <span>Tên đăng nhập chỉ được chứa chữ thường</span>
           </div>
           <div class="input-group">
             <span [ngClass]="{'focus': registerForm.get('password')?.value}">mật khẩu</span>
@@ -102,7 +102,18 @@
             [ngClass]="!registerForm.get('password')?.valid && registerForm.get('password')?.touched ? 'error' : ''"
             type="password" 
             [formControlName]="'password'" 
+            #pwdr
             required>
+            <div class="eye">
+              <i 
+              (click)="pwdr.type = 'text'" 
+              *ngIf="pwdr.type == 'password'"
+              class='bx bxs-hide'></i>
+              <i 
+              *ngIf="pwdr.type == 'text'"
+              (click)="pwdr.type = 'password'" 
+              class='bx bxs-show'></i>
+            </div>
           </div>
 
           <div 
@@ -154,10 +165,13 @@
           <div class="result" style="color: green" *ngIf="registerError === false">
             <div>Đăng kí thành công</div>
           </div>
-          <a
-          style="color: #000"
-          (click)="showLogin($event)"
-          href="http://locahost:4200/login">Đã có tài khoản? Nhấn vào đây để đăng nhập.</a>
+          <div class="switch-form">
+            <span>Đã có tài khoản?</span>
+            <a (click)="switchForm($event)" href="/login">
+              Đăng nhập ngay
+            </a>
+
+          </div>
         </form>
 
         <form
@@ -165,6 +179,7 @@
         [@slideInOutLeft]
         [@.disabled]="disableAnimation"
         (@slideInOutLeft.start)="calculateHeight($event)"
+        (@slideInOutLeft.done)="discardHeight($event)"
         id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
           <div class="input-group">
             <span [ngClass]="{'focus': loginForm.get('username')?.value}">TÊN ĐĂNG NHẬP</span>
@@ -190,7 +205,18 @@
             type="password"
             [formControlName]="'password'"
             name="password" 
+            #pwdl
             required>
+            <div class="eye">
+              <i 
+              (click)="pwdl.type='text'" 
+              *ngIf="pwdl.type == 'password'"
+              class='bx bxs-hide'></i>
+              <i 
+              *ngIf="pwdl.type == 'text'"
+              (click)="pwdl.type='password'" 
+              class='bx bxs-show'></i>
+            </div>
           </div>
           <div 
           class="warning" 
@@ -206,9 +232,15 @@
             <i class='bx bx-x'></i>
             <span>Sai tên tài khoản hoặc mật khẩu</span>
           </div>
-          <a
-          (click)="showRegister($event)"
-          href="http://localhost:4200/register">Chưa có tài khoản? Đăng ký tại đây</a>
+          <div class="switch-form">
+            <span>Chưa có tài khoản?</span>
+            <a 
+            (click)="switchForm($event)"
+            href="http://localhost:4200/register">
+              Đăng ký tại đây
+            </a>
+
+          </div>
         </form>
         </div>
       </div>

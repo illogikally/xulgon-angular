@@ -8,7 +8,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
 import {Location} from '@angular/common';
 import {Title} from '@angular/platform-browser';
 import {takeUntil} from 'rxjs/operators';
-import {ReplaySubject} from 'rxjs';
+import {ReplaySubject, Subject} from 'rxjs';
 import {Post} from '../post/post';
 import {PostService} from '../post/post.service';
 
@@ -41,26 +41,39 @@ export class ProfileComponent implements OnInit, OnDestroy {
   profileHeader: any;
   timeline: Post[] = new Array<Post>();
 
+  onAttach$ = new Subject<void>();
+  onDetach$ = new Subject<void>();
+
   constructor(
     private route: ActivatedRoute,
-    private post$: PostService,
+    private postService: PostService,
     private renderer: Renderer2,
-    private user$: UserService,
-    private profile$: ProfileService,
+    private userService: UserService,
+    private profileService: ProfileService,
     private router: Router,
-    private auth$: AuthenticationService,
+    private authService: AuthenticationService,
     private title: Title,
     private location: Location,
-    private message$: MessageService
+    private messageService: MessageService
     ) {
-      this.loggedInUserProfileId = auth$.getProfileId();
+      this.loggedInUserProfileId = authService.getProfileId();
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
     this.renderer.setStyle(document.body, 'position', '');
+  }
 
+  onAttach(): void {
+    this.title.setTitle(this.userProfile.fullName);
+    this.messageService.profileComponentAttached$.next(this.userProfile.id);
+  }
+
+  onDetach() {
+    console.log('detached baby');
+    
+    this.messageService.profileComponentDetached$.next(this.userProfile.id);
   }
 
   ngOnInit(): void {
@@ -72,13 +85,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.profileHeader = this.route.snapshot.data.header;
 
 
-    this.message$.updateCoverPhoto
+    this.messageService.updateCoverPhoto
       .pipe(takeUntil(this.destroyed$))
       .subscribe(url => {
         this.userProfile.coverPhotoUrl = url;
       });
 
-    this.message$.updateAvatar
+    this.messageService.updateAvatar
       .pipe(takeUntil(this.destroyed$))
       .subscribe(url => {
         this.userProfile.avatar.url = url;
@@ -110,13 +123,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     //   this.loadProfile(profileId);
     // });
 
-    this.message$.onFriendshipStatusChange().subscribe(status => {
+    this.messageService.onFriendshipStatusChange().subscribe(status => {
       this.userProfile.friendshipStatus = status;
     });
   }
 
   openChatBox(): void {
-    this.message$.openChatBox.next({
+    this.messageService.openChatBox.next({
       id: this.userProfile.userId,
       username: this.userProfile.fullName,
       avatarUrl: this.userProfile.avatar.url
@@ -155,26 +168,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
   loadProfile(id: number): void {
     if (!id) return;
 
-    this.profile$.getUserProfile(id)
+    this.profileService.getUserProfile(id)
       .subscribe(resp => {
         this.pageNotFound = false;
         if (resp.isBlocked) this.pageError();
         this.title.setTitle(resp.fullName);
 
         this.userProfile = resp;
-        this.message$.sendLoadedProfile(this.userProfile);
+        this.messageService.sendLoadedProfile(this.userProfile);
         this.profileLoaded.emit(this.userProfile);
         this.profileLoaded.emit({} as UserProfile);
       }, _ => {
         this.pageError();
       });
-    this.message$.loadPostsByPageId(id);
+    this.messageService.loadPostsByPageId(id);
   }
 
-  onAttach(): void {
-    this.title.setTitle(this.userProfile.fullName);
 
-  }
 
   tab(tab: string): boolean {
     let url = window.location.href;
@@ -198,17 +208,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   sendFriendRequest(): void {
-    this.user$.sendFriendRequest(this.userProfile.userId)
+    this.userService.sendFriendRequest(this.userProfile.userId)
       .subscribe(_ => {
         this.userProfile.friendshipStatus = 'SENT';
       });
   }
 
   deleteFriendRequest(): void {
-    this.user$.deleteFriendRequest(this.userProfile.userId)
+    this.userService.deleteFriendRequest(this.userProfile.userId)
       .subscribe(_ => {
         this.userProfile.friendshipStatus = 'NULL';
-        this.message$.sendDeleteFriendRequest(this.userProfile.userId);
+        this.messageService.sendDeleteFriendRequest(this.userProfile.userId);
       });
   }
 
@@ -221,15 +231,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   unfriend(): void {
-    this.user$.unfriend(this.userProfile.userId).subscribe(_ => {
+    this.userService.unfriend(this.userProfile.userId).subscribe(_ => {
       this.userProfile.friendshipStatus = 'NULL';
     });
   }
 
   acceptFriendRequest(): void {
-    this.user$.acceptFriendRequest(this.userProfile.userId).subscribe(_ => {
+    this.userService.acceptFriendRequest(this.userProfile.userId).subscribe(_ => {
       this.userProfile.friendshipStatus = 'FRIEND';
-      this.message$.sendDeleteFriendRequest(this.userProfile.userId);
+      this.messageService.sendDeleteFriendRequest(this.userProfile.userId);
     });
   }
 
@@ -242,23 +252,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   showUpdateProfilePic(type: string): void {
     this.isUpdateAvatar = true;
-    this.message$.updateAvatarOrCover.next(type);
+    this.messageService.updateAvatarOrCover.next(type);
   }
 
   block(): void {
-    this.user$.block(this.userProfile.userId).subscribe(_ => {
+    this.userService.block(this.userProfile.userId).subscribe(_ => {
       this.userProfile.blocked = true;
     });
   }
 
   unblock(): void {
-    this.user$.unblock(this.userProfile.userId).subscribe(_ => {
+    this.userService.unblock(this.userProfile.userId).subscribe(_ => {
       this.userProfile.blocked = false;
     });
   }
 
   isBlocked(profileId: number): void {
-    this.profile$.isBlocked(profileId).subscribe(isBlocked => {
+    this.profileService.isBlocked(profileId).subscribe(isBlocked => {
       // if (isBlocked) this.pageError();
       this.pageNotFound = isBlocked;
     })

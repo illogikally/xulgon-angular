@@ -31,6 +31,14 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 			return false;
 		}
 
+		// let children = route.children;
+		// for (const child of children) {
+			// if (route.routeConfig?.component?.name === 'FriendListComponent') {
+			// 	console.log('heh nothing personel kid');
+			// 	return false;
+			// }
+		// }
+
 		return true;
 	}
 
@@ -54,33 +62,29 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 
 	shouldAttach(route: ActivatedRouteSnapshot): boolean {
 		// return false;
+		const storedRoute = this.storedRoutes[this.getKey(route)];
+
 		let canAttach: boolean = !!route.routeConfig 
-			&& !!this.storedRoutes[this.getKey(route)];
+			&& !!storedRoute;
 
 		if (canAttach) {
 			console.groupCollapsed('========= ATTACH ===========')
-			console.log('param comparison:');
-			let storedRoute = this.storedRoutes[this.getKey(route)];
-			console.log(this.compareObjects(route.params, 
-				this.storedRoutes[this.getKey(route)].snapshot.params));
-			console.log('query param comparison');
-			console.log(this.compareObjects(route.queryParams, 
-				this.storedRoutes[this.getKey(route)].snapshot.queryParams));
 
-			let paramsMatch: boolean = this.compareObjects(route.params, 
-				this.storedRoutes[this.getKey(route)].snapshot.params);
-			let queryParamsMatch: boolean = this.compareObjects(route.queryParams, 
-				this.storedRoutes[this.getKey(route)].snapshot.queryParams);
-			console.groupEnd();
+			const paramsMatch = this.compare(route.params, storedRoute.snapshot.params);
+			const queryParamsMatch = this.compare(route.queryParams, storedRoute.snapshot.queryParams);
 
-			if (paramsMatch && queryParamsMatch) {
-				console.log(route, this.storedRoutes[this.getKey(route)].snapshot);
-			}
+			const shouldAttach =  paramsMatch && queryParamsMatch;
 
-			let shouldAttach =  paramsMatch && queryParamsMatch;
 			if (shouldAttach) {
+				console.log(route, storedRoute.snapshot);
+				console.log(storedRoute.handle);
 				this.callHook(storedRoute.handle, 'onAttach');
 			}
+
+			console.groupEnd();
+			// if (route.firstChild?.routeConfig?.component?.name === 'ProfileTimelineComponent') {
+			// 	return false;
+			// }
 			return shouldAttach
 		}
 		return false;
@@ -98,11 +102,11 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 
 	shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
 		let should = (future.routeConfig === curr.routeConfig 
-			&& this.compareObjects(future.params, curr.params)); 
+			&& this.compare(future.params, curr.params)); 
 		return should;
 	}
 
-	private compareObjects(base: any, compare: any): boolean {
+	private compare(base: any, compare: any): boolean {
 
 		for (let baseProperty in base) {
 
@@ -110,7 +114,7 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 				switch (typeof base[baseProperty]) {
 					case 'object':
 						if (typeof compare[baseProperty] !== 'object' 
-							|| !this.compareObjects(base[baseProperty], compare[baseProperty])) { 
+							|| !this.compare(base[baseProperty], compare[baseProperty])) { 
 							return false; 
 						} 
 						break;

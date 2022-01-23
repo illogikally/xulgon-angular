@@ -28,8 +28,10 @@
     "ngx-auto-unsubscribe": "^3.0.1",
     "ngx-skeleton-loader": "^2.9.1",
     "ngx-webstorage": "^8.0.0",
+    "resize-sensor": "^0.0.6",
     "rxjs": "~6.6.0",
     "sockjs-client": "^1.5.1",
+    "sticky-sidebar": "^3.3.1",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"
   },

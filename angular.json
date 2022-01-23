@@ -34,7 +34,8 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/sockjs-client/dist/sockjs.min.js"
+              "node_modules/sticky-sidebar/dist/sticky-sidebar.min.js",
+              "node_modules/sticky-sidebar/dist/test.js"
             ]
           },
           "configurations": {

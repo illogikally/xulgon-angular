@@ -36,27 +36,6 @@ $trans-time: .3s;
   // }
 }
 
-input {
-  box-sizing: border-box;
-  transition: border-color .3s;
-  display: block;
-  width: 100%;
-  height: 40px;
-  font-size: 15px;
-  padding: 0 10px;
-  border-radius: 5px;
-  outline: none;
-  border: 1px solid rgba(0, 0, 0, .2);
-
-  &:hover {
-    border-color: #00a8cc;
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 2px rgba(39, 94, 254, .3);
-  }
-}
-
 .result {
   display: flex;
   justify-content: center;
@@ -67,19 +46,6 @@ input {
   i {
     font-size: 20px;
   }
-}
-
-label {
-  font-size: 14px;
-  font-weight: 500;
-  display: inline-block;
-  margin-bottom: 5px;
-  position: relative;
-  bottom: -15px;
-  left: 10px;
-  background-color: white;
-  border-radius: 5px;
-  padding: 3px;
 }
 
 .warning {
@@ -100,6 +66,26 @@ label {
   align-items: center;
   width: 100%;
   justify-content: center;
+
+  .switch-form {
+    color: #000;
+    font-size: 13px;
+
+    a {
+      text-decoration: none;
+      color: $btn-blue;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-block;
+      margin-left: 2px;
+      border-radius: 2px;
+      padding: 2px;
+
+      &:hover {
+        background-color: lighten(rgba($btn-blue, .2), 20);
+      }
+    }
+  }
 
   .hr {
     margin-top: 10px;
@@ -135,7 +121,7 @@ label {
       border-radius: 25px;
       padding: 10px;
       text-transform: uppercase;
-      border: 1px solid rgba(0, 0, 0, .3);
+      border: 1px solid rgba(#000, .3);
       font-weight: 600;
       font-size: 14px;
       padding: 13px;
@@ -152,34 +138,13 @@ label {
       }
 
       &:hover {
-        border: 1px solid black;
+        border: 1px solid #000;
       }
 
       &:focus {
         // box-shadow: 0 0 0 2px #000;
         outline: 3px solid #000;
         outline-offset: 2px; 
-      }
-    }
-  }
-
-  .red-signup {
-    @include button(#fff, rgba(33, 33, 33, .6));
-    border-radius: 25px;
-    border: 1px solid rgba(33, 33, 33, .6);
-    padding: 20px;
-  }
-
-
-  .name {
-    display: flex;
-    justify-content: space-between;
-
-    .input-group {
-      flex-basis: 49%;
-
-      input {
-        background-color: #fff;
       }
     }
   }
@@ -255,6 +220,7 @@ a {
 
   input {
     z-index: 2;
+    font-size: 15px;
     background-color: transparent;
     width: 100%;
     height: 100%;
@@ -273,6 +239,14 @@ a {
     &:hover {
       border: 1px solid rgba($btn-blue, .6);
     }
+  }
+
+  .eye {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    z-index: 4;
+    font-size: 20px;
   }
 
   .error {

@@ -10,9 +10,6 @@ export class MyRxStompConfig extends InjectableRxStompConfig {
     super();
     // this.webSocketFactory = () => new SockJS('http://localhost:8080/ws');
     this.webSocketFactory = () => new WebSocket('ws://localhost:8080/ws/websocket');
-    // this.connectHeaders = {
-    //   'X-Authorization': this.auth$.getWebsocketToken()
-    // },
     this.beforeConnect = async (rxStomp: RxStomp) => {
       rxStomp.configure({
         connectHeaders: {
@@ -24,8 +21,8 @@ export class MyRxStompConfig extends InjectableRxStompConfig {
     this.heartbeatIncoming = 0;
     this.heartbeatOutgoing = 20000;
     this.reconnectDelay = 200;
-    this.debug = (msg: string) => {
-      console.log(new Date(), msg);
-    }
+    // this.debug = (msg: string) => {
+    //   console.log(new Date(), msg);
+    // }
   }
 }

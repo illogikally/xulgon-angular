@@ -30,6 +30,9 @@ export class MessageService {
   // pageId = new BehaviorSubject<number | undefined>(undefined);
   private pageId = new BehaviorSubject<number | undefined>(undefined);
 
+  profileComponentAttached$ = new Subject<number>();
+  profileComponentDetached$ = new Subject<number>();
+
   loadPostsByPageId(pageId: number | undefined): void {
     this.pageId.next(pageId);
   }
