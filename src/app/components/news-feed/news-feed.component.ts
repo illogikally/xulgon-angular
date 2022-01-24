@@ -46,7 +46,6 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
       && this.isAttached
       ) {
         this.getPosts();
-        console.log(this.posts);
         
     }
   }
@@ -71,11 +70,7 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
         if (posts.length == 0) 
           this.isAllPostsLoaded = true;
 
-        console.log(posts.length);
-        
-        console.log(offset, size, 'offset, size');
         this.posts = this.posts.concat(posts);
-        console.log(this.posts);
         this.isLoadingPosts = false;
       }, error => {
         console.log(error);

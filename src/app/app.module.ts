@@ -68,10 +68,12 @@ import { ByPostsComponent } from './components/search/by-posts/by-posts.componen
 import { ResultComponent } from './components/search/by-people/result/result.component';
 import { ByPeopleResultComponent } from './components/search/by-people/by-people-result/by-people-result.component';
 import { ByGroupResultComponent } from './components/search/by-people/by-group-result/by-group-result.component';
-import { RouteReuseStrategy } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouteReuseStrategy, Scroll } from '@angular/router';
 import { MyReuseStrategy } from './my-reuse-trategy';
 import { MessageService } from './components/common/message.service';
 import { Oauth2CallbackComponent } from './components/authentication/login/oauth2-callback/oauth2-callback.component';
+import { ViewportScroller } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 @NgModule({
   declarations: [
@@ -169,4 +171,24 @@ import { Oauth2CallbackComponent } from './components/authentication/login/oauth
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    private router: Router,
+    private scroller: ViewportScroller
+  ) {
+    let isNavigateSameRoute = true;
+    this.router.events.subscribe(e  => {
+      if (e instanceof NavigationStart) {
+        if (router.url == (e as NavigationStart).url) {
+          window.scrollTo({top: 0, behavior: 'smooth'});
+          isNavigateSameRoute = true;
+        } else {
+          isNavigateSameRoute = false;
+        }
+      } else if (e instanceof NavigationEnd) {
+        if (!isNavigateSameRoute) this.scroller.scrollToPosition([0, 0]);
+      }
+      // this.scroller.scrollToPosition([0, 0])
+    });
+  }
+}

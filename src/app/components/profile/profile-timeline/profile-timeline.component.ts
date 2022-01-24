@@ -176,9 +176,9 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
           && SIDEBAR_RECT.bottom > window.innerHeight
         ) {
           const top = SIDEBAR_RECT.top - CONTAINER_RECT.top;
-          this.sidebarCss('top'     , top + 'px');
-          this.sidebarCss('left'    , 0 + 'px');
           this.sidebarCss('position', 'relative');
+          this.sidebarCss('top'     , top + 'px');
+          this.sidebarCss('left'    , '');
         } 
 
         else if (
