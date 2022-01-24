@@ -1,7 +1,6 @@
 @import "src/styles";
 
 .notif {
-
   .button {
     @extend %fc;
     width: 40px;
@@ -35,7 +34,7 @@
 
     &__inner {
       @include card(10px);
-      box-shadow: 0 0 4px 1px rgba(#000, .2);
+      box-shadow: 0 12px 28px 0 rgba(#000, .2), 0 2px 4px 0 rgba(#000,.1), inset 0 0 0 1px rgba(#fff, .5);
       padding: 15px;
 
       .title {

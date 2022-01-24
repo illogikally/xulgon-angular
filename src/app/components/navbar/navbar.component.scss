@@ -124,12 +124,13 @@
         height: 30px;
         border-radius: 20px;
         display: flex;
-        background-color: transparent;
-        padding: 2px 4px;
+        // background-color: transparent;
+        padding: 3px 6px;
 
         &:hover {
-          background-color: rgba(#dddddd, .7);
+          background-color: var(--bg-color);
         }
+
 
         .avatar {
           @extend %fc;
@@ -159,13 +160,12 @@
       flex: 0 0 210px;
 
       li {
-        // border: 1px solid red;
         width: 100%;
         @extend %fc;
 
         > div {
-          @include x-btn(40px, #000, #cacaca);
-          background-color: $btn-grey;
+          @include x-btn(40px, #050505, darken($secondary-button-background, 5));
+          background-color: $secondary-button-background;
         }
 
         .create-post {
@@ -205,7 +205,6 @@
               }
             }
           }
-
         }
       }
     }
@@ -220,4 +219,11 @@
 
 .menu-routerLink-active {
   background-color: #fff !important;
+}
+
+.route-active {
+  &:visited, &:link {
+    color: $btn-blue;
+    background-color: rgba($btn-blue, .15) !important;
+  }
 }

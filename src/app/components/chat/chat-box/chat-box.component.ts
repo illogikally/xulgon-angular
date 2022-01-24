@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
+import { Router } from '@angular/router';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {MessageService} from '../../common/message.service';
@@ -19,8 +20,9 @@ export class ChatBoxComponent implements OnInit {
   user!: any;
   @Input() markAsRead!: EventEmitter<number>;
 
-  constructor(private message$: MessageService,
-              private auth$: AuthenticationService,
+  constructor(private messageService: MessageService,
+              private authService: AuthenticationService,
+              private router: Router,
               private renderer: Renderer2,
               private self: ElementRef,
               private rxStomp: RxStompService,
@@ -32,10 +34,15 @@ export class ChatBoxComponent implements OnInit {
 
   }
 
+  navigateToUserProfile() {
+    this.router.navigateByUrl(`/${this.user.profileId}`)
+  }
+
   ngOnInit(): void {
-    this.message$.openChatBox.subscribe(user => {
+    this.messageService.openChatBox$.subscribe(user => {
       this.user = user;
       this.loadMessages();
+      
       this.show();
     });
 
@@ -71,7 +78,7 @@ export class ChatBoxComponent implements OnInit {
 
   markConversationAsRead(): void {
     if (this.messages[0]?.isRead === true
-      || this.messages[0]?.userId === this.auth$.getUserId())
+      || this.messages[0]?.userId === this.authService.getUserId())
       return;
     this.messages[0].isRead = true;
     console.log('mark as read');

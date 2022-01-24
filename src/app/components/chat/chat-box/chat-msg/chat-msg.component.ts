@@ -19,15 +19,27 @@ export class ChatMsgComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   isFirstMsg(): boolean {
-    return this.thisMsg?.userId != this.prevMsg?.userId;
+    return !this.prevMsg 
+      || this.thisMsg.createdAt - this.prevMsg.createdAt > 36_000_000
+      || this.thisMsg?.userId != this.prevMsg?.userId
+
   }
 
   isLastMsg(): boolean {
-    return this.thisMsg?.userId != this.nextMsg?.userId
+    return this.thisMsg?.userId != this.nextMsg?.userId || this.displayTimeCheck()
+  }
+
+  getCreatedDate(): string {
+    const d = new Date(this.thisMsg.createdAt);
+    return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()%1000}, 
+      ${d.toLocaleString('en-US', {hour: 'numeric', hour12: true, minute: '2-digit'})}`;
+  }
+
+  displayTimeCheck(): boolean {
+    return (!this.nextMsg || this.thisMsg.createdAt - this.nextMsg.createdAt < -36_000_000);
   }
 
 }

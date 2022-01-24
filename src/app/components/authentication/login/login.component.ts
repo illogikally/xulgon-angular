@@ -4,8 +4,8 @@ import {HttpClient} from '@angular/common/http';
 import {AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, HostListener, OnInit, Renderer2} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Observable, of, throwError, timer} from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import {fromEvent, interval, Observable, of, throwError, timer} from 'rxjs';
+import { catchError, debounce, map, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../../common/user.service';
 import {AuthenticationService} from '../authentication.service';
 import {LoginRequest} from './login-request';
@@ -161,10 +161,15 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       this.isLogin = true;
     }
 
+    fromEvent(document.querySelector('.content')!, 'click')
+    .pipe(
+      debounce(() => interval(300))
+    ).subscribe(event => {
+      console.log('lick');
+    });
   }
 
   ngAfterViewChecked(): void {
-      
     this.disableAnimation = false;
   }
 

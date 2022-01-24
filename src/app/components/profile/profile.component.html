@@ -164,26 +164,27 @@
           </button>
 
           <button
-            *ngIf="userProfile?.friendshipStatus"
-            (click)="moreActionOptsVisible = !moreActionOptsVisible"
-            id="more-action">
+          *ngIf="userProfile?.friendshipStatus"
+          (click)="moreActionOptsVisible = !moreActionOptsVisible"
+          id="more-action">
+
             <i class='bx bx-dots-horizontal-rounded'></i>
             <div
-              *ngIf="moreActionOptsVisible"
-              (clickOutside)="moreActionOptsVisible = false"
-              [delayClickOutsideInit]="true"
-              class="opts">
+            *ngIf="moreActionOptsVisible"
+            (clickOutside)="moreActionOptsVisible = false"
+            [delayClickOutsideInit]="true"
+            class="opts">
+
               <div
-                *ngIf="!userProfile.blocked"
-                (click)="block()"
-              >
+              *ngIf="!userProfile.blocked"
+              (click)="block()">
                 <i class='bx bx-block'></i>
                 <span>Chặn người này</span>
               </div>
+
               <div
-                *ngIf="userProfile.blocked"
-                (click)="unblock()"
-              >
+              *ngIf="userProfile.blocked"
+              (click)="unblock()" >
                 <i class='bx bx-block'></i>
                 <span>Gỡ chặn người này</span>
               </div>

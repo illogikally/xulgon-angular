@@ -108,6 +108,7 @@
 .actions-menu-container {
   background-color: #fff;
   position: sticky;
+  z-index: 2;
   top: 55px;
   box-shadow: 0 1px 2px #00000033;
 
@@ -247,11 +248,11 @@
       }
 
       #send-message {
-        @include button($btn-grey, #000);
+        @include button($btn-grey, #050505);
       }
 
       #delete-friend-request {
-        @include button($btn-grey, #000);
+        @include button($btn-grey, #050505);
       }
 
       #reply-friend-request {
@@ -265,11 +266,43 @@
 
         .opts {
           @extend %opts;
+          bottom: auto;
+          top: 140%;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1;
+
+          &::before {
+            content: "\A";
+            border-style: solid;
+            border-width: 0 8px 9px 8px;
+            border-color: transparent transparent #fff transparent;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+          }
         }
       }
 
       .button-opts {
         @extend %opts;
+          bottom: auto;
+          top: 140%;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1;
+
+          &::before {
+            content: "\A";
+            border-style: solid;
+            border-width: 0 8px 9px 8px;
+            border-color: transparent transparent #fff transparent;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+          }
       }
     }
   }

@@ -79,10 +79,10 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
       if (entries[0].isIntersecting) {
         this.isTabMenuSticky = false;
-        this.renderer.removeStyle(el, 'z-index');
+        // this.renderer.removeStyle(el, 'z-index');
       } else  {
         this.isTabMenuSticky = true;
-        this.renderer.setStyle(el, 'z-index', '2');
+        // this.renderer.setStyle(el, 'z-index', '2');
       }
     }, 
     {
@@ -147,9 +147,10 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openChatBox(): void {
-    this.messageService.openChatBox.next({
+    this.messageService.openChatBox$.next({
       id: this.userProfile.userId,
       username: this.userProfile.fullName,
+      profileId: this.userProfile.id,
       avatarUrl: this.userProfile.avatar.url
     });
   }

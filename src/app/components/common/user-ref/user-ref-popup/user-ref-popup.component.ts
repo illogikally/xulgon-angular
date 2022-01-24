@@ -93,8 +93,9 @@ export class UserRefPopupComponent implements OnInit {
   }
 
   openChatBox(): void {
-    this.message$.openChatBox.next({
+    this.message$.openChatBox$.next({
       id: this.userDto.id,
+      profileId: this.userDto.profileId,
       avatarUrl: this.userDto.avatarUrl,
       username: this.userDto.username
     });

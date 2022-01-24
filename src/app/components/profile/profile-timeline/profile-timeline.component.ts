@@ -32,6 +32,8 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
+  sidebar!: HTMLElement;
+
   constructor(
     private renderer: Renderer2,
     private title   : Title,
@@ -110,10 +112,13 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
     );
 
     detached$.subscribe(() => {
-      const SIDEBAR = document.querySelector<HTMLElement>('.sidebar__inner');
-      this.renderer.removeStyle(SIDEBAR, 'bottom');
-      this.renderer.removeStyle(SIDEBAR, 'top');
-      this.renderer.removeStyle(SIDEBAR, 'left');
+      this.sidebar = document.querySelector<HTMLElement>('.sidebar__inner')!;
+      this.sidebarRemove('bottom');
+      this.sidebarRemove('top');
+      this.sidebarRemove('left');
+      // this.sidebarCss('bottom'  , '');
+      // this.sidebarCss('top'     , '');
+      // this.sidebarCss('left'    , '');
       this.sidebarCss('position', 'relative');
     });
 
@@ -123,44 +128,45 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
       switchMap(() => fromEvent(window, 'scroll').pipe(takeUntil(detached$)))
     ).subscribe(() => {
       
-      const SIDEBAR = document.querySelector<HTMLElement>('.sidebar__inner');
-      const SIDEBAR_RECT   = SIDEBAR?.getBoundingClientRect();
-      const CONTAINER      = document.querySelector<HTMLElement>('#main-content');
-      const CONTAINER_RECT = CONTAINER?.getBoundingClientRect();
+      this.sidebar         = document.querySelector<HTMLElement>('.sidebar__inner')!;
+      const SIDEBAR        = this.sidebar;
+      const SIDEBAR_RECT   = SIDEBAR.getBoundingClientRect()!;
+      const CONTAINER      = document.querySelector<HTMLElement>('#main-content')!;
+      const CONTAINER_RECT = CONTAINER.getBoundingClientRect()!;
       const IS_SCROLL_UP   = oldY > window.scrollY;
-      if (!SIDEBAR_RECT || !CONTAINER_RECT || !SIDEBAR || !CONTAINER) {
-        return;
-      }
 
       if (IS_SCROLL_UP) {
         const mainContentY = window.scrollY + CONTAINER_RECT.top;
 
         if (window.scrollY + FIXED_TOP < mainContentY) {
-          this.renderer.removeStyle(SIDEBAR, 'bottom');
-          this.sidebarCss('top', '0px');
-          this.sidebarCss('left', '0px');
+          // this.sidebarCss('bottom'  , '');
+          this.sidebarRemove('bottom');
+          this.sidebarCss('top'     , '0px');
+          this.sidebarCss('left'    , '0px');
           this.sidebarCss('position', 'relative');
         } else {
 
           if (
-            SIDEBAR.style.position === 'fixed' 
-            && SIDEBAR_RECT.top < FIXED_TOP
+            SIDEBAR.style.position === 'fixed'
+            && SIDEBAR_RECT.top    < FIXED_TOP
           ) {
             const top = SIDEBAR_RECT.top - CONTAINER_RECT.top;
-            this.renderer.removeStyle(SIDEBAR, 'bottom');
+            // this.sidebarCss('bottom'  , '');
+            this.sidebarRemove('bottom');
             this.sidebarCss('position', 'relative');
-            this.sidebarCss('top', top + 'px');
-            this.sidebarCss('left', 0 + 'px');
+            this.sidebarCss('top'     , top + 'px');
+            this.sidebarCss('left'    , 0 + 'px');
           } 
 
           else if (
             SIDEBAR.style.position !== 'fixed'
-            && SIDEBAR_RECT.top > FIXED_TOP 
+            && SIDEBAR_RECT.top    > FIXED_TOP
           ) {
-            this.renderer.removeStyle(SIDEBAR, 'bottom');
+            // this.sidebarCss('bottom'  , '')
+            this.sidebarRemove('bottom');
             this.sidebarCss('position', 'fixed');
-            this.sidebarCss('top', FIXED_TOP + 'px');
-            this.sidebarCss('left', CONTAINER_RECT.left + 'px');
+            this.sidebarCss('top'     , FIXED_TOP + 'px');
+            this.sidebarCss('left'    , CONTAINER_RECT.left + 'px');
           }
         }
       } else {
@@ -168,35 +174,34 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
           SIDEBAR.style.position === 'fixed'
           && SIDEBAR_RECT.bottom > window.innerHeight
         ) {
-          
           const top = SIDEBAR_RECT.top - CONTAINER_RECT.top;
           this.sidebarCss('position', 'relative');
-          this.sidebarCss('top', top + 'px');
-          this.sidebarCss('left', 0 + 'px');
+          this.sidebarCss('top'     , top + 'px');
+          this.sidebarCss('left'    , 0 + 'px');
         } 
 
         else if (
-          SIDEBAR.style.position !== 'fixed'
-          && SIDEBAR_RECT.bottom < window.innerHeight - MARGIN
+          SIDEBAR.style.position  !== 'fixed'
+          && SIDEBAR_RECT.bottom  < window.innerHeight - MARGIN
           && SIDEBAR.offsetHeight > window.innerHeight - FIXED_TOP
         ) {
-          this.renderer.removeStyle(SIDEBAR, 'top');
-          this.sidebarCss('width', SIDEBAR.offsetWidth + 'px');
-          this.sidebarCss('bottom', MARGIN + 'px');
-          this.sidebarCss('left', CONTAINER_RECT.left + 'px');
+          // this.sidebarCss('top'     , '');
+          this.sidebarRemove('top');
+          this.sidebarCss('width'   , SIDEBAR.offsetWidth + 'px');
+          this.sidebarCss('bottom'  , MARGIN + 'px');
+          this.sidebarCss('left'    , CONTAINER_RECT.left + 'px');
           this.sidebarCss('position', 'fixed');
         } 
 
         else if (
-          SIDEBAR.style.position !== 'fixed'
+          SIDEBAR.style.position  !== 'fixed'
           && SIDEBAR.offsetHeight < window.innerHeight - FIXED_TOP
-          && SIDEBAR_RECT.top < FIXED_TOP
+          && SIDEBAR_RECT.top     < FIXED_TOP
         ) {
-          
-          this.sidebarCss('width', SIDEBAR.offsetWidth + 'px');
+          this.sidebarCss('width'   , SIDEBAR.offsetWidth + 'px');
+          this.sidebarCss('top'     , FIXED_TOP + 'px');
+          this.sidebarCss('left'    , CONTAINER_RECT.left + 'px');
           this.sidebarCss('position', 'fixed');
-          this.sidebarCss('top', FIXED_TOP + 'px');
-          this.sidebarCss('left', CONTAINER_RECT.left + 'px');
         }
       }
 
@@ -204,10 +209,14 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
 
-  private sidebarCss(style: string, value: string) {
-    const sidebar = document.querySelector<HTMLElement>('.sidebar__inner');
-    this.renderer.setStyle(sidebar, style, value);
+  sidebarCss(style: string, value: string) {
+    this.renderer.setStyle(this.sidebar, style, value);
   }
+
+  sidebarRemove(style: string) {
+    this.renderer.removeStyle(this.sidebar, style);
+  }
+
 
   getPosts(): void {
     this.isLoadingPosts = true;

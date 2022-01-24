@@ -13,13 +13,16 @@
   .sidebar {
     font-weight: 500;
     width: 360px;
-    // height: auto;
+  }
+  .sidebar__inner {
+    display: flex;
+    flex-direction: column;
+    row-gap: 17px;
 
     > * {
       @include card(10px);
       background-color: #fff;
       padding: 15px 15px;
-      // margin-bottom: 20px;
     }
 
     .intro {

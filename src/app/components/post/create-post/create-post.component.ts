@@ -1,16 +1,6 @@
 import {HttpClient} from '@angular/common/http';
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {MessageService} from '../../common/message.service';
 import {GroupResponse} from '../../group/group-response';
@@ -33,17 +23,24 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   isPrivacyOptsVisible = false;
   privacy = 'FRIEND';
 
+  textAreaDefaultHeight!: number;
+
   @Input() groupResponse!: GroupResponse;
 
   @Output() closeMe: EventEmitter<void> = new EventEmitter();
-  @ViewChild('privacyBtn') privacyBtn!: ElementRef;
 
-  constructor(private http: HttpClient,
-              private messageService: MessageService,
-              private renderer: Renderer2,
-              private auth: AuthenticationService) {
-    this.avatarUrl = auth.getAvatarUrl();
-    this.userFullName = auth.getUserFullName() as string;
+  @ViewChild('privacyBtn') privacyBtn!: ElementRef;
+  @ViewChild('textArea', {static: true}) textArea!: ElementRef;
+
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService,
+    private renderer: Renderer2,
+    private fb: FormBuilder,
+    private authService: AuthenticationService
+  ) {
+    this.avatarUrl = authService.getAvatarUrl();
+    this.userFullName = authService.getUserFullName() as string;
 
   }
 
@@ -54,9 +51,10 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.renderer.setStyle(document.body, 'position', 'fixed');
 
-    this.postForm = new FormGroup({
-      textarea: new FormControl(""),
-      fileInput: new FormControl("")
+    this.textAreaDefaultHeight = this.textArea.nativeElement.style.height;
+    this.postForm = this.fb.group({
+      textarea: [''],
+      fileInput: ['']
     });
   }
 
@@ -83,15 +81,19 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   }
 
   autoGrow(event: any) {
+    console.log('values changed');
+    event.target.style.height = 'auto';
     event.target.style.height = event.target.scrollHeight + "px";
   }
 
   submit(): void {
     let formData = new FormData();
 
-    let targetPage = this.groupResponse ?
-      this.groupResponse.id : this.auth.getProfileId();
-    this.privacy = !this.groupResponse ? this.privacy : this.groupResponse.isPrivate ? 'GROUP' : 'PUBLIC';
+    const targetPage = this.groupResponse ?
+      this.groupResponse.id : this.authService.getProfileId();
+
+    this.privacy = !this.groupResponse ? this.privacy 
+      : this.groupResponse.isPrivate ? 'GROUP' : 'PUBLIC';
 
     let postRequest = new Blob([JSON.stringify({
       pageId: targetPage,
@@ -142,5 +144,4 @@ export class CreatePostComponent implements OnDestroy, OnInit {
     this.sizeRatios = [];
     this.photos = [];
   }
-
 }

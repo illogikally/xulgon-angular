@@ -15,7 +15,7 @@
   background-color: #fff;
   overflow: hidden;
   cursor: auto;
-  box-shadow: 0 0 8px rgba(#000, .2);
+  box-shadow: 0 12px 28px 0 rgba(#000, .2), 0 2px 4px 0 rgba(#000, .1);
 
   .content {
     height: 100%;
@@ -26,10 +26,22 @@
       display: flex;
       align-items: center;
       flex: 0 0 48px;
-      padding: 5px 10px;
+      padding: 2px 2px;
       width: 100%;
       box-shadow: 0 1px 3px rgba(#000, .2);
 
+      .avatar-name {
+        display: flex;
+        align-items: center;
+        padding: 0px 5px;
+        height: 100%;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgba($secondary-button-background, .5);
+        }
+      }
       .avatar {
         display: flex;
         align-items: center;
@@ -57,6 +69,7 @@
 
       .x-btn {
         @include x-btn(26px, #bcbcbc, rgba($btn-grey, .5));
+        padding: 5px;
         right: 15px;
       }
     }
@@ -87,8 +100,8 @@
         background-color: #e4e6eb;
         height: 40px;
         width: 100%;
-        padding: 0 10px;
-        font-size: 16px;
+        padding: 0 15px;
+        font-size: 15px;
       }
 
       i {

@@ -47,19 +47,19 @@
         </a>
       </li>
       <li
-        [ngClass]="{'menu-active-div': groupRla.isActive}"
-        class="home">
+      [ngClass]="{'menu-active-div': groupRla.isActive}"
+      class="home">
         <a
-          [routerLink]="'/groups/feed'"
-          #groupRla="routerLinkActive"
-          [routerLinkActiveOptions]="{exact: true}"
-          routerLinkActive="menu-routerLink-active">
+        [routerLink]="'/groups/feed'"
+        #groupRla="routerLinkActive"
+        [routerLinkActiveOptions]="{exact: true}"
+        routerLinkActive="menu-routerLink-active">
           <i
-            *ngIf="!groupRla.isActive"
-            class='bx bx-network-chart'></i>
+          *ngIf="!groupRla.isActive"
+          class='bx bx-network-chart'></i>
           <i
-            *ngIf="groupRla.isActive"
-            class='bx bxs-network-chart'></i>
+          *ngIf="groupRla.isActive"
+          class='bx bxs-network-chart'></i>
         </a>
       </li>
     </ul>
@@ -67,6 +67,7 @@
       <div class="home-shortcut">
         <div class="pill-container">
           <a
+            routerLinkActive="route-active"
             routerLink="/{{ loggedInUserProfileId }}"
             class="pill">
             <span class="avatar">

@@ -3,13 +3,18 @@
   class="chat-box">
   <div class="content">
     <div class="title">
-      <div class="avatar">
-        <div class="avatar-container">
-          <img [src]="user?.avatarUrl">
+      <div 
+      (click)="navigateToUserProfile()"
+      class="avatar-name">
+
+        <div class="avatar">
+          <div class="avatar-container">
+            <img [src]="user?.avatarUrl">
+          </div>
         </div>
-      </div>
-      <div class="name">
-        {{ user?.username }}
+        <div class="name">
+          {{ user?.username }}
+        </div>
       </div>
       <div
         (click)="close()"

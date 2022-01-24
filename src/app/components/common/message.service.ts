@@ -42,7 +42,7 @@ export class MessageService {
   }
 
 
-  openChatBox = new Subject<UserBasic>();
+  openChatBox$ = new Subject<UserBasic>();
   // userRef = new Subject<UserDto>();
   updateCoverPhoto = new Subject<string>();
   updateAvatarOrCover = new BehaviorSubject<string>('');

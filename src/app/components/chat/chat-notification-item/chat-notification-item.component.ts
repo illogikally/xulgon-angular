@@ -35,7 +35,7 @@ export class ChatNotificationItemComponent implements OnInit {
       this.markAsRead.nativeElement]
 
     if (!excludes.includes(event.target)) {
-      this.messageService.openChatBox.next(this.conversation.user);
+      this.messageService.openChatBox$.next(this.conversation.user);
       this.close.emit();
     }
   }

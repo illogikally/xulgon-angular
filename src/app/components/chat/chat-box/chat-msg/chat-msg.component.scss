@@ -4,7 +4,17 @@
   width: 100%;
   display: flex;
   position: relative;
+  flex-direction: column;
 
+
+  .time-stamp {
+    display: flex;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: $secondary-text;
+    letter-spacing: -.4px;
+  }
 
   .content {
     max-width: 80%;
@@ -54,8 +64,6 @@
     }
 
     .last-msg {
-      padding-bottom: 10px;
-
       .text {
         border-bottom-right-radius: 18px;
       }
@@ -78,8 +86,6 @@
     }
 
     .last-msg {
-      padding-bottom: 10px;
-
       .text {
         border-bottom-left-radius: 18px;
       }

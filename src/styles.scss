@@ -8,13 +8,14 @@
   font-size: 15px;
   font-weight: normal;
   // font-family: 'Segoe UI';
-  font-family: 'Helvetica Nueue';
+  // font-family: 'Helvetica Nueue';
   color: #050505;
 }
 
 $bg-color: #f0f2f5;
 $secondary-text: #65676b;
 $btn-blue: #1877f2;
+$secondary-button-background: #e4e6eb;
 $btn-grey: #D8DADF;
 $active-tab: #1876F2;
 $btn-green: #00a400;
@@ -93,7 +94,7 @@ div {
 @mixin card($br) {
   border-radius: $br;
   background-color: #fff;
-  box-shadow: 0 0px 5px 1px rgba(#000, .1);
+  box-shadow: 0 1px 2px rgba(#000, .2);
   // overflow: hidden;
 }
 
@@ -131,7 +132,7 @@ div {
   transition: 200ms cubic-bezier(.08,.52,.52,1) background-color, 200ms cubic-bezier(.08,.52,.52,1) box-shadow, 200ms cubic-bezier(.08,.52,.52,1) transform; 
 
   &:hover {
-    background-color: darken($bg, 3%);
+    background-color: darken($bg, 5%);
   }
 }
 
@@ -232,7 +233,8 @@ a {
   background-color: #fff;
   border-radius: 5px;
   white-space: nowrap;
-  box-shadow: -4px 4px 15px rgba(#333, .4);
+  box-shadow: 0 12px 28px 0 rgba(#000, .2),0 2px 4px 0 rgba(#000, .1);
+        // inset 0 0 0 1px rgba(#fff, .5);
   color: #000;
   bottom: 110%;
 
@@ -250,6 +252,10 @@ a {
       background-color: rgba(#eee, .8);
     }
   }
+}
+
+input {
+  font-family: inherit;
 }
 
 %input-group {
