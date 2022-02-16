@@ -3,6 +3,7 @@ import {Title} from '@angular/platform-browser';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {ChatService} from '../../service/chat.service';
+import { NotificationService } from '../../service/notification.service';
 import {ChatMessage} from '../chat-msg';
 import {ConversationNotif} from '../conversation-notif';
 
@@ -13,29 +14,34 @@ import {ConversationNotif} from '../conversation-notif';
 })
 export class ChatNotificationComponent implements OnInit {
 
-  unreadCount!: number;
-  latestConversations = new Array<ConversationNotif>();
+  unreadCount = 0;
+  unreadNotificationCount = 0;
+  latestConversations: ConversationNotif[] = [];
+  isPopupVisible = false;
   conversationRead = new EventEmitter<number>();
 
 
   @ViewChild('popup', {static: true}) popup!: ElementRef;
 
-  constructor(private chatService: ChatService,
-              private title: Title,
-              private auth$: AuthenticationService,
-              private rxStomp$: RxStompService,
-              private renderer: Renderer2) {
+  constructor(
+    private chatService: ChatService,
+    private title: Title,
+    private authenticationService: AuthenticationService,
+    private notificationService: NotificationService,
+    private rxStompService: RxStompService,
+    private renderer: Renderer2) {
   }
 
   private setTitle(): void {
     let regex = /\([\d ]+\)/g;
     let title = this.title.getTitle();
 
+    let totalUnread = this.unreadCount + this.unreadNotificationCount;
     if (regex.test(title)) {
-      let title = this.title.getTitle().replace(regex, this.unreadCount > 0 ? `(${this.unreadCount})` : '');
+      let title = this.title.getTitle().replace(regex, totalUnread > 0 ? `(${totalUnread})` : '');
       this.title.setTitle(title);
-    } else if (this.unreadCount > 0)
-      this.title.setTitle(`(${this.unreadCount}) ${this.title.getTitle()}`)
+    } else if (totalUnread > 0)
+      this.title.setTitle(`(${totalUnread}) ${this.title.getTitle()}`)
   }
 
   ngOnInit(): void {
@@ -48,16 +54,21 @@ export class ChatNotificationComponent implements OnInit {
       this.setTitle();
     });
 
+    this.notificationService.setTitle$.subscribe(unread => {
+      this.unreadNotificationCount = unread;
+      this.setTitle();
+    });
+
     this.chatService.getUnreadCount().subscribe(count => {
       this.unreadCount = count;
       this.setTitle();
     });
 
-    this.rxStomp$.watch('/user/queue/chat').subscribe(msg => {
+    this.rxStompService.watch('/user/queue/chat').subscribe(msg => {
       let chatMsg: ChatMessage = JSON.parse(msg.body);
       let conversation = this.latestConversations.find(conv => conv.id == chatMsg.conversationId)
       if (conversation) {
-        if (chatMsg.userId !== this.auth$.getUserId()
+        if (chatMsg.userId !== this.authenticationService.getPrincipalId()
           && (conversation.latestMessage.userId !== chatMsg.userId
             || conversation.latestMessage.isRead === true)) {
           this.unreadCount++;
@@ -79,9 +90,7 @@ export class ChatNotificationComponent implements OnInit {
   }
 
   togglePopup(): void {
-    this.renderer.setStyle(this.popup.nativeElement,
-      'display',
-      this.popup.nativeElement.style.display == 'block' ? 'none' : 'block');
+    this.isPopupVisible = !this.isPopupVisible;
   }
 
   markAsRead(messageId: number): void {

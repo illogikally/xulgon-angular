@@ -7,10 +7,10 @@
     <div class="create-post-body">
       <div class="post-info">
         <div class="avatar">
-          <img [src]="avatarUrl">
+          <img [src]="principalAvatar">
         </div>
         <div class="name--privacy">
-          <div class="name">{{ userFullName }}</div>
+          <div class="name">{{ principalName }}</div>
           <div class="privacy">
             <span
               *ngIf="groupResponse"
@@ -44,11 +44,11 @@
               </span>
               <i style="font-size: 9px; margin-left: 2px" class='bx bxs-down-arrow'></i>
             </span>
-            <div
-              (clickOutside)="clickOutsidePrivacyOpts()"
-              *ngIf="isPrivacyOptsVisible"
-              [delayClickOutsideInit]="true"
-              class="privacy-opts">
+            <div 
+            (clickOutside)="clickOutsidePrivacyOpts()" 
+            *ngIf="isPrivacyOptsVisible" 
+            [delayClickOutsideInit]="true"
+            class="privacy-opts">
               <div
                 (click)="setPrivacy('PUBLIC')"
                 class="public">

@@ -1,8 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, EventEmitter, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MessageService} from '../../common/message.service';
-import {PhotoViewResponse} from '../../common/photo/photo-view-response';
+import {MessageService} from '../../share/message.service';
+import {PhotoViewResponse} from '../../share/photo/photo-view-response';
 import {UserProfile} from '../user-profile';
 
 @Component({

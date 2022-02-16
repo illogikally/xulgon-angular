@@ -1,22 +1,32 @@
-<div
+<div class="notif-item">
+  <div class="flex-center container">
+  <div 
   (click)="click()"
-  class="notif-item">
-  <div class="content">
+  class="content">
     <!-- <div *ngIf="!notif.isRead" -->
       <!-- class="mark-as-read"></div> -->
     <div class="avatar">
       <div class="img-container">
-        <img [src]="notification.actorAvatar" alt="avatar"/>
+        <img [src]="notification.actorAvatarUrl" alt="avatar"/>
       </div>
     </div>
-    <div class="body">
-      <div class="notif-text">
-
-        <div *ngIf="notification.notificationType == 'REPLY'" >
-          
+    <div 
+    [ngStyle]="{ 'color': notification.isRead ? 'var(--secondary-text)' : '#fff'}"
+    class="body">
+      <div 
+      class="notif-text">
+        <div *ngIf="notification.type == 'COMMENT'" >
+          <strong>{{ notification.actorFullName }}</strong> 
+          <span
+          *ngIf="notification.actorCount > 1">
+            và {{ notification.actorCount-1 }} người khác
+          </span>
+          <span>
+            đã bình luận trong một bài viết của bạn
+          </span>
+          <span *ngIf="notification.actorContentBody ">: "{{ notification.recipientContentBody }}"</span>
         </div>
         <!-- <span *ngIf="notif.type"></span> -->
-<!--        <strong>{{ notif.actor }}</strong>-->
 <!--        <span> đã </span>-->
 <!--        <span *ngIf="notif.type == 'COMMENT'">bình luận trong</span>-->
 <!--        <span *ngIf="notif.type == 'REACTION'">thích</span>-->
@@ -31,6 +41,13 @@
       <div class="ago">
         <span>{{ notification.createdAgo }}</span>
       </div>
+    </div>
+  </div>
+    <div 
+    (click)="read($event)"
+    [ngClass]="notification.isRead ? 'hidden' : 'visible'"
+    #isReadIndicator
+    class="mark-as-read">
     </div>
   </div>
 </div>

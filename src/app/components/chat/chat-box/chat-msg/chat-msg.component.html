@@ -2,7 +2,7 @@
 [ngStyle]="{'margin-bottom': isLastMsg() ? '10px' : '2px'}"
 class="chat-msg">
   <div
-  [ngClass]="thisMsg?.userId != loggedInUserId ? 'your-msg' : 'my-msg'">
+  [ngClass]="thisMsg?.userId != principalId ? 'your-msg' : 'my-msg'">
     <div
     [ngClass]="{'first-msg': isFirstMsg(), 'last-msg': isLastMsg()}"
     class="content">

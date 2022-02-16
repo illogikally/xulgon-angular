@@ -1,8 +1,8 @@
 <div
-  (mouseenter)="onMouseEnter()"
-  (mouseleave)="onMouseLeave()"
-  (click)="onMouseLeave()"
-  class="user-ref-container">
+(mouseenter)="onMouseEnter()"
+(mouseleave)="onMouseLeave()"
+(click)="onMouseLeave()"
+class="user-ref-container">
   <a
     class="user-ref-a"
     routerLink="/{{ userDto?.profileId }}">
@@ -19,8 +19,8 @@
       {{ userDto?.username }}
     </div>
   </a>
-  <app-user-ref-popup
+  <!-- <app-user-ref-popup
     [userDto]="userDto"
     [visibility]="popupVisibility"
-  ></app-user-ref-popup>
+  ></app-user-ref-popup> -->
 </div>

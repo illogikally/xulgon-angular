@@ -68,49 +68,55 @@
         <div class="pill-container">
           <a
             routerLinkActive="route-active"
-            routerLink="/{{ loggedInUserProfileId }}"
+            routerLink="/{{ principalProfileId }}"
+            [routerLinkActiveOptions]="{exact: true}"
             class="pill">
             <span class="avatar">
-              <img [src]="loggedInUserAvatarUrl || 'http://localhost:8080/contents/default-avatar.png'">
+              <img [src]="principalAvatar || 'http://localhost:8080/contents/default-avatar.png'">
             </span>
             <span class="username">
-              <span>{{ loggedInUsername }}</span>
+              <span>{{ principalName }}</span>
             </span>
           </a>
         </div>
       </div>
       <ul class="notis">
         <li>
-          <div (click)="openCreatePost()" class="create-post">
-            <i class='bx bx-plus'></i>
+          <div class="wrapper">
+            <div 
+            [ngClass]="{'route-active': isCreatePostVisible}" 
+            (click)="openCreatePost()" class="create-post">
+              <i class='bx bx-plus'></i>
+            </div>
           </div>
         </li>
         <li>
-          <div
-            (click)="this.chatNotifVisible = !this.chatNotifVisible"
-            class="chat-noti">
+            <div class="chat-noti"> </div>
             <app-chat-notification></app-chat-notification>
-          </div>
         </li>
         <li>
-          <div class="general-noti">
+            <div 
+            class="general-noti"></div>
             <app-notification></app-notification>
-          </div>
         </li>
         <li>
-
-          <div
+          <!-- (click)="" -->
+          <div class="wrapper">
+            <div
+            [ngClass]="{'route-active': moreOptsVisible}" 
             (click)="moreOptsVisible = !moreOptsVisible"
             class="more-opts">
-            <i class='bx bx-chevron-down'></i>
+              <i class='bx bx-chevron-down'></i>
+            </div>
+
             <div
-              (clickOutside)="moreOptsVisible = false"
-              [delayClickOutsideInit]="true"
-              *ngIf="moreOptsVisible"
-              class="more-opts__items">
+            (clickOutside)="moreOptsVisible = false"
+            [delayClickOutsideInit]="true"
+            *ngIf="moreOptsVisible"
+            class="more-opts__items">
               <div
-                (click)="logout()"
-                class="logout">
+              (click)="logout()"
+              class="logout">
                 <div class="icon">
                   <i class='bx bx-exit'></i>
                 </div>
@@ -118,7 +124,6 @@
               </div>
             </div>
           </div>
-
         </li>
       </ul>
     </div>
@@ -128,5 +133,7 @@
 <!-- (clickOutside)="chatNotifVisible = false"
 [delayClickOutsideInit]="true" -->
 <app-create-post
-  (closeMe)="closeCreatePost()"
-  *ngIf="isCreatePostVisible"></app-create-post>
+(closeMe)="closeCreatePost()"
+*ngIf="isCreatePostVisible">
+</app-create-post>
+<app-confirm-dialog></app-confirm-dialog>

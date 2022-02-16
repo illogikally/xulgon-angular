@@ -1,0 +1,68 @@
+<div
+#self
+(mouseenter)="onMouseEnter()"
+(mouseleave)="onMouseLeave()"
+class="user-ref-popup">
+  <div class="avatar--info">
+    <div 
+    routerLink="/{{ userDto?.profileId }}"
+    class="avatar">
+      <img [src]="userDto?.avatarUrl"/>
+    </div>
+    <div class="info--name">
+      <div 
+      routerLink="/{{ userDto?.profileId }}"
+      class="name">
+        <span>{{ userDto?.username }}</span>
+      </div>
+
+      <div>
+        <i class='bx bxs-building-house'></i>
+        <span>{{ userDto?.workplace }}</span>
+      </div>
+
+      <div>
+        <i class='bx bx-current-location'></i>
+        <span>{{ userDto?.hometown }}</span>
+      </div>
+
+    </div>
+  </div>
+  <div class="actions">
+    <div
+    *ngIf="userDto?.friendshipStatus"
+    class="others">
+      <app-button
+      (click)="openChatBox()">
+        <div button>
+          <i class='bx bxs-message-square-dots'></i>
+          <span>Nhắn tin</span>
+        </div>
+      </app-button>
+
+      <app-friendship-button
+      [userId]="userDto?.id || -1"
+      [friendshipStatus]="userDto?.friendshipStatus || ''"
+      [userName]="userDto?.username || ''"
+      ></app-friendship-button>
+      
+      <app-button
+      [hasOptions]="true"
+      >
+        <div button>
+          <div>
+            <i class='bx bx-dots-horizontal-rounded'></i>
+          </div>
+        </div>
+
+        <div options>
+          <div>
+            <i class='bx bx-block'></i>
+            <span>Chặn</span>
+          </div>
+        </div>
+      </app-button>
+    </div>
+    <div class="me"></div>
+  </div>
+</div>

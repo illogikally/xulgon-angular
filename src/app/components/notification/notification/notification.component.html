@@ -1,8 +1,9 @@
 <div class="notif">
   <div
-    (click)="popupVisible = !popupVisible"
-    id="notifButton"
-    class="button">
+  (click)="isPopupVisible = !isPopupVisible"
+  id="notifButton"
+  [ngClass]="{'active': isPopupVisible}"
+  class="button">
     <i class='bx bxs-bell'></i>
     <div
       *ngIf="unreadCount > 0"
@@ -14,20 +15,20 @@
     </div>
   </div>
   <div
-    [ngStyle]="{'display': popupVisible ? 'block' : 'none'}"
-    class="popup">
+  [ngStyle]="{'display': isPopupVisible ? 'block' : 'none'}"
+  class="popup">
     <div
-      (clickOutside)="popupVisible = false"
-      [exclude]="'#notifButton'"
-      class="popup__inner">
+    (clickOutside)="isPopupVisible = false"
+    [exclude]="'#notifButton'"
+    class="popup__inner">
       <div class="title">
         <span>Thông báo</span>
       </div>
       <div class="notif-items">
         <app-notif-item
-          [read]="notifRead"
-          *ngFor="let notif of notifItems"
-          [notification]="notif"
+        (itemClick)="isPopupVisible = false"
+        *ngFor="let notif of notifications"
+        [notification]="notif"
         ></app-notif-item>
       </div>
     </div>

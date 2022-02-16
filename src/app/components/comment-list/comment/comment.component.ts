@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ReactionType} from '../../common/reaction-type';
-import {ReactionPayload} from '../../common/reaction.payload';
-import {ReactionService} from '../../common/reaction.service';
+import {ReactionType} from '../../share/reaction-type';
+import {ReactionPayload} from '../../share/reaction.payload';
+import {ReactionService} from '../../share/reaction.service';
 import {CommentResponse} from './comment-response'
 
 @Component({
@@ -12,12 +12,14 @@ import {CommentResponse} from './comment-response'
 export class CommentComponent implements OnInit {
 
   @Input() commentResponse!: CommentResponse;
-  @Output() onCommentAdded: EventEmitter<boolean> = new EventEmitter;
+  @Output() onCommentAdded: EventEmitter<boolean> = new EventEmitter();
 
   userProfile!: string;
   isRepliesVisible: boolean = false;
 
-  constructor(private reactionService: ReactionService) {
+  constructor(
+    private reactionService: ReactionService
+  ) {
   }
 
   ngOnInit(): void {
@@ -29,7 +31,6 @@ export class CommentComponent implements OnInit {
   }
 
   like(): void {
-
     let reaction: ReactionPayload = {
       type: ReactionType.LIKE,
       contentId: this.commentResponse.id

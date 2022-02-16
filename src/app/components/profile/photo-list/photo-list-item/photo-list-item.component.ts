@@ -18,7 +18,7 @@ export class PhotoListItemComponent implements OnInit {
 
   constructor(private auth: AuthenticationService,
               private http: HttpClient) {
-    this.loggedInUserId = auth.getUserId();
+    this.loggedInUserId = auth.getPrincipalId();
   }
 
   ngOnInit(): void {

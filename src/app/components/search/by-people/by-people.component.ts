@@ -1,8 +1,8 @@
 import {Location} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {MessageService} from '../../common/message.service';
-import {UserDto} from '../../common/user-dto';
+import {MessageService} from '../../share/message.service';
+import {UserDto} from '../../share/user-dto';
 import {SearchService} from '../search.service';
 
 @Component({

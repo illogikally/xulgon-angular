@@ -4,8 +4,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Title} from '@angular/platform-browser';
 import {Router} from '@angular/router';
-import {MessageService} from '../../common/message.service';
-import {UserService} from '../../common/user.service';
+import {MessageService} from '../../share/message.service';
+import {UserService} from '../../share/user.service';
 import {GroupResponse} from '../group-response';
 import {GroupService} from '../group.service';
 
@@ -28,13 +28,13 @@ export class GroupGeneralComponent implements OnInit {
   createGroupIsPrivate: undefined | boolean;
   createGroupPrivacyDropVisible = false;
 
-  constructor(private http: HttpClient,
-              private router: Router,
-              private group$: GroupService,
-              private title$: Title,
-              private location: Location,
-              private user$: UserService,
-              private message$: MessageService) {
+  constructor(
+    private router: Router,
+    private groupService: GroupService,
+    private title$: Title,
+    private location: Location,
+    private userService: UserService,
+    private messageService: MessageService) {
 
     this.createGroupForm = new FormGroup({
       groupName: new FormControl('')
@@ -43,7 +43,7 @@ export class GroupGeneralComponent implements OnInit {
 
   ngOnInit(): void {
     this.title$.setTitle('Groups');
-    this.user$.getJoinedGroups().subscribe(groups => {
+    this.userService.getJoinedGroups().subscribe(groups => {
       this.managedGroups = groups.filter(group => group.role == 'ADMIN');
       this.groups = groups.filter(group => group.role == 'MEMBER');
     });
@@ -52,8 +52,8 @@ export class GroupGeneralComponent implements OnInit {
   changeGroup(event: any, group: GroupResponse): void {
     event.preventDefault();
     this.location.go(`/groups/${group.id}`);
-    this.message$.groupLoaded.next(group);
-    this.message$.loadPostsByPageId(group.id);
+    this.messageService.groupLoaded.next(group);
+    this.messageService.loadPostsByPageId(group.id);
   }
 
   abort(): void {
@@ -69,7 +69,7 @@ export class GroupGeneralComponent implements OnInit {
       name: this.createGroupForm.get('groupName')?.value
     }
 
-    this.group$.createGroup(createGroupRequest).subscribe(groupId => {
+    this.groupService.createGroup(createGroupRequest).subscribe(groupId => {
       this.router.navigateByUrl(`/groups/${groupId}`);
     });
   }

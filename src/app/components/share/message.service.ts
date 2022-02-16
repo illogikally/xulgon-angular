@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {GroupResponse} from '../group/group-response';
 import {Post} from '../post/post';
 import {UserProfile} from '../profile/user-profile';
@@ -10,10 +10,11 @@ import {UserBasic} from './user-basic';
 })
 export class MessageService {
 
+  confirmDialog$ = new Subject<any>();
+
   constructor() {
   }
 
-  private subject = new Subject<string>();
   private friendRequestChange = new Subject<number>();
   private friendshipStatus = new Subject<string>();
   private deleteFriendRequest = new Subject<number>();
@@ -24,14 +25,17 @@ export class MessageService {
   generalSearch = new BehaviorSubject<string>('');
   loadGroupProfile = new BehaviorSubject<number | null>(null);
   groupLoaded = new BehaviorSubject<GroupResponse | null>(null);
-  userRef = new Subject<any>();
+  userRef$ = new Subject<any>();
   loggedIn = new Subject<void>();
   updateAvatar = new Subject<string>();
-  // pageId = new BehaviorSubject<number | undefined>(undefined);
   private pageId = new BehaviorSubject<number | undefined>(undefined);
+
 
   profileComponentAttached$ = new Subject<number>();
   profileComponentDetached$ = new Subject<number>();
+
+  postView$ = new ReplaySubject<any>(1);
+
 
   loadPostsByPageId(pageId: number | undefined): void {
     this.pageId.next(pageId);
@@ -80,9 +84,6 @@ export class MessageService {
     this.friendshipStatus.next(status);
   }
 
-  onNewMessge(): Observable<string> {
-    return this.subject.asObservable();
-  }
 
   onFriendRequestChange(): Observable<number> {
     return this.friendRequestChange.asObservable();
@@ -92,7 +93,4 @@ export class MessageService {
     this.friendRequestChange.next(profileId);
   }
 
-  sendMessage(msg: string): void {
-    this.subject.next(msg);
-  }
 }

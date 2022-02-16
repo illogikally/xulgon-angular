@@ -7,17 +7,6 @@ import {UserDto} from '../user-dto';
   selector: 'app-user-ref',
   templateUrl: './user-ref.component.html',
   styleUrls: ['./user-ref.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('.1s .4s', style({opacity: 1}))
-      ]),
-      transition(':leave', [
-        animate(100, style({opacity: 0}))
-      ])
-    ])
-  ]
 })
 
 export class UserRefComponent implements OnInit {
@@ -30,15 +19,19 @@ export class UserRefComponent implements OnInit {
   popupVisibility = new EventEmitter<any>();
   isUserRefVisible = false;
 
-  constructor(private renderer: Renderer2,
-              private self: ElementRef,
-              private message$: MessageService) {
-  }
+  constructor(
+    private renderer: Renderer2,
+    private self: ElementRef,
+    private messageService: MessageService
+  ) { }
 
   ngAfterViewInit() {
     if (this.borderRadius) {
-      this.renderer.setStyle(this.avatarContainer.nativeElement,
-        'border-radius', this.borderRadius);
+      this.renderer.setStyle(
+        this.avatarContainer.nativeElement,
+        'border-radius', 
+        this.borderRadius
+      );
     }
   }
 
@@ -47,19 +40,16 @@ export class UserRefComponent implements OnInit {
   }
 
   onMouseEnter(): void {
-    if (this.isPhotoView) return;
-
-    this.popupVisibility.emit({
-      msg: 'show',
-      rect: this.self.nativeElement.getBoundingClientRect(),
-      self: this.self.nativeElement,
+    this.messageService.userRef$.next({
+      visible: true,
+      target: this.self.nativeElement,
       userDto: this.userDto
     });
   }
 
   onMouseLeave(): void {
-    this.popupVisibility.emit({
-      msg: 'hide'
-    });
+    this.messageService.userRef$.next({
+      visible: false
+    })
   }
 }

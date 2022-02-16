@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {MessageService} from '../../common/message.service';
+import {MessageService} from '../../share/message.service';
 import {GroupService} from '../group.service';
 
 @Component({

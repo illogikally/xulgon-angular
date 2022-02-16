@@ -4,7 +4,7 @@ import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {UserService} from '../common/user.service';
+import {UserService} from '../share/user.service';
 import {Post} from '../post/post';
 
 @Component({
@@ -21,13 +21,13 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
   isAttached = true;
 
   constructor(
-    private auth$: AuthenticationService,
-    private user$: UserService,
+    private authService: AuthenticationService,
+    private userService: UserService,
     private title: Title,
-    private router: Router, 
-    private http: HttpClient) { 
+    private router: Router,
+    private http: HttpClient) {
       this.title.setTitle('Xulgon');
-      this.pageId = auth$.getProfileId();
+      this.pageId = authService.getProfileId();
   }
 
   ngOnDestroy() {
@@ -46,7 +46,7 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
       && this.isAttached
       ) {
         this.getPosts();
-        
+
     }
   }
 
@@ -64,16 +64,15 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
     const size = 5;
     const offset = this.posts.length;
 
-    this.user$
-      .getNewsFeed(size, offset)
+    this.userService.getNewsFeed(size, offset)
       .subscribe(posts => {
-        if (posts.length == 0) 
+        if (posts.length == 0) {
           this.isAllPostsLoaded = true;
+        }
 
         this.posts = this.posts.concat(posts);
         this.isLoadingPosts = false;
       }, error => {
-        console.log(error);
       });
   }
 }

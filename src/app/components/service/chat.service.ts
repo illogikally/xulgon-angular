@@ -1,7 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+import { environment } from 'src/environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
+import { ChatMessage } from '../chat/chat-msg';
 import {ConversationNotif} from '../chat/conversation-notif';
 
 @Injectable({
@@ -9,21 +11,29 @@ import {ConversationNotif} from '../chat/conversation-notif';
 })
 export class ChatService {
 
-  messagesApi = "http://localhost:8080/api/messages/"
+  private baseApiUrl = environment.baseApiUrl;
+  private messagesApi = `${this.baseApiUrl}/messages`
 
-  constructor(private authService: AuthenticationService,
-              private http: HttpClient) {
+  public openChatBox$ = new Subject<any>();
+
+  constructor(
+    private authService: AuthenticationService,
+    private http: HttpClient) {
   }
 
   getUnreadCount(): Observable<number> {
-    return this.http.get<number>(this.messagesApi + "unread");
+    return this.http.get<number>(`${this.messagesApi}/unread`);
   }
 
   getLatest(): Observable<ConversationNotif[]> {
-    return this.http.get<ConversationNotif[]>(this.messagesApi + "latest");
+    return this.http.get<ConversationNotif[]>(`${this.messagesApi}/latest`);
   }
 
   markAsRead(messageId: number): Observable<void> {
-    return this.http.put<void>(this.messagesApi + `${messageId}/read`, {});
+    return this.http.put<void>(`${this.messagesApi}/${messageId}/read`, {});
+  }
+  
+  getMesssages(userId: number): Observable<ChatMessage[]> {
+    return this.http.get<ChatMessage[]>(`${this.messagesApi}/with/${userId}`);
   }
 }

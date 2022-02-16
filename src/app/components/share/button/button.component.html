@@ -1,0 +1,18 @@
+<div class="button">
+  <div 
+  #inner
+  (click)="toggleOptionsVisibility()"
+  (clickOutside)="isOptionsVisible = false"
+  class="button__inner">
+    <ng-content select="[button]"></ng-content>
+  </div>
+  <div 
+  *ngIf="isOptionsVisible"
+  [ngStyle]="optionsStyle"
+  class="button__options">
+    <ng-content select="[options]"></ng-content>
+  </div>
+  <div 
+  *ngIf="isOptionsVisible"
+  class="triangle"></div>
+</div>

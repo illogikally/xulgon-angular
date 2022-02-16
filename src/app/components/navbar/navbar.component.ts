@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {MessageService} from '../common/message.service';
+import {MessageService} from '../share/message.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,24 +14,22 @@ export class NavbarComponent implements OnInit {
 
   searchForm: FormGroup;
   isCreatePostVisible: boolean = false;
-  loggedInUsername!: string;
-  loggedInUserId!: number;
-  loggedInUserAvatarUrl!: string;
+  principalName = this.authenticationService.getFirstName();
+  principalId = this.authenticationService.getPrincipalId();
+  principalAvatar = this.authenticationService.getAvatarUrl();
+  principalProfileId = this.authenticationService.getPrincipalId();
   chatNotifVisible = false;
   moreOptsVisible = false;
-  loggedInUserProfileId!: any;
 
-  constructor(private messageService: MessageService,
-              private location: Location,
-              private router: Router,
-              private auth: AuthenticationService) {
-    this.loggedInUsername = this.auth.getFirstName();
-    this.loggedInUserId = this.auth.getUserId();
-    this.loggedInUserAvatarUrl = this.auth.getAvatarUrl();
-    this.loggedInUserProfileId = this.auth.getProfileId();
+  constructor(
+    private messageService: MessageService,
+    private location: Location,
+    private router: Router,
+    private authenticationService: AuthenticationService
+  ) {
     this.messageService.updateAvatar.subscribe(url => {
-      this.loggedInUserAvatarUrl = url;
-      this.auth.setAvatarUrl(url);
+      this.principalAvatar = url;
+      this.authenticationService.setAvatarUrl(url);
     });
     this.searchForm = new FormGroup({
       search: new FormControl('')
@@ -42,7 +40,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-    this.auth.logout();
+    this.authenticationService.logout();
   }
 
   openCreatePost(): void {

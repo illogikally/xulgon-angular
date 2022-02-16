@@ -1,4 +1,4 @@
-import {UserDto} from "../../common/user-dto";
+import {UserDto} from "../../share/user-dto";
 
 export interface CommentResponse {
   id: number;

@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../authentication/authentication.service';
-import {MessageService} from '../../common/message.service';
+import {MessageService} from '../../share/message.service';
 import {GroupResponse} from '../../group/group-response';
 import {Post} from '../post';
 
@@ -16,11 +16,12 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   photos: any[] = [];
   files: Blob[] = [];
   sizeRatios: number[] = []
-  avatarUrl: string;
-  userFullName: string
+  principalAvatar = this.authenticationService.getAvatarUrl();
+  principalName = this.authenticationService.getUserFullName();
   postable: boolean = false;
   postForm!: FormGroup;
   isPrivacyOptsVisible = false;
+
   privacy = 'FRIEND';
 
   textAreaDefaultHeight!: number;
@@ -37,11 +38,8 @@ export class CreatePostComponent implements OnDestroy, OnInit {
     private messageService: MessageService,
     private renderer: Renderer2,
     private fb: FormBuilder,
-    private authService: AuthenticationService
+    private authenticationService: AuthenticationService
   ) {
-    this.avatarUrl = authService.getAvatarUrl();
-    this.userFullName = authService.getUserFullName() as string;
-
   }
 
   ngOnDestroy(): void {
@@ -90,9 +88,9 @@ export class CreatePostComponent implements OnDestroy, OnInit {
     let formData = new FormData();
 
     const targetPage = this.groupResponse ?
-      this.groupResponse.id : this.authService.getProfileId();
+      this.groupResponse.id : this.authenticationService.getProfileId();
 
-    this.privacy = !this.groupResponse ? this.privacy 
+    this.privacy = !this.groupResponse ? this.privacy
       : this.groupResponse.isPrivate ? 'GROUP' : 'PUBLIC';
 
     let postRequest = new Blob([JSON.stringify({

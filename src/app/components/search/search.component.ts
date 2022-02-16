@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {MessageService} from '../common/message.service';
+import {MessageService} from '../share/message.service';
 
 @Component({
   selector: 'app-search',

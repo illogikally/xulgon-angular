@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {MessageService} from '../common/message.service';
+import {MessageService} from '../share/message.service';
 import {Post} from '../post/post';
 import {PostService} from '../post/post.service';
 
@@ -11,31 +11,47 @@ import {PostService} from '../post/post.service';
 })
 export class PostViewComponent implements OnInit {
 
+  @Input() isGroup = false;
   post!: Post;
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private message$: MessageService,
-              private post$: PostService) {
-  }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private messageService: MessageService,
+    private postService: PostService
+  ) {}
 
   ngOnInit(): void {
-    let postId = this.activatedRoute.snapshot.paramMap.get('id');
-    if (postId == null || !/\d+/g.test(postId)) return;
-    this.post$.getPost(postId as unknown as number).subscribe(post => {
+    let postId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    if (isNaN(postId)) return;
+    this.postService.getPost(postId).subscribe(post => {
       this.post = post;
     });
 
-    this.isCommentNotif();
-
+    this.isCommentNotif(postId);
   }
 
-  isCommentNotif(): void {
-    let commentId = this.activatedRoute.snapshot.queryParamMap.get('comment_id');
-    if (commentId == null || !/\d+/g.test(commentId)) return;
-    this.message$.notif.next({
-      type: 'comment_id',
+  isCommentNotif(postId: number): void {
+    let commentId = Number(this.activatedRoute.snapshot.queryParamMap.get('comment_id'));
+    if (isNaN(commentId)) return;
+    this.messageService.postView$.next({
+      type: 'COMMENT_ID',
+      postId: postId,
       commentId: commentId
     });
+  }
+
+  onAttach() {
+    console.log('attach');
+    this.messageService.postView$.next({
+      type: 'ATTACH'
+    })
+  }
+
+  onDetach() {
+    console.log('detach');
+    this.messageService.postView$.next({
+      type: 'DETACH'
+    })
   }
 }
 

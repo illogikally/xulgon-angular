@@ -1,36 +1,42 @@
 <div class="post">
-  <div
-    (click)="isPostOptsVisible = !isPostOptsVisible"
-    class="options">
-    <i class='bx bx-dots-horizontal-rounded'></i>
-    <div
-      (clickOutside)="isPostOptsVisible = false"
-      [delayClickOutsideInit]="true"
-      *ngIf="isPostOptsVisible"
-      class="options-list">
-      <div
+  <div class="opts-container">
+    <app-button
+    optionsAlignment="RIGHT"
+    [hasOptions]="hasOptions()"
+    width="40px"
+    height="40px"
+    padding=""
+    background="transparent"
+    backgroundHover="#f0f2f5"
+    radius="50%" >
+      <div button>
+        <i class='bx bx-dots-horizontal-rounded'></i>
+      </div>
+      <div options>
+          <!-- <div>
+            <i class='bx bx-group' ></i>
+            <span>Chỉnh sửa riêng tư</span>
+          </div>
+          <div>
+            <i class='bx bx-bell-off' ></i>
+            <span>Tắt thông báo với bài viết này</span>
+          </div> -->
+
+        <div
         (click)="delete()"
-        *ngIf="post.user.id == loggedInUserId || groupReponse?.role == 'ADMIN'"
-      >
-        <i class='bx bx-trash'></i>
-        <span>Xoá bài viết</span>
+        *ngIf="post.user.id == principalId || groupReponse?.role == 'ADMIN'">
+          <i class='bx bx-trash'></i>
+          <span>Xoá bài viết</span>
+        </div>
       </div>
-      <!-- <div>
-        <i class='bx bx-group' ></i>
-        <span>Chỉnh sửa riêng tư</span>
-      </div>
-      <div>
-        <i class='bx bx-bell-off' ></i>
-        <span>Tắt thông báo với bài viết này</span>
-      </div> -->
-    </div>
+    </app-button>
   </div>
   <div class="post-header">
     <div class="avatar-name">
       <div class="post-avatar">
         <app-user-ref
-          borderRadius="50%"
-          [userDto]="post.user"
+        borderRadius="50%"
+        [userDto]="post.user"
         ></app-user-ref>
       </div>
       <div class="name-date" style="position: relative;">
@@ -40,7 +46,7 @@
               [userDto]="post.user"></app-user-ref>
           </div>
           <span
-            *ngIf="showGroup && post.pageType == 'GROUP'">
+            *ngIf="isGroupNameVisible && post.pageType == 'GROUP'">
             <span><i class='bx bxs-right-arrow'></i></span>
             <a routerLink="/groups/{{ post.pageId }}">
               <span>{{ post.pageName }}</span>
@@ -52,20 +58,24 @@
           <span>{{ post.createdAt }}</span>
           <span class="privacy">
             <i
-              *ngIf="post.privacy == 'FRIEND'"
-              class='bx bxs-group'></i>
+            *ngIf="post.privacy == 'FRIEND'"
+            class='bx bxs-group'>
+            </i>
 
-            <i class='bx bx-globe'
-               *ngIf="post.privacy == 'PUBLIC'"
-            ></i>
+            <i 
+            class='bx bx-globe'
+            *ngIf="post.privacy == 'PUBLIC'">
+            </i>
 
-            <i class='bx bxs-lock-alt'
-               *ngIf="post.privacy == 'ME'"
-            ></i>
+            <i 
+            class='bx bxs-lock-alt'
+            *ngIf="post.privacy == 'ME'">
+            </i>
 
             <i
-              *ngIf="post.privacy == 'GROUP'"
-              class='bx bxs-network-chart'></i>
+            *ngIf="post.privacy == 'GROUP'"
+            class='bx bxs-network-chart'>
+            </i>
           </span>
         </div>
       </div>
@@ -115,7 +125,7 @@
   <div class="post-actions">
     <div (click)="react()" class="reaction-action">
       <span
-        [ngStyle]="{'color': post.isReacted ? '#1876F2' : 'inherit'}">
+      [ngStyle]="{'color': post.isReacted ? '#1876F2' : 'inherit'}">
 
         <i *ngIf="!post.isReacted" class='bx bx-like'></i>
         <i *ngIf="post.isReacted" class='bx bxs-like'></i>
@@ -135,11 +145,11 @@
     </div>
   </div>
   <div
-    [ngClass]="{none: showComment}"
-    class="comments">
+  [ngClass]="{'none': !isCommentVisible}"
+  class="comments">
     <app-comment-list
-      [postId]="post.id"
-      [contentId]="post.id"></app-comment-list>
-    <!-- [comments]="post.comments"  -->
+    [isPostView]="isPostView"
+    [parentId]="post.id"
+    [targetId]="post.id"></app-comment-list>
   </div>
 </div>

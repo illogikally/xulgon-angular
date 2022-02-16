@@ -1,8 +1,13 @@
 @import "src/styles";
 
+:host {
+  display: block;
+  @extend %fz;
+}
 .user-ref-container {
   position: relative;
   cursor: pointer;
+  @extend %fz;
   display: inline-block;
 }
 

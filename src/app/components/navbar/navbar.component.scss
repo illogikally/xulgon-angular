@@ -25,7 +25,7 @@
 
   .logo-search {
     display: flex;
-    width: 350px;
+    width: 330px;
     height: 100%;
 
     .logo {
@@ -114,6 +114,8 @@
       flex-grow: 1;
       height: 100%;
       @extend %fc;
+      padding-right: 5px;
+      justify-content: right;
 
       .pill-container {
         display: inline-block;
@@ -131,6 +133,10 @@
           background-color: var(--bg-color);
         }
 
+        &:active {
+          transform: scale(.95);
+        }
+
 
         .avatar {
           @extend %fc;
@@ -139,7 +145,7 @@
           border-radius: 50%;
           border: 1px solid rgba(#000, .3);
           overflow: hidden;
-          margin-right: 4px;
+          // margin-right: 7px;
 
           img {
             width: 100%;
@@ -150,6 +156,7 @@
 
         .username {
           font-weight: 500;
+          padding: 0 7px;
           @extend %fc;
         }
       }
@@ -157,18 +164,33 @@
 
     .notis {
       display: flex;
-      flex: 0 0 210px;
+      flex: 0 0 200px;
+      // column-gap: 10px;
+      // justify-content: space-between;
 
       li {
         width: 100%;
         @extend %fc;
 
-        > div {
-          @include x-btn(40px, #050505, darken($secondary-button-background, 5));
-          background-color: $secondary-button-background;
+        .wrapper {
+          width: 40px;
+          position: relative;
+          box-sizing: border-box;
+          height: 40px;
+
+          > div:first-child {
+            @include x-btn(40px, inherit, darken($secondary-button-background, 5));
+            background-color: $secondary-button-background;
+          }
+
+          .route-active.route-active {
+            color: $active-tab;
+            background-color: rgba($active-tab, .15) !important;
+          }
         }
 
         .create-post {
+          font-weight: 300;
           font-size: 25px;
         }
 
@@ -178,13 +200,18 @@
 
         .more-opts {
           font-size: 25px;
-          position: relative;
+          user-select: none;
 
           &__items {
             @extend %opts;
-            bottom: auto;
-            top: 120%;
-            right: -50%;
+            &::before {
+              border: none;
+            }
+            position: fixed;
+            left: auto;
+            top: 54px;
+            right: 15px;
+            transform: none;
 
             > div {
               display: flex;
@@ -222,8 +249,8 @@
 }
 
 .route-active {
-  &:visited, &:link {
-    color: $btn-blue;
-    background-color: rgba($btn-blue, .15) !important;
+  &:visited, &:link, & {
+    color: $active-tab;
+    background-color: rgba($active-tab, .15) !important;
   }
 }

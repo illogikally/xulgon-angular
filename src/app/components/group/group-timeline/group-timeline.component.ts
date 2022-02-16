@@ -13,19 +13,24 @@ export class GroupTimelineComponent implements OnInit {
 
   @Input() groupResponse!: GroupResponse;
   posts: Post[] = [];
+  isPostView = false;
 
-  constructor(private group$: GroupService,
-              private route: ActivatedRoute) {
+  constructor(
+    private group$: GroupService,
+    private route: ActivatedRoute
+  ) {
   }
 
   ngOnInit(): void {
     let profileId = Number(this.route.snapshot.paramMap.get('id'))
-    this.group$
-      .getTimeline(profileId)
-      .subscribe(posts => {
-        this.posts = posts;
-      });
-    console.log(this.route.url);
+    this.isPostView = this.route.snapshot.data['isPostView'];
+    if (!this.isPostView) {
+      this.group$
+        .getTimeline(profileId)
+        .subscribe(posts => {
+          this.posts = posts;
+        });
+    }
   }
 
 }

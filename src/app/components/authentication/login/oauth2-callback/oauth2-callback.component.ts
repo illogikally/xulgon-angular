@@ -4,8 +4,7 @@ import { AuthenticationService } from '../../authentication.service';
 
 @Component({
   selector: 'app-oauth2-callback',
-  templateUrl: './oauth2-callback.component.html',
-  styleUrls: ['./oauth2-callback.component.scss']
+  template: '',
 })
 export class Oauth2CallbackComponent implements OnInit {
 
@@ -20,13 +19,11 @@ export class Oauth2CallbackComponent implements OnInit {
     const code = params.get('code');
     const state = params.get('state');
     const provider = params.get('provider');
-    console.log(params);
     
     if (code && state && provider) {
-      this.auth$.oauth2(code, state, provider)
+      this.auth$.oauth2Login(code, state, provider)
         .subscribe(_ => {
-          console.log('bing chilling');
-          
+          window.location.href = '';
         });
     }
 

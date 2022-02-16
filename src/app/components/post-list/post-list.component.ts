@@ -3,9 +3,9 @@ import {PostService} from '../post/post.service'
 import {Post} from '../post/post'
 import {AuthenticationService} from '../authentication/authentication.service';
 import {ActivatedRoute} from '@angular/router';
-import {MessageService} from '../common/message.service';
+import {MessageService} from '../share/message.service';
 import {ReplaySubject} from 'rxjs';
-import {UserService} from '../common/user.service';
+import {UserService} from '../share/user.service';
 
 @Component({
   selector: 'app-post-list',
@@ -14,28 +14,31 @@ import {UserService} from '../common/user.service';
 })
 export class PostListComponent implements OnInit, OnDestroy {
 
-  @Input() pageId!: number;
-  @Input() posts!: Post[];
-  @Input() isLoading!: boolean;
-  @Input() showGroup!: boolean;
+  @Input() pageId: number | undefined;
+  @Input() posts: Post[] = [];
+  @Input() isLoading = false;
+
+  @Input() isGroupNameVisible = false;
+  @Input() isCommentVisible = false;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private user$: UserService,
-              private message$: MessageService,
-              private post$: PostService,
-              private auth$: AuthenticationService) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private userService: UserService,
+    private messageService: MessageService,
+    private postService: PostService,
+    private authService: AuthenticationService) {
   }
 
   ngOnDestroy() {
-    this.message$.loadPostsByPageId(undefined);
+    this.messageService.loadPostsByPageId(undefined);
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }
 
   ngOnInit(): void {
-    this.message$.postDeleted.asObservable()
+    this.messageService.postDeleted.asObservable()
       .subscribe(id => {
         this.posts = this.posts?.filter(post => post.id != id);
       });
@@ -49,7 +52,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     //   this.loadPosts(id);
     // });
 
-    this.message$.onCreatedPost().subscribe(post => {
+    this.messageService.onCreatedPost().subscribe(post => {
       if (post.pageId == this.pageId) {
         this.posts?.unshift(post);
       }

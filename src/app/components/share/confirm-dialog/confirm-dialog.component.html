@@ -1,0 +1,47 @@
+<div #self class="dialog">
+  <div 
+  class="dialog__inner">
+    <div class="title">
+      <span>{{ title }}</span>
+      
+      <div class="x">
+        <app-button [isX]="true">
+          <div 
+          (click)="response(false)"
+          button>
+            <i style="font-size: 30px" class='bx bx-x'></i>
+          </div>
+        </app-button>
+      </div>
+    </div>
+    <div class="body">
+      <span>{{ body }}</span>
+      <div class="confirmation">
+        <div class="container">
+          <app-button
+          [hasOptions]="false"
+          color="#1877f2"
+          backgroundHover="#f0f2f5"
+          background="transparent">
+            <div 
+            (click)="response(false)"
+            button>
+              <span>Huỷ</span>
+            </div>
+          </app-button>
+
+          <app-button
+          [hasOptions]="false"
+          color="#fff"
+          background="#1877f2">
+            <div 
+            (click)="response(true)"
+            button>
+              <span>Xác nhận</span>
+            </div>
+          </app-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

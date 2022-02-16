@@ -1,6 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AuthenticationService} from '../../authentication/authentication.service';
-import {MessageService} from '../../common/message.service';
+import {MessageService} from '../../share/message.service';
 import {ConversationNotif} from '../conversation-notif';
 
 @Component({
@@ -11,38 +11,34 @@ import {ConversationNotif} from '../conversation-notif';
 export class ChatNotificationItemComponent implements OnInit {
 
   @Input() conversation!: ConversationNotif;
-  @Output() close = new EventEmitter<void>();
   @Input() conversationRead!: EventEmitter<number>;
 
+  @Output() itemClick = new EventEmitter();
+
   @ViewChild('opts') opts!: ElementRef;
-  @ViewChild('markAsRead') markAsRead!: ElementRef;
 
-  loggedInUserId!: number;
-  isRead!: boolean;
+  principalId: number;
+  isRead = false;
 
 
-  constructor(private messageService: MessageService,
-              private auth$: AuthenticationService) {
-    this.loggedInUserId = this.auth$.getUserId();
+  constructor(
+    private messageService: MessageService,
+    private authenticationService: AuthenticationService
+  ) {
+    this.principalId = this.authenticationService.getPrincipalId();
   }
 
   ngOnInit(): void {
   }
 
-  openChatBox(event: any): void {
-    let excludes = [...
-      this.markAsRead.nativeElement.querySelectorAll('*'),
-      this.markAsRead.nativeElement]
-
-    if (!excludes.includes(event.target)) {
-      this.messageService.openChatBox$.next(this.conversation.user);
-      this.close.emit();
-    }
+  openChatBox(): void {
+    this.messageService.openChatBox$.next(this.conversation.user);
+    this.itemClick.emit();
   }
 
   isConversationRead(): boolean {
-    if (this.conversation.latestMessage.userId == this.auth$.getUserId()) return true;
-    return this.conversation.latestMessage.isRead;
+    let isMe = this.conversation.latestMessage.userId == this.principalId;
+    return isMe || this.conversation.latestMessage.isRead;
   }
 
   read(): void {

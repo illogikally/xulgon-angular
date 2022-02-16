@@ -6,8 +6,7 @@ import {LocalStorageService} from 'ngx-webstorage';
 import {map, switchMap, tap} from 'rxjs/operators'
 import {Observable, throwError} from 'rxjs';
 import {Router} from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { Location } from '@angular/common';
+import {environment} from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +15,7 @@ import { Location } from '@angular/common';
 export class AuthenticationService {
 
   private baseApiUrl = environment.baseApiUrl;
+  private baseUrl = environment.baseUrl;
 
   constructor(
     private http: HttpClient,
@@ -25,31 +25,38 @@ export class AuthenticationService {
   }
 
   login(loginRequest: LoginRequest): Observable<boolean> {
+    console.log(loginRequest);
     const url = `${this.baseApiUrl}/authentication/token/retrieve`;
     return this.http.post<LoginResponse>(url, loginRequest)
       .pipe(map(data => {
-        this.store(data);
+        this.storeResponse(data);
+        console.log(data);
         return true;
       }));
   }
 
-  oauth2(
+  oauth2Login(
     code: string, 
     state: string,
     provider: string
-    ): Observable<boolean> {
-      const baseUrl = 'http://localhost:8080'
-      const url = `${baseUrl}/login/oauth2/code/${provider}?code=${code}&state=${state}`;
-      return this.http.get<any>(url)
-        .pipe(map(data => {
-          // this.store(data);
-          console.log(data)
-          return true;
-        }));
+  ): Observable<boolean> {
+    const baseUrl = 'http://localhost:8080'
+    const url = `${baseUrl}/login/oauth2/code/${provider}?code=${code}&state=${state}`;
+    return this.http.get<any>(url).pipe(
+      map(data => {
+        this.storeResponse(data)
+        console.log(data)
+        return true;
+      })
+    );
+  }
+
+  oauthAuthorize(provider: string) {
+    window.location.href = `${this.baseUrl}/oauth2/authorization/${provider}`;
   }
 
   getExpiresAt(): number {
-    return this.storage$.retrieve('expiresAt');
+    return this.getAuthentication()!.expiresAt;
   }
 
   async fetchToken(): Promise<string> {
@@ -62,94 +69,79 @@ export class AuthenticationService {
           return r.token;
         })).toPromise();
     }
-    return this.getToken();
+    return this.getAuthentication()!.token;
   }
 
 
-  store(res: LoginResponse): void {
-    console.log('expires at ', res.expiresAt);
-    
-    this.storage$.store('avatarUrl', res.avatarUrl);
-    this.storage$.store('expiresAt', res.expiresAt);
-    this.storage$.store('profileId', res.profileId);
-    this.storage$.store('refreshToken', res.refreshToken);
-    this.storage$.store('token', res.token);
-    this.storage$.store('userFullName', res.userFullName);
-    this.storage$.store('userId', res.userId);
-    this.storage$.store('username', res.username);
+  storeResponse(data: LoginResponse): void {
+    this.storage$.store('authentication', data);
   }
 
   refreshAuthToken(): Observable<LoginResponse> {
     const refreshRequest = {
-      token: this.getRefreshToken(),
-      username: this.getUsername()
+      token: this.getAuthentication()!.refreshToken,
+      username: this.getAuthentication()!.username
     }
     const url = `${this.baseApiUrl}/authentication/token/refresh`;
     return this.http.post<LoginResponse>(url, refreshRequest)
-      .pipe(tap(data => {
-        this.storage$.store('auth', data);
-        this.storage$.store('expiresAt', data.expiresAt);
-        this.storage$.store('token', data.token);
+      .pipe(tap(response => {
+        this.storage$.store('authentication', response);
+        // this.storage$.store('expiresAt', response.expiresAt);
+        // this.storage$.store('token', response.token);
       }));
   }
 
-  getAuth(): LoginResponse | undefined {
-    return this.storage$.retrieve('auth');
+  getAuthentication(): LoginResponse | null {
+    return this.storage$.retrieve('authentication');
   }
 
-
-  getUserFullName(): string | undefined {
-    return this.getAuth()?.userFullName;
+  getUserFullName(): string {
+    return this.getAuthentication()!.userFullName;
   }
 
   getFirstName(): string {
-    return this.storage$.retrieve('userFullName').split(' ').slice(-1)[0];
+    return this.getAuthentication()!.firstName;
   }
 
   getToken(): string {
-    return this.storage$.retrieve('token');
+    return this.getAuthentication()!.token;
   }
 
   getProfileId(): number {
-    return this.storage$.retrieve('profileId');
+    return this.getAuthentication()!.profileId;
   }
 
   getUsername(): string {
-    return this.storage$.retrieve('username');
+    return this.getAuthentication()!.username;
   }
 
   private getRefreshToken(): string {
-    return this.storage$.retrieve('refreshToken');
+    return this.getAuthentication()!.refreshToken;
   }
 
   getAvatarUrl(): string {
-    return this.storage$.retrieve('avatarUrl');
+    return this.getAuthentication()!.avatarUrl;
   }
 
-  getUserId(): number {
-    return this.storage$.retrieve('userId');
+  getPrincipalId(): number {
+    return this.getAuthentication()!.userId;
   }
 
   setAvatarUrl(url: string): void {
-    this.storage$.store('avatarUrl', url);
+    let auth = this.getAuthentication()!;
+    auth.avatarUrl = url;
+    this.storage$.store('authentication', auth);
   }
 
   isLoggedIn(): boolean {
-    return this.getToken() != null;
+    return !!this.getAuthentication();
   }
 
   logout(): void {
     const url = `${this.baseApiUrl}/authentication/token/delete`;
-    this.http.post(url, this.getRefreshToken(), {responseType: 'text'})
+    this.http.post(url, this.getAuthentication()!.refreshToken, {responseType: 'text'})
       .subscribe(_ => {
-        this.storage$.clear('avatarUrl');
-        this.storage$.clear('expiresAt');
-        this.storage$.clear('profileId');
-        this.storage$.clear('refreshToken');
-        this.storage$.clear('token');
-        this.storage$.clear('userFullName');
-        this.storage$.clear('userId');
-        this.storage$.clear('username');
+        this.storage$.clear('authentication');
         location.href = '/login';
       }, error => {
         throwError(error);

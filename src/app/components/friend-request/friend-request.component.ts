@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {MessageService} from '../common/message.service';
+import {MessageService} from '../share/message.service';
 import {FriendRequestDto} from './friend-request-dto';
 
 @Component({
@@ -37,7 +37,7 @@ export class FriendRequestComponent implements OnInit {
       this.friendRequests = this.friendRequests.filter(req => req.requesterId != userId);
     });
 
-    let userId: number = this.auth.getUserId();
+    let userId: number = this.auth.getPrincipalId();
     this.http.get<FriendRequestDto[]>(`http://localhost:8080/api/users/${userId}/friend-requests`)
       .subscribe(resp => {
         this.friendRequests = resp;

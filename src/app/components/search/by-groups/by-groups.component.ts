@@ -1,6 +1,6 @@
 import {Location} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
-import {MessageService} from '../../common/message.service';
+import {MessageService} from '../../share/message.service';
 import {GroupResponse} from '../../group/group-response';
 import {SearchService} from '../search.service';
 

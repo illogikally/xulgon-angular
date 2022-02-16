@@ -1,13 +1,18 @@
+import { NotificationType } from "./notification-type";
+
 export interface Notification {
   id: number;
-  type: string;
-  actorAvatar: string;
   createdAgo: string;
-  postId: number;
+  type: string;
+  actorId: number;
+  actorFullName: string;
+  actorAvatarUrl: string;
+  actorCount: number;
+  actorContentId: number;
+  actorContentBody: string;
   isRead: boolean;
-  contentId: number;
-  page: string;
-  contentBody: string;
-  contentType: string;
-  actor: string;
+  recipientContentId: number;
+  recipientContentBody: string;
+  pageId: number;
+  pageType: string;
 }

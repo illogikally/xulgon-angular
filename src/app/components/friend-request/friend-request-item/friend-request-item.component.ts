@@ -2,7 +2,7 @@ import {Location} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MessageService} from '../../common/message.service';
+import {MessageService} from '../../share/message.service';
 import {FriendRequestDto} from '../friend-request-dto';
 
 @Component({

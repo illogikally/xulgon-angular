@@ -1,7 +1,8 @@
 <div
-  (click)="openChatBox($event)"
   class="chat-noti-item">
-  <div class="content">
+  <div 
+  (click)="openChatBox()"
+  class="content">
     <div class="avatar">
       <div class="avatar-container">
         <img [src]="conversation.user.avatarUrl"/>
@@ -14,7 +15,7 @@
           [ngStyle]="{'color': isConversationRead() ? 'inherit' : '#1877f2' }"
           class="msg">
 					<span
-            *ngIf="conversation.latestMessage.userId == loggedInUserId"
+            *ngIf="conversation.latestMessage.userId == principalId"
           >Bạn: </span>
           {{ conversation.latestMessage.message }}
 				</span>

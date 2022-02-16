@@ -4,7 +4,7 @@ import {Component, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ReplaySubject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {MessageService} from '../../common/message.service';
+import {MessageService} from '../../share/message.service';
 import {GroupResponse} from '../group-response';
 import {GroupService} from '../group.service';
 
@@ -22,13 +22,14 @@ export class GroupContentComponent implements OnInit, OnDestroy {
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
-  constructor(private location: Location,
-              private group$: GroupService,
-              private message$: MessageService,
-              private renderer: Renderer2,
-              private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private http: HttpClient) {
+  constructor(
+    private location: Location,
+    private group$: GroupService,
+    private message$: MessageService,
+    private renderer: Renderer2,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private http: HttpClient) {
   }
 
   ngOnDestroy() {
@@ -40,13 +41,11 @@ export class GroupContentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initDefaultTab();
 
-    console.log('group content');
 
     this.message$.groupLoaded
       .pipe(takeUntil(this.destroyed$))
       .subscribe(groupResponse => {
         if (!groupResponse) return;
-        console.log('group content', groupResponse);
 
 
         this.groupResponse = groupResponse;

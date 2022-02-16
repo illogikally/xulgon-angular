@@ -1,13 +1,15 @@
 import {Component, EventEmitter, Input, OnInit} from '@angular/core';
-import {ReactionType} from '../common/reaction-type';
-import {ReactionPayload} from '../common/reaction.payload';
-import {ReactionService} from '../common/reaction.service';
+import {ReactionType} from '../share/reaction-type';
+import {ReactionPayload} from '../share/reaction.payload';
+import {ReactionService} from '../share/reaction.service';
 import {Post} from './post';
-import {MessageService} from '../common/message.service';
-import {PhotoViewResponse} from '../common/photo/photo-view-response';
+import {MessageService} from '../share/message.service';
+import {PhotoViewResponse} from '../share/photo/photo-view-response';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {GroupResponse} from '../group/group-response';
 import {HttpClient} from '@angular/common/http';
+import { CommentService } from '../comment-list/comment/comment.service';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -20,20 +22,23 @@ export class PostComponent implements OnInit {
   @Input() post!: Post | PhotoViewResponse | any;
   onInputFocus: EventEmitter<boolean> = new EventEmitter();
 
-
-  @Input() showComment: boolean = false;
-  @Input() showGroup!: boolean;
+  @Input() isCommentVisible = false;
+  @Input() isGroupNameVisible!: boolean;
+  @Input() isPostView = false;
 
   isPostOptsVisible = false;
-  loggedInUserId: number;
+  principalId: number;
   groupReponse!: GroupResponse;
 
 
-  constructor(private reactionService: ReactionService,
-              private http: HttpClient,
-              private authService: AuthenticationService,
-              private messageService: MessageService) {
-    this.loggedInUserId = authService.getUserId();
+  constructor(
+    private commentService: CommentService,
+    private reactionService: ReactionService,
+    private http: HttpClient,
+    private authService: AuthenticationService,
+    private messageService: MessageService
+  ) {
+    this.principalId = authService.getPrincipalId();
   }
 
   ngOnInit(): void {
@@ -43,19 +48,17 @@ export class PostComponent implements OnInit {
         this.groupReponse = group;
       });
 
-    if (this.showGroup) {
-      this.showComment = !this.showComment;
-    }
+    // if (this.isGroupNameVisible) {
+    //   this.isCommentVisible = !this.isCommentVisible;
+    // }
 
-    this.messageService.onNewMessge().subscribe(msg => {
-      if (msg == "Comment added") {
-        this.post.commentCount += 1;
-      }
-    });
+    this.commentService.commentAdded$.pipe(
+      filter(msg => msg.parentId == this.post.id)
+    ).subscribe(() => this.post.commentCount += 1);
   }
 
   toggleComment(): void {
-    this.showComment = !this.showComment;
+    this.isCommentVisible = !this.isCommentVisible;
   }
 
   react(): void {
@@ -71,9 +74,7 @@ export class PostComponent implements OnInit {
   }
 
   comment(): void {
-    console.log('show comment true');
-    
-    this.showComment = false;
+    this.isCommentVisible = true;
     this.onInputFocus.emit(true);
   }
 
@@ -83,5 +84,8 @@ export class PostComponent implements OnInit {
     });
   }
 
-
+  hasOptions(): boolean {
+    const canDelete = this.post.user.id == this.principalId || this.groupReponse?.role == 'ADMIN';
+    return canDelete;
+  }
 }

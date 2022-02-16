@@ -1,0 +1,56 @@
+<app-button
+background="#1877f2"
+[hasOptions]="true"
+color="#fff"
+*ngIf="friendshipStatus == 'FRIEND'">
+  <div button>
+    <i class='bx bxs-user-check'></i>
+    <span>Bạn bè</span>
+  </div>
+
+  <div options>
+    <div (click)="unfriend()">
+      <i class='bx bx-user-x'></i>
+      <span>Huỷ bỏ bạn bè</span>
+    </div>
+  </div>
+</app-button>
+
+<app-button
+*ngIf="friendshipStatus == 'NULL'">
+  <div button
+  (click)="sendFriendRequest()">
+    <i class='bx bxs-user-plus'></i>
+    <span>Thêm bạn bè</span>
+  </div>
+</app-button>
+
+<app-button
+*ngIf="friendshipStatus == 'SENT'">
+  <div button
+  (click)="deleteFriendRequest()"
+  id="delete-friend-request">
+    <i class='bx bxs-user-x'></i><span>Huỷ lời mời</span>
+  </div>
+</app-button>
+
+
+<app-button
+[hasOptions]="true"
+*ngIf="friendshipStatus == 'RECEIVED'">
+  <div button>
+    <i class='bx bxs-user-check'></i>
+    <span>Trả lời</span>
+  </div>
+
+  <div options>
+    <div (click)="acceptFriendRequest()">
+      <i class='bx bx-check' ></i>
+      <span>Đồng ý</span>
+    </div>
+    <div (click)="deleteFriendRequest()">
+      <i class='bx bx-x'></i>
+      <span>Xoá lời mời</span>
+    </div>
+  </div>
+</app-button>

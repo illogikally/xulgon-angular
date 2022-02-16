@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { ChatMessage } from '../chat/chat-msg';
 import {GroupResponse} from '../group/group-response';
 import {Post} from '../post/post';
 

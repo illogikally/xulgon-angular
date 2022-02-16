@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
+import { ChatMessage } from '../../chat-msg';
 
 @Component({
   selector: 'app-chat-msg',
@@ -8,14 +9,14 @@ import {AuthenticationService} from 'src/app/components/authentication/authentic
 })
 export class ChatMsgComponent implements OnInit {
 
-  @Input() thisMsg!: any;
-  @Input() prevMsg!: any;
-  @Input() nextMsg!: any;
-  loggedInUserId: number = this.authService.getUserId();
+  @Input() thisMsg!: ChatMessage;
+  @Input() prevMsg!: ChatMessage | null;
+  @Input() nextMsg!: ChatMessage | null;
   @Input() avatarUrl!: string;
-  @Input() index!: number;
 
-  constructor(private authService: AuthenticationService) {
+  principalId = this.authenticationService.getAuthentication()!.userId;
+
+  constructor(private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -23,9 +24,8 @@ export class ChatMsgComponent implements OnInit {
 
   isFirstMsg(): boolean {
     return !this.prevMsg 
-      || this.thisMsg.createdAt - this.prevMsg.createdAt > 36_000_000
-      || this.thisMsg?.userId != this.prevMsg?.userId
-
+      || this.thisMsg.createdAt - this.prevMsg.createdAt > 36e6
+      || this.thisMsg!.userId != this.prevMsg?.userId
   }
 
   isLastMsg(): boolean {
@@ -39,7 +39,8 @@ export class ChatMsgComponent implements OnInit {
   }
 
   displayTimeCheck(): boolean {
-    return (!this.nextMsg || this.thisMsg.createdAt - this.nextMsg.createdAt < -36_000_000);
+    const time = this.nextMsg?.createdAt || Date.now();
+    return time - this.thisMsg.createdAt > 36e6
   }
 
 }

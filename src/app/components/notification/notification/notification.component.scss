@@ -1,11 +1,27 @@
 @import "src/styles";
 
 .notif {
+
   .button {
     @extend %fc;
-    width: 40px;
-    height: 40px;
+    @include x-btn(40px, #050505, darken($secondary-button-background, 5));
+    background-color: $secondary-button-background;
     position: relative;
+    border-radius: 50%;
+
+
+    &.active {
+      background-color: rgba($active-tab, .15);
+      color: $active-tab !important
+    }
+
+    &:active {
+      animation: clickScale .1s ease 1;
+    }
+
+    > i {
+      font-size: 22px;
+    }
 
     .unread {
       @extend %fc;
@@ -21,6 +37,7 @@
       right: -20%;
     }
   }
+
 
   .popup {
     box-sizing: border-box;
@@ -39,7 +56,7 @@
 
       .title {
         font-weight: 700;
-        font-size: 24px;
+        font-size: 1.5em;
         padding: 10px 0;
       }
 

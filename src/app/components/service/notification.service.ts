@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {Notification} from '../notification/notification/notification';
 
@@ -10,14 +10,17 @@ import {Notification} from '../notification/notification/notification';
 export class NotificationService {
 
   notificationApi = 'http://localhost:8080/api/notifications/'
+  public modifyUnread$ = new Subject<number>();
+  public setTitle$ = new Subject<number>();
 
-  constructor(private http: HttpClient,
-              private auth$: AuthenticationService) {
-
+  constructor(
+    private http: HttpClient,
+    private authenticationService: AuthenticationService
+  ) {
   }
 
-  getNotifs(): Observable<any[]> {
-    return this.http.get<any[]>(this.notificationApi);
+  getNotifications(): Observable<Notification[]> {
+    return this.http.get<Notification[]>(this.notificationApi);
   }
 
   read(id: number): Observable<void> {

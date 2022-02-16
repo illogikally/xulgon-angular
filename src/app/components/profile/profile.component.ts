@@ -2,8 +2,8 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input,
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProfileService} from './profile.service';
 import {UserProfile} from './user-profile';
-import {MessageService} from '../common/message.service';
-import {UserService} from '../common/user.service';
+import {MessageService} from '../share/message.service';
+import {UserService} from '../share/user.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {Location} from '@angular/common';
 import {Title} from '@angular/platform-browser';
@@ -71,20 +71,22 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onDetach() {
-    this.messageService.profileComponentDetached$.next(this.userProfile.id);
+    if (this.userProfile) {
+      this.messageService.profileComponentDetached$.next(this.userProfile.id);
+    }
   }
 
   ngAfterViewInit(): void {
     const el: HTMLElement = this.actionMenu.nativeElement;
     const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting) {
         this.isTabMenuSticky = false;
         // this.renderer.removeStyle(el, 'z-index');
       } else  {
         this.isTabMenuSticky = true;
         // this.renderer.setStyle(el, 'z-index', '2');
       }
-    }, 
+    },
     {
       rootMargin: "-56px 0px 0px 0px",
       threshold: [1]
@@ -116,9 +118,11 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id !== NaN) {
+    if (!isNaN(id)) {
       this.isBlocked(id);
       this.loadProfile(id);
+    } else {
+      this.pageError();
     }
     // this.activateRoute.params
     // .pipe(takeUntil(this.destroyed$))
@@ -185,7 +189,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadProfile(id: number): void {
-    if (!id) return;
+    if (isNaN(id)) return;
 
     this.profileService.getUserProfile(id)
       .subscribe(resp => {
@@ -223,23 +227,10 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   pageError(): void {
     this.pageNotFound = true;
-    // this.renderer.setStyle(document.body, 'position', 'fixed');
+    const profile = document.querySelector<HTMLElement>('.user-profile')!;
+    this.renderer.setStyle(profile, 'display', 'none');
   }
 
-  sendFriendRequest(): void {
-    this.userService.sendFriendRequest(this.userProfile.userId)
-      .subscribe(_ => {
-        this.userProfile.friendshipStatus = 'SENT';
-      });
-  }
-
-  deleteFriendRequest(): void {
-    this.userService.deleteFriendRequest(this.userProfile.userId)
-      .subscribe(_ => {
-        this.userProfile.friendshipStatus = 'NULL';
-        this.messageService.sendDeleteFriendRequest(this.userProfile.userId);
-      });
-  }
 
   onReplyFriendRequestClicked(): void {
     this.showReplyRequestOpts = !this.showReplyRequestOpts;
@@ -247,19 +238,6 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   closeReplyFriendRequestOpts(event: any) {
     this.showReplyRequestOpts = false;
-  }
-
-  unfriend(): void {
-    this.userService.unfriend(this.userProfile.userId).subscribe(_ => {
-      this.userProfile.friendshipStatus = 'NULL';
-    });
-  }
-
-  acceptFriendRequest(): void {
-    this.userService.acceptFriendRequest(this.userProfile.userId).subscribe(_ => {
-      this.userProfile.friendshipStatus = 'FRIEND';
-      this.messageService.sendDeleteFriendRequest(this.userProfile.userId);
-    });
   }
 
   switchTab(event: any, tab: string): void {

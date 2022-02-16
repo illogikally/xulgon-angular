@@ -5,6 +5,7 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { ProfileService } from './profile.service';
 
 @Injectable({
@@ -18,6 +19,11 @@ export class ProfileHeaderResolver implements Resolve<boolean> {
     state: RouterStateSnapshot
     ): Observable<any> {
       let profileId = Number(route.paramMap.get('id'));
-      return this.profile$.getProfileHeader(profileId)
+      if (profileId) {
+        return this.profile$.getProfileHeader(profileId).pipe(
+          catchError(() => of(null))
+        )
+      }
+      return of(null);
   }
 }

@@ -17,7 +17,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (req.url.indexOf('refresh') !== -1 || req.url.indexOf('login') !== -1) {
+    if ((/login|oauth2|authentication/.test(req.url))) {
       return next.handle(req);
     }
 
@@ -57,7 +57,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
           switchMap((refreshTokenResponse: LoginResponse) => {
             this.isTokenRefreshing = false;
             this.refreshTokenSubject.next(refreshTokenResponse.token);
-            this.auth$.store(refreshTokenResponse);
+            this.auth$.storeResponse(refreshTokenResponse);
             return next.handle(this.addToken(req, refreshTokenResponse.token));
           })
         );

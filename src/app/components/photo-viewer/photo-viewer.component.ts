@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
-import {PhotoViewResponse} from '../common/photo/photo-view-response';
+import {PhotoViewResponse} from '../share/photo/photo-view-response';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 

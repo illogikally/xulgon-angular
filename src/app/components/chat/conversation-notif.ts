@@ -1,4 +1,4 @@
-import {UserBasic} from "../common/user-basic";
+import {UserBasic} from "../share/user-basic";
 import {ChatMessage} from "./chat-msg";
 
 export interface ConversationNotif {

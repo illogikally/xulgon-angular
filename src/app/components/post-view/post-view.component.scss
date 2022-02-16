@@ -5,13 +5,9 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  top: 56px;
 
   &__inner {
     @include card(10px);
-    margin-top: 20px;
-    width: 680px;
   }
-
   padding-bottom: 400px;
 }

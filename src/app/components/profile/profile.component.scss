@@ -3,7 +3,7 @@
 
 .user-profile {
   position: relative;
-  top: 56px;
+  padding-bottom: 17px;
 }
 
 .profile-header {
@@ -219,93 +219,12 @@
       display: flex;
       align-items: center;
 
-      i {
-        font-size: 20px;
-        margin-right: 3px;
-      }
-
-      button {
-        font-size: 15px;
-        font-weight: 700;
-        position: relative;
-        @extend %fc;
-
-        &:not(:last-child) {
-          margin-right: 10px;
-        }
-      }
-
-      #add-friend {
-        @include button($btn-blue, #fff);
-      }
-
-      #friend-opts {
-        @include button($btn-blue, #fff);
-
-        i {
-          font-size: 23px;
-        }
-      }
-
-      #send-message {
-        @include button($btn-grey, #050505);
-      }
-
-      #delete-friend-request {
-        @include button($btn-grey, #050505);
-      }
-
-      #reply-friend-request {
-        @include button(#1877f2, #fff);
-        position: relative;
-
-      }
-
-      #more-action {
-        @include button($btn-grey, #050505);
-
-        .opts {
-          @extend %opts;
-          bottom: auto;
-          top: 140%;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 1;
-
-          &::before {
-            content: "\A";
-            border-style: solid;
-            border-width: 0 8px 9px 8px;
-            border-color: transparent transparent #fff transparent;
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-          }
-        }
-      }
-
-      .button-opts {
-        @extend %opts;
-          bottom: auto;
-          top: 140%;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 1;
-
-          &::before {
-            content: "\A";
-            border-style: solid;
-            border-width: 0 8px 9px 8px;
-            border-color: transparent transparent #fff transparent;
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-          }
+      & > :not(:last-child) {
+        margin-right: 10px;
       }
     }
   }
+
 .profile-body {
   margin-top: 17px;
   width: 100%;

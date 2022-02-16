@@ -1,0 +1,101 @@
+@import "src/styles";
+
+.button {
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  font-family: inherit;
+
+  &__inner {
+    height: 37px;
+    font-weight: 500;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-size: 16px;
+    position: relative;
+    border: none;
+    outline: none;
+    transition: 
+      200ms cubic-bezier(.08,.52,.52,1) background-color, 
+      200ms cubic-bezier(.08,.52,.52,1) box-shadow, 
+      200ms cubic-bezier(.08,.52,.52,1) transform; 
+
+    
+    &:hover {
+      background-color: var(--bg-hover);
+    }
+
+    &:active {
+      animation: clickScale .1s ease 1; 
+    }
+
+    ::ng-deep  {
+      > * {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+
+        > *:not(:last-child) {
+          margin-right: 5px;
+        }
+
+        i {
+          font-size: 23px;
+        }
+      }
+    }
+  }  
+
+  .triangle {
+    content: "\A";
+    border-style: solid;
+    border-width: 0 8px 9px 8px;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &__options {
+    position: absolute;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 7px 7px;
+    cursor: pointer;
+    min-width: 200px;
+    background-color: #fff;
+    border-radius: 5px;
+    user-select: none;
+    white-space: nowrap;
+    box-shadow: 0 0 28px 0 rgba(#000, .2),0 0 4px 0 rgba(#000, .1),
+          inset 0 0 0 1px rgba(#fff, .5);
+    color: #050505;
+    top: calc(100% + 9px + 1px);
+
+
+    ::ng-deep {
+
+      > * > * {
+        display: flex;
+        align-items: center;
+        padding: 7px 7px;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: rgba(#eee, .8);
+        }
+
+        > *:not(:last-child) {
+          margin-right: 10px;
+        }
+
+        i {
+          font-size: 1.5em;
+        }
+      }
+    }
+  }
+
+}

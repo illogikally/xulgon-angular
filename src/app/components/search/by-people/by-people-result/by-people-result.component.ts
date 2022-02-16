@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {UserDto} from 'src/app/components/common/user-dto';
+import {UserDto} from 'src/app/components/share/user-dto';
 
 @Component({
   selector: 'app-by-people-result',

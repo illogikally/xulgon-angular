@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {MessageService} from '../../common/message.service';
+import {MessageService} from '../../share/message.service';
 import {GroupResponse} from '../group-response';
 import {GroupService} from '../group.service';
 

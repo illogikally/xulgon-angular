@@ -1,10 +1,11 @@
 <div [ngClass]="initialHide ? 'none' : 'kk'">
 <div id="main-content" class="content">
   <div 
+  #sidebar
   id="sidebar" class="sidebar">
-    <div class="sidebar__inner">
+    <div #sidebar__inner id="{{ pageId }}" class="sidebar__inner">
       <div class="intro">
-        <h2>Giới thiệu</h2>
+        <h3>Giới thiệu</h3>
         <div *ngIf="userProfile?.workplace">
           <i class='bx bxs-building-house'></i>
           <span>Làm việc tại {{ userProfile?.workplace }}</span>
@@ -33,31 +34,43 @@
       </div>
       <div class="photo-intro">
         <div class="intro-title">
-          <h2>Ảnh</h2>
+          <h3>Ảnh</h3>
         </div>
-        <div class="photo">
-          <div *ngFor="let photo of userProfile?.photos">
-            <app-photo
-              [photo]="photo"></app-photo>
+        <div class="photo-container">
+          <div class="photo">
+            <div 
+            *ngIf="!userProfile?.photos"
+            class="photo-skeletons-container">
+              <div
+              style="background-color: #dfdfdf;"
+              *ngFor="let i of [].constructor(9)">
+              </div>
+            </div>
+
+            <div 
+            *ngIf="userProfile?.photos"
+            class="photo-container">
+              <div *ngFor="let photo of userProfile?.photos">
+                <app-photo [photo]="photo"></app-photo>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="friend-intro">
         <div>
-          <h2>Bạn bè</h2>
+          <h3>Bạn bè</h3>
         </div>
         <div class="friend">
 
           <div *ngFor="let friend of userProfile?.friends">
             <div class="img-container">
               <app-user-ref
-                [userDto]="friend"
-                borderRadius="10px"
+              [userDto]="friend"
+              borderRadius="10px"
               ></app-user-ref>
             </div>
-            <a routerLink="/{{ friend?.id }}">
-              <div class="username">{{ friend.username }}</div>
-            </a>
+            <app-user-ref [userDto]="friend" ></app-user-ref>
             <div 
             *ngIf="friend.commonFriendCount > 0 && friend.id != principleId" 
             class="common-friend-count">
@@ -73,7 +86,9 @@
   <div id="content" class="timeline">
     <div class="post-container">
       <app-post-list
+        [pageId]="pageId"
         [isLoading]="isLoadingPosts"
+        [isCommentVisible]="true"
         [posts]="timeline"
       ></app-post-list>
     </div>

@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {MessageService} from '../../common/message.service';
-import {UserService} from '../../common/user.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MessageService} from '../../share/message.service';
+import {UserService} from '../../share/user.service';
 import {Post} from '../../post/post';
 
 @Component({
@@ -8,18 +8,21 @@ import {Post} from '../../post/post';
   templateUrl: './group-feed.component.html',
   styleUrls: ['./group-feed.component.scss']
 })
-export class GroupFeedComponent implements OnInit {
+export class GroupFeedComponent implements OnInit, OnDestroy {
 
-  groupFeedPosts!: Post[];
+  groupFeedPosts: Post[] = [];
 
-  constructor(private message$: MessageService,
-              private user$: UserService) {
+  constructor(
+    private userService: UserService
+  ) {
+  }
+
+  ngOnDestroy(): void {
+    console.log('diestry');
   }
 
   ngOnInit(): void {
-    this.user$.getGroupFeed().subscribe(posts => {
-      console.log('group feed', posts);
-
+    this.userService.getGroupFeed().subscribe(posts => {
       this.groupFeedPosts = posts;
     })
   }

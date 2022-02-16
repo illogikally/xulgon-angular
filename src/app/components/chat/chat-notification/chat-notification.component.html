@@ -1,9 +1,10 @@
 <div
-  class="chat-notif">
+class="chat-notif">
   <div
-    (click)="togglePopup()"
-    id="chatNotifButton"
-    class="button">
+  (click)="isPopupVisible = !isPopupVisible"
+  id="chatNotifButton"
+  [ngClass]="{'active': isPopupVisible}"
+  class="button">
     <i class='bx bxs-message-square-dots'></i>
     <div
       *ngIf="unreadCount > 0"
@@ -12,12 +13,13 @@
     </div>
   </div>
   <div
-    #popup
-    class="chat-notif-popup">
+  [ngStyle]="{'display': isPopupVisible ? 'block' : 'none'}"
+  #popup
+  class="chat-notif-popup">
     <div
-      (clickOutside)="hidePopup()"
-      [exclude]="'#chatNotifButton'"
-      class="content">
+    (clickOutside)="isPopupVisible = false"
+    [exclude]="'#chatNotifButton'"
+    class="content">
       <div class="title">
         <h2>Nhắn tin</h2>
       </div>
@@ -29,15 +31,13 @@
       </div>
       <div class="notis">
         <app-chat-notification-item
-          (close)="hidePopup()"
-          [conversationRead]="conversationRead"
-          *ngFor="let conversation of latestConversations"
-          [conversation]="conversation"
+        (itemClick)="isPopupVisible = false"
+        [conversationRead]="conversationRead"
+        *ngFor="let conversation of latestConversations"
+        [conversation]="conversation"
         ></app-chat-notification-item>
       </div>
     </div>
   </div>
 </div>
-<app-chat-box
-  [markAsRead]="conversationRead"
-></app-chat-box>
+<app-chat-box [markAsRead]="conversationRead"></app-chat-box>

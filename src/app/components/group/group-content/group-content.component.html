@@ -25,32 +25,31 @@
         </div>
         <div class="tabs--actions">
           <div class="tabs">
-            <div
-              [ngClass]="{'active': currentTab == ''}">
-              <a
-                (click)="switchTab($event, '')"
-                href="http://localhost:4200/groups/{{ groupResponse?.id }}/">
+            <a
+            routerLink="./"
+            [routerLinkActiveOptions]="{exact: true}"
+            routerLinkActive="active">
+              
+              <div>
                 <div>Thảo luận</div>
-              </a>
-            </div>
-            <div
-              *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate"
-              [ngClass]="{'active': currentTab == 'members'}">
-              <a
-                (click)="switchTab($event, 'members')"
-                href="http://localhost:4200/groups/{{ groupResponse?.id }}/members">
+              </div>
+            </a>
+            <a
+            *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate"
+            routerLink="./members"
+            routerLinkActive="active">
+              <div>
                 <div>Thành viên</div>
-              </a>
-            </div>
-            <div
-              *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate"
-              [ngClass]="{'active': currentTab == 'media'}">
-              <a
-                (click)="switchTab($event, 'media')"
-                href="http://localhost:4200/groups/{{ groupResponse?.id }}/media">
+              </div>
+            </a>
+            <a
+            routerLink="./media"
+            routerLinkActive="active"
+            *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate">
+              <a>
                 <div>File phương tiện</div>
               </a>
-            </div>
+            </a>
           </div>
           <div class="actions">
             <div
@@ -93,26 +92,6 @@
 
   <div class="group-body">
     <div class="content-container">
-
-      <app-group-about
-        *ngIf="loadedTabs.has('about')"
-        [ngClass]="{'none': currentTab !== 'about'}"
-      ></app-group-about>
-
-      <app-group-member
-        *ngIf="loadedTabs.has('members')"
-        [ngClass]="{'none': currentTab !== 'members'}"
-      ></app-group-member>
-
-      <app-group-timeline
-        [groupResponse]="groupResponse"
-        *ngIf="loadedTabs.has('')"
-        [ngClass]="{'none': currentTab !== ''}"
-      ></app-group-timeline>
-
-      <app-group-media
-        *ngIf="loadedTabs.has('media')"
-        [ngClass]="{'none': currentTab !== 'media'}"
-      ></app-group-media>
+      <router-outlet></router-outlet>
     </div>
   </div>

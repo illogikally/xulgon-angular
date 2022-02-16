@@ -102,9 +102,14 @@
             .privacy-opts {
               @extend %opts;
               z-index: 1;
-              bottom: auto;
+              left: 0;
+              transform: none;
+              &::before {
+                border: none;
+              }
               top: 150%;
               width: 400px;
+              box-shadow: $box-shadow-wide;
 
               i {
                 font-size: 20px;

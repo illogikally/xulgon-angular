@@ -12,16 +12,24 @@
         <div>Hãy tham gia nhóm để xem bài viết của các thành viên</div>
       </div>
     </div>
-    <app-group-create-post
-      *ngIf="groupResponse?.isMember"
-      [groupResponse]="groupResponse"
-    ></app-group-create-post>
-    <app-post-list
-      [posts]="posts"
-    ></app-post-list>
-  </div>
-  <div class="timeline-sidebar">
 
+    <app-group-create-post
+    *ngIf="groupResponse?.isMember"
+    [groupResponse]="groupResponse"
+    ></app-group-create-post>
+
+    <app-post-view 
+    [isGroup]="true"
+    *ngIf="isPostView"></app-post-view>
+
+    <app-post-list 
+    *ngIf="!isPostView"
+    [pageId]="groupResponse?.id"
+    [posts]="posts">
+    </app-post-list>
+  </div>
+
+  <div class="timeline-sidebar">
     <div class="group-meta">
       <div class="about mb-20">
         <div class="w-500 f-17 mb-20">Giới thiệu</div>

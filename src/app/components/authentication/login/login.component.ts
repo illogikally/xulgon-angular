@@ -6,7 +6,7 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, 
 import {ActivatedRoute, Router} from '@angular/router';
 import {fromEvent, interval, Observable, of, throwError, timer} from 'rxjs';
 import { catchError, debounce, map, switchMap, tap } from 'rxjs/operators';
-import { UserService } from '../../common/user.service';
+import { UserService } from '../../share/user.service';
 import {AuthenticationService} from '../authentication.service';
 import {LoginRequest} from './login-request';
 
@@ -23,21 +23,21 @@ import {LoginRequest} from './login-request';
           opacity: '0',
         }),
         animate(
-          '.3s ease-in', 
+          '.3s ease-in',
           style({
-            transform: 'translateX(0%)', 
+            transform: 'translateX(0%)',
             opacity: '1'
           })
         ),
       ]),
       transition(':leave', [
         style({
-          position: 'absolute', 
+          position: 'absolute',
           top: '0',
           opacity: '1'
         }),
         animate(
-          '.3s ease-in', 
+          '.3s ease-in',
           style({
             transform: 'translateX(200%)',
             opacity: '0'
@@ -53,7 +53,7 @@ import {LoginRequest} from './login-request';
           opacity: '0',
         }),
         animate(
-          '.3s ease-in', 
+          '.3s ease-in',
           style({
             transform: 'translateX(0%)',
             opacity: '1',
@@ -62,7 +62,7 @@ import {LoginRequest} from './login-request';
       ]),
       transition(':leave', [
         style({
-          position: 'absolute', 
+          position: 'absolute',
           top: '0',
           opacity: '1',
         }),
@@ -98,20 +98,20 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       username: [
         '',
         [
-          Validators.required, 
+          Validators.required,
           Validators.pattern('[a-z]+'),
           Validators.minLength(6)
         ],
         this.userExisted.bind(this)
       ],
       password: [
-        '', 
+        '',
         [Validators.required, Validators.minLength(6)]
       ],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: [
-        '', 
+        '',
         [Validators.required, Validators.email]
       ]
     })
@@ -121,7 +121,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     control: AbstractControl
   ): Observable<ValidationErrors | null> | Promise<ValidationErrors | null> {
     return timer(300).pipe(
-      switchMap(() => 
+      switchMap(() =>
         this.userService.isUserExisted(control.value).pipe(
           map(isTaken => isTaken ? {userExisted: true} : null),
           catchError(() => of(null))
@@ -153,20 +153,13 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
-    if (this.authService.getToken()) {
+    if (this.authService.isLoggedIn()) {
       this.router.navigateByUrl("/");
     }
 
     if (/login$/g.test(window.location.href)) {
       this.isLogin = true;
     }
-
-    fromEvent(document.querySelector('.content')!, 'click')
-    .pipe(
-      debounce(() => interval(300))
-    ).subscribe(event => {
-      console.log('lick');
-    });
   }
 
   ngAfterViewChecked(): void {
@@ -175,7 +168,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   @HostListener('window:popstate', [])
   onPopState(): void {
-    if (this.authService.getToken()) {
+    if (this.authService.isLoggedIn()) {
       location.href = '/';
     }
   }
@@ -191,7 +184,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     }
 
 
-    let registerDto = {
+    const registerDto = {
       username: this.registerForm.get('username')?.value,
       password: this.registerForm.get('password')?.value,
       firstName: this.registerForm.get('firstName')?.value,
@@ -224,7 +217,8 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       .subscribe(() => {
         this.loginError = false;
         location.href = '';
-      }, () => {
+      }, (e) => {
+        console.log(e);
         this.loginError = true;
       });
   }
@@ -234,7 +228,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     const container = document.querySelector<HTMLElement>('.fc-container');
     const height = container?.offsetHeight + 'px';
     this.renderer.setStyle(container, 'height', height);
-    
+
     if (this.isLogin) {
       this.loginError = false;
       this.loginForm.reset()
@@ -250,5 +244,11 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   validatorHasError(control: AbstractControl | null, error?: string): boolean {
     return !!(control?.touched && control?.hasError(error || '!$@@@9sxz#2S2@#$'));
+  }
+
+  googleLogin() {
+    console.log('???');
+
+    this.authService.oauthAuthorize('google');
   }
 }

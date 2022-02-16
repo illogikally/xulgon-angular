@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {NotificationService} from '../../service/notification.service';
 import {Notification} from '../notification/notification';
+import { NotificationType } from '../notification/notification-type';
 
 @Component({
   selector: 'app-notif-item',
@@ -10,31 +11,43 @@ import {Notification} from '../notification/notification';
 })
 export class NotifItemComponent implements OnInit {
 
-  @Input() notification!: any;
-  @Input() read!: EventEmitter<number>;
-  url!: string;
+  @Input() notification!: Notification;
+  @Output() itemClick = new EventEmitter();
 
-  constructor(private router: Router,
-              private notif$: NotificationService) {
-  }
+  url = '';
+  queryParams = {};
+  NotificationType = NotificationType;
 
-  click(): void {
-    if (this.notification.isRead == false) {
-      this.notif$.read(this.notification.id).subscribe(_ => {
-        this.read.emit(this.notification.id);
-        this.notification.isRead = true;
-      });
-    }
-    this.router.navigateByUrl(this.url);
+  constructor(
+    private router: Router,
+    private notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
-    this.url = `/permalink/${this.notification.postId}`;
+    let pageId = this.notification.pageId;
+    let rcId = this.notification.recipientContentId;
+    let pageType = this.notification.pageType;
     switch (this.notification.type) {
       case 'COMMENT': {
-        this.url += `?comment_id=${this.notification.contentId}`
+        this.url = `${pageType == 'GROUP' ? '/groups' : ''}/${pageId}/posts/${rcId}`;
+        this.url += '?comment_id=' + this.notification.actorContentId;
       }
     }
+  }
+
+  read(event?: any) {
+    if (!this.notification.isRead) {
+      this.notificationService.read(this.notification.id).subscribe(_ => {
+        this.notificationService.modifyUnread$.next(-1);
+        this.notification.isRead = true;
+      });
+    }
+  }
+
+  click(): void {
+    this.read();
+    this.itemClick.emit();
+    this.router.navigateByUrl(this.url);
   }
 
 }

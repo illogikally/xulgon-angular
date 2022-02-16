@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import {UserProfile} from './user-profile';
 
@@ -11,6 +12,7 @@ export class ProfileService {
 
   url = 'http://localhost:8080/api/profiles/'
   private baseApiUrl = environment.baseApiUrl;
+  public friendshipStatus$ = new Subject<string>();
 
   constructor(private http: HttpClient) {}
 

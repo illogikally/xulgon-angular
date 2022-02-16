@@ -1,11 +1,11 @@
 import {Location} from '@angular/common';
-import {AfterViewInit, Component, Host, HostListener, Input, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Host, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {from, fromEvent, Observable, ReplaySubject, Subject} from 'rxjs';
 import { filter, last, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 import {AuthenticationService} from '../../authentication/authentication.service';
-import {MessageService} from '../../common/message.service';
+import {MessageService} from '../../share/message.service';
 import {Post} from '../../post/post';
 import {PostService} from '../../post/post.service';
 import {ProfileService} from '../profile.service';
@@ -16,11 +16,12 @@ import {UserProfile} from '../user-profile';
   templateUrl: './profile-timeline.component.html',
   styleUrls: ['./profile-timeline.component.scss']
 })
-export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ProfileTimelineComponent implements OnInit, OnDestroy {
 
   @Input() userProfile!: UserProfile;
-  @Input() onAttach$!: Observable<void>;
-  @Input() onDetach$!: Observable<void>;
+
+  @ViewChild('sidebar', {static: true}) sidebar!: ElementRef;
+  @ViewChild('sidebar__inner', {static: true}) sidebarInner!: ElementRef;
 
   principleId: number;
   pageId     : number;
@@ -32,7 +33,13 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
-  sidebar!: HTMLElement;
+  private detached$ = this.messageService.profileComponentDetached$.pipe(
+    filter(id => id == this.pageId)
+  );
+
+  private attached$ = this.messageService.profileComponentAttached$.pipe(
+    filter(id => id == this.pageId)
+  );
 
   constructor(
     private renderer: Renderer2,
@@ -45,7 +52,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
     private profile$: ProfileService,
     private auth$   : AuthenticationService
   ) {
-    this.principleId = this.auth$.getUserId() as number;
+    this.principleId = this.auth$.getAuthentication()!.userId as number;
     const id = this.route.parent?.snapshot.paramMap.get('id');
     this.pageId = Number(id);
 
@@ -67,154 +74,123 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
   ngOnInit(): void {
 
     this.configureStickySidebar();
+    this.configureLoadOnScroll();
     this.messageService.profileComponentAttached$.next(this.pageId);
 
     this.initialHide = false;
 
-    if (this.pageId !== NaN) {
+    if (!isNaN(this.pageId)) {
       this.getPosts();
       this.profile$.getUserProfile(this.pageId)
         .subscribe(profile => {
           this.userProfile = profile;
         })
     }
-
-    // this.message$.onProfileLoaded()
-    // .pipe(
-    //   // takeUntil(this.destroyed$),
-    //   filter(p => !!Object.keys(p).length),
-    //   take(1))
-    // .subscribe(profile => {
-    //   console.log(profile);
-
-    //   this.userProfile = profile;
-    //   this.post$.getPostsByPageId(profile.id).subscribe(timeline => {
-    //     this.timeline = timeline;
-    //   });
-    //   this.message$.sendLoadedProfile({} as UserProfile);
-    // });
   }
 
-  ngAfterViewInit(): void {
-  }
 
   configureStickySidebar() {
-    const actionMenu = document.querySelector<HTMLElement>('.actions-menu-container');
-    if (!actionMenu) return;
-
-    const FIXED_BOTTOM = 15;
+    const actionMenu = document.querySelector<HTMLElement>('.actions-menu-container')!;
+    const MARGIN = 17;
     const NAVBAR_HEIGHT = 56;
-    const FIXED_TOP = NAVBAR_HEIGHT + actionMenu.offsetHeight + FIXED_BOTTOM;
-
+    const FIXED_TOP = NAVBAR_HEIGHT + actionMenu.offsetHeight
 
     const detached$ = this.messageService.profileComponentDetached$.pipe(
       filter(id => id == this.pageId)
     );
 
     detached$.subscribe(() => {
-      this.sidebar = document.querySelector<HTMLElement>('.sidebar__inner')!;
-      this.sidebarRemove('bottom');
-      this.sidebarRemove('top');
-      this.sidebarRemove('left');
-      // this.sidebarCss('bottom'  , '');
-      // this.sidebarCss('top'     , '');
-      // this.sidebarCss('left'    , '');
       this.sidebarCss('position', 'relative');
+      this.sidebarCss('top'     , '');
+      this.sidebarCss('left'    , '');
     });
+
+    const SIDEBAR = this.sidebarInner.nativeElement;
+    const PARENT = this.sidebar.nativeElement;
 
     let oldY = window.scrollY;
     this.messageService.profileComponentAttached$.pipe(
       filter(id => id == this.pageId),
       switchMap(() => fromEvent(window, 'scroll').pipe(takeUntil(detached$)))
     ).subscribe(() => {
-      
-      // this.sidebar         = document.querySelector<HTMLElement>('.sidebar__inner')!;
-      this.sidebar = document.getElementsByClassName('sidebar__inner')[0] as HTMLElement;
-      // const CONTAINER      = document.querySelector<HTMLElement>('#main-content')!;
-      const CONTAINER      = document.getElementById('main-content')!;
-      
-      const SIDEBAR        = this.sidebar;
-      const SIDEBAR_RECT   = SIDEBAR.getBoundingClientRect()!;
-      const CONTAINER_RECT = CONTAINER.getBoundingClientRect()!;
-      const IS_SCROLL_UP   = oldY > window.scrollY;
 
-      const SPEED = window.scrollY - oldY
-      if (IS_SCROLL_UP) {
-        const mainContentY = window.scrollY + CONTAINER_RECT.top;
+      const SIDEBAR_RECT = SIDEBAR.getBoundingClientRect();
+      const PARENT_RECT = PARENT.getBoundingClientRect();
 
-        if (window.scrollY + FIXED_TOP < mainContentY) {
-          this.sidebarCss('bottom'  , '');
-          this.sidebarCss('top'     , '0px');
-          this.sidebarCss('left'    , '0px');
+      const SPEED = (window.scrollY - oldY)
+      if (SPEED < 0) { // Scroll up
+        const mainContentY = window.scrollY + PARENT_RECT.top;
+
+        if (
+          SIDEBAR.style.position === 'fixed'
+          && SIDEBAR_RECT.top <= PARENT_RECT.top
+        ) {
+          this.sidebarCss('top'     , '');
+          this.sidebarCss('left'    , '');
           this.sidebarCss('position', 'relative');
-        } else {
-
-          if (
-            SIDEBAR.style.position === 'fixed'
-            && SIDEBAR_RECT.top    < FIXED_TOP
-          ) {
-            const top = SIDEBAR_RECT.top - CONTAINER_RECT.top;
-            this.sidebarCss('bottom'  , '');
-            this.sidebarCss('top'     , top + 'px');
-            this.sidebarCss('left'    , 0 + 'px');
-            this.sidebarCss('position', 'relative');
-          } 
-
-          else if (
-            SIDEBAR.style.position !== 'fixed'
-            && SIDEBAR_RECT.top - SPEED  > FIXED_TOP
-          ) {
-            this.sidebarCss('bottom'  , '')
-            this.sidebarCss('position', 'fixed');
-            this.sidebarCss('top'     , FIXED_TOP + 'px');
-            this.sidebarCss('left'    , CONTAINER_RECT.left + 'px');
-          }
         }
-      } else {
+
+        else if (
+          SIDEBAR.style.position === 'fixed'
+          && SIDEBAR_RECT.top    < FIXED_TOP + MARGIN
+        ) {
+          const top = SIDEBAR_RECT.top - PARENT_RECT.top;
+          this.sidebarCss('top'     , top + 'px');
+          this.sidebarCss('left'    , 0 + 'px');
+          this.sidebarCss('position', 'relative');
+        }
+
+        else if (
+          SIDEBAR.style.position !== 'fixed'
+          && SIDEBAR_RECT.top - SPEED  > FIXED_TOP + MARGIN
+          && SIDEBAR_RECT.top > PARENT_RECT.top
+        ) {
+          this.sidebarCss('position', 'fixed');
+          this.sidebarCss('top'     , FIXED_TOP + MARGIN + 'px');
+          this.sidebarCss('left'    , PARENT_RECT.left + 'px');
+        }
+      } else { // Scroll down
         if (
           SIDEBAR.style.position === 'fixed'
           && SIDEBAR_RECT.bottom > window.innerHeight
         ) {
-          const top = SIDEBAR_RECT.top - CONTAINER_RECT.top;
+
+          const top = SIDEBAR_RECT.top - PARENT_RECT.top;
           this.sidebarCss('position', 'relative');
           this.sidebarCss('top'     , top + 'px');
           this.sidebarCss('left'    , '');
-        } 
+        }
 
         else if (
           SIDEBAR.style.position  !== 'fixed'
-          && SIDEBAR_RECT.bottom - SPEED  < window.innerHeight - FIXED_BOTTOM
-          && SIDEBAR.offsetHeight > window.innerHeight - FIXED_TOP - FIXED_BOTTOM
+          && SIDEBAR_RECT.bottom - SPEED  < window.innerHeight - MARGIN
+          && SIDEBAR.offsetHeight > window.innerHeight - FIXED_TOP - MARGIN*2
+          && SIDEBAR.offsetHeight < PARENT.offsetHeight
         ) {
-          this.sidebarCss('top'     , '');
-          this.sidebarCss('bottom'  , FIXED_BOTTOM + 'px');
+          const top =  window.innerHeight - SIDEBAR.offsetHeight - MARGIN;
           this.sidebarCss('width'   , SIDEBAR.offsetWidth + 'px');
-          this.sidebarCss('left'    , CONTAINER_RECT.left + 'px');
-          this.sidebarCss('position', 'fixed');
-        } 
-
-        else if (
-          SIDEBAR.style.position  !== 'fixed'
-          && SIDEBAR.offsetHeight < window.innerHeight - FIXED_TOP - FIXED_BOTTOM
-          && SIDEBAR_RECT.top     < FIXED_TOP
-        ) {
-          this.sidebarCss('width'   , SIDEBAR.offsetWidth + 'px');
-          this.sidebarCss('top'     , FIXED_TOP + 'px');
-          this.sidebarCss('left'    , CONTAINER_RECT.left + 'px');
+          this.sidebarCss('top'     , top + 'px');
+          this.sidebarCss('left'    , PARENT_RECT.left + 'px');
           this.sidebarCss('position', 'fixed');
         }
 
+        else if (
+          SIDEBAR.style.position  !== 'fixed'
+          && SIDEBAR.offsetHeight <= window.innerHeight - FIXED_TOP - MARGIN*2
+          && SIDEBAR_RECT.top     <= FIXED_TOP + MARGIN
+        ) {
+          this.sidebarCss('width'   , SIDEBAR.offsetWidth + 'px');
+          this.sidebarCss('top'     , FIXED_TOP + MARGIN + 'px');
+          this.sidebarCss('left'    , PARENT_RECT.left + 'px');
+          this.sidebarCss('position', 'fixed');
+        }
       }
-      // console.log(SIDEBAR.style.position);
-      // console.log(SIDEBAR_RECT.bottom, window.innerHeight - MARGIN);
-      // console.log(SIDEBAR.offsetHeight, window.innerHeight - FIXED_TOP);
-
       oldY = window.scrollY;
     });
   }
 
   sidebarCss(style: string, value: string) {
-    this.renderer.setStyle(this.sidebar, style, value);
+    this.renderer.setStyle(this.sidebarInner.nativeElement, style, value);
   }
 
   sidebarRemove(style: string) {
@@ -241,19 +217,18 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   configureLoadOnScroll() {
-
-  }
-
-  @HostListener('window:scroll', ['$event'])
-  loadOnScroll(event: any): void {
-    if (
-      window.scrollY >= document.body.scrollHeight - 1.2*window.innerHeight
-      && !this.isLoadingPosts
-      && !this.isLoadedAll
-      && /\/\d+/.test(this.router.url)
+    this.attached$.pipe(
+      switchMap(() => fromEvent(window, 'scroll').pipe(takeUntil(this.detached$)))
+    ).subscribe(() => {
+      if (
+        window.scrollY >= document.body.scrollHeight - 1.2*window.innerHeight
+        && !this.isLoadingPosts
+        && !this.isLoadedAll
       ) {
         this.getPosts();
-    }
+      }
+    })
+
   }
 
   updateSticky = new Subject<boolean>();

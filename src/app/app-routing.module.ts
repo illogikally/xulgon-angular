@@ -10,7 +10,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
 import { JoinRequestListComponent } from './components/group/join-request-list/join-request-list.component';
 import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
-import { LoggedInComponent } from './components/common/logged-in/logged-in.component';
+import { LoggedInComponent } from './components/share/logged-in/logged-in.component';
 import { PostViewComponent } from './components/post-view/post-view.component';
 import { SearchComponent } from './components/search/search.component';
 import { ByPeopleComponent } from './components/search/by-people/by-people.component';
@@ -23,21 +23,30 @@ import { ProfileTimelineComponent } from './components/profile/profile-timeline/
 import { GroupComponent } from './components/group/group.component';
 import { ProfileHeaderResolver } from './components/profile/profile-header.resolver';
 import { Oauth2CallbackComponent } from './components/authentication/login/oauth2-callback/oauth2-callback.component';
+import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
+import { GroupAboutComponent } from './components/group/group-about/group-about.component';
+import { GroupMediaComponent } from './components/group/group-media/group-media.component';
+import { GroupMemberComponent } from './components/group/group-member/group-member.component';
+import { GroupTimelineComponent } from './components/group/group-timeline/group-timeline.component';
+import { ButtonComponent } from './components/share/button/button.component';
+import { TestingComponent } from './components/share/testing/testing.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: LoginComponent },
-  { path: 'oauth2-callback', component: Oauth2CallbackComponent },
+  { path: 'testing', component: TestingComponent},
+  { 
+    path: 'oauth2', 
+    children: [
+      { path: 'callback', component: Oauth2CallbackComponent }
+    ]
+  },
   {
     path: '',
     component: LoggedInComponent,
     canActivate: [AuthenticationGuard],
     children: [
       { path: '', component: NewsFeedComponent },
-      {
-        path: 'permalink/:id',
-        component: PostViewComponent
-      },
       {
         path: 'friends',
         component: FriendRequestComponent,
@@ -68,22 +77,36 @@ const routes: Routes = [
       {
         path: 'groups',
         children: [
-
           { path: '', redirectTo: 'feed', pathMatch: 'full'},
-          { path: 'feed', component: GroupGeneralComponent },
+          { path: 'feed', component: GroupGeneralComponent,
+            // children: [
+            //   { path: '', component: GroupFeedComponent, pathMatch: 'full'}
+            // ]
+          },
           {
             path: ':id',
             component: GroupComponent,
             children: [
-              { path: '', component: GroupContentComponent},
-              { path: 'about', component: GroupContentComponent},
-              { path: 'media', component: GroupContentComponent},
-              { path: 'members', component: GroupContentComponent},
+              { 
+                path: '', 
+                component: GroupContentComponent, 
+                children: [
+                  { path: '', component: GroupTimelineComponent, pathMatch: 'full', data: {isPostView: false} },
+                  { path: 'posts/:id', component: GroupTimelineComponent, data: {isPostView: true} },
+                  { path: 'about', component: GroupAboutComponent },
+                  { path: 'media', component: GroupMediaComponent },
+                  { path: 'members', component: GroupMemberComponent },
+                ]
+              },
               { path: 'member_request', component: JoinRequestListComponent},
               { path: 'settings', component: GroupSettingsComponent}
             ]
           }
         ]
+      },
+      {
+        path: ':id/posts/:id',
+        component: PostViewComponent
       },
       {
         path: ':id',

@@ -1,4 +1,4 @@
-import {PhotoViewResponse} from "../common/photo/photo-view-response";
+import {PhotoViewResponse} from "../share/photo/photo-view-response";
 
 export interface UserProfile {
   id: number;

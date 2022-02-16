@@ -1,103 +1,123 @@
-import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {CommentService} from './comment/comment.service';
 import {CommentResponse} from './comment/comment-response';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MessageService} from '../common/message.service';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {MessageService} from '../share/message.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {HttpClient} from '@angular/common/http';
+import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-comment-list',
   templateUrl: './comment-list.component.html',
   styleUrls: ['./comment-list.component.scss']
 })
-export class CommentListComponent implements OnInit {
+export class CommentListComponent implements OnInit, OnDestroy {
 
-  @Input() contentId!: number;
-  @Input() postId!: number;
-  comments = new Array<CommentResponse>();
-  commentsQueue = new Array<CommentResponse>();
-  @ViewChild('input') input!: ElementRef;
+  @Input() targetId!: number;
+  @Input() parentId!: number;
+  @Input() isPostView = false;
 
-  showComment: boolean = true;
-  commentForm!: FormGroup;
-  file: Blob | undefined;
-  sizeRatio!: number;
+  comments: CommentResponse[] = [];
+  commentIdSet = new Set();
+  isCommentsVisible = true;
+  commentForm = this.fb.group({
+    comment: [''],
+    fileInput: ['']
+  });
+  image: Blob | undefined;
+  imageSizeRatio!: number;
   imgUrl!: string;
 
   loggedInUserAvatarUrl: string;
 
+  onDestroy$ = new ReplaySubject<any>();
+  onAttach$ = this.messageService.postView$.pipe(
+    filter(message => message.type == 'ATTACH')
+  );
+
+  onDetach$ = this.messageService.postView$.pipe(
+    filter(message => message.type == 'DETACH')
+  )
+
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+  }
 
   constructor(
     private commentService: CommentService,
-    private http: HttpClient,
-    private selfRef: ElementRef,
     private authService: AuthenticationService,
-    private renderer: Renderer2,
-    private message$: MessageService
-    ) {
-      this.loggedInUserAvatarUrl = authService.getAvatarUrl();
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private messageService: MessageService
+  ) {
+    this.loggedInUserAvatarUrl = this.authService.getAvatarUrl();
   }
 
-  ngOnInit(): void {
-    this.commentForm = new FormGroup({
-      comment: new FormControl(''),
-      fileInput: new FormControl('')
-    });
-
+  ngOnInit() {
     this.getComments();
 
-    this.message$.notif.subscribe(msg => {
-      if (msg.type == 'comment_id') {
-        console.log('comment_id');
-
-        this.http.get<CommentResponse>(`http://localhost:8080/api/comments/${msg.commentId}`)
-          .subscribe(comment => {
-            this.comments.unshift(comment);
-          });
-      }
-    });
-  }
-
-  getComments(): void {
-    const limit = this.comments.length ? 5 : 2; 
-    const offset = this.comments.length;
-    
-    this.commentService
-        .getCommentsByContent(this.contentId, offset, limit)
-        .subscribe(resp => {
-          this.comments = this.comments.concat(resp); 
+    if (this.isPostView) {
+      const commentId = Number(this.route.snapshot.queryParamMap.get('comment_id'));
+      if (isNaN(commentId) || this.commentIdSet.has(commentId)) return;
+      this.commentService.getComment(commentId)
+        .subscribe(comment => {
+          this.commentIdSet.add(comment.id);
+          this.comments.unshift(comment);
         });
+    }
   }
 
-  submit(): void {
-    let formData = new FormData;
+  getComments() {
+    const limit = this.comments.length ? 5 : 2;
+    const offset = this.comments.length;
 
-    console.log(this.postId);
+    this.commentService
+      .getCommentsByContent(this.targetId, offset, limit)
+      .subscribe(resp => {
+        resp = resp.filter(comment => {
+          if (!this.commentIdSet.has(comment.id)) {
+            this.commentIdSet.add(comment.id);
+            return true;
+          }
+          return false;
+        });
+        this.comments = this.comments.concat(resp);
+      });
+  }
 
-    let commentRequest = new Blob([JSON.stringify({
-      parentId: this.contentId,
-      postId: this.postId,
-      body: this.commentForm.get('comment')?.value,
-      sizeRatio: this.sizeRatio
-    })], {type: 'application/json'});
+  submit() {
+    let formData = new FormData();
+    let commentRequest = new Blob(
+      [JSON.stringify({
+        parentId: this.targetId,
+        postId: this.parentId,
+        body: this.commentForm.get('comment')?.value,
+        sizeRatio: this.imageSizeRatio
+      })],
+      {type: 'application/json'}
+    );
     formData.append('commentRequest', commentRequest);
-
-    formData.append('photo', this.file === undefined ? new Blob() : this.file)
+    formData.append('photo', !this.image ? new Blob() : this.image)
 
 
     this.commentService.createComment(formData).subscribe(comment => {
       this.comments.push(comment);
-      this.message$.sendMessage("Comment added");
+      this.commentService.commentAdded$.next({
+        parentId: this.targetId
+      });
     });
 
     this.commentForm.get('comment')?.setValue("");
     this.clearInput();
   }
 
-  onSelectImage(event: any): void {
+  onSelectImage(event: any) {
     if (event.target?.files && event.target.files[0]) {
-      this.file = event.target.files[0];
+      this.image = event.target.files[0];
       var reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]);
@@ -106,7 +126,7 @@ export class CommentListComponent implements OnInit {
         let img = new Image();
         img.src = event.target?.result as string;
         img.onload = () => {
-          this.sizeRatio = img.width / img.height;
+          this.imageSizeRatio = img.width / img.height;
         }
 
         this.imgUrl = event.target?.result as string;
@@ -114,8 +134,8 @@ export class CommentListComponent implements OnInit {
     }
   }
 
-  clearInput(): void {
+  clearInput() {
     this.imgUrl = '';
-    this.file = undefined;
+    this.image = undefined;
   }
 }

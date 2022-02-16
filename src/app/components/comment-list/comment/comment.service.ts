@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http'
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {CommentResponse} from './comment-response';
 import {environment} from 'src/environments/environment';
 
@@ -9,8 +9,9 @@ import {environment} from 'src/environments/environment';
 })
 export class CommentService {
 
-  private baseApiUrl = environment.baseApiUrl;
+  public commentAdded$ = new Subject<any>();
 
+  private baseApiUrl = environment.baseApiUrl;
   constructor(private http: HttpClient) {}
 
   getCommentsByContent(
@@ -25,5 +26,10 @@ export class CommentService {
   createComment(commentRequest: FormData): Observable<CommentResponse> {
     const url = `${this.baseApiUrl}/comments`;
     return this.http.post<CommentResponse>(url, commentRequest);
+  }
+
+  getComment(id: number): Observable<CommentResponse> {
+    const url = `${this.baseApiUrl}/comments/${id}`
+    return this.http.get<CommentResponse>(url);
   }
 }
