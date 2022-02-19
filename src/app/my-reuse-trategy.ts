@@ -51,6 +51,8 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 
 			if (shouldAttach) {
 				this.callHook(storedRoute.handle, 'onAttach');
+				console.log(route);
+				
 			} else {
 			}
 			return shouldAttach
@@ -105,18 +107,19 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 
 		path += 
 			route.pathFromRoot
-			.map(route => route.routeConfig?.path || ''
-										+ route.routeConfig?.component?.name || ''
+			.map(route => route.routeConfig?.path as string
+										+ route.routeConfig?.component?.name as string
 										+ JSON.stringify(route.params))
 			.join("->");
 
 		const firstChild = route.firstChild;
 		path += 
 			' ## ' 
-			+ firstChild?.routeConfig?.path || ''
-			+ firstChild?.routeConfig?.component?.name || ''
+			+ firstChild?.routeConfig?.path as string
+			+ firstChild?.routeConfig?.component?.name as string
 			+ JSON.stringify(route.params);
-			return path;
+
+		return path;
 	}
 
 	private callHook(detachedTree: DetachedRouteHandleExt | null, hookName: string): void {

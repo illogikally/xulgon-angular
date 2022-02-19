@@ -1,5 +1,8 @@
 @import 'src/styles';
 
+:host {
+  visibility: hidden;
+}
 .create-post-container {
   position: fixed;
   height: 100%;

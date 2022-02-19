@@ -31,12 +31,6 @@ export class FriendRequestComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle('Friends')
 
-    // this.messageService.sendLoadedProfile({} as UserProfile);
-
-    this.messageService.onDeleteFriendRequest().subscribe(userId => {
-      this.friendRequests = this.friendRequests.filter(req => req.requesterId != userId);
-    });
-
     let userId: number = this.auth.getPrincipalId();
     this.http.get<FriendRequestDto[]>(`http://localhost:8080/api/users/${userId}/friend-requests`)
       .subscribe(resp => {

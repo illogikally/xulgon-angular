@@ -72,6 +72,7 @@ import { ButtonComponent } from './components/share/button/button.component';
 import { TestingComponent } from './components/share/testing/testing.component';
 import { FriendshipButtonComponent } from './components/profile/friendship-button/friendship-button.component';
 import { ConfirmDialogComponent } from './components/share/confirm-dialog/confirm-dialog.component';
+import { PopUpComponent } from './components/share/pop-up/pop-up.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +134,7 @@ import { ConfirmDialogComponent } from './components/share/confirm-dialog/confir
     TestingComponent,
     FriendshipButtonComponent,
     ConfirmDialogComponent,
+    PopUpComponent,
   ],
   imports: [
     FormsModule,

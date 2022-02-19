@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Post } from '../post/post';
 import {UserProfile} from './user-profile';
 
 @Injectable({
@@ -13,6 +14,10 @@ export class ProfileService {
   url = 'http://localhost:8080/api/profiles/'
   private baseApiUrl = environment.baseApiUrl;
   public friendshipStatus$ = new Subject<string>();
+
+  public onAttach$ = new Subject<number>();
+  public onDetach$ = new Subject<number>();
+  public onPostCreate$ = new Subject<Post>();
 
   constructor(private http: HttpClient) {}
 

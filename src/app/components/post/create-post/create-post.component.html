@@ -1,8 +1,18 @@
-<div class="create-post-container">
-  <form class="create-post" enctype="multipart/form-data" [formGroup]="postForm" (ngSubmit)="submit()">
+<div 
+#self
+class="create-post-container">
+  <form 
+  class="create-post" 
+  enctype="multipart/form-data" 
+  [formGroup]="postForm" 
+  (ngSubmit)="submit()">
     <div class="flex-center post-title">
       <span>Tạo bài viết</span>
-      <div (click)="closeSelf()" class="x-btn"><i class='bx bx-x'></i></div>
+      <div 
+      (click)="hide()" 
+      class="x-btn">
+        <i class='bx bx-x'></i>
+      </div>
     </div>
     <div class="create-post-body">
       <div class="post-info">
@@ -42,7 +52,8 @@
                 <i class='bx bxs-lock-alt'></i>
                 <span style="padding: 0 3px">Mình tôi</span>
               </span>
-              <i style="font-size: 9px; margin-left: 2px" class='bx bxs-down-arrow'></i>
+              <i style="font-size: 9px; margin-left: 2px" 
+              class='bx bxs-down-arrow'></i>
             </span>
             <div 
             (clickOutside)="clickOutsidePrivacyOpts()" 
@@ -54,7 +65,9 @@
                 class="public">
                 <i class='bx bx-globe'></i>
                 <span>Công khai <br/>
-                  <span class="secondary-text">(Ai cũng có thể xem bài viết này)</span>
+                  <span class="secondary-text">
+                    (Ai cũng có thể xem bài viết này)
+                  </span>
                 </span>
               </div>
               <div
@@ -62,7 +75,9 @@
                 class="friend">
                 <i class='bx bx-group'></i>
                 <span>Bạn bè <br/>
-                  <span class="secondary-text">(Chỉ bạn của tôi mới xem được bài viết này)</span>
+                  <span class="secondary-text">
+                    (Chỉ bạn của tôi mới xem được bài viết này)
+                  </span>
                 </span>
               </div>
               <div
@@ -126,10 +141,11 @@
           </div>
         </div>
       </div>
-      <button 
-      type="submit" 
-      class="btn-post"
-      [attr.disabled]="(photos.length == 0 && !textArea.value.trim()) ? true : null">Đăng
+      <button type="submit" class="btn-post"
+      [attr.disabled]="
+        (photos.length == 0 && !textArea.value.trim()) ? true : null
+      "> 
+        <span>Đăng</span>
       </button>
     </div>
   </form>

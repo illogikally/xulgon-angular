@@ -1,97 +1,104 @@
-<div [ngClass]="initialHide ? 'none' : 'kk'">
-<div id="main-content" class="content">
+<div class="container">
+
   <div 
-  #sidebar
-  id="sidebar" class="sidebar">
-    <div #sidebar__inner id="{{ pageId }}" class="sidebar__inner">
-      <div class="intro">
-        <h3>Giới thiệu</h3>
-        <div *ngIf="userProfile?.workplace">
-          <i class='bx bxs-building-house'></i>
-          <span>Làm việc tại {{ userProfile?.workplace }}</span>
-        </div>
+  id="main-content" 
+  class="content">
+    <div 
+    id="sidebar" 
+    #sidebar
+    class="sidebar">
+      <div 
+      id="{{ pageId }}" 
+      #sidebar__inner
+      class="sidebar__inner">
+        <div class="intro">
+          <h3>Giới thiệu</h3>
+          <div *ngIf="userProfile?.workplace">
+            <i class='bx bxs-building-house'></i>
+            <span>Làm việc tại {{ userProfile?.workplace }}</span>
+          </div>
 
-        <div *ngIf="userProfile?.school">
-          <i class='bx bxs-graduation'></i>
-          <span>Học tại {{ userProfile?.school }}</span>
+          <div *ngIf="userProfile?.school">
+            <i class='bx bxs-graduation'></i>
+            <span>Học tại {{ userProfile?.school }}</span>
+          </div>
+          <div *ngIf="userProfile?.hometown">
+            <i class='bx bx-current-location'></i>
+            <span>Đang sống tại {{ userProfile?.hometown }}</span>
+          </div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
+          <div>aldsjflakjdfasl</div>
         </div>
-        <div *ngIf="userProfile?.hometown">
-          <i class='bx bx-current-location'></i>
-          <span>Đang sống tại {{ userProfile?.hometown }}</span>
-        </div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-        <div>aldsjflakjdfasl</div>
-      </div>
-      <div class="photo-intro">
-        <div class="intro-title">
-          <h3>Ảnh</h3>
-        </div>
-        <div class="photo-container">
-          <div class="photo">
-            <div 
-            *ngIf="!userProfile?.photos"
-            class="photo-skeletons-container">
-              <div
-              style="background-color: #dfdfdf;"
-              *ngFor="let i of [].constructor(9)">
+        <div class="photo-intro">
+          <div class="intro-title">
+            <h3>Ảnh</h3>
+          </div>
+          <div class="photo-container">
+            <div class="photo">
+              <div 
+              *ngIf="!userProfile?.photos"
+              class="photo-skeletons-container">
+                <div
+                style="background-color: #dfdfdf;"
+                *ngFor="let i of [].constructor(9)">
+                </div>
+              </div>
+
+              <div 
+              *ngIf="userProfile?.photos"
+              class="photo-container">
+                <div *ngFor="let photo of userProfile?.photos">
+                  <app-photo [photo]="photo"></app-photo>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="friend-intro">
+          <div>
+            <h3>Bạn bè</h3>
+          </div>
+          <div class="friend">
 
-            <div 
-            *ngIf="userProfile?.photos"
-            class="photo-container">
-              <div *ngFor="let photo of userProfile?.photos">
-                <app-photo [photo]="photo"></app-photo>
+            <div *ngFor="let friend of userProfile?.friends">
+              <div class="img-container">
+                <app-user-ref
+                [userDto]="friend"
+                borderRadius="10px"
+                ></app-user-ref>
+              </div>
+              <app-user-ref [userDto]="friend" ></app-user-ref>
+              <div 
+              *ngIf="friend.commonFriendCount > 0 && friend.id != principleId" 
+              class="common-friend-count">
+                {{ friend.commonFriendCount }}
+                <span> bạn chung</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="friend-intro">
-        <div>
-          <h3>Bạn bè</h3>
-        </div>
-        <div class="friend">
+    </div>
 
-          <div *ngFor="let friend of userProfile?.friends">
-            <div class="img-container">
-              <app-user-ref
-              [userDto]="friend"
-              borderRadius="10px"
-              ></app-user-ref>
-            </div>
-            <app-user-ref [userDto]="friend" ></app-user-ref>
-            <div 
-            *ngIf="friend.commonFriendCount > 0 && friend.id != principleId" 
-            class="common-friend-count">
-              {{ friend.commonFriendCount }}
-              <span> bạn chung</span>
-            </div>
-          </div>
-        </div>
+    <div id="content" class="timeline">
+      <div class="post-container">
+        <app-post-list
+          [pageId]="pageId"
+          [isLoading]="isLoadingPosts"
+          [isCommentVisible]="true"
+          [posts]="timeline"
+        ></app-post-list>
       </div>
     </div>
   </div>
-
-  <div id="content" class="timeline">
-    <div class="post-container">
-      <app-post-list
-        [pageId]="pageId"
-        [isLoading]="isLoadingPosts"
-        [isCommentVisible]="true"
-        [posts]="timeline"
-      ></app-post-list>
-    </div>
-  </div>
-</div>
 </div>

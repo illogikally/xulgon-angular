@@ -3,7 +3,7 @@ import {AfterViewInit, Component, ElementRef, Host, HostListener, Input, OnDestr
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {from, fromEvent, Observable, ReplaySubject, Subject} from 'rxjs';
-import { filter, last, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, last, skip, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {MessageService} from '../../share/message.service';
 import {Post} from '../../post/post';
@@ -33,16 +33,18 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
-  private detached$ = this.messageService.profileComponentDetached$.pipe(
+  private onDetach$ = this.profileService.onDetach$.pipe(
     filter(id => id == this.pageId)
   );
 
-  private attached$ = this.messageService.profileComponentAttached$.pipe(
+  private onAttached$ = this.profileService.onAttach$.pipe(
     filter(id => id == this.pageId)
   );
+  private onWindowResize$ = fromEvent(window, 'resize').pipe(takeUntil(this.onDetach$));
 
   constructor(
     private renderer: Renderer2,
+    private profileService: ProfileService,
     private title   : Title,
     private messageService: MessageService,
     private location: Location,
@@ -64,18 +66,18 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
   }
 
   onDetach() {
-    this.messageService.profileComponentDetached$.next(this.pageId);
+    this.profileService.onDetach$.next(this.pageId);
   }
 
   onAttach() {
-    this.messageService.profileComponentAttached$.next(this.pageId);
+    this.profileService.onAttach$.next(this.pageId);
   }
 
   ngOnInit(): void {
 
     this.configureStickySidebar();
-    this.configureLoadOnScroll();
-    this.messageService.profileComponentAttached$.next(this.pageId);
+    this.setupLoadPostOnScroll();
+    this.profileService.onAttach$.next(this.pageId);
 
     this.initialHide = false;
 
@@ -90,16 +92,18 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
 
 
   configureStickySidebar() {
+    this.setupWindowResizeListener();
+
     const actionMenu = document.querySelector<HTMLElement>('.actions-menu-container')!;
     const MARGIN = 17;
     const NAVBAR_HEIGHT = 56;
     const FIXED_TOP = NAVBAR_HEIGHT + actionMenu.offsetHeight
 
-    const detached$ = this.messageService.profileComponentDetached$.pipe(
-      filter(id => id == this.pageId)
-    );
+    // const detached$ = this.messageService.profileComponentDetached$.pipe(
+    //   filter(id => id == this.pageId)
+    // );
 
-    detached$.subscribe(() => {
+    this.onDetach$.subscribe(() => {
       this.sidebarCss('position', 'relative');
       this.sidebarCss('top'     , '');
       this.sidebarCss('left'    , '');
@@ -109,15 +113,16 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
     const PARENT = this.sidebar.nativeElement;
 
     let oldY = window.scrollY;
-    this.messageService.profileComponentAttached$.pipe(
-      filter(id => id == this.pageId),
-      switchMap(() => fromEvent(window, 'scroll').pipe(takeUntil(detached$)))
+    this.onAttached$.pipe(
+      switchMap(() => fromEvent(window, 'scroll').pipe(takeUntil(this.onDetach$)))
     ).subscribe(() => {
-
+      
       const SIDEBAR_RECT = SIDEBAR.getBoundingClientRect();
       const PARENT_RECT = PARENT.getBoundingClientRect();
+      const SIDEBAR_WIDTH = PARENT.offsetWidth;
 
       const SPEED = (window.scrollY - oldY)
+          
       if (SPEED < 0) { // Scroll up
         const mainContentY = window.scrollY + PARENT_RECT.top;
 
@@ -126,8 +131,9 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
           && SIDEBAR_RECT.top <= PARENT_RECT.top
         ) {
           this.sidebarCss('top'     , '');
-          this.sidebarCss('left'    , '');
-          this.sidebarCss('position', 'relative');
+          this.sidebarCss('left'    , '0px');
+          this.sidebarCss('position', 'static');
+          this.sidebarCss('width', 'auto');
         }
 
         else if (
@@ -136,7 +142,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
         ) {
           const top = SIDEBAR_RECT.top - PARENT_RECT.top;
           this.sidebarCss('top'     , top + 'px');
-          this.sidebarCss('left'    , 0 + 'px');
+          this.sidebarCss('left'    , '0px');
           this.sidebarCss('position', 'relative');
         }
 
@@ -149,7 +155,9 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
           this.sidebarCss('top'     , FIXED_TOP + MARGIN + 'px');
           this.sidebarCss('left'    , PARENT_RECT.left + 'px');
         }
-      } else { // Scroll down
+      } else if (window.scrollY > PARENT_RECT.top) { // Prevent on page load
+        // Scroll down
+
         if (
           SIDEBAR.style.position === 'fixed'
           && SIDEBAR_RECT.bottom > window.innerHeight
@@ -159,6 +167,7 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
           this.sidebarCss('position', 'relative');
           this.sidebarCss('top'     , top + 'px');
           this.sidebarCss('left'    , '');
+          this.sidebarCss('width', SIDEBAR_WIDTH + 'px');
         }
 
         else if (
@@ -168,10 +177,11 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
           && SIDEBAR.offsetHeight < PARENT.offsetHeight
         ) {
           const top =  window.innerHeight - SIDEBAR.offsetHeight - MARGIN;
-          this.sidebarCss('width'   , SIDEBAR.offsetWidth + 'px');
+          this.sidebarCss('width'   , SIDEBAR_WIDTH + 'px');
           this.sidebarCss('top'     , top + 'px');
           this.sidebarCss('left'    , PARENT_RECT.left + 'px');
           this.sidebarCss('position', 'fixed');
+          
         }
 
         else if (
@@ -179,12 +189,13 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
           && SIDEBAR.offsetHeight <= window.innerHeight - FIXED_TOP - MARGIN*2
           && SIDEBAR_RECT.top     <= FIXED_TOP + MARGIN
         ) {
-          this.sidebarCss('width'   , SIDEBAR.offsetWidth + 'px');
+          this.sidebarCss('width'   , SIDEBAR_WIDTH + 'px');
           this.sidebarCss('top'     , FIXED_TOP + MARGIN + 'px');
           this.sidebarCss('left'    , PARENT_RECT.left + 'px');
           this.sidebarCss('position', 'fixed');
         }
       }
+      
       oldY = window.scrollY;
     });
   }
@@ -216,9 +227,37 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
     }
   }
 
-  configureLoadOnScroll() {
-    this.attached$.pipe(
-      switchMap(() => fromEvent(window, 'scroll').pipe(takeUntil(this.detached$)))
+  setupWindowResizeListener() {
+    let previousWidth = window.innerWidth;
+    this.onAttached$.pipe(
+      switchMap(() => this.onWindowResize$)
+    ).subscribe((event: any) => {
+      const currentWidth = event.target.innerWidth;
+      if (currentWidth < 900 && previousWidth >= 900) {
+        this.sidebarCss('width', 'auto');
+        this.sidebarCss('position', 'static');
+      }
+
+      if (currentWidth >= 900 && previousWidth < 900) {
+        console.log('scrolled');
+        window.scrollBy(0, 1);
+        
+      }
+
+      const parentLeft = this.sidebar.nativeElement.getBoundingClientRect().left;
+      const sidebarPosition = this.sidebarInner.nativeElement.style.position;
+      if (sidebarPosition == 'fixed') {
+        this.sidebarCss('left', parentLeft + 'px');
+      }
+      previousWidth = currentWidth;
+    });
+  }
+
+  setupLoadPostOnScroll() {
+    this.onAttached$.pipe(
+      switchMap(() => fromEvent(window, 'scroll')
+        .pipe(takeUntil(this.onDetach$))
+      )
     ).subscribe(() => {
       if (
         window.scrollY >= document.body.scrollHeight - 1.2*window.innerHeight
@@ -228,13 +267,5 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
         this.getPosts();
       }
     })
-
   }
-
-  updateSticky = new Subject<boolean>();
-
-  updateMethod() {
-    this.updateSticky.next(true);
-  }
-
 }

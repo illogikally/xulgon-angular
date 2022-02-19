@@ -47,7 +47,6 @@ export class FriendRequestItemComponent implements OnInit {
   acceptRequest(): void {
     this.http.post(`http://localhost:8080/api/users/${this.request.requesterId}/friends`, {})
       .subscribe(_ => {
-        this.messageService.changeFriendshipStatus('FRIEND');
         this.onDeleteRequest.emit(this.request);
       })
   }

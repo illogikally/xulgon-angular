@@ -1,5 +1,8 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
+import { ThisReceiver } from '@angular/compiler';
+import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
 import * as Color from 'color';
+import { Subject } from 'rxjs';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-button',
@@ -20,10 +23,15 @@ export class ButtonComponent implements OnInit {
   @Input() optionsAlignment = 'CENTER'
 
   @ViewChild('inner', {static: true}) inner!: ElementRef;
+  @ViewChild('options', {static: false}) options!: ElementRef;
+  @ViewChild('self') self!: ElementRef;
 
   isOptionsVisible = false;
+  optionSwitch = new Subject<any>();
+
   constructor(
     private renderer: Renderer2,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -64,27 +72,29 @@ export class ButtonComponent implements OnInit {
     }
   }
 
-  get optionsStyle() {
-    let style = {};
-    switch (this.optionsAlignment) {
-      case 'LEFT': style = { left: '0' }; break;
+  // get optionsStyle() {
+  //   let style = {};
+  //   switch (this.optionsAlignment) {
+  //     case 'LEFT': style = { left: '0' }; break;
 
-      case 'CENTER': 
-        style = {
-          left: '50%',
-          transform: 'translateX(-50%)'
-        };
-        break;
+  //     case 'CENTER': 
+  //       style = {
+  //         left: '50%',
+  //         transform: 'translateX(-50%)'
+  //       };
+  //       break;
 
-      case 'RIGHT': style = { right: '0' }; break;
-    }
-    return style;
-  }
+  //     case 'RIGHT': style = { right: '0' }; break;
+  //   }
+  //   return style;
+  // }
 
   toggleOptionsVisibility() {
+    this.optionSwitch.next({
+      target: this.self.nativeElement
+    });
     if (this.hasOptions) {
       this.isOptionsVisible = !this.isOptionsVisible;
     }
   }
-
 }

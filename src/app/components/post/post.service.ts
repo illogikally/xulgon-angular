@@ -29,4 +29,8 @@ export class PostService {
   getPost(postId: number): Observable<Post> {
     return this.http.get<Post>(`${this.baseApiUrl}/posts/${postId}`);
   }
+
+  createPost(data: FormData): Observable<Post> {
+    return this.http.post<Post>("http://localhost:8080/api/posts", data);
+  }
 }

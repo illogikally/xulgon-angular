@@ -41,14 +41,15 @@ class="user-ref-popup">
       </app-button>
 
       <app-friendship-button
+      id="friendship-button"
       [userId]="userDto?.id || -1"
       [friendshipStatus]="userDto?.friendshipStatus || ''"
       [userName]="userDto?.username || ''"
       ></app-friendship-button>
       
       <app-button
-      [hasOptions]="true"
-      >
+      id="more-actions-button"
+      [hasOptions]="true">
         <div button>
           <div>
             <i class='bx bx-dots-horizontal-rounded'></i>

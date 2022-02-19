@@ -1,10 +1,22 @@
 @import "src/styles";
 
+.container {
+  display: flex;
+  justify-content: center;
+}
+
 .content {
   width: 892px;
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: 1fr 515px;
   grid-gap: 17px;
+
+  @media screen and (max-width: 900px){
+    display: flex;
+    flex-direction: column;
+    max-width: 515px;
+    width: 100%;
+  }
 
   .sidebar-container {
     font-weight: 500;
@@ -12,7 +24,6 @@
 
   .sidebar {
     font-weight: 500;
-    width: 360px;
   }
   .sidebar__inner {
     display: flex;
@@ -86,10 +97,6 @@
       }
     }
   }
-
-  .timeline {
-    // flex-grow: 1;
-  }
 }
 
 .sidebar {
@@ -97,6 +104,5 @@
 }
 
 .sidebar__inner {
-  box-sizing: border-box;
   will-change: position, transform;
 }

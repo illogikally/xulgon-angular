@@ -5,13 +5,16 @@ import {AuthenticationService} from '../../authentication/authentication.service
 import {MessageService} from '../../share/message.service';
 import {GroupResponse} from '../../group/group-response';
 import {Post} from '../post';
+import { Observable, Subject } from 'rxjs';
+import { PostService } from '../post.service';
+import { ProfileService } from '../../profile/profile.service';
 
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.scss']
 })
-export class CreatePostComponent implements OnDestroy, OnInit {
+export class CreatePostComponent implements OnInit {
 
   photos: any[] = [];
   files: Blob[] = [];
@@ -27,32 +30,34 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   textAreaDefaultHeight!: number;
 
   @Input() groupResponse!: GroupResponse;
-
-  @Output() closeMe: EventEmitter<void> = new EventEmitter();
+  @Input() open$!: Subject<any>;
 
   @ViewChild('privacyBtn') privacyBtn!: ElementRef;
   @ViewChild('textArea', {static: true}) textArea!: ElementRef;
+  // @ViewChild('self', {static: true}) self!: ElementRef;
 
   constructor(
     private http: HttpClient,
+    private self: ElementRef,
     private messageService: MessageService,
+    private postService: PostService,
+    private profileService: ProfileService,
     private renderer: Renderer2,
     private fb: FormBuilder,
     private authenticationService: AuthenticationService
   ) {
   }
 
-  ngOnDestroy(): void {
-    this.renderer.setStyle(document.body, 'position', 'relative');
-  }
-
   ngOnInit(): void {
-    this.renderer.setStyle(document.body, 'position', 'fixed');
-
     this.textAreaDefaultHeight = this.textArea.nativeElement.style.height;
     this.postForm = this.fb.group({
       textarea: [''],
       fileInput: ['']
+    });
+
+    this.open$.subscribe(() => {
+      console.log('???');
+      this.show();
     });
   }
 
@@ -79,52 +84,58 @@ export class CreatePostComponent implements OnDestroy, OnInit {
   }
 
   autoGrow(event: any) {
-    console.log('values changed');
     event.target.style.height = 'auto';
     event.target.style.height = event.target.scrollHeight + "px";
   }
 
   submit(): void {
-    let formData = new FormData();
+    this.hide();
+    let data = new FormData();
 
-    const targetPage = this.groupResponse ?
-      this.groupResponse.id : this.authenticationService.getProfileId();
+    const targetPage = 
+      this.groupResponse 
+      ? this.groupResponse.id 
+      : this.authenticationService.getProfileId();
 
-    this.privacy = !this.groupResponse ? this.privacy
-      : this.groupResponse.isPrivate ? 'GROUP' : 'PUBLIC';
+    this.privacy = 
+      !this.groupResponse 
+      ? this.privacy
+      : this.groupResponse.isPrivate 
+        ? 'GROUP' 
+        : 'PUBLIC';
 
     let postRequest = new Blob([JSON.stringify({
       pageId: targetPage,
       privacy: this.privacy,
       body: this.postForm.get('textarea')?.value
     })], {type: 'application/json'});
-    formData.append('postRequest', postRequest);
+    data.append('postRequest', postRequest);
 
     let photoRequests: any[] = []
     this.files.forEach((v, i) => {
-      photoRequests.push({privacy: this.privacy, widthHeightRatio: this.sizeRatios[i]});
-      formData.append('photos', v);
+      photoRequests.push({
+        privacy: this.privacy, 
+        widthHeightRatio: this.sizeRatios[i]
+      });
+      data.append('photos', v);
     });
 
     if (this.files.length == 0) {
-      formData.append('photos', new Blob([]));
+      data.append('photos', new Blob([]));
     }
-    console.log(formData.get('photos'));
 
-    let photoRequestBlob = new Blob([JSON.stringify(photoRequests)], {type: 'application/json'});
-    formData.append('photoRequest', photoRequestBlob);
-    this.http.post<Post>("http://localhost:8080/api/posts", formData).subscribe(resp => {
-      this.messageService.sendCreatedPost(resp);
+    let photoRequestBlob = new Blob(
+      [JSON.stringify(photoRequests)],
+      {type: 'application/json'}
+    );
+    data.append('photoRequest', photoRequestBlob);
+
+    this.postService.createPost(data).subscribe(post => {
+      this.profileService.onPostCreate$.next(post);
     });
-
-    this.closeMe.emit();
   }
 
-  closeSelf(): void {
-    this.closeMe.emit();
-  }
-
-  setPrivacy(privacy: string): void {
+  setPrivacy(privacy: string) {
     this.privacy = privacy;
     this.isPrivacyOptsVisible = false;
   }
@@ -133,13 +144,27 @@ export class CreatePostComponent implements OnDestroy, OnInit {
     this.isPrivacyOptsVisible = !this.isPrivacyOptsVisible;
   }
 
-  clickOutsidePrivacyOpts(): void {
+  clickOutsidePrivacyOpts() {
     this.isPrivacyOptsVisible = false;
   }
 
-  abort(): void {
+  abort() {
     this.files = [];
     this.sizeRatios = [];
     this.photos = [];
+  }
+
+  show() {
+    this.renderer.setStyle(this.self.nativeElement, 'visibility', 'visible');
+    this.renderer.setStyle(this.self.nativeElement, 'top', '0px');
+    this.renderer.setStyle(document.body, 'top', -window.scrollY + 'px');
+    this.renderer.setStyle(document.body, 'position', 'fixed');
+  }
+
+  hide() {
+    const top = -parseInt(document.body.style.top);
+    this.renderer.setStyle(this.self.nativeElement, 'visibility', 'hidden');
+    this.renderer.removeStyle(document.body, 'position');
+    window.scrollTo({top: top});
   }
 }

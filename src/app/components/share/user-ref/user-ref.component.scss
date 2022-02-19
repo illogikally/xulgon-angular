@@ -4,16 +4,18 @@
   display: block;
   @extend %fz;
 }
+
 .user-ref-container {
   position: relative;
+  user-select: none;
   cursor: pointer;
   @extend %fz;
   display: inline-block;
 }
 
 .user-ref-a {
-  display: inline-block;
   position: relative;
+  display: block;
   cursor: pointer;
   z-index: 1;
 

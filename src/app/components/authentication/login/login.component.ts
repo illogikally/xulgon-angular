@@ -106,7 +106,10 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       ],
       password: [
         '',
-        [Validators.required, Validators.minLength(6)]
+        [
+          Validators.required, 
+          Validators.minLength(6),
+        ]
       ],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],

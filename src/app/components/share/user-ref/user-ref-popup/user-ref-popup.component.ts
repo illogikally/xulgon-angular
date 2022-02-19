@@ -108,7 +108,9 @@ export class UserRefPopupComponent implements OnInit {
     const targetRect = target.getBoundingClientRect();
     const self = this.self.nativeElement;
     
-    const left = targetRect.left + target.offsetWidth/2 - self.offsetWidth/2;
+    let left = targetRect.left + target.offsetWidth/2 - self.offsetWidth/2;
+    left = left < 0 ? 0 : left;
+    
 
     const isInTopHalf = targetRect.top < window.innerHeight / 2;
     let top = isInTopHalf 
@@ -123,8 +125,7 @@ export class UserRefPopupComponent implements OnInit {
   hide(): void {
     this.setSelfStyle('visibility', 'hidden');
     this.setSelfStyle('opacity', '0');
-    this.moreActionOptsVisible = false;
-    this.friendOptsVisible = false;
+    document.body.click();
   }
 
   private setSelfStyle(style: string, value: string) {

@@ -7,10 +7,11 @@ import {UserService} from '../share/user.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {Location} from '@angular/common';
 import {Title} from '@angular/platform-browser';
-import {takeUntil} from 'rxjs/operators';
-import {ReplaySubject, Subject} from 'rxjs';
+import {switchMap, takeUntil} from 'rxjs/operators';
+import {fromEvent, ReplaySubject, Subject} from 'rxjs';
 import {Post} from '../post/post';
 import {PostService} from '../post/post.service';
+import { toBase64String } from '@angular/compiler/src/output/source_map';
 
 @Component({
   selector: 'app-profile',
@@ -21,29 +22,43 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() profileId!: number;
 
-  @ViewChild('sidebar', {static: true}) sidebar!: ElementRef;
+  @ViewChild('sidebar', {static: true}) sidebarElement!: ElementRef;
   @ViewChild('replyFriendRequest') replyRequestBtn!: ElementRef;
   @ViewChild('friend') friendBtn!: ElementRef;
-  @ViewChild('actionMenu', {static: true}) actionMenu!: ElementRef;
+  @ViewChild('actionMenu', {static: true}) tabBarElement!: ElementRef;
 
-  profileLoaded: EventEmitter<UserProfile> = new EventEmitter();
+  @ViewChild('buttons') buttonsElement!: ElementRef;
+  @ViewChild('tabs') tabsElement!: ElementRef;
+  @ViewChild('tabsWrapper') tabsWrapperElement!: ElementRef;
+  @ViewChild('moreTabs') moreTabsElement!: ElementRef;
 
   private destroyed$ = new ReplaySubject<boolean>(1);
+
+  profileLoaded = new EventEmitter<UserProfile>();
   isUpdateAvatar = false;
-  loggedInUserProfileId: number;
-  userProfile!: UserProfile;
-  loadedTabs: Set<string> = new Set();
-  currentTab = '';
-  pageNotFound!: boolean;
-  showReplyRequestOpts = false;
+  principalId: number;
+  pageNotFound = false;
   isFriendOptsVisible = false;
   moreActionOptsVisible = false;
-
   profileHeader: any;
-  timeline: Post[] = new Array<Post>();
+  userProfile!: UserProfile;
 
+  isTabBarSticky = false;
+  isMoreTabsVisible = false;
 
-  isTabMenuSticky = false;
+  profileTabs = [
+    {name: 'Bài viết', path: '', distance: NaN, element: undefined},
+    {name: 'Giới thiệu', path: 'about', distance: NaN, element: undefined},
+    {name: 'Bạn bè', path: 'friends', distance: NaN, element: undefined},
+    {name: 'Ảnh', path: 'photos', distance: NaN, element: undefined},
+    {name: 'Bài viết', path: '', distance: NaN, element: undefined},
+    // {name: 'Giới thiệu', path: 'about', distance: NaN, element: undefined},
+    // {name: 'Bạn bè', path: 'friends', distance: NaN, element: undefined},
+    // {name: 'Ảnh', path: 'photos', distance: NaN, element: undefined},
+  ]
+  visibleTabs = this.profileTabs;
+  hiddenTabs: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private postService: PostService,
@@ -56,65 +71,22 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     private location: Location,
     private messageService: MessageService
   ) {
-    this.loggedInUserProfileId = authService.getProfileId();
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next(true);
-    this.destroyed$.complete();
-    this.renderer.setStyle(document.body, 'position', '');
-  }
-
-  onAttach(): void {
-    this.title.setTitle(this.userProfile.fullName);
-    this.messageService.profileComponentAttached$.next(this.userProfile.id);
-  }
-
-  onDetach() {
-    if (this.userProfile) {
-      this.messageService.profileComponentDetached$.next(this.userProfile.id);
-    }
-  }
-
-  ngAfterViewInit(): void {
-    const el: HTMLElement = this.actionMenu.nativeElement;
-    const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-        if (entries[0].isIntersecting) {
-        this.isTabMenuSticky = false;
-        // this.renderer.removeStyle(el, 'z-index');
-      } else  {
-        this.isTabMenuSticky = true;
-        // this.renderer.setStyle(el, 'z-index', '2');
-      }
-    },
-    {
-      rootMargin: "-56px 0px 0px 0px",
-      threshold: [1]
-    });
-    observer.observe(el);
+    this.principalId = authService.getProfileId();
   }
 
   ngOnInit(): void {
-    // this.router.events
-    // .pipe(takeUntil(this.destroyed$))
-    // .subscribe(_ => {
-    //   this.initDefaultTab();
-    // });
-
     this.profileHeader = this.route.snapshot.data.header;
-    // if (!actionMenu) return;
-
 
     this.messageService.updateCoverPhoto
       .pipe(takeUntil(this.destroyed$))
       .subscribe(url => {
-        this.userProfile.coverPhotoUrl = url;
+        this.profileHeader.coverPhotoUrl = url;
       });
 
     this.messageService.updateAvatar
       .pipe(takeUntil(this.destroyed$))
       .subscribe(url => {
-        this.userProfile.avatar.url = url;
+        this.profileHeader.avatar.url = url;
       });
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -124,68 +96,104 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.pageError();
     }
-    // this.activateRoute.params
-    // .pipe(takeUntil(this.destroyed$))
-    // .subscribe(params => {
-    //   const id = params['id'];
-    //   if (!id || !/\d+/g.test(id)) {
-    //     this.pageError();
-    //     return;
-    //   }
 
-    //   this.isBlocked(id);
-    //   this.loadProfile(id);
-    // });
-
-    // this.message$.onFriendRequestChange()
-    // .pipe(takeUntil(this.destroyed$))
-    // .subscribe(profileId => {
-    //   console.log('friend request chagne');
-
-    //   this.loadProfile(profileId);
-    // });
-
-    this.messageService.onFriendshipStatusChange().subscribe(status => {
-      this.userProfile.friendshipStatus = status;
-    });
   }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+    this.renderer.setStyle(document.body, 'position', '');
+  }
+
+  onAttach(): void {
+    this.title.setTitle(this.profileHeader.profileName);
+    this.profileService.onAttach$.next(this.profileHeader.id);
+  }
+
+  onDetach() {
+    if (this.profileHeader) {
+      this.profileService.onDetach$.next(this.profileHeader.id);
+    }
+  }
+
+
+  ngAfterViewInit(): void {
+    this.onTabBarSticky();
+    this.saveTabSizes();
+
+    console.log(this.visibleTabs);
+    
+    this.configureOnTabBarResize();
+  }
+
+  configureOnTabBarResize() {
+    new ResizeObserver(() => {
+      if (
+        !this.tabsWrapperElement || 
+        !this.tabsElement 
+      ) return;
+
+      const wrapperElement = this.tabsWrapperElement.nativeElement;
+
+      if (this.visibleTabs.length > 0) {
+        let lastTab = this.visibleTabs[this.visibleTabs.length-1];
+      while (wrapperElement.offsetWidth < lastTab.distance + this.moreTabsElement.nativeElement.offsetWidth && this.visibleTabs) {
+        let pop = this.visibleTabs.pop();
+        if (pop) {
+          this.hiddenTabs.unshift(pop);
+        }
+        if (this.visibleTabs.length == 0) {
+          break;
+        }
+        lastTab = this.visibleTabs[this.visibleTabs.length-1];
+      }
+      }
+
+      if (this.hiddenTabs.length > 0) {
+        if (wrapperElement.offsetWidth > this.hiddenTabs[0].distance + this.moreTabsElement.nativeElement.offsetWidth) {
+          let shift = this.hiddenTabs.shift();
+          if (shift) {
+            this.visibleTabs.push(shift);
+          }
+        }
+      }
+    }).observe(this.tabsWrapperElement.nativeElement);
+  }
+
+  saveTabSizes() {
+    const tabs = this.tabsElement.nativeElement.children;
+    this.profileTabs[0].distance = tabs[0].offsetWidth;
+    this.profileTabs[0].element = tabs[0];
+    for (let i = 1; i < this.profileTabs.length; ++i) {
+      this.profileTabs[i].distance = tabs[i].offsetWidth + this.profileTabs[i-1].distance;
+      this.profileTabs[i].element = tabs[i];
+    }
+  }
+
+  onTabBarSticky() {
+    const menu: HTMLElement = this.tabBarElement.nativeElement;
+    const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting) {
+        this.isTabBarSticky = false;
+      } else  {
+        this.isTabBarSticky = true;
+      }
+    },
+    {
+      rootMargin: "-56px 0px 0px 0px",
+      threshold: [1]
+    });
+    observer.observe(menu);
+  }
+
 
   openChatBox(): void {
     this.messageService.openChatBox$.next({
-      id: this.userProfile.userId,
-      username: this.userProfile.fullName,
-      profileId: this.userProfile.id,
-      avatarUrl: this.userProfile.avatar.url
+      id: this.profileHeader.userId,
+      username: this.profileHeader.profileName,
+      profileId: this.profileHeader.id,
+      avatarUrl: this.profileHeader.avatar.url
     });
-  }
-
-  getTimeline(profileId: number): void {
-    // this.post$.getPostsByPageId(profileId).subscribe(posts => {
-    //   this.timeline = posts;
-    // });
-  }
-
-
-  getPosts(): void {
-  }
-
-  initDefaultTab(): void {
-    let tabs = ['friends', 'photos', 'about'];
-    for (let tab of tabs) {
-      if (this.setDefaultTab(tab)) return;
-    }
-    if (this.loadedTabs.size == 0) this.loadedTabs.add('');
-  }
-
-  setDefaultTab(tab: string): boolean {
-    let url = window.location.href;
-
-    if (new RegExp('.*?/\\d+?/?' + tab).test(url)) {
-      this.loadedTabs.add(tab);
-      this.currentTab = tab;
-      return true;
-    }
-    return false;
   }
 
   loadProfile(id: number): void {
@@ -207,44 +215,10 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.messageService.loadPostsByPageId(id);
   }
 
-
-
-  tab(tab: string): boolean {
-    let url = window.location.href;
-    if (!tab) return new RegExp('\\d+$').test(url);
-    return new RegExp(tab).test(url);
-  }
-
-  navigate(tab: string, event: Event): void {
-    this.router.navigate([tab],
-      {relativeTo: this.route});
-    // , skipLocationChange: true});
-
-    // tab = tab === './' ? '' : '/' + tab;
-    // this.location.go(`/${this.userProfile.id}${tab}`)
-    event.stopPropagation();
-  }
-
   pageError(): void {
     this.pageNotFound = true;
     const profile = document.querySelector<HTMLElement>('.user-profile')!;
     this.renderer.setStyle(profile, 'display', 'none');
-  }
-
-
-  onReplyFriendRequestClicked(): void {
-    this.showReplyRequestOpts = !this.showReplyRequestOpts;
-  }
-
-  closeReplyFriendRequestOpts(event: any) {
-    this.showReplyRequestOpts = false;
-  }
-
-  switchTab(event: any, tab: string): void {
-    event.preventDefault();
-    this.loadedTabs.add(tab);
-    this.currentTab = tab;
-    this.location.go(`${this.userProfile.id}/${tab}`);
   }
 
   showUpdateProfilePic(type: string): void {
@@ -269,11 +243,6 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       // if (isBlocked) this.pageError();
       this.pageNotFound = isBlocked;
     })
-  }
-
-  scrollToTop(event: any) {
-    event.preventDefault();
-    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
 }

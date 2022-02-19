@@ -6,6 +6,7 @@ import {ActivatedRoute} from '@angular/router';
 import {MessageService} from '../share/message.service';
 import {ReplaySubject} from 'rxjs';
 import {UserService} from '../share/user.service';
+import { ProfileService } from '../profile/profile.service';
 
 @Component({
   selector: 'app-post-list',
@@ -24,6 +25,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   constructor(
+    private profileService: ProfileService,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private messageService: MessageService,
@@ -43,33 +45,10 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.posts = this.posts?.filter(post => post.id != id);
       });
 
-    // this.message$.onLoadPostsByPageId()
-    // .pipe(takeUntil(this.destroyed$))
-    // .subscribe(id => {
-
-    //   if (id === undefined) return;
-    //   this.pageId = id;
-    //   this.loadPosts(id);
-    // });
-
-    this.messageService.onCreatedPost().subscribe(post => {
+    this.profileService.onPostCreate$.subscribe(post => {
       if (post.pageId == this.pageId) {
         this.posts?.unshift(post);
       }
-    });
-  }
-
-  loadPosts(pageId: number): void {
-    if (!pageId) return;
-
-    // this.post$.getPostsByPageId(pageId)
-    //   .subscribe(posts => {
-    //       this.posts = posts;
-    //       this.isLoadingPost = false;
-    //     },
-    //     error => {
-    //       this.isLoadingPost = false;
-    //     });
-
+    })
   }
 }

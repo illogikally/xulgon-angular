@@ -1,25 +1,37 @@
 @import 'src/styles.scss';
 
+$mediumView: 1250px;
+
 .navbar {
   display: flex;
   height: 56px;
+  box-sizing: border-box;
   width: 100%;
   top: 0;
   left: 0;
+  padding: 0 20px;
   position: fixed;
   z-index: 1000;
   background-color: #fff;
   box-shadow: 0 1px 2px #00000033;
 
+
+  @media screen and (max-width: $mediumView) {
+    .options {
+      .home-shortcut {
+        display: none;
+      }
+    }
+  }
+
   > div {
     height: 100%;
     width: 100%;
     display: flex;
-    padding: 0 30px;
     justify-content: space-between;
 
     > * {
-      flex-shrink: 0;
+      flex-shrink: 1;
     }
   }
 
@@ -27,6 +39,7 @@
     display: flex;
     width: 330px;
     height: 100%;
+
 
     .logo {
       @extend %fc;
@@ -38,24 +51,43 @@
 
     .search {
       @extend %fz;
-      padding: 10px 10px;
+      padding: 7px 0px;
       box-sizing: border-box;
 
-
       form {
-        @extend %fz;
-
         .input-group {
-          position: relative;
-          height: 100%;
+          position: absolute;
           display: flex;
+          z-index: 1;
           align-items: center;
+          // width: 250px;
+          height: 40px;
 
-          i {
-            font-size: 20px;
+          .icon-wrapper {
             position: absolute;
-            left: 10px;
+            left: 0px;
+            overflow: hidden;
+            top: 0px;
+            background-color: #f0f2f5;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            z-index: 1;
+            height: 40px;
 
+            .icon {
+              transition: 
+                transform .1s ease-in, 
+                opacity .05s, 
+                background-color .1s cubic-bezier(1,-1,1,-1);
+
+              i {
+                font-size: 20px;
+                left: 10px;
+              }
+            }
           }
 
           #search {
@@ -63,12 +95,37 @@
             box-sizing: border-box;
             font-size: 15px;
             padding: 0 15px;
-            padding-left: 35px;
+            padding-left: 40px;
             display: block;
+            width: 250px;
             outline: none;
+            left: 0px;
+            top: 0px;
+            position: absolute;
+            height: 40px;
+            transition: padding .1s ease-out;
             border: none;
             background-color: #f0f2f5;
             border-radius: 20px;
+            @media screen and (max-width: $mediumView) {
+              visibility: hidden;
+            }
+          }
+
+          &:focus-within {
+            .icon-wrapper {
+              z-index: -1;
+              background-color: transparent;
+              .icon {
+                transition: transform .1s ease-out, opacity .05s;
+                opacity: 0;
+                transform: translateX(-200%);
+              }
+            }
+
+            #search {
+              padding-left: 15px;
+            }
           }
         }
       }
@@ -82,6 +139,10 @@
     width: 400px;
     display: flex;
     color: #65676B;
+
+    @media screen and (max-width: 720px) {
+      display: none;
+    }
 
     a {
       @extend %fc;
@@ -109,6 +170,7 @@
     height: 100%;
     width: 350px;
     display: flex;
+    justify-content: right;
 
     .home-shortcut {
       flex-grow: 1;

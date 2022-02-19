@@ -32,7 +32,9 @@
     </div>
     <form [formGroup]="msgForm" (keyup.enter)="sendMessage()" class="input-bar">
       <input type="text" class="input" formControlName="input" placeholder="Aa">
-      <i class='bx bxs-send'></i>
+      <i 
+      (click)="sendMessage()"
+      class='bx bxs-send'></i>
     </form>
   </div>
 </div>

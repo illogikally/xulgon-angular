@@ -1,4 +1,6 @@
-<div class="button">
+<div 
+#self
+class="button">
   <div 
   #inner
   (click)="toggleOptionsVisibility()"
@@ -6,13 +8,20 @@
   class="button__inner">
     <ng-content select="[button]"></ng-content>
   </div>
-  <div 
+  <!-- <div 
   *ngIf="isOptionsVisible"
   [ngStyle]="optionsStyle"
+  #options
   class="button__options">
-    <ng-content select="[options]"></ng-content>
-  </div>
+  </div> -->
   <div 
   *ngIf="isOptionsVisible"
   class="triangle"></div>
+  <app-pop-up
+  *ngIf="isOptionsVisible"
+  #options
+  class="button__options"
+  [parent]="self">
+    <ng-content select="[options]"></ng-content>
+  </app-pop-up>
 </div>

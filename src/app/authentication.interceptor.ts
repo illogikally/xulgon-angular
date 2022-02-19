@@ -27,7 +27,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     const expiresAt = this.auth$.getExpiresAt();
     const current = new Date().getTime();
     
-    if (expiresAt - current < 10_000) {
+    if (expiresAt - current < 1e4) {
         return this.handleAuthErrors(req, next);
       }
 
