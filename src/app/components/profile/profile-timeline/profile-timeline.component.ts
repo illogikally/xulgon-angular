@@ -16,7 +16,7 @@ import {UserProfile} from '../user-profile';
   templateUrl: './profile-timeline.component.html',
   styleUrls: ['./profile-timeline.component.scss']
 })
-export class ProfileTimelineComponent implements OnInit, OnDestroy {
+export class ProfileTimelineComponent implements OnInit, AfterViewInit {
 
   @Input() userProfile!: UserProfile;
 
@@ -31,16 +31,13 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
   initialHide    = true;
   isLoadedAll    = false;
 
-  private destroyed$ = new ReplaySubject<boolean>(1);
-
-  private onDetach$ = this.profileService.onDetach$.pipe(
+  onDetach$ = this.profileService.onDetach$.pipe(
     filter(id => id == this.pageId)
   );
 
-  private onAttached$ = this.profileService.onAttach$.pipe(
+  onAttached$ = this.profileService.onAttach$.pipe(
     filter(id => id == this.pageId)
   );
-  private onWindowResize$ = fromEvent(window, 'resize').pipe(takeUntil(this.onDetach$));
 
   constructor(
     private renderer: Renderer2,
@@ -60,11 +57,6 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy() {
-    // this.destroyed$.next(true);
-    // this.destroyed$.complete()
-  }
-
   onDetach() {
     this.profileService.onDetach$.next(this.pageId);
   }
@@ -75,9 +67,8 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.configureStickySidebar();
+    // this.configureStickySidebar();
     this.setupLoadPostOnScroll();
-    this.profileService.onAttach$.next(this.pageId);
 
     this.initialHide = false;
 
@@ -89,123 +80,9 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
         })
     }
   }
-
-
-  configureStickySidebar() {
-    this.setupWindowResizeListener();
-
-    const actionMenu = document.querySelector<HTMLElement>('.actions-menu-container')!;
-    const MARGIN = 17;
-    const NAVBAR_HEIGHT = 56;
-    const FIXED_TOP = NAVBAR_HEIGHT + actionMenu.offsetHeight
-
-    // const detached$ = this.messageService.profileComponentDetached$.pipe(
-    //   filter(id => id == this.pageId)
-    // );
-
-    this.onDetach$.subscribe(() => {
-      this.sidebarCss('position', 'relative');
-      this.sidebarCss('top'     , '');
-      this.sidebarCss('left'    , '');
-    });
-
-    const SIDEBAR = this.sidebarInner.nativeElement;
-    const PARENT = this.sidebar.nativeElement;
-
-    let oldY = window.scrollY;
-    this.onAttached$.pipe(
-      switchMap(() => fromEvent(window, 'scroll').pipe(takeUntil(this.onDetach$)))
-    ).subscribe(() => {
-      
-      const SIDEBAR_RECT = SIDEBAR.getBoundingClientRect();
-      const PARENT_RECT = PARENT.getBoundingClientRect();
-      const SIDEBAR_WIDTH = PARENT.offsetWidth;
-
-      const SPEED = (window.scrollY - oldY)
-          
-      if (SPEED < 0) { // Scroll up
-        const mainContentY = window.scrollY + PARENT_RECT.top;
-
-        if (
-          SIDEBAR.style.position === 'fixed'
-          && SIDEBAR_RECT.top <= PARENT_RECT.top
-        ) {
-          this.sidebarCss('top'     , '');
-          this.sidebarCss('left'    , '0px');
-          this.sidebarCss('position', 'static');
-          this.sidebarCss('width', 'auto');
-        }
-
-        else if (
-          SIDEBAR.style.position === 'fixed'
-          && SIDEBAR_RECT.top    < FIXED_TOP + MARGIN
-        ) {
-          const top = SIDEBAR_RECT.top - PARENT_RECT.top;
-          this.sidebarCss('top'     , top + 'px');
-          this.sidebarCss('left'    , '0px');
-          this.sidebarCss('position', 'relative');
-        }
-
-        else if (
-          SIDEBAR.style.position !== 'fixed'
-          && SIDEBAR_RECT.top - SPEED  > FIXED_TOP + MARGIN
-          && SIDEBAR_RECT.top > PARENT_RECT.top
-        ) {
-          this.sidebarCss('position', 'fixed');
-          this.sidebarCss('top'     , FIXED_TOP + MARGIN + 'px');
-          this.sidebarCss('left'    , PARENT_RECT.left + 'px');
-        }
-      } else if (window.scrollY > PARENT_RECT.top) { // Prevent on page load
-        // Scroll down
-
-        if (
-          SIDEBAR.style.position === 'fixed'
-          && SIDEBAR_RECT.bottom > window.innerHeight
-        ) {
-
-          const top = SIDEBAR_RECT.top - PARENT_RECT.top;
-          this.sidebarCss('position', 'relative');
-          this.sidebarCss('top'     , top + 'px');
-          this.sidebarCss('left'    , '');
-          this.sidebarCss('width', SIDEBAR_WIDTH + 'px');
-        }
-
-        else if (
-          SIDEBAR.style.position  !== 'fixed'
-          && SIDEBAR_RECT.bottom - SPEED  < window.innerHeight - MARGIN
-          && SIDEBAR.offsetHeight > window.innerHeight - FIXED_TOP - MARGIN*2
-          && SIDEBAR.offsetHeight < PARENT.offsetHeight
-        ) {
-          const top =  window.innerHeight - SIDEBAR.offsetHeight - MARGIN;
-          this.sidebarCss('width'   , SIDEBAR_WIDTH + 'px');
-          this.sidebarCss('top'     , top + 'px');
-          this.sidebarCss('left'    , PARENT_RECT.left + 'px');
-          this.sidebarCss('position', 'fixed');
-          
-        }
-
-        else if (
-          SIDEBAR.style.position  !== 'fixed'
-          && SIDEBAR.offsetHeight <= window.innerHeight - FIXED_TOP - MARGIN*2
-          && SIDEBAR_RECT.top     <= FIXED_TOP + MARGIN
-        ) {
-          this.sidebarCss('width'   , SIDEBAR_WIDTH + 'px');
-          this.sidebarCss('top'     , FIXED_TOP + MARGIN + 'px');
-          this.sidebarCss('left'    , PARENT_RECT.left + 'px');
-          this.sidebarCss('position', 'fixed');
-        }
-      }
-      
-      oldY = window.scrollY;
-    });
-  }
-
-  sidebarCss(style: string, value: string) {
-    this.renderer.setStyle(this.sidebarInner.nativeElement, style, value);
-  }
-
-  sidebarRemove(style: string) {
-    this.renderer.removeStyle(this.sidebar, style);
+  
+  ngAfterViewInit(): void {
+    this.profileService.onAttach$.next(this.pageId);
   }
 
 
@@ -225,32 +102,6 @@ export class ProfileTimelineComponent implements OnInit, OnDestroy {
           }
         });
     }
-  }
-
-  setupWindowResizeListener() {
-    let previousWidth = window.innerWidth;
-    this.onAttached$.pipe(
-      switchMap(() => this.onWindowResize$)
-    ).subscribe((event: any) => {
-      const currentWidth = event.target.innerWidth;
-      if (currentWidth < 900 && previousWidth >= 900) {
-        this.sidebarCss('width', 'auto');
-        this.sidebarCss('position', 'static');
-      }
-
-      if (currentWidth >= 900 && previousWidth < 900) {
-        console.log('scrolled');
-        window.scrollBy(0, 1);
-        
-      }
-
-      const parentLeft = this.sidebar.nativeElement.getBoundingClientRect().left;
-      const sidebarPosition = this.sidebarInner.nativeElement.style.position;
-      if (sidebarPosition == 'fixed') {
-        this.sidebarCss('left', parentLeft + 'px');
-      }
-      previousWidth = currentWidth;
-    });
   }
 
   setupLoadPostOnScroll() {

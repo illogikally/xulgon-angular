@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, NgZone, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProfileService} from './profile.service';
 import {UserProfile} from './user-profile';
@@ -45,6 +45,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   isTabBarSticky = false;
   isMoreTabsVisible = false;
+  isTabBarConfigured = false;
 
   profileTabs = [
     {name: 'Bài viết', path: '', distance: NaN, element: undefined},
@@ -52,9 +53,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     {name: 'Bạn bè', path: 'friends', distance: NaN, element: undefined},
     {name: 'Ảnh', path: 'photos', distance: NaN, element: undefined},
     {name: 'Bài viết', path: '', distance: NaN, element: undefined},
-    // {name: 'Giới thiệu', path: 'about', distance: NaN, element: undefined},
-    // {name: 'Bạn bè', path: 'friends', distance: NaN, element: undefined},
-    // {name: 'Ảnh', path: 'photos', distance: NaN, element: undefined},
+    {name: 'Giới thiệu', path: 'about', distance: NaN, element: undefined},
+    {name: 'Bạn bè', path: 'friends', distance: NaN, element: undefined},
+    {name: 'Ảnh', path: 'photos', distance: NaN, element: undefined},
   ]
   visibleTabs = this.profileTabs;
   hiddenTabs: any[] = [];
@@ -66,7 +67,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     private userService: UserService,
     private profileService: ProfileService,
     private router: Router,
+    private ngZone: NgZone,
     private authService: AuthenticationService,
+    private changeDetector: ChangeDetectorRef,
     private title: Title,
     private location: Location,
     private messageService: MessageService
@@ -121,42 +124,44 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onTabBarSticky();
     this.saveTabSizes();
 
-    console.log(this.visibleTabs);
-    
     this.configureOnTabBarResize();
   }
 
   configureOnTabBarResize() {
+    const wrapperElement = this.tabsWrapperElement.nativeElement;
+    const moreTabsElementWidth = this.moreTabsElement.nativeElement.offsetWidth;
+    const tabsButtonsMargin = 60;
+    let isRunning = false;
     new ResizeObserver(() => {
       if (
+        isRunning || 
         !this.tabsWrapperElement || 
         !this.tabsElement 
       ) return;
+      isRunning = true;
 
-      const wrapperElement = this.tabsWrapperElement.nativeElement;
+      this.ngZone.run(() => {
 
-      if (this.visibleTabs.length > 0) {
-        let lastTab = this.visibleTabs[this.visibleTabs.length-1];
-      while (wrapperElement.offsetWidth < lastTab.distance + this.moreTabsElement.nativeElement.offsetWidth && this.visibleTabs) {
-        let pop = this.visibleTabs.pop();
-        if (pop) {
-          this.hiddenTabs.unshift(pop);
+        let [lastTab] = this.visibleTabs.slice(-1);
+        while (
+          lastTab && 
+          wrapperElement.offsetWidth - tabsButtonsMargin 
+            < lastTab.distance + moreTabsElementWidth
+        ) {
+          this.hiddenTabs.unshift(this.visibleTabs.pop());
+          [lastTab] = this.visibleTabs.slice(-1);
         }
-        if (this.visibleTabs.length == 0) {
-          break;
-        }
-        lastTab = this.visibleTabs[this.visibleTabs.length-1];
-      }
-      }
 
-      if (this.hiddenTabs.length > 0) {
-        if (wrapperElement.offsetWidth > this.hiddenTabs[0].distance + this.moreTabsElement.nativeElement.offsetWidth) {
-          let shift = this.hiddenTabs.shift();
-          if (shift) {
-            this.visibleTabs.push(shift);
-          }
+        if (
+          this.hiddenTabs[0] &&
+          wrapperElement.offsetWidth - tabsButtonsMargin 
+            > this.hiddenTabs[0].distance + moreTabsElementWidth
+        ) {
+          this.visibleTabs.push(this.hiddenTabs.shift());
         }
-      }
+        this.isTabBarConfigured = true;
+      });
+      isRunning = false;
     }).observe(this.tabsWrapperElement.nativeElement);
   }
 

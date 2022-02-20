@@ -51,7 +51,6 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 
 			if (shouldAttach) {
 				this.callHook(storedRoute.handle, 'onAttach');
-				console.log(route);
 				
 			} else {
 			}

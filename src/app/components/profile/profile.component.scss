@@ -186,7 +186,6 @@ $header-content-width: 940px;
     box-sizing: border-box;
     position: relative;
     margin: 0px 25px;
-    column-gap: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -206,7 +205,6 @@ $header-content-width: 940px;
 
         > * {
           display: flex;
-          // justify-content: center;
           flex-shrink: 0;
           align-items: center;
           padding: 5px 0;
@@ -260,6 +258,8 @@ $header-content-width: 940px;
   .profile-actions {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
+    // margin-left: 40px;
 
     & > :not(:last-child) {
       margin-right: 10px;
@@ -274,7 +274,9 @@ $header-content-width: 940px;
   justify-content: center;
 
   .content-container {
-    width: 892px;
+    max-width: 892px;
+    width: 100%;
+    margin: 0px 15px;
   }
 
 }

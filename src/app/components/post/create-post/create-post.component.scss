@@ -24,7 +24,8 @@
     position: relative;
     position: fixed;
     border-radius: 10px;
-    width: var(--post-width);
+    max-width: var(--post-width);
+    width: 100%;
 
     .post-title {
       border-bottom: 1px solid #00000033;

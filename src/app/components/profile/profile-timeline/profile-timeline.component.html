@@ -10,6 +10,11 @@
       <div 
       id="{{ pageId }}" 
       #sidebar__inner
+      StickySidebar
+      [sidebarInner]="sidebar__inner"
+      [parent]="sidebar"
+      [onAttach$]="onAttached$"
+      [onDetach$]="onDetach$"
       class="sidebar__inner">
         <div class="intro">
           <h3>Giới thiệu</h3>
