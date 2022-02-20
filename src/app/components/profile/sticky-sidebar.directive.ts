@@ -9,8 +9,8 @@ export class StickySidebarDirective implements OnInit {
 
   @Input() sidebarInner!: HTMLElement;
   @Input() parent!: HTMLElement;
-  @Input() onAttach$!: Observable<number>;
-  @Input() onDetach$!: Observable<number>;
+  @Input() onAttach$!: Observable<any>;
+  @Input() onDetach$!: Observable<any>;
 
   constructor(
     private renderer: Renderer2

@@ -1,6 +1,7 @@
 @import 'src/styles';
 
 a {
+  user-select: none;
   @extend %fz;
 
   display: block;

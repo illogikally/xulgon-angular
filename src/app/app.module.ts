@@ -74,6 +74,7 @@ import { FriendshipButtonComponent } from './components/profile/friendship-butto
 import { ConfirmDialogComponent } from './components/share/confirm-dialog/confirm-dialog.component';
 import { PopUpComponent } from './components/share/pop-up/pop-up.component';
 import { StickySidebarDirective } from './components/profile/sticky-sidebar.directive';
+import { TabBarComponent } from './components/profile/tab-bar/tab-bar.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { StickySidebarDirective } from './components/profile/sticky-sidebar.dire
     ConfirmDialogComponent,
     PopUpComponent,
     StickySidebarDirective,
+    TabBarComponent,
   ],
   imports: [
     FormsModule,

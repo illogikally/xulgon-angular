@@ -1,12 +1,11 @@
 <div class="user-profile">
-
   <div class="profile-header">
     <div class="flex-center">
       <div class="cover-avatar">
         <div class="cover">
-          <img [src]="profileHeader?.profileCoverUrl">
+          <img [src]="pageHeader.coverPhoto">
           <div
-          *ngIf="profileHeader?.id == principalId"
+          *ngIf="pageHeader?.id == principalId"
           (click)="showUpdateProfilePic('cover')"
           class="change-cover">
             <i class='bx bxs-camera'></i>
@@ -15,10 +14,10 @@
         </div>
         <div  class="avatar-container flex-center">
           <div class="avatar">
-            <app-photo [photo]="profileHeader?.avatar"></app-photo>
+            <app-photo [photo]="pageHeader?.avatar"></app-photo>
           </div>
           <div
-          *ngIf="profileHeader?.id == principalId"
+          *ngIf="pageHeader?.id == principalId"
           (click)="showUpdateProfilePic('avatar')"
           class="change-avatar">
             <i class='bx bxs-camera'></i>
@@ -29,136 +28,53 @@
     <div class="flex-center">
       <h1
         class="profile-name flex-center">
-        {{ profileHeader?.profileName }}
+        {{ pageHeader.name }}
       </h1>
     </div>
   </div>
-    <div 
-    #actionMenu class="actions-menu-container flex-center">
-      <div class="wrapper">
-        <div class="actions-menu">
-          <div *ngIf="isTabBarSticky" class="to-top">
-            <a 
-            routerLink="/{{ profileHeader?.id }}"
-            class="container">
-              <div class="content">
-                <div class="avatar-container">
-                  <div class="avatar">
-                    <img [src]="profileHeader?.avatar.url">
-                  </div>
-                </div>
-              
-                <div class="name">
-                  <span>{{ profileHeader?.profileName }}</span>
-                </div>
-              </div>
-            </a>
+  <app-tab-bar
+  [header]="pageHeader">
+    <div actions="">
+      <app-friendship-button
+      [userId]="pageHeader.id"
+      [friendshipStatus]="pageHeader.friendshipStatus"
+      [userName]="pageHeader.name"
+      ></app-friendship-button>
+
+      <app-button
+      *ngIf="pageHeader.friendshipStatus != undefined"
+      (click)="openChatBox()">
+        <div button>
+          <i class='bx bxs-message-square-dots'></i>
+          <span>Nhắn tin</span>
+        </div>
+      ></app-button>
+
+      <app-button
+      [hasOptions]="true"
+      *ngIf="pageHeader.friendshipStatus" >
+        <div button>
+          <i class='bx bx-dots-horizontal-rounded'></i>
+        </div>
+
+        <div options>
+          <div
+          *ngIf="!isBlocked"
+          (click)="block()">
+            <i class='bx bx-block'></i>
+            <span>Chặn người này</span>
           </div>
-          <div 
-          *ngIf="profileHeader"
-          [ngClass]="isTabBarConfigured ? '' : 'hidden'"
-          #tabsWrapper
-          class="tab-bar-wrapper">
-            <!-- *ngIf="!isTabBarSticky"  -->
-            <div 
-            #tabs
-            [ngClass]="isTabBarSticky ? 'hidden' : ''"
-            class="tab-bar">
-              <a 
-              *ngFor="let tab of visibleTabs"
-              routerLink="./{{ tab.path }}"
-              routerLinkActive="tab-active"
-              class="visible-tab"
-              [routerLinkActiveOptions]="{exact: true}">
-                <div>
-                  <div class="flex-center">
-                    <span>{{ tab.name }}</span>
-                  </div>
-                </div>
-              </a>
-              <li 
-              [ngClass]="hiddenTabs.length && !isTabBarSticky ? '' : 'hidden'"
-              #moreTabs
-              class="more-tabs">
-                <div
-                id="more-tabs"
-                (click)="isMoreTabsVisible = !isMoreTabsVisible">
-                  <div class="flex-center">
-                    <span>Thêm</span>
-                    <i class='bx bx-caret-down'></i>
-                  </div>
-                
-                
-                </div>
-                <app-pop-up
-                *ngIf="isMoreTabsVisible"
-                [triangle]="false"
-                aligment="LEFT"
-                [margin]="-5"
-                [parent]="moreTabs">
-                  <div 
-                  (clickOutside)="isMoreTabsVisible = false"
-                  exclude="#more-tabs"
-                  class="hidden-tabs">
-                    <a 
-                    (click)="isMoreTabsVisible = false"
-                    *ngFor="let tab of hiddenTabs"
-                    routerLink="./{{ tab.path }}"
-                    class="tab">
-                      <span>{{ tab.name }}</span>
-                    </a>
-                  </div>
-                </app-pop-up>
-              </li>
-            </div>
-          </div>
-          
-          <div 
-          #buttons
-          class="profile-actions">
-            <app-friendship-button
-            [userId]="profileHeader?.id || -1"
-            [friendshipStatus]="profileHeader?.friendshipStatus || ''"
-            [userName]="profileHeader?.profileName || ''"
-            ></app-friendship-button>
 
-            <app-button
-            *ngIf="profileHeader?.friendshipStatus != undefined"
-            (click)="openChatBox()">
-              <div button>
-                <i class='bx bxs-message-square-dots'></i>
-                <span>Nhắn tin</span>
-              </div>
-            ></app-button>
-
-            <app-button
-            [hasOptions]="true"
-            *ngIf="profileHeader?.friendshipStatus" >
-              <div button>
-                <i class='bx bx-dots-horizontal-rounded'></i>
-              </div>
-
-              <div options>
-                <div
-                *ngIf="!profileHeader.blocked"
-                (click)="block()">
-                  <i class='bx bx-block'></i>
-                  <span>Chặn người này</span>
-                </div>
-
-                <div
-                *ngIf="profileHeader.blocked"
-                (click)="unblock()" >
-                  <i class='bx bx-block'></i>
-                  <span>Gỡ chặn người này</span>
-                </div>
-              </div>
-            </app-button>
+          <div
+          *ngIf="isBlocked"
+          (click)="unblock()" >
+            <i class='bx bx-block'></i>
+            <span>Gỡ chặn người này</span>
           </div>
         </div>
-      </div>
-      
+      </app-button>
     </div>
+  </app-tab-bar>
   <div class="profile-body">
     <div class="content-container">
       <router-outlet></router-outlet>

@@ -51,29 +51,16 @@ $triangle-height: 8px;
 
 
   &__options {
-    // position: absolute;
     font-weight: 500;
     font-size: 16px;
-    // padding: 7px 7px;
-    // cursor: pointer;
-    // min-width: 200px;
-    // background-color: #fff;
-    // border-radius: 5px;
-    // user-select: none;
-    // white-space: nowrap;
-    // box-shadow: 0 0 28px 0 rgba(#000, .2),0 0 4px 0 rgba(#000, .1),
-    //       inset 0 0 0 1px rgba(#fff, .5);
-    // color: #050505;
-    // top: calc(100% + #{$triangle-height} + 1px);
 
 
     ::ng-deep {
 
-      // > * > * > * {
       [options] > * {
         display: flex;
         align-items: center;
-        padding: 7px 7px;
+        padding: 5px;
         border-radius: 5px;
 
         &:hover {
