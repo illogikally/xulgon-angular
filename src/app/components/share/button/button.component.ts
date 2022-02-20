@@ -72,23 +72,6 @@ export class ButtonComponent implements OnInit {
     }
   }
 
-  // get optionsStyle() {
-  //   let style = {};
-  //   switch (this.optionsAlignment) {
-  //     case 'LEFT': style = { left: '0' }; break;
-
-  //     case 'CENTER': 
-  //       style = {
-  //         left: '50%',
-  //         transform: 'translateX(-50%)'
-  //       };
-  //       break;
-
-  //     case 'RIGHT': style = { right: '0' }; break;
-  //   }
-  //   return style;
-  // }
-
   toggleOptionsVisibility() {
     this.optionSwitch.next({
       target: this.self.nativeElement

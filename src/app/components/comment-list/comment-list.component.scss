@@ -83,3 +83,12 @@
 input[type=file] {
   display: none;
 }
+
+.load-comments {
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

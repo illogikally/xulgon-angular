@@ -35,6 +35,4 @@ export class ProfileService {
     const url = `${this.baseApiUrl}/profiles/${id}/profile`;
     return this.http.get<any>(url);
   }
-
-
 }

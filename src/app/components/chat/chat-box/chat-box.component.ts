@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {MessageService} from '../../share/message.service';
@@ -21,6 +21,7 @@ export class ChatBoxComponent implements OnInit {
   visible = false;
   user!: any;
   @Input() markAsRead!: EventEmitter<number>;
+  @ViewChild('self') self!: ElementRef;
 
   constructor(
     private chatService: ChatService,
@@ -28,7 +29,6 @@ export class ChatBoxComponent implements OnInit {
     private authService: AuthenticationService,
     private router: Router,
     private renderer: Renderer2,
-    private self: ElementRef,
     private rxStomp: RxStompService,
   ) {
     this.msgForm = new FormGroup({
@@ -61,7 +61,7 @@ export class ChatBoxComponent implements OnInit {
 
   close(): void {
     this.renderer.setStyle(
-      this.self.nativeElement.children[0],
+      this.self.nativeElement,
       'display',
       'none'
     );
@@ -69,7 +69,7 @@ export class ChatBoxComponent implements OnInit {
 
   show(): void {
     this.renderer.setStyle(
-      this.self.nativeElement.children[0],
+      this.self.nativeElement,
       'display',
       'block'
     );

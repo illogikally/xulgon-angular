@@ -2,14 +2,13 @@
 
 :host {
   display: block;
-  @extend %fz;
 }
 
 .user-ref-container {
   position: relative;
   user-select: none;
   cursor: pointer;
-  @extend %fz;
+  width: 100%;
   display: inline-block;
 }
 

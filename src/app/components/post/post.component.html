@@ -149,6 +149,7 @@
   class="comments">
     <app-comment-list
     [isPostView]="isPostView"
+    [totalCommentCount]="post.commentCount"
     [parentId]="post.id"
     [targetId]="post.id"></app-comment-list>
   </div>

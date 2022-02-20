@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ObjectUnsubscribedError, pipe } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+import { ConfirmDialogService } from '../../share/confirm-dialog/confirm-dialog.service';
 import { MessageService } from '../../share/message.service';
 import { UserService } from '../../share/user.service';
 
@@ -19,7 +20,8 @@ export class FriendshipButtonComponent implements OnInit {
   isWaitingConfirmation = false;
   constructor(
     private userService: UserService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmService: ConfirmDialogService
 
   ) { }
 
@@ -42,29 +44,21 @@ export class FriendshipButtonComponent implements OnInit {
     });
   }
 
-  unfriend() {
+  async unfriend() {
     if (this.isWaitingConfirmation) return;
-    let id = Date.now().toString();
-    this.messageService.confirmDialog$.next({
-      isPost: true,
-      id: id,
+
+    const isConfirmed = await this.confirmService.confirm({
       title: `Huỷ kết bạn ${this.userName}`,
       body: `Bạn có chắc muốn huỷ kết bạn với ${this.userName}?`
     });
 
-    this.messageService.confirmDialog$
-    .pipe(
-      filter((response: any) => response.id == id),
-      take(1)
-    ).subscribe(response => {
-      if (response.isConfirmed) {
-        this.userService
-        .unfriend(this.userId)
-        .subscribe(() => {
-          this.friendshipStatus = 'NULL';
-        });
-      }
-    });
+    if (isConfirmed) {
+      this.userService
+      .unfriend(this.userId)
+      .subscribe(() => {
+        this.friendshipStatus = 'NULL';
+      });
+    }
   }
 
   acceptFriendRequest() {

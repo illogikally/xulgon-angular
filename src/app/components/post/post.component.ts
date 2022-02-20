@@ -10,6 +10,8 @@ import {GroupResponse} from '../group/group-response';
 import {HttpClient} from '@angular/common/http';
 import { CommentService } from '../comment-list/comment/comment.service';
 import { filter } from 'rxjs/operators';
+import { PostService } from './post.service';
+import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
 
 
 @Component({
@@ -34,6 +36,8 @@ export class PostComponent implements OnInit {
   constructor(
     private commentService: CommentService,
     private reactionService: ReactionService,
+    private confirmService: ConfirmDialogService,
+    private postService: PostService,
     private http: HttpClient,
     private authService: AuthenticationService,
     private messageService: MessageService
@@ -67,7 +71,7 @@ export class PostComponent implements OnInit {
       type: ReactionType.LIKE
     };
 
-    this.reactionService.react(reaction).subscribe(resp => {
+    this.reactionService.react(reaction).subscribe(() => {
       this.post.reactionCount += this.post.isReacted ? -1 : 1;
       this.post.isReacted = !this.post.isReacted;
     });
@@ -79,13 +83,22 @@ export class PostComponent implements OnInit {
   }
 
   delete(): void {
-    this.http.delete(`http://localhost:8080/api/posts/${this.post.id}`).subscribe(_ => {
-      this.messageService.postDeleted.next(this.post.id);
-    });
+    this.confirmService.confirm({
+      title: `Xoá bài viết`,
+      body: `Bạn có chắc muốn xoá bài viết này?`
+    }).then(isConfirmed => {
+      if (isConfirmed) {
+        this.postService.delete(this.post.id).subscribe(() => {
+          this.messageService.postDeleted.next(this.post.id);
+        });
+      }
+    })
   }
 
   hasOptions(): boolean {
-    const canDelete = this.post.user.id == this.principalId || this.groupReponse?.role == 'ADMIN';
+    const canDelete = 
+      this.post.user.id == this.principalId || 
+      this.groupReponse?.role == 'ADMIN';
     return canDelete;
   }
 }

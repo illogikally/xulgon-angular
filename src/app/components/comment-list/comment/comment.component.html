@@ -74,6 +74,7 @@
       <div>
         <app-comment-list
         *ngIf="isRepliesVisible"
+        [totalCommentCount]="commentResponse.replyCount"
         [parentId]="commentResponse.postId"
         [targetId]="commentResponse.id">
         </app-comment-list>

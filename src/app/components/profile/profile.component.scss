@@ -136,12 +136,3 @@ $header-content-width: 940px;
   width: 100%;
   background-color: #fff;
 }
-
-.tab-active {
-  color: #1876F2;
-  box-shadow: inset 0 -3px 0 #1876F2;
-
-  > *:hover {
-    background-color: transparent !important;
-  }
-}

@@ -19,7 +19,9 @@ export class CommentListComponent implements OnInit, OnDestroy {
   @Input() targetId!: number;
   @Input() parentId!: number;
   @Input() isPostView = false;
+  @Input() totalCommentCount!: number;
 
+  isAllLoaded = false;
   comments: CommentResponse[] = [];
   commentIdSet = new Set();
   isCommentsVisible = true;
@@ -77,7 +79,8 @@ export class CommentListComponent implements OnInit, OnDestroy {
 
     this.commentService
       .getCommentsByContent(this.targetId, offset, limit)
-      .subscribe(resp => {
+      .subscribe(response => {
+        let resp = response.data;
         resp = resp.filter(comment => {
           if (!this.commentIdSet.has(comment.id)) {
             this.commentIdSet.add(comment.id);
@@ -85,6 +88,7 @@ export class CommentListComponent implements OnInit, OnDestroy {
           }
           return false;
         });
+        this.isAllLoaded = !response.hasNext;
         this.comments = this.comments.concat(resp);
       });
   }

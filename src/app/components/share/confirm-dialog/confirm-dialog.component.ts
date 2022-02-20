@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { MessageService } from '../message.service';
+import { ConfirmDialogService } from './confirm-dialog.service';
 
 @Component({
   selector: 'app-confirm-dialog',
@@ -11,33 +12,33 @@ export class ConfirmDialogComponent implements OnInit {
 
   title = '';
   body = '';
-  dialogId = '';
+  dialogId = 0;
 
   @ViewChild('self', {static: true}) self!: ElementRef;
   constructor(
     private messagesService: MessageService,
+    private confirmService: ConfirmDialogService,
     private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
-    this.messagesService.confirmDialog$
-    .pipe(filter(message => message.isPost))
+    this.confirmService.dialog$
+    .pipe(filter(message => !!message.title))
     .subscribe(message => {
       this.dialogId = message.id;
-      this.title = message.title;
-      this.body = message.body;
+      this.title = message.title as string;
+      this.body = message.body as string;
       this.show();
     });
   }
 
   response(isConfirmed: boolean) {
-    this.messagesService.confirmDialog$.next({
-      isPost: false,
+    this.confirmService.dialog$.next({
       id: this.dialogId,
       isConfirmed: isConfirmed
     });
     this.hide();
-    this.dialogId = '';
+    this.dialogId = 0;
   }
 
   show() {

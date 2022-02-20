@@ -94,10 +94,11 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
     if (this.pageId !== NaN) {
       this.post$
         .getPostsByPageId(this.pageId, size, offset)
-        .subscribe(posts => {
+        .subscribe(response => {
+          const posts = response.data;
           this.timeline = this.timeline.concat(posts);
           this.isLoadingPosts = false;
-          if (!posts.length) {
+          if (!response.hasNext) {
             this.isLoadedAll = true;
           }
         });
@@ -105,6 +106,7 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   }
 
   setupLoadPostOnScroll() {
+
     this.onAttached$.pipe(
       switchMap(() => fromEvent(window, 'scroll')
         .pipe(takeUntil(this.onDetach$))

@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http'
 import {Observable, Subject} from 'rxjs';
 import {CommentResponse} from './comment-response';
 import {environment} from 'src/environments/environment';
+import { PageableResponse } from '../../share/pageable-response';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,9 @@ export class CommentService {
     contentId: number,
     offset   : number,
     size     : number
-    ): Observable<CommentResponse[]> {
-      const url = `${this.baseApiUrl}/contents/${contentId}/comments?offset=${offset}&size=${size}`;
-      return this.http.get<CommentResponse[]>(url);
+  ): Observable<PageableResponse<CommentResponse>> {
+    const url = `${this.baseApiUrl}/contents/${contentId}/comments?offset=${offset}&size=${size}`;
+    return this.http.get<PageableResponse<CommentResponse>>(url);
   }
 
   createComment(commentRequest: FormData): Observable<CommentResponse> {

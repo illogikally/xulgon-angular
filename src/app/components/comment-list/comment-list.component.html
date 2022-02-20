@@ -6,7 +6,10 @@
       [commentResponse]="comment"></app-comment>
   </div>
 
-  <div (click)="getComments()">tai them comment</div>
+  <div 
+  class="load-comments" 
+  *ngIf="!isAllLoaded"
+  (click)="getComments()">Xem thêm {{ totalCommentCount - comments.length }} bình luận</div>
   <form [formGroup]="commentForm" (keyup.enter)="submit()">
     <div class="input-container">
       <div class="input-avatar">
