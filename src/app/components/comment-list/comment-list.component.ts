@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {CommentService} from './comment/comment.service';
 import {CommentResponse} from './comment/comment-response';
 import {FormBuilder} from '@angular/forms';
@@ -8,13 +8,14 @@ import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {concat, merge, of, ReplaySubject} from 'rxjs';
 import { PostViewService } from '../post/post-view/post-view.service';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-comment-list',
   templateUrl: './comment-list.component.html',
   styleUrls: ['./comment-list.component.scss']
 })
-export class CommentListComponent implements OnInit, OnDestroy {
+export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() parentId!: number;
   @Input() totalCommentCount!: number;
@@ -35,6 +36,8 @@ export class CommentListComponent implements OnInit, OnDestroy {
     fileInput: ['']
   });
 
+  parentIdCommentsMap = new Map();
+
   image: Blob | undefined;
   imageSizeRatio!: number;
   imgUrl!: string;
@@ -53,25 +56,43 @@ export class CommentListComponent implements OnInit, OnDestroy {
     private commentService: CommentService,
     private authService: AuthenticationService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private messageService: MessageService
   ) {
     this.loggedInUserAvatarUrl = this.authService.getAvatarUrl();
   }
 
   ngOnInit() {
-    this.setupOnHighlightComment();
-    this.getComments();
+    this.configureOnHighlightComment();
+    this.loadComments();
   }
 
-  setupOnHighlightComment() {
+  ngOnChanges(changes: SimpleChanges): void {
+    this.configureOnParentIdChange(changes);
+  }
+
+  configureOnParentIdChange(changes: SimpleChanges) {
+    if (changes.parentId) {
+      const currentParentId = changes.parentId.currentValue;
+      const previousParenId = changes.parentId.previousValue;
+      this.parentIdCommentsMap.set(previousParenId, this.comments);
+      if (this.parentIdCommentsMap.has(currentParentId)) {
+        this.comments = this.parentIdCommentsMap.get(currentParentId);
+      }
+      else {
+        this.comments = [];
+        this.commentIdSet = new Set();
+        this.loadComments();
+      }
+    }
+  }
+
+  configureOnHighlightComment() {
     merge(
       this.onAttach$,
       of(null)
     ).pipe(
       switchMap(() => this.postViewService.highlight$.pipe(
         filter(data => !!data),
-        filter(data => data.postId == this.parentId || data.commentId == this.parentId),
+        filter(data => [data.postId, data.commentId].includes(this.parentId)),
         takeUntil(this.onDetach$))
       )
     ).subscribe(data => {
@@ -86,29 +107,27 @@ export class CommentListComponent implements OnInit, OnDestroy {
     })
   }
 
-  getComments() {
+  loadComments() {
     const limit = this.comments.length >= this.initCommentCount ? 5 : this.initCommentCount;
     const offset = this.comments.length;
 
     this.commentService
       .getCommentsByContent(this.parentId, offset, limit)
       .subscribe(response => {
-        let resp = response.data;
-        resp = resp.filter(comment => {
+        let resp = response.data.filter(comment => {
           if (!this.commentIdSet.has(comment.id)) {
             this.commentIdSet.add(comment.id);
             return true;
           }
           return false;
         });
+
         this.isAllLoaded = !response.hasNext;
         this.comments = this.comments.concat(resp);
 
-        console.log(this.highlightedCommentId);
-        
         if (this.highlightedCommentId) {
           if (!this.commentIdSet.has(this.highlightedCommentId)) {
-            this.getComments();
+            this.loadComments();
           }
         }
       });

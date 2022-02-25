@@ -9,7 +9,7 @@ import {MessageService} from '../../share/message.service';
 import {Post} from '../../post/post';
 import {PostService} from '../../post/post.service';
 import {ProfileService} from '../profile.service';
-import {UserProfile} from '../user-profile';
+import {UserPage} from '../user-profile';
 import { pipeFromArray } from 'rxjs/internal/util/pipe';
 
 @Component({
@@ -19,7 +19,7 @@ import { pipeFromArray } from 'rxjs/internal/util/pipe';
 })
 export class ProfileTimelineComponent implements OnInit, AfterViewInit {
 
-  @Input() userProfile!: UserProfile;
+  @Input() userProfile!: UserPage;
 
   @ViewChild('postContainer') postContainer!: ElementRef;
 
@@ -28,8 +28,9 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
 
   timeline: Post[] = [];
   isLoadingPosts = false;
-  initialHide    = true;
   isLoadedAll    = false;
+  
+  onInitHide = true;
 
   onDetach$ = this.profileService.onDetach$.pipe(
     filter(id => id == this.pageId)
@@ -66,7 +67,10 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.initialHide = false;
+
+    setTimeout(() => {
+      this.onInitHide = false;
+    }, 1000);
 
     if (!isNaN(this.pageId)) {
       this.getPosts();

@@ -76,6 +76,7 @@ import { PopUpComponent } from './components/share/pop-up/pop-up.component';
 import { StickySidebarDirective } from './components/profile/sticky-sidebar.directive';
 import { TabBarComponent } from './components/profile/tab-bar/tab-bar.component';
 import { SpinnerComponent } from './components/share/spinner/spinner.component';
+import { ToasterComponent } from './components/share/toaster/toaster.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { SpinnerComponent } from './components/share/spinner/spinner.component';
     StickySidebarDirective,
     TabBarComponent,
     SpinnerComponent,
+    ToasterComponent,
   ],
   imports: [
     FormsModule,

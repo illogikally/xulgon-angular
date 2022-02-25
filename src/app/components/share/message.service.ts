@@ -3,7 +3,8 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {GroupResponse} from '../group/group-response';
 import {Post} from '../post/post';
-import {UserProfile} from '../profile/user-profile';
+import {UserPage} from '../profile/user-profile';
+import { PhotoResponse } from './photo/photo-response';
 import {UserBasic} from './user-basic';
 
 @Injectable({
@@ -14,6 +15,8 @@ export class MessageService {
   popUp$ = new Subject<any>();
   routeReuse$ = new Subject<ActivatedRouteSnapshot>();
 
+  updateAvatar = new Subject<PhotoResponse>();
+  updateCoverPhoto = new Subject<PhotoResponse>();
   constructor() {
   }
 
@@ -24,7 +27,6 @@ export class MessageService {
   groupLoaded = new BehaviorSubject<GroupResponse | null>(null);
   userRef$ = new Subject<any>();
   loggedIn = new Subject<void>();
-  updateAvatar = new Subject<string>();
   private pageId = new BehaviorSubject<number | undefined>(undefined);
 
 
@@ -38,15 +40,14 @@ export class MessageService {
   }
 
   openChatBox$ = new Subject<UserBasic>();
-  updateCoverPhoto = new Subject<string>();
   updateAvatarOrCover = new BehaviorSubject<string>('');
-  private userProfileLoaded = new BehaviorSubject<UserProfile>({} as UserProfile);
+  private userProfileLoaded = new BehaviorSubject<UserPage>({} as UserPage);
 
-  onProfileLoaded(): Observable<UserProfile> {
+  onProfileLoaded(): Observable<UserPage> {
     return this.userProfileLoaded.asObservable();
   }
 
-  sendLoadedProfile(profile: UserProfile): void {
+  sendLoadedProfile(profile: UserPage): void {
     this.userProfileLoaded.next(profile);
   }
 }

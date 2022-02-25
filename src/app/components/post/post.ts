@@ -10,6 +10,7 @@ export interface Post {
   createdAt: string;
   isReacted: boolean;
   photos: any[];
+  photoCount: number;
   body: string;
   reactionCount: number;
   commentCount: number;

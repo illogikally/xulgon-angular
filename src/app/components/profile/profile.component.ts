@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, NgZone, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProfileService} from './profile.service';
-import {UserProfile} from './user-profile';
+import {UserPage} from './user-profile';
 import {MessageService} from '../share/message.service';
 import {UserService} from '../share/user.service';
 import {AuthenticationService} from '../authentication/authentication.service';
@@ -23,7 +23,7 @@ import { TitleService } from '../share/title.service';
 export class ProfileComponent implements OnInit, OnDestroy {
 
   private destroyed$ = new ReplaySubject<boolean>(1);
-  profileLoaded = new EventEmitter<UserProfile>();
+  profileLoaded = new EventEmitter<UserPage>();
   isUpdateAvatar = false;
   principalId: number;
   pageNotFound = false;
@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   moreActionOptsVisible = false;
   isBlocked = false;
   pageHeader!: PageHeader;
-  userProfile!: UserProfile;
+  userProfile!: UserPage;
 
   pageAvatarUrl!: string;
 
@@ -56,20 +56,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     this.pageHeader = header;
-    this.pageAvatarUrl = header.avatar?.thumbnails.s160x160.url;
-
-    this.messageService.updateCoverPhoto
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(url => {
-        this.pageHeader.coverPhotoUrl = url;
-      });
+    this.pageAvatarUrl = header.avatar?.thumbnails.s200x200.url;
 
     this.titleService.setTitle(this.pageHeader.name);
-    this.messageService.updateAvatar
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(url => {
-        this.pageAvatarUrl = url;
-      });
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!isNaN(id)) {
@@ -79,6 +68,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.pageError();
     }
 
+    this.configureOnAvatarChange();
+    this.configureOnCoverPhotoChange();
+
+  }
+
+  configureOnAvatarChange() {
+    this.messageService.updateAvatar.subscribe(photo => {
+      this.pageHeader.avatar = photo;
+    });
+  }
+
+  configureOnCoverPhotoChange() {
+    this.messageService.updateCoverPhoto.subscribe(photo => {
+      this.pageHeader.coverPhotoUrl = photo.thumbnails.s900x900.url;
+    });
   }
 
   ngOnDestroy(): void {
@@ -110,7 +114,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.userProfile = resp;
         this.messageService.sendLoadedProfile(this.userProfile);
         this.profileLoaded.emit(this.userProfile);
-        this.profileLoaded.emit({} as UserProfile);
+        this.profileLoaded.emit({} as UserPage);
       }, () => {
         this.pageError();
       });

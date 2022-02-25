@@ -12,7 +12,7 @@
   <div 
   class="load-comments" 
   *ngIf="!isAllLoaded"
-  (click)="getComments()">
+  (click)="loadComments()">
     <span>Xem thêm {{ totalCommentCount - comments.length }} bình luận</span>
   </div>
   <form [formGroup]="commentForm" (keyup.enter)="submit()">

@@ -43,7 +43,8 @@
         <div class="name--page">
           <div class="name">
             <app-user-ref
-              [userDto]="post.user"></app-user-ref>
+              [userDto]="post.user">
+            </app-user-ref>
           </div>
           <span
             *ngIf="isGroupNameVisible && post.pageType == 'GROUP'">
@@ -89,7 +90,9 @@
         <div *ngFor="let photo of post.photos.slice(0, 2)">
           <div>
             <app-photo 
-            [url]="photo.thumbnails.s400x400.url"
+            [url]="post.photos.length == 1 
+              ? photo.thumbnails.s900x900.url 
+              : photo.thumbnails.s400x400.url "
             [setId]="post.photoSetId"
             [id]="photo.id"
             [style]="'width'"></app-photo>
@@ -97,13 +100,22 @@
         </div>
       </div>
       <div *ngIf="post.photos.length > 2">
-        <div *ngFor="let photo of post.photos.slice(2, 4)">
-          <div>
+        <div *ngFor="let photo of post.photos.slice(2, 4); index as index;">
+          <div
+          [ngClass]="post.photos.length == 3 ? 'three': ''">
             <app-photo 
-            [url]="photo.thumbnails.s400x400.url"
+            [url]="post.photos.length == 3 
+              ? photo.thumbnails.s600x600.url 
+              : photo.thumbnails.s400x400.url"
             [id]="photo.id"
             [setId]="post.photoSetId"
             [style]="'width'"></app-photo>
+            <div 
+            (click)="morePhotoClick($event)"
+            class="photos-left" 
+            *ngIf="index == 1 && post.photoCount - 4 > 0">
+              <span>+{{ post.photoCount - 4 }}</span>
+            </div>
           </div>
         </div>
       </div>

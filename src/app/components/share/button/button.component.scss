@@ -9,6 +9,7 @@ $triangle-height: 8px;
   font-family: inherit;
 
   &__inner {
+    --icon-size: 23px;
     height: 37px;
     font-weight: 500;
     background-color: var(--bg);
@@ -43,7 +44,7 @@ $triangle-height: 8px;
         }
 
         i {
-          font-size: 23px;
+          font-size: var(--icon-size);
         }
       }
     }

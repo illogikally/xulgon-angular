@@ -32,16 +32,20 @@ export class NavbarComponent implements OnInit {
     private renderer: Renderer2,
     private authenticationService: AuthenticationService
   ) {
-    this.messageService.updateAvatar.subscribe(url => {
-      this.principalAvatar = url;
-      this.authenticationService.setAvatarUrl(url);
-    });
     this.searchForm = new FormGroup({
       search: new FormControl('')
     });
   }
 
+  configureOnAvatarUpdated() {
+    this.messageService.updateAvatar.subscribe(photo => {
+      this.principalAvatar = photo.thumbnails.s40x40.url;
+      this.authenticationService.setAvatarUrl(photo.thumbnails.s40x40.url);
+    });
+  }
+
   ngOnInit(): void {
+    this.configureOnAvatarUpdated();
   }
 
   showSearchBar() {

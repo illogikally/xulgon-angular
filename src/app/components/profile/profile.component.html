@@ -18,7 +18,9 @@ class="user-profile">
         </div>
         <div  class="avatar-container flex-center">
           <div class="avatar">
-            <app-photo [url]="pageHeader.avatar?.thumbnails?.s200x200.url"
+            <app-photo 
+            [url]="pageHeader.avatar?.thumbnails?.s200x200.url"
+            [setId]="pageHeader.avatarPhotoSetId"
             [id]="pageHeader.avatar?.id"
             ></app-photo>
           </div>

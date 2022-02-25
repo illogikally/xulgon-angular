@@ -4,8 +4,9 @@ import {Observable, ReplaySubject, Subject} from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Post } from '../post/post';
+import { PhotoResponse } from '../share/photo/photo-response';
 import { PageHeader } from './page-header';
-import {UserProfile} from './user-profile';
+import {UserPage} from './user-profile';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,9 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
-  getUserProfile(id: number): Observable<UserProfile> {
+  getUserProfile(id: number): Observable<UserPage> {
     const url = `${this.baseApiUrl}/profiles/${id}`;
-    return this.http.get<UserProfile>(url);
+    return this.http.get<UserPage>(url);
   }
 
   isBlocked(profileId: number): Observable<boolean> {
@@ -33,5 +34,25 @@ export class ProfileService {
   getProfileHeader(id: number): Observable<any> {
     const url = `${this.baseApiUrl}/profiles/${id}/profile`;
     return this.http.get<any>(url);
+  }
+
+  uploadCoverPhoto(data: FormData): Observable<PhotoResponse> {
+    const url = `${this.baseApiUrl}/profiles/upload-cover`;
+    return this.http.put<PhotoResponse>(url, data);
+  }
+
+  uploadAvatar(data: FormData): Observable<PhotoResponse> {
+    const url = `${this.baseApiUrl}/profiles/upload-avatar`;
+    return this.http.put<PhotoResponse>(url, data);
+  }
+
+  updateAvatar(photoId: number): Observable<PhotoResponse> {
+    const url = `${this.baseApiUrl}/profiles/update-avatar`
+    return this.http.put<PhotoResponse>(url, photoId);
+  }
+
+  updateCoverPhoto(photoId: number): Observable<PhotoResponse> {
+    const url = `${this.baseApiUrl}/profiles/update-cover`
+    return this.http.put<PhotoResponse>(url, photoId);
   }
 }

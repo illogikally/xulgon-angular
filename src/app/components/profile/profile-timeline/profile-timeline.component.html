@@ -1,4 +1,6 @@
-<div class="container">
+<div 
+[hidden]="onInitHide"
+class="container">
 
   <div 
   id="main-content" 
@@ -75,7 +77,7 @@
               class="photo-container">
                 <div *ngFor="let photo of userProfile?.photos">
                   <app-photo 
-                  [url]="photo.url"
+                  [url]="photo.thumbnails.s160x160.url"
                   [id]="photo.id"
                   ></app-photo>
                 </div>

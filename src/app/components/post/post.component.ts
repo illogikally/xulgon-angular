@@ -30,7 +30,6 @@ export class PostComponent implements OnInit {
   principalId: number;
   groupReponse!: GroupResponse;
 
-
   constructor(
     private commentService: CommentService,
     private reactionService: ReactionService,
@@ -50,8 +49,6 @@ export class PostComponent implements OnInit {
         this.groupReponse = group;
       });
 
-    console.log(this.post);
-      
     this.commentService.commentAdded$.pipe(
       filter(msg => msg.parentId == this.post.id)
     ).subscribe(() => this.post.commentCount += 1);
@@ -98,5 +95,9 @@ export class PostComponent implements OnInit {
       this.post.user.id == this.principalId || 
       this.groupReponse?.role == 'ADMIN';
     return canDelete;
+  }
+
+  morePhotoClick(event: any) {
+    event.target.parentElement.children[0].children[0].click();
   }
 }

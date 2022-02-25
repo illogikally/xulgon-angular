@@ -5,11 +5,13 @@
       <span>{{ title }}</span>
       
       <div class="x">
-        <app-button [isX]="true">
+        <app-button 
+        iconSize="30px"
+        [isX]="true">
           <div 
           (click)="response(false)"
           button>
-            <i style="font-size: 30px" class='bx bx-x'></i>
+            <i class='bx bx-x'></i>
           </div>
         </app-button>
       </div>

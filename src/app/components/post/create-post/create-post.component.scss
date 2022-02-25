@@ -3,6 +3,7 @@
 :host {
   visibility: hidden;
 }
+
 .create-post-container {
   position: fixed;
   height: 100%;
@@ -35,6 +36,7 @@
 
       .x-btn {
         @include x-btn(35px, #777, #333);
+        z-index: 9e8;
         position: absolute;
         background-color: #ddd;
 
@@ -157,14 +159,20 @@
           padding: 0;
           position: relative;
           border: var(--border);
+          box-sizing: border-box;
           overflow: hidden;
 
           .x-btn {
             @include x-btn(30px, #555, #eee);
             position: absolute;
+            z-index: 1;
             background-color: #fff;
             right: 10px;
             top: 10px;
+          }
+
+          > div:nth-child(2) {
+            margin-top: 3px;
           }
 
           > div {
@@ -172,24 +180,39 @@
             width: 100%;
             box-sizing: border-box;
             justify-content: space-between;
+            column-gap: 3px;
 
-            &:first-child {
-              margin-bottom: 2px;
-            }
 
             > div {
               flex-grow: 1;
               overflow: hidden;
               flex-basis: 50%;
 
-              &:not(:last-child) {
-                margin-right: 2px;
-              }
-
               > div {
                 width: 100%;
-                height: 0;
-                padding-bottom: 100%;
+                aspect-ratio: 1;
+                position: relative;
+              }
+
+              .three {
+                // aspect-ratio: 1.4;
+              }
+
+              .photos-left {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                user-select: none;
+                left: 0px;
+                top: 0px;
+                background-color: rgba(0, 0, 0, .4);
+                color: #fff;
+                font-size: 40px;
+
               }
             }
 
@@ -197,7 +220,8 @@
 
           img {
             width: 100%;
-            aspect-ratio: 1;
+            display: block;
+            height: 100%;
             object-fit: cover;
           }
         }

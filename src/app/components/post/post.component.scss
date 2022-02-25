@@ -141,7 +141,29 @@
 
           > div {
             width: 100%;
+            position: relative;
             aspect-ratio: 1;
+          }
+
+          .three {
+            aspect-ratio: 1.4;
+          }
+
+          .photos-left {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            left: 0px;
+            top: 0px;
+            background-color: rgba(0, 0, 0, .4);
+            color: #fff;
+            font-size: 40px;
+
           }
         }
       }

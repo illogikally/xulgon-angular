@@ -1,9 +1,10 @@
+import { PhotoResponse } from "../share/photo/photo-response";
 import {PhotoViewResponse} from "../share/photo/photo-view-response";
 
-export interface UserProfile {
+export interface UserPage {
   id: number;
   userId: number;
-  avatar: PhotoViewResponse;
+  avatar: PhotoResponse;
   coverPhotoUrl: string;
   workplace: string;
   fullName: string;
@@ -13,5 +14,5 @@ export interface UserProfile {
   isBlocked: boolean;
   blocked: boolean;
   friends: any[];
-  photos: PhotoViewResponse[];
+  photos: PhotoResponse[];
 }

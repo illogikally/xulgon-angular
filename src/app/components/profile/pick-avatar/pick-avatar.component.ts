@@ -2,8 +2,11 @@ import {HttpClient} from '@angular/common/http';
 import {Component, EventEmitter, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MessageService} from '../../share/message.service';
+import { PhotoResponse } from '../../share/photo/photo-response';
 import {PhotoViewResponse} from '../../share/photo/photo-view-response';
-import {UserProfile} from '../user-profile';
+import { PhotoService } from '../../share/photo/photo.service';
+import { ProfileService } from '../profile.service';
+import {UserPage} from '../user-profile';
 
 @Component({
   selector: 'app-pick-avatar',
@@ -15,19 +18,22 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
   @Output() closeMe: EventEmitter<void> = new EventEmitter();
 
   updateType = '';
-  photos!: PhotoViewResponse[];
-  pickedPhoto!: PhotoViewResponse | undefined;
+  photos!: PhotoResponse[];
+  pickedPhoto!: PhotoResponse | undefined;
   uploadFileForm!: FormGroup;
   photoBlob: Blob | undefined;
   photoSizeRatio = 0;
   photoBlobUrl = '';
-  userProfile!: UserProfile;
+  userProfile!: UserPage;
   isVisible = true;
 
 
-  constructor(private http: HttpClient,
-              private renderer: Renderer2,
-              private messageService: MessageService) {
+  constructor(
+    private renderer: Renderer2,
+    private profileService: ProfileService,
+    private photoService: PhotoService,
+    private messageService: MessageService
+  ) {
   }
 
   ngOnDestroy(): void {
@@ -52,16 +58,13 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
 
     this.messageService.onProfileLoaded().subscribe(profile => {
       this.userProfile = profile;
-      this.http.get<PhotoViewResponse[]>(`http://localhost:8080/api/pages/${profile.id}/photos`)
-        .subscribe(photos => {
-          this.photos = photos;
-        });
+      this.photoService.getPagePhotos(profile.id).subscribe(photos => {
+        this.photos = photos;
+      });
     });
   }
 
-  photoPicked(photo: PhotoViewResponse): void {
-    console.log('picke');
-
+  photoPicked(photo: PhotoResponse): void {
     this.pickedPhoto = photo;
   }
 
@@ -96,16 +99,15 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
   }
 
   confirm(): void {
-    let dest = `http://localhost:8080/api/profiles/${this.userProfile.id}/`;
     if (this.pickedPhoto) {
       if (this.updateType == 'avatar') {
-        this.http.put(dest + 'update-avatar', this.pickedPhoto?.id).subscribe(_ => {
-          this.messageService.updateAvatar.next(this.pickedPhoto?.url);
-        })
+        this.profileService.updateAvatar(this.pickedPhoto.id).subscribe(() => {
+          this.messageService.updateAvatar.next(this.pickedPhoto);
+        });
       } else {
-        this.http.put(dest + 'update-cover', this.pickedPhoto?.id).subscribe(_ => {
-          this.messageService.updateCoverPhoto.next(this.pickedPhoto?.url);
-        })
+        this.profileService.updateCoverPhoto(this.pickedPhoto.id).subscribe(() => {
+          this.messageService.updateCoverPhoto.next(this.pickedPhoto);
+        }); 
       }
     } else {
       let formData = new FormData();
@@ -120,12 +122,12 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
       formData.append('photo', this.photoBlob == undefined ? new Blob() : this.photoBlob);
 
       if (this.updateType == 'avatar') {
-        this.http.put<PhotoViewResponse>(dest + 'upload-avatar', formData).subscribe(resp => {
-          this.messageService.updateAvatar.next(resp.url);
+        this.profileService.uploadAvatar(formData).subscribe(photo => {
+          this.messageService.updateAvatar.next(photo);
         });
       } else {
-        this.http.put<PhotoViewResponse>(dest + 'upload-cover', formData).subscribe(resp => {
-          this.messageService.updateCoverPhoto.next(resp.url);
+        this.profileService.uploadCoverPhoto(formData).subscribe(photo => {
+          this.messageService.updateCoverPhoto.next(photo);
         });
       }
     }

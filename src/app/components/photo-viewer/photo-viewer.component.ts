@@ -38,13 +38,15 @@ export class PhotoViewerComponent implements OnInit {
       this.loadPhoto();
     });
   }
-  
+
 
   loadPhoto() {
     if (this.setId) {
       this.photoService.getPhotoBySetIdAndPhotoId(this.setId, this.photoId)
       .subscribe(photo => {
         this.photo = photo;
+        console.log(photo);
+        
         setTimeout(() => {
           this.show();
         }, 200);

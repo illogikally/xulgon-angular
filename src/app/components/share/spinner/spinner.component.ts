@@ -1,22 +1,19 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-spinner',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss']
 })
-export class SpinnerComponent implements OnInit {
+export class SpinnerComponent implements OnInit, AfterViewInit {
 
   @Input() size = '30px';
-  @Input() borderRadius = '5px';
   @Input() backgroundColor = 'rgba(0, 0, 0, .3)'
-  @Input() spinnerColor = '#fff';
+  @Input() color = '#fff';
   @Input() text = 'Loading';
   @Input() displayText = false;
 
-  @ViewChild('container') containerElement!: ElementRef;
   @ViewChild('spinner') spinnerElement!: ElementRef;
-  @ViewChild('text') textElement!: ElementRef;
 
   constructor(
     private renderer: Renderer2
@@ -25,16 +22,19 @@ export class SpinnerComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  configureContainerStyle() {
-
+  ngAfterViewInit(): void {
+    this.configureSpinnerStyle();
   }
 
   configureSpinnerStyle() {
     const style = {
       '--size': this.size,
-      '--spinner-color': this.spinnerColor,
-
+      '--color': this.color,
+      '--text-size': this.text,
+      '--background-color': this.backgroundColor,
+      '--text-display': this.displayText ? 'block' : 'none'
     }
+
     for (const [variable, value] of Object.entries(style)) {
       this.renderer.setStyle(
         this.spinnerElement.nativeElement, 

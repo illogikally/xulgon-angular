@@ -7,6 +7,7 @@ export interface PhotoViewResponse {
   pageType: string;
   pageId: number;
   photos: any[];
+  photoCount: number;
 
   id: number;
   createdAt: string;

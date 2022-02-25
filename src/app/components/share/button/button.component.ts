@@ -21,6 +21,7 @@ export class ButtonComponent implements OnInit {
   @Input() padding = '0 15px';
   @Input() hasOptions = false;
   @Input() optionsAlignment = 'CENTER'
+  @Input() iconSize = '23px';
   @Input() isRounded = false;
 
   @ViewChild('inner', {static: true}) inner!: ElementRef;
@@ -65,6 +66,7 @@ export class ButtonComponent implements OnInit {
       '--bg': this.background,
       '--fg': this.color,
       'width': this.width,
+      '--icon-size': this.iconSize,
       'padding': this.padding,
       'height': this.height,
       'border-radius': this.radius,

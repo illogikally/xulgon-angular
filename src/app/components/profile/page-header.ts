@@ -9,4 +9,6 @@ export interface PageHeader {
   friendshipStatus: string;
   avatar: PhotoResponse;
   name: string;
+
+  avatarPhotoSetId: number;
 }

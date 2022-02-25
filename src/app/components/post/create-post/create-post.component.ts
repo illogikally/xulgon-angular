@@ -8,6 +8,8 @@ import {Post} from '../post';
 import { Observable, Subject } from 'rxjs';
 import { PostService } from '../post.service';
 import { ProfileService } from '../../profile/profile.service';
+import { ToasterService } from '../../share/toaster/toaster.service';
+import { ToasterMessageType } from '../../share/toaster/toaster-message-type';
 
 @Component({
   selector: 'app-create-post',
@@ -18,13 +20,13 @@ export class CreatePostComponent implements OnInit {
 
   photos: any[] = [];
   files: Blob[] = [];
-  sizeRatios: number[] = []
   principalAvatar = this.authenticationService.getAvatarUrl();
   principalName = this.authenticationService.getUserFullName();
   postable: boolean = false;
   postForm!: FormGroup;
   isPrivacyOptsVisible = false;
 
+  isPosting = false;
   privacy = 'FRIEND';
 
   textAreaDefaultHeight!: number;
@@ -40,6 +42,7 @@ export class CreatePostComponent implements OnInit {
     private self: ElementRef,
     private messageService: MessageService,
     private postService: PostService,
+    private toasterService: ToasterService,
     private profileService: ProfileService,
     private renderer: Renderer2,
     private fb: FormBuilder,
@@ -70,13 +73,9 @@ export class CreatePostComponent implements OnInit {
       reader.onload = (event) => {
         let img = new Image();
         img.src = event.target?.result as string;
-        img.onload = () => {
-          this.sizeRatios.push(img.width / img.height);
-        }
 
         this.photos.push({
           url: event.target?.result as string,
-          sizeRatio: this.sizeRatios[this.sizeRatios.length - 1]
         });
       }
     }
@@ -88,7 +87,7 @@ export class CreatePostComponent implements OnInit {
   }
 
   submit(): void {
-    this.hide();
+    this.isPosting = true;
     let data = new FormData();
 
     const targetPage = 
@@ -114,7 +113,6 @@ export class CreatePostComponent implements OnInit {
     this.files.forEach((v, i) => {
       photoRequests.push({
         privacy: this.privacy, 
-        widthHeightRatio: this.sizeRatios[i]
       });
       data.append('photos', v);
     });
@@ -127,13 +125,34 @@ export class CreatePostComponent implements OnInit {
       [JSON.stringify(photoRequests)],
       {type: 'application/json'}
     );
+
     data.append('photoRequest', photoRequestBlob);
 
     this.postService.createPost(data).subscribe(post => {
       this.profileService.onPostCreate$.next(post);
+      this.isPosting = false;
+      this.toasterService.message$.next({
+        type: ToasterMessageType.SUCCESS,
+        message: `Đăng bài thành công.`
+      });
+      this.clear();
+      this.hide();
+    }, error => {
+      this.isPosting = false;
+      this.toasterService.message$.next({
+        type: ToasterMessageType.ERROR,
+        message: `Đã xảy ra lỗi khi đăng bài.`
+      });
+      this.clear();
+      this.hide();
     });
   }
 
+  clear() {
+    this.photos = [];
+    this.files = [];
+    this.postForm.reset();
+  }
   setPrivacy(privacy: string) {
     this.privacy = privacy;
     this.isPrivacyOptsVisible = false;
@@ -149,7 +168,6 @@ export class CreatePostComponent implements OnInit {
 
   abort() {
     this.files = [];
-    this.sizeRatios = [];
     this.photos = [];
   }
 
