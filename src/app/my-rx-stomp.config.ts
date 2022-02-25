@@ -6,10 +6,12 @@ import { AuthenticationService } from './components/authentication/authenticatio
 
 
 export class MyRxStompConfig extends InjectableRxStompConfig {
-  constructor(private auth$: AuthenticationService) {
+  constructor(
+    private auth$: AuthenticationService
+  ) {
     super();
     // this.webSocketFactory = () => new SockJS('http://localhost:8080/ws');
-    this.webSocketFactory = () => new WebSocket('ws://localhost:8080/ws/websocket');
+    this.webSocketFactory = () => new WebSocket(`ws://localhost:8080/ws/websocket`);
     this.beforeConnect = async (rxStomp: RxStomp) => {
       rxStomp.configure({
         connectHeaders: {

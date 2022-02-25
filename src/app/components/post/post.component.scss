@@ -102,10 +102,15 @@
     min-height: 20px;
     margin-top: 10px;
 
+    .one {
+      width: 100%;
+    }
+
     .post-media {
       padding: 0;
       border-top: var(--border);
       border-bottom: var(--border);
+      max-width: 600px;
       overflow: hidden;
       margin: 0 -15px;
       margin-top: 15px;
@@ -139,7 +144,6 @@
             aspect-ratio: 1;
           }
         }
-
       }
     }
   }
@@ -166,6 +170,7 @@
   }
 
   .post-actions {
+    user-select: none;
     display: flex;
     border-top: 1px solid #00000033;
     margin-top: 10px;

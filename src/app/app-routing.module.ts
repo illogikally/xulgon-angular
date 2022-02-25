@@ -11,7 +11,7 @@ import { GroupContentComponent } from './components/group/group-content/group-co
 import { JoinRequestListComponent } from './components/group/join-request-list/join-request-list.component';
 import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
 import { LoggedInComponent } from './components/share/logged-in/logged-in.component';
-import { PostViewComponent } from './components/post-view/post-view.component';
+import { PostViewComponent } from './components/post/post-view/post-view.component';
 import { SearchComponent } from './components/search/search.component';
 import { ByPeopleComponent } from './components/search/by-people/by-people.component';
 import { ByPostsComponent } from './components/search/by-posts/by-posts.component';
@@ -120,7 +120,6 @@ const routes: Routes = [
           { path: 'friends', component:  FriendListComponent},
           { path: 'photos', component: PhotoListComponent}
         ]
-
       },
       // {
       //   path: ':id',

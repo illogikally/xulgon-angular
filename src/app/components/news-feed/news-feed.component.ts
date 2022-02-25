@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {UserService} from '../share/user.service';
 import {Post} from '../post/post';
+import { TitleService } from '../share/title.service';
 
 @Component({
   selector: 'app-news-feed',
@@ -24,9 +25,9 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private userService: UserService,
     private title: Title,
+    private titleService: TitleService,
     private router: Router,
     private http: HttpClient) {
-      this.title.setTitle('Xulgon');
       this.pageId = authService.getProfileId();
   }
 
@@ -35,6 +36,11 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getPosts();
+    this.setTitle();
+  }
+
+  setTitle() {
+    this.titleService.setTitle('Xulgon');
   }
 
   @HostListener('window:scroll', [])
@@ -51,7 +57,7 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
   }
 
   onAttach(): void {
-    this.title.setTitle('Xulgon');
+    this.setTitle();
     this.isAttached = true;
   }
 

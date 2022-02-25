@@ -120,7 +120,11 @@ export class AuthenticationService {
   }
 
   getAvatarUrl(): string {
-    return this.getAuthentication()!.avatarUrl || 'http://localhost:8080/contents/default-avatar.png';
+    return this.getAuthentication()!.avatarUrl || this.getDefaultAvatar();
+  }
+
+  getDefaultAvatar(): string {
+    return  'assets/avatar.jpg';
   }
 
   getPrincipalId(): number {

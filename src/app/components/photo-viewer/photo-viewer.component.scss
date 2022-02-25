@@ -1,5 +1,9 @@
 @import 'src/styles';
 
+:host {
+  display: none;
+}
+
 .photo-viewer {
   display: flex;
   position: fixed;
@@ -11,6 +15,7 @@
 
   .viewer-content {
     flex-grow: 1;
+    position: relative;
     background-color: #000;
     @extend %fc;
 
@@ -19,6 +24,23 @@
       position: absolute;
       top: 10px;
       left: 20px;
+    }
+
+    .next-button {
+      position: absolute;
+      right: 15px;
+      i {
+        font-size: 30px;
+      }
+    }
+
+    .prev-button {
+      position: absolute;
+      left: 15px;
+      i {
+        font-size: 30px;
+      }
+
     }
 
     img {

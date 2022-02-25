@@ -80,6 +80,9 @@
       }
     }
   }
+  .highlight {
+    background-color: rgba($btn-blue, .15);
+  }
 
   .comment-media {
     display: inline-block;
@@ -127,4 +130,18 @@ a {
 
 .reacted {
   color: $btn-blue;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: auto;
+  }
+
+  50% {
+    background-color: rgba($btn-blue, .2);
+  }
+
+  100% {
+    background-color: auto;
+  }
 }

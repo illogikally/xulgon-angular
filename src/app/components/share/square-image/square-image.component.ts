@@ -18,8 +18,6 @@ export class SquareImageComponent implements OnInit {
   }
 
   photoClicked(): void {
-    console.log('click');
-
     this.photoPicked.emit(this.photo);
   }
 

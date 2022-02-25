@@ -21,11 +21,10 @@ export class PopUpComponent implements OnInit, OnDestroy {
   onDestroy$ = new ReplaySubject<any>(1);
 
 
-  INITIAL_LEFT = 0;
+  INITIAL_X = 0;
   HOR_MARGIN = 5;
   SCROLLBAR_WIDTH = 0;
   constructor(
-    // private self: ElementRef,
     private renderer: Renderer2,
   ) { }
 
@@ -43,15 +42,16 @@ export class PopUpComponent implements OnInit, OnDestroy {
     fromEvent(window, 'resize').pipe(
       takeUntil(this.onDestroy$)
     ).subscribe(() => {
-      console.log('resize');
       const selfRect = self.getBoundingClientRect();
       const parentRect = this.parent.getBoundingClientRect();
       
       const currentTranlateX = selfRect.left - parentRect.left;
       const offset = selfRect.right - window.innerWidth + this.SCROLLBAR_WIDTH + this.HOR_MARGIN;
-      
-      if (offset > 0 || currentTranlateX < this.INITIAL_LEFT) {
-        this.setSelfStyle('transform', `translateX(${currentTranlateX - offset}px)`)
+
+      if (offset > 0 || currentTranlateX < this.INITIAL_X) {
+        let translateX = currentTranlateX - offset;
+        translateX =  translateX > this.INITIAL_X ? this.INITIAL_X : translateX;
+        this.setSelfStyle('transform', `translateX(${translateX}px)`)
       }
     });
   }
@@ -72,6 +72,7 @@ export class PopUpComponent implements OnInit, OnDestroy {
     if (offset > 0) {
       left -= offset;
     }
+
     let top = this.parent.offsetHeight + VER_MARGIN + TRIANGLE_HEIGHT;
     this.setSelfStyle('transform', `translateX(${left}px)`);
     this.setSelfStyle('top', top + 'px');
@@ -91,7 +92,7 @@ export class PopUpComponent implements OnInit, OnDestroy {
         left = this.parent.offsetWidth; 
         break;
     }
-    this.INITIAL_LEFT = left;
+    this.INITIAL_X = left;
     return left;
   }
 

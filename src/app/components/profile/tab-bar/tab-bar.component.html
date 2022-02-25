@@ -9,7 +9,7 @@
           <div class="content">
             <div class="avatar-container">
               <div class="avatar">
-                <img [src]="header.avatar.url">
+                <img [src]="header?.avatar?.thumbnails?.s160x160.url || 'assets/avatar.jpg'">
               </div>
             </div>
           

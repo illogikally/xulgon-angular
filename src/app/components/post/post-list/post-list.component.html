@@ -1,5 +1,6 @@
 <div *ngFor="let post of posts" class="post-container">
   <app-post
+    (remove)="onPostDelete($event)"
     [isCommentVisible]="isCommentVisible"
     [isGroupNameVisible]="isGroupNameVisible"
     [post]="post"></app-post>

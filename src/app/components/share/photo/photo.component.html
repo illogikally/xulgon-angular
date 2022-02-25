@@ -1,12 +1,7 @@
 <a
   (click)="openPhotoView($event)"
-  href="http://localhost:8080/photos/{{ photo?.id }}">
+  href="http://localhost:8080/photos/{{ id }}">
   <img
-    *ngIf="photo"
     [ngClass]="isComment ? 'isComment' : 'notComment'"
-    [src]="photo?.url">
+    [src]="url || 'assets/avatar.jpg'">
 </a>
-<app-photo-viewer
-  (closeMe)="closePhotoView()"
-  *ngIf="showPhotoViewer"
-  [photoResponse]="photo"></app-photo-viewer>

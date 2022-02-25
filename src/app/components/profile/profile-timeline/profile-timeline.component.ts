@@ -3,13 +3,14 @@ import {AfterViewInit, Component, ElementRef, Host, HostListener, Input, OnDestr
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {from, fromEvent, Observable, ReplaySubject, Subject} from 'rxjs';
-import { filter, last, skip, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, last, skip, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {MessageService} from '../../share/message.service';
 import {Post} from '../../post/post';
 import {PostService} from '../../post/post.service';
 import {ProfileService} from '../profile.service';
 import {UserProfile} from '../user-profile';
+import { pipeFromArray } from 'rxjs/internal/util/pipe';
 
 @Component({
   selector: 'app-profile-timeline',
@@ -20,8 +21,7 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
 
   @Input() userProfile!: UserProfile;
 
-  @ViewChild('sidebar', {static: true}) sidebar!: ElementRef;
-  @ViewChild('sidebar__inner', {static: true}) sidebarInner!: ElementRef;
+  @ViewChild('postContainer') postContainer!: ElementRef;
 
   principleId: number;
   pageId     : number;
@@ -66,10 +66,6 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
-    // this.configureStickySidebar();
-    this.setupLoadPostOnScroll();
-
     this.initialHide = false;
 
     if (!isNaN(this.pageId)) {
@@ -82,6 +78,7 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit(): void {
+    this.setupLoadPostOnScroll();
     this.profileService.onAttach$.next(this.pageId);
   }
 
@@ -93,27 +90,28 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
 
     if (this.pageId !== NaN) {
       this.post$
-        .getPostsByPageId(this.pageId, size, offset)
-        .subscribe(response => {
-          const posts = response.data;
-          this.timeline = this.timeline.concat(posts);
-          this.isLoadingPosts = false;
-          if (!response.hasNext) {
-            this.isLoadedAll = true;
-          }
-        });
+      .getPostsByPageId(this.pageId, size, offset)
+      .subscribe(response => {
+        const posts = response.data;
+        this.timeline = this.timeline.concat(posts);
+        this.isLoadingPosts = false;
+        if (!response.hasNext) {
+          this.isLoadedAll = true;
+        }
+      });
     }
   }
 
   setupLoadPostOnScroll() {
-
     this.onAttached$.pipe(
       switchMap(() => fromEvent(window, 'scroll')
         .pipe(takeUntil(this.onDetach$))
       )
     ).subscribe(() => {
+      const postContainerRect = 
+        this.postContainer.nativeElement.getBoundingClientRect();
       if (
-        window.scrollY >= document.body.scrollHeight - 1.2*window.innerHeight
+        window.scrollY >= postContainerRect.bottom - 1.2*window.innerHeight
         && !this.isLoadingPosts
         && !this.isLoadedAll
       ) {

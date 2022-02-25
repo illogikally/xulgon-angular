@@ -1,7 +1,7 @@
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 import {Location} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
-import {AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, HostListener, OnInit, Renderer2} from '@angular/core';
+import {AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit, Renderer2} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {fromEvent, interval, Observable, of, throwError, timer} from 'rxjs';
@@ -85,6 +85,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     private authService: AuthenticationService,
     private location: Location,
     private route: ActivatedRoute,
+    private changeDetector: ChangeDetectorRef,
     private router: Router,
     private userService: UserService,
     private fb: FormBuilder
@@ -99,7 +100,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         '',
         [
           Validators.required,
-          Validators.pattern('[a-z]+'),
+          Validators.pattern('^(?![0-9])[a-z0-9]+'),
           Validators.minLength(6)
         ],
         this.userExisted.bind(this)
@@ -167,6 +168,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     this.disableAnimation = false;
+    this.changeDetector.detectChanges();
   }
 
   @HostListener('window:popstate', [])

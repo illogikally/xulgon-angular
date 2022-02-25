@@ -1,11 +1,12 @@
+import { PhotoResponse } from "../share/photo/photo-response";
 import { PhotoViewResponse } from "../share/photo/photo-view-response";
 
 export interface PageHeader {
   id: number;
   userId: number;
   blocked: boolean;
-  coverPhoto: string;
+  coverPhotoUrl: string;
   friendshipStatus: string;
-  avatar: PhotoViewResponse;
+  avatar: PhotoResponse;
   name: string;
 }

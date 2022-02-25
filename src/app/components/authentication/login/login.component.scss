@@ -30,17 +30,13 @@ $trans-time: .3s;
   overflow: hidden;
   background-size: cover;
   background-repeat: no-repeat;
-
-  // img {
-  //   width: 100%;
-  //   object-fit: cover;
-  // }
 }
 
 .result {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 14px;
   color: red;
   margin-top: 10px;
 
@@ -57,7 +53,7 @@ $trans-time: .3s;
   margin-bottom: 10px;
 
   i {
-    margin-right: 2px;
+    margin-right: 4px;
   }
 }
 

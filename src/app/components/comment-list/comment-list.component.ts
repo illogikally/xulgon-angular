@@ -1,13 +1,13 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CommentService} from './comment/comment.service';
 import {CommentResponse} from './comment/comment-response';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {MessageService} from '../share/message.service';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {HttpClient} from '@angular/common/http';
-import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ReplaySubject } from 'rxjs';
+import {filter, switchMap, takeUntil} from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router';
+import {concat, merge, of, ReplaySubject} from 'rxjs';
+import { PostViewService } from '../post/post-view/post-view.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -16,40 +16,40 @@ import { ReplaySubject } from 'rxjs';
 })
 export class CommentListComponent implements OnInit, OnDestroy {
 
-  @Input() targetId!: number;
   @Input() parentId!: number;
-  @Input() isPostView = false;
   @Input() totalCommentCount!: number;
+  @Input() rootContentId!: number;
+  @Input() initCommentCount = 2;
+
+
+  @ViewChild('commentContainer') commentContainer!:ElementRef;
+  highlight$ = new ReplaySubject<number>(1);
 
   isAllLoaded = false;
   comments: CommentResponse[] = [];
   commentIdSet = new Set();
   isCommentsVisible = true;
+
   commentForm = this.fb.group({
     comment: [''],
     fileInput: ['']
   });
+
   image: Blob | undefined;
   imageSizeRatio!: number;
   imgUrl!: string;
 
   loggedInUserAvatarUrl: string;
 
-  onDestroy$ = new ReplaySubject<any>();
-  onAttach$ = this.messageService.postView$.pipe(
-    filter(message => message.type == 'ATTACH')
-  );
+  onAttach$ = this.postViewService.attach$.pipe(filter(id => id == this.rootContentId));
+  onDetach$ = this.postViewService.detach$.pipe(filter(id => id == this.rootContentId));
 
-  onDetach$ = this.messageService.postView$.pipe(
-    filter(message => message.type == 'DETACH')
-  )
-
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
+  highlightedCommentId!: number;
+  ngOnDestroy() {
   }
 
   constructor(
+    private postViewService: PostViewService,
     private commentService: CommentService,
     private authService: AuthenticationService,
     private fb: FormBuilder,
@@ -60,25 +60,38 @@ export class CommentListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.setupOnHighlightComment();
     this.getComments();
+  }
 
-    if (this.isPostView) {
-      const commentId = Number(this.route.snapshot.queryParamMap.get('comment_id'));
-      if (isNaN(commentId) || this.commentIdSet.has(commentId)) return;
-      this.commentService.getComment(commentId)
-        .subscribe(comment => {
-          this.commentIdSet.add(comment.id);
-          this.comments.unshift(comment);
-        });
-    }
+  setupOnHighlightComment() {
+    merge(
+      this.onAttach$,
+      of(null)
+    ).pipe(
+      switchMap(() => this.postViewService.highlight$.pipe(
+        filter(data => !!data),
+        filter(data => data.postId == this.parentId || data.commentId == this.parentId),
+        takeUntil(this.onDetach$))
+      )
+    ).subscribe(data => {
+      this.initCommentCount = 15;
+
+      if (data.postId == this.parentId) {
+        this.highlightedCommentId = data.commentId;
+      }
+      else {
+        this.highlightedCommentId = data.childCommentId;
+      }
+    })
   }
 
   getComments() {
-    const limit = this.comments.length ? 5 : 2;
+    const limit = this.comments.length >= this.initCommentCount ? 5 : this.initCommentCount;
     const offset = this.comments.length;
 
     this.commentService
-      .getCommentsByContent(this.targetId, offset, limit)
+      .getCommentsByContent(this.parentId, offset, limit)
       .subscribe(response => {
         let resp = response.data;
         resp = resp.filter(comment => {
@@ -90,6 +103,14 @@ export class CommentListComponent implements OnInit, OnDestroy {
         });
         this.isAllLoaded = !response.hasNext;
         this.comments = this.comments.concat(resp);
+
+        console.log(this.highlightedCommentId);
+        
+        if (this.highlightedCommentId) {
+          if (!this.commentIdSet.has(this.highlightedCommentId)) {
+            this.getComments();
+          }
+        }
       });
   }
 
@@ -97,8 +118,8 @@ export class CommentListComponent implements OnInit, OnDestroy {
     let formData = new FormData();
     let commentRequest = new Blob(
       [JSON.stringify({
-        parentId: this.targetId,
-        postId: this.parentId,
+        parentId: this.parentId,
+        rootContentId: this.rootContentId,
         body: this.commentForm.get('comment')?.value,
         sizeRatio: this.imageSizeRatio
       })],
@@ -111,11 +132,11 @@ export class CommentListComponent implements OnInit, OnDestroy {
     this.commentService.createComment(formData).subscribe(comment => {
       this.comments.push(comment);
       this.commentService.commentAdded$.next({
-        parentId: this.targetId
+        parentId: this.parentId
       });
     });
 
-    this.commentForm.get('comment')?.setValue("");
+    this.commentForm.get('comment')?.setValue('');
     this.clearInput();
   }
 

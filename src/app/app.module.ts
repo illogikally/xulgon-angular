@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { LoginComponent } from './components/authentication/login/login.component'
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { PostListComponent } from './components/post-list/post-list.component';
+import { PostListComponent } from './components/post/post-list/post-list.component';
 import { PostComponent } from './components/post/post.component';
 import { AuthenticationInterceptor } from './authentication.interceptor';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
@@ -54,7 +54,7 @@ import { GroupSettingsComponent } from './components/group/group-settings/group-
 import { LoggedInComponent } from './components/share/logged-in/logged-in.component';
 import { NotificationComponent } from './components/notification/notification/notification.component';
 import { NotifItemComponent } from './components/notification/notif-item/notif-item.component';
-import { PostViewComponent } from './components/post-view/post-view.component';
+import { PostViewComponent } from './components/post/post-view/post-view.component';
 import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
 import { SearchComponent } from './components/search/search.component';
 import { ByPeopleComponent } from './components/search/by-people/by-people.component';
@@ -75,6 +75,7 @@ import { ConfirmDialogComponent } from './components/share/confirm-dialog/confir
 import { PopUpComponent } from './components/share/pop-up/pop-up.component';
 import { StickySidebarDirective } from './components/profile/sticky-sidebar.directive';
 import { TabBarComponent } from './components/profile/tab-bar/tab-bar.component';
+import { SpinnerComponent } from './components/share/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,7 @@ import { TabBarComponent } from './components/profile/tab-bar/tab-bar.component'
     PopUpComponent,
     StickySidebarDirective,
     TabBarComponent,
+    SpinnerComponent,
   ],
   imports: [
     FormsModule,
@@ -182,14 +184,17 @@ export class AppModule {
     let isNavigateSameRoute = true;
     this.router.events.subscribe(e  => {
       if (e instanceof NavigationStart) {
-        if (router.url == (e as NavigationStart).url) {
-          window.scrollTo({top: 0, behavior: 'smooth'});
+        if ( router.url == (e as NavigationStart).url) {
+          if (e.navigationTrigger != 'popstate') {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+          }
           isNavigateSameRoute = true;
         } else {
           isNavigateSameRoute = false;
         }
       } else if (e instanceof NavigationEnd) {
-        if (!isNavigateSameRoute) this.scroller.scrollToPosition([0, 0]);
+        if (!isNavigateSameRoute) 
+          this.scroller.scrollToPosition([0, 0]);
       }
     });
   }

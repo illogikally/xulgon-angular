@@ -24,19 +24,10 @@
           <span>
             đã bình luận trong một bài viết của bạn
           </span>
-          <span *ngIf="notification.actorContentBody ">: "{{ notification.recipientContentBody }}"</span>
+          <span *ngIf="notification.recipientContentBody">
+            : "{{ notification.recipientContentBody }}"
+          </span>
         </div>
-        <!-- <span *ngIf="notif.type"></span> -->
-<!--        <span> đã </span>-->
-<!--        <span *ngIf="notif.type == 'COMMENT'">bình luận trong</span>-->
-<!--        <span *ngIf="notif.type == 'REACTION'">thích</span>-->
-
-<!--        <span *ngIf="notif.contentType == 'POST'"> bài viết của bạn</span>-->
-<!--        <span *ngIf="notif.contentType == 'COMMENT'"> bình luận của bạn</span>-->
-<!--        <span *ngIf="notif.contentType == 'PHOTO'"> hình ảnh của bạn</span>-->
-<!--        <span-->
-<!--          *ngIf="notif.contentBody"-->
-<!--        >: {{ notif.contentBody }}</span>-->
       </div>
       <div class="ago">
         <span>{{ notification.createdAgo }}</span>

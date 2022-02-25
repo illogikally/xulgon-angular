@@ -1,5 +1,4 @@
 export interface PhotoResponse {
   id: number;
-  url: string;
-  sizeRatio: number;
+  thumbnails: {[key: string]: any};
 }

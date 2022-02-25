@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
-import {NotificationService} from '../../service/notification.service';
+import {NotificationService} from '../notification.service';
 import {Notification} from '../notification/notification';
 import { NotificationType } from '../notification/notification-type';
 
@@ -25,12 +25,18 @@ export class NotifItemComponent implements OnInit {
 
   ngOnInit(): void {
     let pageId = this.notification.pageId;
-    let rcId = this.notification.recipientContentId;
+    let rcId = this.notification.rootContentId;
     let pageType = this.notification.pageType;
     switch (this.notification.type) {
       case 'COMMENT': {
         this.url = `${pageType == 'GROUP' ? '/groups' : ''}/${pageId}/posts/${rcId}`;
-        this.url += '?comment_id=' + this.notification.actorContentId;
+        if (this.notification.recipientContentType == 'COMMENT') {
+          this.url += '?comment_id=' + this.notification.recipientContentId;
+          this.url += '&child_comment_id=' + this.notification.actorContentId;
+        }
+        else {
+          this.url += '?comment_id=' + this.notification.actorContentId;
+        }
       }
     }
   }

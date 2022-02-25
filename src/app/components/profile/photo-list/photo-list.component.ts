@@ -2,8 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { MessageService } from '../../share/message.service';
+import { PhotoService } from '../../share/photo/photo.service';
+import { PageHeader } from '../page-header';
+import { ProfileService } from '../profile.service';
 
 @Component({
   selector: 'app-photo-list',
@@ -14,11 +17,15 @@ import { MessageService } from '../../share/message.service';
 export class PhotoListComponent implements OnInit, OnDestroy {
 
   photos: any[] = [];
+  photoSetId!: number;
   private destroyed$ =  new ReplaySubject<boolean>(1);
 
-  constructor(private http: HttpClient,
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService,
     private activatedRoute: ActivatedRoute,
-    private messageService: MessageService) { }
+    private photoService: PhotoService
+  ) { }
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
@@ -28,18 +35,15 @@ export class PhotoListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let id = Number(this.activatedRoute.parent?.snapshot.paramMap.get('id'));
     if (id !== NaN) {
-      this.http.get<any[]>(`http://localhost:8080/api/pages/${id}/photos`).subscribe(photos => {
+      this.photoService.getPagePhotos(id).subscribe(photos => {
         this.photos = photos;
       });
+
+      this.photoService.getPagePhotoSetId(id).subscribe(photoSetId => {
+        this.photoSetId = photoSetId;
+      });
+
     }
-  //   this.messageService.onLoadPostsByPageId()
-  //   .pipe(takeUntil(this.destroyed$))
-  //   .subscribe(pageId => {
-  //     if (pageId === undefined) return;
-  //     this.http.get<any[]>(`http://localhost:8080/api/pages/${pageId}/photos`).subscribe(photos => {
-  //       this.photos = photos;
-  //     });
-  //   })
   }
 
   photoDeleted(id: any) {

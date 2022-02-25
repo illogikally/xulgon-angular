@@ -1,12 +1,12 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {PostService} from '../post/post.service'
-import {Post} from '../post/post'
-import {AuthenticationService} from '../authentication/authentication.service';
+import {PostService} from '../post.service'
+import {Post} from '../post'
+import {AuthenticationService} from '../../authentication/authentication.service';
 import {ActivatedRoute} from '@angular/router';
-import {MessageService} from '../share/message.service';
+import {MessageService} from '../../share/message.service';
 import {ReplaySubject} from 'rxjs';
-import {UserService} from '../share/user.service';
-import { ProfileService } from '../profile/profile.service';
+import {UserService} from '../../share/user.service';
+import { ProfileService } from '../../profile/profile.service';
 
 @Component({
   selector: 'app-post-list',
@@ -26,11 +26,8 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   constructor(
     private profileService: ProfileService,
-    private activatedRoute: ActivatedRoute,
-    private userService: UserService,
     private messageService: MessageService,
-    private postService: PostService,
-    private authService: AuthenticationService) {
+  ) {
   }
 
   ngOnDestroy() {
@@ -39,12 +36,11 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  ngOnInit(): void {
-    this.messageService.postDeleted.asObservable()
-      .subscribe(id => {
-        this.posts = this.posts?.filter(post => post.id != id);
-      });
+  onPostDelete(postId: number) {
+    this.posts = this.posts?.filter(post => post.id != postId);
+  }
 
+  ngOnInit(): void {
     this.profileService.onPostCreate$.subscribe(post => {
       if (post.pageId == this.pageId) {
         this.posts?.unshift(post);

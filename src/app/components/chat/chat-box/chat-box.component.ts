@@ -3,7 +3,7 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild
 import {FormControl, FormGroup} from '@angular/forms';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {MessageService} from '../../share/message.service';
-import { ChatService } from '../../service/chat.service';
+import { ChatService } from '../chat.service';
 import {ChatMessage} from '../chat-msg';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { UserBasic } from '../../share/user-basic';

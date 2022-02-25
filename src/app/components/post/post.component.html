@@ -83,18 +83,27 @@
   </div>
   <div class="post-body">
     <div class="post-text">{{ post.body }}</div>
-    <div *ngIf="post.photos.length > 0" class="post-media">
+
+    <div *ngIf="post.photos?.length" class="post-media">
       <div>
         <div *ngFor="let photo of post.photos.slice(0, 2)">
           <div>
-            <app-photo [style]="'width'" [photo]="photo"></app-photo>
+            <app-photo 
+            [url]="photo.thumbnails.s400x400.url"
+            [setId]="post.photoSetId"
+            [id]="photo.id"
+            [style]="'width'"></app-photo>
           </div>
         </div>
       </div>
       <div *ngIf="post.photos.length > 2">
         <div *ngFor="let photo of post.photos.slice(2, 4)">
           <div>
-            <app-photo [style]="'width'" [photo]="photo"></app-photo>
+            <app-photo 
+            [url]="photo.thumbnails.s400x400.url"
+            [id]="photo.id"
+            [setId]="post.photoSetId"
+            [style]="'width'"></app-photo>
           </div>
         </div>
       </div>
@@ -145,12 +154,12 @@
     </div>
   </div>
   <div
-  [ngClass]="{'none': !isCommentVisible}"
+  [hidden]="!isCommentVisible"
   class="comments">
     <app-comment-list
-    [isPostView]="isPostView"
     [totalCommentCount]="post.commentCount"
+    [initCommentCount]="initCommentCount"
     [parentId]="post.id"
-    [targetId]="post.id"></app-comment-list>
+    [rootContentId]="post.id"></app-comment-list>
   </div>
 </div>

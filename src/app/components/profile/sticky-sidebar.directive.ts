@@ -143,7 +143,6 @@ export class StickySidebarDirective implements OnInit {
 
       if (currentWidth >= 900 && previousWidth < 900) {
         window.scrollBy(0, 1);
-        
       }
 
       const parentLeft = this.parent.getBoundingClientRect().left;

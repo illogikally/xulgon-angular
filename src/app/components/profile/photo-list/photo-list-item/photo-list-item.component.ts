@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
+import { PhotoResponse } from 'src/app/components/share/photo/photo-response';
 
 @Component({
   selector: 'app-photo-list-item',
@@ -9,16 +10,19 @@ import {AuthenticationService} from 'src/app/components/authentication/authentic
 })
 export class PhotoListItemComponent implements OnInit {
 
-  @Input() photo: any;
+  @Input() photo!: PhotoResponse;
+  @Input() setId?: number;
   @Output() photoDeleted: EventEmitter<number> = new EventEmitter();
   loggedInUserId: number;
   isOptionsVisible: boolean = false;
 
   @ViewChild('optionsBtn') optionsBtn!: ElementRef;
 
-  constructor(private auth: AuthenticationService,
-              private http: HttpClient) {
-    this.loggedInUserId = auth.getPrincipalId();
+  constructor(
+    private authenticationService: AuthenticationService,
+    private http: HttpClient
+  ) {
+    this.loggedInUserId = authenticationService.getPrincipalId();
   }
 
   ngOnInit(): void {

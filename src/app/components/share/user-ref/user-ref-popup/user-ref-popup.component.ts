@@ -78,7 +78,7 @@ export class UserRefPopupComponent implements OnInit {
     });
   }
 
-  isMouseOut(targetRect: DOMRect, mousePosition: any): boolean {
+  isMouseOut(targetRect: DOMRect, mousePosition: {x: number, y: number}): boolean {
     return targetRect.left > mousePosition.x
       || targetRect.right  < mousePosition.x
       || targetRect.top    > mousePosition.y
@@ -113,7 +113,8 @@ export class UserRefPopupComponent implements OnInit {
     
 
     const isInTopHalf = targetRect.top < window.innerHeight / 2;
-    let top = isInTopHalf 
+    let top = 
+      isInTopHalf 
       ? targetRect.bottom + MARGIN 
       : targetRect.top - self.offsetHeight - MARGIN;
     top += window.scrollY;

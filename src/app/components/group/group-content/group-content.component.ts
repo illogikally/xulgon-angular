@@ -24,7 +24,7 @@ export class GroupContentComponent implements OnInit, OnDestroy {
 
   constructor(
     private location: Location,
-    private group$: GroupService,
+    private groupService: GroupService,
     private message$: MessageService,
     private renderer: Renderer2,
     private router: Router,
@@ -39,8 +39,6 @@ export class GroupContentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initDefaultTab();
-
 
     this.message$.groupLoaded
       .pipe(takeUntil(this.destroyed$))
@@ -52,26 +50,14 @@ export class GroupContentComponent implements OnInit, OnDestroy {
       });
   }
 
-  initDefaultTab(): void {
-    this.setDefaultTab('');
-    this.setDefaultTab('about');
-    this.setDefaultTab('media');
-    this.setDefaultTab('members')
+  onAttach() {
+    console.log('attach');
+    
+    this.groupService.attach$.next(this.groupResponse.id);
   }
 
-  setDefaultTab(tab: string) {
-    let url = window.location.href;
-    if (new RegExp(tab).test(url)) {
-      this.loadedTabs.add(tab);
-      this.currentTab = tab;
-    }
-  }
-
-  switchTab(event: any, tab: string): void {
-    event.preventDefault();
-    this.loadedTabs.add(tab);
-    this.currentTab = tab;
-    this.location.go(`groups/${this.groupResponse.id}/${tab}`);
+  onDetach() {
+    this.groupService.detach$.next(this.groupResponse.id);
   }
 
   sendJoinRequest(): void {
@@ -93,7 +79,7 @@ export class GroupContentComponent implements OnInit, OnDestroy {
   }
 
   leaveGroup(): void {
-    this.group$.leaveGroup(this.groupResponse.id).subscribe(_ => {
+    this.groupService.leaveGroup(this.groupResponse.id).subscribe(_ => {
       window.location.reload();
     });
   }

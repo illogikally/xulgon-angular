@@ -1,6 +1,5 @@
 <div class="photo-item">
   <div
-    *ngIf="photo.user?.id == loggedInUserId"
     #optionsBtn
     (click)="showOptions()"
     class="options">
@@ -9,12 +8,18 @@
       (clickOutside)="hideOptions($event)"
       *ngIf="isOptionsVisible"
       class="option-list">
-      <div (click)="deletePhoto()"
-           class="item"><i class='bx bx-trash'></i>Xoá ảnh
+      <div 
+      (click)="deletePhoto()"
+        class="item">
+        <i class='bx bx-trash'> </i>Xoá ảnh
       </div>
     </div>
   </div>
   <div class="photo-container">
-    <app-photo [photo]="photo"></app-photo>
+    <app-photo 
+    [url]="photo.thumbnails.s400x400.url"
+    [setId]="setId"
+    [id]="photo.id"
+    ></app-photo>
   </div>
 </div>

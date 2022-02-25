@@ -8,11 +8,11 @@ export interface Post {
   pageType: string;
   privacy: string;
   createdAt: string;
-  posted: string;
   isReacted: boolean;
   photos: any[];
   body: string;
   reactionCount: number;
   commentCount: number;
   shareCount: number
+  photoSetId: number;
 }

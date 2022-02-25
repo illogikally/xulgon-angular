@@ -17,12 +17,14 @@ export class FriendRequestComponent implements OnInit {
   profileId!: number;
   isProfilePicked: boolean = false;
 
-  constructor(private auth: AuthenticationService,
-              private locationStrategy: LocationStrategy,
-              private messageService: MessageService,
-              private title: Title,
-              private http: HttpClient) {
-    // history.pushState(null, this.title.getTitle(), window.location.href);
+  constructor(
+    private auth: AuthenticationService,
+    private locationStrategy: LocationStrategy,
+    private messageService: MessageService,
+    private title: Title,
+    private http: HttpClient
+  ) {
+// history.pushState(null, this.title.getTitle(), window.location.href);
     // this.locationStrategy.onPopState(() => {
     //   history.pushState(null, this.title.getTitle(), window.location.href);
     // });

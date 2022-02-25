@@ -1,15 +1,20 @@
 <div class="comment-list">
 
-  <div class="comments">
+  <div 
+  #commentContainer
+  class="comments">
     <app-comment
       *ngFor="let comment of comments"
-      [commentResponse]="comment"></app-comment>
+      [comment]="comment">
+    </app-comment>
   </div>
 
   <div 
   class="load-comments" 
   *ngIf="!isAllLoaded"
-  (click)="getComments()">Xem thêm {{ totalCommentCount - comments.length }} bình luận</div>
+  (click)="getComments()">
+    <span>Xem thêm {{ totalCommentCount - comments.length }} bình luận</span>
+  </div>
   <form [formGroup]="commentForm" (keyup.enter)="submit()">
     <div class="input-container">
       <div class="input-avatar">

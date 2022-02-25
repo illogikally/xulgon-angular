@@ -21,6 +21,7 @@ export class ButtonComponent implements OnInit {
   @Input() padding = '0 15px';
   @Input() hasOptions = false;
   @Input() optionsAlignment = 'CENTER'
+  @Input() isRounded = false;
 
   @ViewChild('inner', {static: true}) inner!: ElementRef;
   @ViewChild('options', {static: false}) options!: ElementRef;
@@ -31,7 +32,6 @@ export class ButtonComponent implements OnInit {
 
   constructor(
     private renderer: Renderer2,
-    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -57,6 +57,10 @@ export class ButtonComponent implements OnInit {
       this.color = 'rgba(#555, .9)';
     }
 
+    if (this.isRounded) {
+      this.radius = '50%';
+      this.padding = '';
+    }
     const style = {
       '--bg': this.background,
       '--fg': this.color,

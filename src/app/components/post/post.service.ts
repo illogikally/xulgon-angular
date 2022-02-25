@@ -1,9 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
-import { PageableResponse } from '../share/pageable-response';
+import { OffsetResponse } from '../share/offset-response';
 import {Post} from './post';
 
 @Injectable({
@@ -22,9 +22,9 @@ export class PostService {
     pageId: number,
     size  : number,
     offset: number
-  ): Observable<PageableResponse<Post>> {
+  ): Observable<OffsetResponse<Post>> {
     let url = `${this.baseApiUrl}/pages/${pageId}/posts?size=${size}&offset=${offset}`;
-    return this.http.get<PageableResponse<Post>>(url);
+    return this.http.get<OffsetResponse<Post>>(url);
   }
 
   getPost(postId: number): Observable<Post> {

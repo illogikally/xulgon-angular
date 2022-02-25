@@ -3,8 +3,8 @@ import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
-import { ChatMessage } from '../chat/chat-msg';
-import {ConversationNotif} from '../chat/conversation-notif';
+import { ChatMessage } from './chat-msg';
+import {ConversationNotif} from './conversation-notif';
 
 @Injectable({
   providedIn: 'root'

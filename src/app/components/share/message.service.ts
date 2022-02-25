@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {GroupResponse} from '../group/group-response';
 import {Post} from '../post/post';
@@ -10,14 +11,13 @@ import {UserBasic} from './user-basic';
 })
 export class MessageService {
 
-  confirmDialog$ = new Subject<any>();
   popUp$ = new Subject<any>();
+  routeReuse$ = new Subject<ActivatedRouteSnapshot>();
 
   constructor() {
   }
 
   notif = new BehaviorSubject<any>('');
-  postDeleted = new Subject<number>();
   loadGroupFeed = new Subject<any>();
   generalSearch = new BehaviorSubject<string>('');
   loadGroupProfile = new BehaviorSubject<number | null>(null);
@@ -28,7 +28,6 @@ export class MessageService {
   private pageId = new BehaviorSubject<number | undefined>(undefined);
 
 
-  postView$ = new ReplaySubject<any>(1);
 
   loadPostsByPageId(pageId: number | undefined): void {
     this.pageId.next(pageId);
@@ -37,7 +36,6 @@ export class MessageService {
   onLoadPostsByPageId(): Observable<number | undefined> {
     return this.pageId.asObservable();
   }
-
 
   openChatBox$ = new Subject<UserBasic>();
   updateCoverPhoto = new Subject<string>();

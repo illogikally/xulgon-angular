@@ -1,50 +1,96 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
 import {PhotoViewResponse} from '../share/photo/photo-view-response';
 import {Location} from '@angular/common';
-import {Router} from '@angular/router';
+import { MessageService } from '../share/message.service';
+import { PhotoService } from '../share/photo/photo.service';
+import { Post } from '../post/post';
 
 @Component({
   selector: 'app-photo-viewer',
   templateUrl: './photo-viewer.component.html',
   styleUrls: ['./photo-viewer.component.scss']
 })
-export class PhotoViewerComponent implements OnInit, OnDestroy {
+export class PhotoViewerComponent implements OnInit {
 
-  @Input() photoResponse!: PhotoViewResponse | undefined;
-  @Output() closeMe: EventEmitter<boolean> = new EventEmitter();
-  prevUrl: string[] = [];
+  @Input() photo?: PhotoViewResponse;
+  @Input() photoId!: number;
+  @Input() setId?: number;
 
-  constructor(private http: HttpClient,
-              private router: Router,
-              private renderer: Renderer2,
-              private location: Location) {
+  post!: Post;
+  constructor(
+    private renderer: Renderer2,
+    private location: Location,
+    private self: ElementRef,
+    private photoService: PhotoService
+
+  ) {
   }
 
-  ngOnDestroy(): void {
-    this.renderer.setStyle(document.body, 'overflow-y', 'scroll');
-  }
-
-  // @HostListener('window:popstate', ['$event'])
-  // onPopState(event: any) {
-  //   this.close();
-  // }
   ngOnInit(): void {
-    this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
+    if (this.photoId) {
+      this.loadPhoto();
+    }
 
+    this.photoService.photoView$.subscribe(data => {
+      this.photoId = data.id;
+      this.setId = data.setId;
+      this.loadPhoto();
+    });
+  }
+  
 
-    this.http.get<PhotoViewResponse>("http://localhost:8080/api/photos/" + this.photoResponse?.id)
-      .subscribe(resp => {
-        this.photoResponse = resp;
+  loadPhoto() {
+    if (this.setId) {
+      this.photoService.getPhotoBySetIdAndPhotoId(this.setId, this.photoId)
+      .subscribe(photo => {
+        this.photo = photo;
+        setTimeout(() => {
+          this.show();
+        }, 200);
       });
-    this.prevUrl.push(window.location.href.replace(/https?:\/\/.*?\//g, ''));
-    this.location.go(`photos/${this.photoResponse?.id}`);
+    }
+    else {
+      this.photoService.getPhoto(this.photoId).subscribe(photo => {
+        this.photo = photo;
+        setTimeout(() => {
+          this.show();
+        }, 200);
+      });
+    }
   }
 
-  close(): void {
+  hide(): void {
     this.location.back();
-    this.closeMe.emit(true);
+    this.renderer.setStyle(this.self.nativeElement, 'display', 'none');
+    this.renderer.setStyle(document.body, 'overflow-y', 'scroll');
+    this.photo = undefined;
   }
 
+  show() {
+    let url = `photos/${this.photoId}`;
+    if (this.setId) {
+      url += `?set_id=${this.setId}`;
+    }
+    this.location.go(url);
+    this.renderer.setStyle(this.self.nativeElement, 'display', 'block');
+    this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
+  }
 
+  nextPhoto() {
+    if (!this.setId || !this.photo?.index) return;
+    this.photoService.getPhotoBySetIdAndIndex(this.setId, this.photo.index + 1)
+    .subscribe(photo => {
+      this.photo = photo;
+    });
+  }
+
+  previousPhoto() {
+    if (!this.setId || !this.photo?.index) return;
+
+    this.photoService.getPhotoBySetIdAndIndex(this.setId, this.photo.index - 1)
+    .subscribe(photo => {
+      this.photo = photo;
+    });
+  }
 }

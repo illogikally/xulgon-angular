@@ -1,4 +1,4 @@
-export interface PageableResponse<T> {
+export interface OffsetResponse<T> {
   hasNext: boolean;
   size: number;
   offset: number;

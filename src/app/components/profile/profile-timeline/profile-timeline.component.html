@@ -74,7 +74,10 @@
               *ngIf="userProfile?.photos"
               class="photo-container">
                 <div *ngFor="let photo of userProfile?.photos">
-                  <app-photo [photo]="photo"></app-photo>
+                  <app-photo 
+                  [url]="photo.url"
+                  [id]="photo.id"
+                  ></app-photo>
                 </div>
               </div>
             </div>
@@ -107,7 +110,9 @@
     </div>
 
     <div id="content" class="timeline">
-      <div class="post-container">
+      <div 
+      #postContainer
+      class="post-container">
         <app-post-list
           [pageId]="pageId"
           [isLoading]="isLoadingPosts"

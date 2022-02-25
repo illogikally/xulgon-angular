@@ -13,6 +13,7 @@ import {Post} from '../post/post';
 import {PostService} from '../post/post.service';
 import { toBase64String } from '@angular/compiler/src/output/source_map';
 import { PageHeader } from './page-header';
+import { TitleService } from '../share/title.service';
 
 @Component({
   selector: 'app-profile',
@@ -32,6 +33,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   pageHeader!: PageHeader;
   userProfile!: UserProfile;
 
+  pageAvatarUrl!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,24 +42,33 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     private authenticationService: AuthenticationService,
     private title: Title,
+    private titleService: TitleService,
     private messageService: MessageService
   ) {
     this.principalId = authenticationService.getPrincipalId();
   }
 
   ngOnInit(): void {
-    this.pageHeader = this.route.snapshot.data.header;
+    const header = this.route.snapshot.data.header;
+    if (!header) {
+      this.pageError();
+      return;
+    }
+
+    this.pageHeader = header;
+    this.pageAvatarUrl = header.avatar?.thumbnails.s160x160.url;
 
     this.messageService.updateCoverPhoto
       .pipe(takeUntil(this.destroyed$))
       .subscribe(url => {
-        this.pageHeader.coverPhoto = url;
+        this.pageHeader.coverPhotoUrl = url;
       });
 
+    this.titleService.setTitle(this.pageHeader.name);
     this.messageService.updateAvatar
       .pipe(takeUntil(this.destroyed$))
       .subscribe(url => {
-        this.pageHeader.avatar.url = url;
+        this.pageAvatarUrl = url;
       });
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -77,7 +88,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   onAttach(): void {
-    this.title.setTitle(this.pageHeader.name);
+    this.titleService.setTitle(this.pageHeader.name);
     this.profileService.onAttach$.next(this.pageHeader.id);
   }
 
@@ -100,16 +111,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.messageService.sendLoadedProfile(this.userProfile);
         this.profileLoaded.emit(this.userProfile);
         this.profileLoaded.emit({} as UserProfile);
-      }, _ => {
+      }, () => {
         this.pageError();
       });
     this.messageService.loadPostsByPageId(id);
   }
 
-  pageError(): void {
+  pageError() {
     this.pageNotFound = true;
-    const profile = document.querySelector<HTMLElement>('.user-profile')!;
-    this.renderer.setStyle(profile, 'display', 'none');
   }
 
   showUpdateProfilePic(type: string): void {
@@ -119,7 +128,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   isUserBlocked(profileId: number): void {
     this.profileService.isBlocked(profileId).subscribe(isBlocked => {
-      // if (isBlocked) this.pageError();
+      if (isBlocked) this.pageError();
       this.pageNotFound = isBlocked;
       this.isBlocked = isBlocked;
     })
@@ -130,7 +139,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       id: this.pageHeader.userId,
       username: this.pageHeader.name,
       profileId: this.pageHeader.id,
-      avatarUrl: this.pageHeader.avatar.url
+      avatarUrl: this.pageHeader.avatar.thumbnails.s40x40
     });
   }
 

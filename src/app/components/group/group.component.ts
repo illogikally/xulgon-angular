@@ -4,6 +4,7 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 import {MessageService} from '../share/message.service';
+import { TitleService } from '../share/title.service';
 import {GroupResponse} from './group-response';
 
 @Component({
@@ -17,15 +18,16 @@ export class GroupComponent implements OnInit, OnDestroy {
 
   @ViewChild('moreAction') moreAction!: ElementRef;
 
-  constructor(private location: Location,
-              private message$: MessageService,
-              private route: ActivatedRoute,
-              private title: Title,
-              private http: HttpClient) {
+  constructor(
+    private location: Location,
+    private messageService: MessageService,
+    private route: ActivatedRoute,
+    private titleService: TitleService,
+    private http: HttpClient) {
   }
 
   ngOnDestroy(): void {
-    this.message$.groupLoaded.next(null);
+    this.messageService.groupLoaded.next(null);
   }
 
   ngOnInit(): void {
@@ -37,12 +39,11 @@ export class GroupComponent implements OnInit, OnDestroy {
   }
 
   getGroupProfile(id: number): void {
-    this.message$.loadPostsByPageId(id);
+    this.messageService.loadPostsByPageId(id);
     this.http.get<GroupResponse>(`http://localhost:8080/api/groups/${id}`).subscribe(resp => {
-      this.title.setTitle(resp.name);
+      this.titleService.setTitle(resp.name);
       this.groupResponse = resp;
-
-      this.message$.groupLoaded.next(resp);
+      this.messageService.groupLoaded.next(resp);
     }, error => {
     });
 

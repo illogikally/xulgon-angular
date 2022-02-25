@@ -1,9 +1,10 @@
 import { JsonpClientBackend } from "@angular/common/http";
-import { ComponentRef } from "@angular/core";
+import { ComponentRef, Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from "@angular/router";
 import { withLatestFrom } from "rxjs/operators";
 import { MessageService } from "./components/share/message.service";
 import { FriendListComponent } from "./components/profile/friend-list/friend-list.component";
+import { CurrencyPipe } from "@angular/common";
 
 interface RouteStorageObject {
 	snapshot: ActivatedRouteSnapshot;
@@ -15,6 +16,11 @@ interface DetachedRouteHandleExt extends DetachedRouteHandle {
 }
 
 export class MyReuseStrategy implements RouteReuseStrategy {
+	constructor(
+		private messageService: MessageService
+	) {
+	}
+
 	storedRoutes: { [key: string]: RouteStorageObject } = {};
 
 	shouldDetach(route: ActivatedRouteSnapshot): boolean {
@@ -25,13 +31,12 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 	}
 
 	store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandleExt | null): void {
-		let storedRoute: RouteStorageObject = {
+		let storedRoute = {
 			snapshot: route,
 			handle: handle,
 		}
 
 		if (!handle) return;
-
 		this.callHook(handle, 'onDetach');
 		this.storedRoutes[this.getKey(route)] = storedRoute;
 	}
@@ -39,21 +44,17 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 	shouldAttach(route: ActivatedRouteSnapshot): boolean {
 		const storedRoute = this.storedRoutes[this.getKey(route)];
 
-		let canAttach: boolean = !!route.routeConfig
-			&& !!storedRoute;
-
+		let canAttach = !!route.routeConfig && !!storedRoute;
 		if (canAttach) {
 			const paramsMatch = this.compare(route.params, storedRoute.snapshot.params);
 			const queryParamsMatch = this.compare(route.queryParams, storedRoute.snapshot.queryParams);
-
 
 			const shouldAttach =  paramsMatch && queryParamsMatch;
 
 			if (shouldAttach) {
 				this.callHook(storedRoute.handle, 'onAttach');
 				
-			} else {
-			}
+			} 
 			return shouldAttach
 		}
 		return false;
@@ -65,9 +66,14 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 	}
 
 	shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-		let should = (future.routeConfig === curr.routeConfig
+		const should = 
+			future.routeConfig === curr.routeConfig
 			&& this.compare(future.params, curr.params)
-		)
+
+		if (should) {
+			this.messageService.routeReuse$.next(future);
+		}
+
 		return should;
 	}
 

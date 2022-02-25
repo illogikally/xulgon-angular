@@ -2,9 +2,13 @@ import {UserDto} from "../../share/user-dto";
 
 export interface CommentResponse {
   id: number;
-  postId: number;
+
+  rootContentId: number;
+  rootContentType: string;
+
   parentId: number;
   parentType: string;
+
   body: string;
   isReacted: boolean;
   user: UserDto;

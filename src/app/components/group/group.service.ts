@@ -1,8 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, ReplaySubject} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {Post} from '../post/post';
+import { OffsetResponse } from '../share/offset-response';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,8 @@ import {Post} from '../post/post';
 export class GroupService {
 
   private baseApiUrl = environment.baseApiUrl;
+  public attach$ = new ReplaySubject<number>(1);
+  public detach$ = new ReplaySubject<number>(1);
 
   constructor(private http: HttpClient) {}
 
@@ -48,9 +51,9 @@ export class GroupService {
     return this.http.put<any>(url, {});
   }
 
-  getTimeline(groupId: number): Observable<Post[]> {
+  getTimeline(groupId: number): Observable<OffsetResponse<Post>> {
     const url = `http://localhost:8080/api/pages/${groupId}/posts`;
-    return this.http.get<Post[]>(url);
+    return this.http.get<OffsetResponse<Post>>(url);
   }
 
 }

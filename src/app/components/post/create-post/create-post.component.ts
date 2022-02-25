@@ -34,7 +34,6 @@ export class CreatePostComponent implements OnInit {
 
   @ViewChild('privacyBtn') privacyBtn!: ElementRef;
   @ViewChild('textArea', {static: true}) textArea!: ElementRef;
-  // @ViewChild('self', {static: true}) self!: ElementRef;
 
   constructor(
     private http: HttpClient,

@@ -116,10 +116,11 @@ $mediumView: 1250px;
             .icon-wrapper {
               z-index: -1;
               background-color: transparent;
+              transition: background-color .1s ease .1s;
               .icon {
                 transition: transform .1s ease-out, opacity .05s;
                 opacity: 0;
-                transform: translateX(-200%);
+                transform: translateX(-100%);
               }
             }
 

@@ -14,21 +14,27 @@ export class GroupTimelineComponent implements OnInit {
   @Input() groupResponse!: GroupResponse;
   posts: Post[] = [];
   isPostView = false;
+  groupId!: number;
 
   constructor(
-    private group$: GroupService,
+    private groupService: GroupService,
     private route: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
-    let profileId = Number(this.route.snapshot.paramMap.get('id'))
+    this.groupId = Number(this.route.snapshot.paramMap.get('id'))
     this.isPostView = this.route.snapshot.data['isPostView'];
+    if (this.isPostView) {
+      this.groupId = Number(this.route.snapshot.parent?.parent?.paramMap.get('id'));
+    }
     if (!this.isPostView) {
-      this.group$
-        .getTimeline(profileId)
-        .subscribe(posts => {
-          this.posts = posts;
+      this.groupService
+        .getTimeline(this.groupId)
+        .subscribe(response => {
+          console.log(response);
+          
+          this.posts = response.data;
         });
     }
   }

@@ -109,9 +109,11 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
       }
     } else {
       let formData = new FormData();
+      console.log(this.userProfile.id);
+      
       let photoRequest = new Blob([JSON.stringify({
         privacy: 'PUBLIC',
-        sizeRatio: this.photoSizeRatio
+        pageId: this.userProfile.id
       })], {type: 'application/json'});
       formData.append('photoRequest', photoRequest);
 

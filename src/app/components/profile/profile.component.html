@@ -1,11 +1,15 @@
-<div class="user-profile">
+<div 
+*ngIf="!pageNotFound"
+class="user-profile">
   <div class="profile-header">
     <div class="flex-center">
       <div class="cover-avatar">
         <div class="cover">
-          <img [src]="pageHeader.coverPhoto">
+          <img 
+          *ngIf="pageHeader.coverPhotoUrl"
+          [src]="pageHeader.coverPhotoUrl || ''">
           <div
-          *ngIf="pageHeader?.id == principalId"
+          *ngIf="pageHeader.id == principalId"
           (click)="showUpdateProfilePic('cover')"
           class="change-cover">
             <i class='bx bxs-camera'></i>
@@ -14,10 +18,12 @@
         </div>
         <div  class="avatar-container flex-center">
           <div class="avatar">
-            <app-photo [photo]="pageHeader?.avatar"></app-photo>
+            <app-photo [url]="pageHeader.avatar?.thumbnails?.s200x200.url"
+            [id]="pageHeader.avatar?.id"
+            ></app-photo>
           </div>
           <div
-          *ngIf="pageHeader?.id == principalId"
+          *ngIf="pageHeader.id == principalId"
           (click)="showUpdateProfilePic('avatar')"
           class="change-avatar">
             <i class='bx bxs-camera'></i>

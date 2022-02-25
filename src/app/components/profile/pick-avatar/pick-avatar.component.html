@@ -4,13 +4,6 @@
       <h2
         [innerText]="updateType == 'avatar' ? 'Thay ảnh đại diện' : 'Thay ảnh bìa'"></h2>
       <div
-        (click)="close()"
-        class="x-btn">
-        <i class='bx bx-x'></i>
-      </div>
-    </div>
-    <div class="body">
-      <div
         (click)="fileInput.click()"
         class="upload-file">
         <i class='bx bx-plus'></i>
@@ -24,6 +17,13 @@
             formControlName="fileInput">
         </form>
       </div>
+      <div
+        (click)="close()"
+        class="x-btn">
+        <i class='bx bx-x'></i>
+      </div>
+    </div>
+    <div class="body">
       <div class="photos">
         <app-square-image
           [photo]="photo"

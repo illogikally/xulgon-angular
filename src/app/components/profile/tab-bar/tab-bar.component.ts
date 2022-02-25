@@ -33,17 +33,14 @@ export class TabBarComponent implements OnInit, AfterViewInit {
   isTabBarConfigured = false;
 
   constructor(
-    private messageService: MessageService,
-    private userService: UserService,
     private ngZone: NgZone,
-    private changeDetector: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    this.onTabBarSticky();
+    this.configureOnTabBarSticky();
     this.saveTabSizes();
     this.configureOnTabBarResize();
   }
@@ -53,33 +50,38 @@ export class TabBarComponent implements OnInit, AfterViewInit {
     const moreTabsElementWidth = this.moreTabsElement.nativeElement.offsetWidth;
     const tabsButtonsMargin = 60;
     let isRunning = false;
-    new ResizeObserver(() => {
+
+    const isLastTabOverflowed = (tab: any): boolean => {
+      return wrapperElement.offsetWidth - tabsButtonsMargin 
+          < tab.distance + moreTabsElementWidth
+    }
+
+    const isThereSpaceToFitHiddenTab = (tab: any): boolean => {
+      return wrapperElement.offsetWidth - tabsButtonsMargin 
+          > tab.distance + moreTabsElementWidth
+    }
+    new ResizeObserver(entries => {
       if (
         isRunning || 
+        !entries[0].contentRect.width ||
         !this.tabsWrapperElement || 
         !this.tabsElement 
       ) return;
       isRunning = true;
 
       this.ngZone.run(() => {
-
         let [lastTab] = this.visibleTabs.slice(-1);
-        while (
-          lastTab && 
-          wrapperElement.offsetWidth - tabsButtonsMargin 
-            < lastTab.distance + moreTabsElementWidth
-        ) {
+        while (lastTab && isLastTabOverflowed(lastTab)) {
           this.hiddenTabs.unshift(this.visibleTabs.pop());
           [lastTab] = this.visibleTabs.slice(-1);
         }
 
-        if (
-          this.hiddenTabs[0] &&
-          wrapperElement.offsetWidth - tabsButtonsMargin 
-            > this.hiddenTabs[0].distance + moreTabsElementWidth
-        ) {
+        let firstHiddenTab = this.hiddenTabs[0];
+        while (firstHiddenTab && isThereSpaceToFitHiddenTab(firstHiddenTab)) {
           this.visibleTabs.push(this.hiddenTabs.shift());
+          firstHiddenTab = this.hiddenTabs[0];
         }
+
         this.isTabBarConfigured = true;
       });
       isRunning = false;
@@ -96,9 +98,9 @@ export class TabBarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onTabBarSticky() {
-    const menu: HTMLElement = this.tabBarElement.nativeElement;
-    const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+  configureOnTabBarSticky() {
+    const tabBar: HTMLElement = this.tabBarElement.nativeElement;
+    new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
         this.isTabBarSticky = false;
       } else  {
@@ -108,8 +110,7 @@ export class TabBarComponent implements OnInit, AfterViewInit {
     {
       rootMargin: "-56px 0px 0px 0px",
       threshold: [1]
-    });
-    observer.observe(menu);
+    }).observe(tabBar);
   }
 
 }

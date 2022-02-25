@@ -1,5 +1,8 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import { NumberValueAccessor } from '@angular/forms';
+import { PhotoResponse } from './photo-response';
 import {PhotoViewResponse} from './photo-view-response';
+import { PhotoService } from './photo.service';
 
 @Component({
   selector: 'app-photo',
@@ -7,33 +10,31 @@ import {PhotoViewResponse} from './photo-view-response';
   styleUrls: ['./photo.component.scss']
 })
 export class PhotoComponent implements OnInit {
-
-  @Input() photo!: PhotoViewResponse | undefined;
-  @Input() isComment!: boolean;
+  @Input() isComment = false;
+  @Input() url = '';
+  @Input() id?: number;
+  @Input() setId?: number;
 
   @ViewChild('image', {static: true}) image!: ElementRef;
 
-  showPhotoViewer: boolean = false;
   onPhotoClicked: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private renderer: Renderer2) {
+  constructor(
+    private photoService: PhotoService
+  ) {
   }
 
   ngOnInit(): void {
-
-    // if (this.isComment) {
-    //   this.renderer.setStyle(this.image.nativeElement, 'aspect-ratio', '0');
-    //   this.renderer.setStyle(this.image.nativeElement, 'height', '100%');
-    //   this.renderer.setStyle(this.image.nativeElement, 'width', 'auto');
-    // }
   }
 
   openPhotoView(event: any): void {
     event.preventDefault();
-    this.showPhotoViewer = true;
-  }
-
-  closePhotoView(): void {
-    this.showPhotoViewer = false;
+    if (!this.id) return;
+    console.log(this.setId);
+    
+    this.photoService.photoView$.next({
+      id: this.id,
+      setId: this.setId
+    });
   }
 }

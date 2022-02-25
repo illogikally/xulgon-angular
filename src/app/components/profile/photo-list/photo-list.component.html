@@ -6,6 +6,7 @@
     <app-photo-list-item
       *ngFor="let photo of photos"
       (photoDeleted)="photoDeleted($event)"
+      [setId]="photoSetId"
       [photo]="photo"></app-photo-list-item>
   </div>
 </div>

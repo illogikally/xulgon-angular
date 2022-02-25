@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ReactionType} from '../share/reaction-type';
 import {ReactionPayload} from '../share/reaction.payload';
 import {ReactionService} from '../share/reaction.service';
@@ -8,10 +8,10 @@ import {PhotoViewResponse} from '../share/photo/photo-view-response';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {GroupResponse} from '../group/group-response';
 import {HttpClient} from '@angular/common/http';
-import { CommentService } from '../comment-list/comment/comment.service';
-import { filter } from 'rxjs/operators';
-import { PostService } from './post.service';
-import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
+import {CommentService} from '../comment-list/comment/comment.service';
+import {filter} from 'rxjs/operators';
+import {PostService} from './post.service';
+import {ConfirmDialogService} from '../share/confirm-dialog/confirm-dialog.service';
 
 
 @Component({
@@ -21,14 +21,12 @@ import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.ser
 })
 export class PostComponent implements OnInit {
 
-  @Input() post!: Post | PhotoViewResponse | any;
-  onInputFocus: EventEmitter<boolean> = new EventEmitter();
-
+  @Output() remove = new EventEmitter();
+  @Input() post!: Post | PhotoViewResponse;
   @Input() isCommentVisible = false;
-  @Input() isGroupNameVisible!: boolean;
-  @Input() isPostView = false;
+  @Input() isGroupNameVisible = false;
+  @Input() initCommentCount = 2;
 
-  isPostOptsVisible = false;
   principalId: number;
   groupReponse!: GroupResponse;
 
@@ -52,10 +50,8 @@ export class PostComponent implements OnInit {
         this.groupReponse = group;
       });
 
-    // if (this.isGroupNameVisible) {
-    //   this.isCommentVisible = !this.isCommentVisible;
-    // }
-
+    console.log(this.post);
+      
     this.commentService.commentAdded$.pipe(
       filter(msg => msg.parentId == this.post.id)
     ).subscribe(() => this.post.commentCount += 1);
@@ -79,17 +75,19 @@ export class PostComponent implements OnInit {
 
   comment(): void {
     this.isCommentVisible = true;
-    this.onInputFocus.emit(true);
   }
 
   delete(): void {
-    this.confirmService.confirm({
+    const data = {
       title: `Xoá bài viết`,
       body: `Bạn có chắc muốn xoá bài viết này?`
-    }).then(isConfirmed => {
+    };
+
+    this.confirmService.confirm(data)
+    .then(isConfirmed => {
       if (isConfirmed) {
         this.postService.delete(this.post.id).subscribe(() => {
-          this.messageService.postDeleted.next(this.post.id);
+          this.remove.next(this.post.id)
         });
       }
     })

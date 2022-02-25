@@ -96,7 +96,7 @@
           class="warning"
           *ngIf="validatorHasError(registerForm.get('username'), 'pattern')">
             <i class='bx bx-error'></i>
-            <span>Tên đăng nhập chỉ được chứa chữ thường</span>
+            <span>Tên đăng nhập chỉ chứa chữ, số và bắt đầu bằng chữ</span>
           </div>
           <div class="input-group">
             <span [ngClass]="{'focus': registerForm.get('password')?.value}">mật khẩu</span>

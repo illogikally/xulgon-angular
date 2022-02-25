@@ -18,6 +18,7 @@ export class UserRefComponent implements OnInit {
 
   popupVisibility = new EventEmitter<any>();
   isUserRefVisible = false;
+  avatarUrl = this.userDto?.avatarUrl || 'assets/avatar.jpg';
 
   constructor(
     private renderer: Renderer2,
@@ -40,6 +41,7 @@ export class UserRefComponent implements OnInit {
   }
 
   onMouseEnter(): void {
+    this.userDto.avatarUrl = this.avatarUrl;
     this.messageService.userRef$.next({
       visible: true,
       target: this.self.nativeElement,

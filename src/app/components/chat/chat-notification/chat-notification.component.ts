@@ -2,8 +2,9 @@ import {Component, ElementRef, EventEmitter, OnInit, Renderer2, ViewChild} from 
 import {Title} from '@angular/platform-browser';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {AuthenticationService} from '../../authentication/authentication.service';
-import {ChatService} from '../../service/chat.service';
-import { NotificationService } from '../../service/notification.service';
+import {ChatService} from '../chat.service';
+import { NotificationService } from '../../notification/notification.service';
+import { TitleService } from '../../share/title.service';
 import {ChatMessage} from '../chat-msg';
 import {ConversationNotif} from '../conversation-notif';
 
@@ -29,19 +30,20 @@ export class ChatNotificationComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
     private rxStompService: RxStompService,
+    private titleService: TitleService,
     private renderer: Renderer2) {
   }
 
   private setTitle(): void {
-    let regex = /\([\d ]+\)/g;
-    let title = this.title.getTitle();
+    // let regex = /\([\d ]+\)/g;
+    // let title = this.title.getTitle();
 
-    let totalUnread = this.unreadCount + this.unreadNotificationCount;
-    if (regex.test(title)) {
-      let title = this.title.getTitle().replace(regex, totalUnread > 0 ? `(${totalUnread})` : '');
-      this.title.setTitle(title);
-    } else if (totalUnread > 0)
-      this.title.setTitle(`(${totalUnread}) ${this.title.getTitle()}`)
+    // let totalUnread = this.unreadCount + this.unreadNotificationCount;
+    // if (regex.test(title)) {
+    //   let title = this.title.getTitle().replace(regex, totalUnread > 0 ? `(${totalUnread})` : '');
+    //   this.title.setTitle(title);
+    // } else if (totalUnread > 0)
+    //   this.title.setTitle(`(${totalUnread}) ${this.title.getTitle()}`)
   }
 
   ngOnInit(): void {
@@ -50,18 +52,12 @@ export class ChatNotificationComponent implements OnInit {
     this.conversationRead.subscribe(messageId => {
       this.unreadCount--;
       this.markAsRead(messageId);
-
-      this.setTitle();
-    });
-
-    this.notificationService.setTitle$.subscribe(unread => {
-      this.unreadNotificationCount = unread;
-      this.setTitle();
+      this.titleService.modifyNotificationCount(-1);
     });
 
     this.chatService.getUnreadCount().subscribe(count => {
       this.unreadCount = count;
-      this.setTitle();
+      this.titleService.modifyNotificationCount(count);
     });
 
     this.rxStompService.watch('/user/queue/chat').subscribe(msg => {
@@ -72,7 +68,7 @@ export class ChatNotificationComponent implements OnInit {
           && (conversation.latestMessage.userId !== chatMsg.userId
             || conversation.latestMessage.isRead === true)) {
           this.unreadCount++;
-          this.setTitle();
+          this.titleService.modifyNotificationCount(1);
         }
         conversation.latestMessage = chatMsg;
       }
