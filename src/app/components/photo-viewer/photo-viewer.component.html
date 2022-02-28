@@ -13,7 +13,7 @@ class="photo-viewer">
     </div>
     <img [src]="photo?.url">
 
-    <div *ngFor="let has of [photo.hasPrevious, photo.hasNext]; index as index">
+    <div *ngFor="let has of getHasPreviousHasNext(); index as index">
       <app-button
       background="transparent"
       width="50px" 
@@ -23,7 +23,7 @@ class="photo-viewer">
       backgroundHover="rgba(255, 255, 255, .2)"
       *ngIf="has"
       [ngClass]="index == 0 ? 'prev-button' : 'next-button'"
-      (click)="index == 0 ? previousPhoto() : nextPhoto()">
+      (click)="index == 0 ? navigateBackward() : navigateForward()">
         <div *ngIf="has" button="">
           <i *ngIf="index == 0" class='bx bx-chevron-left'></i>
           <i *ngIf="index == 1" class='bx bx-chevron-right'></i>

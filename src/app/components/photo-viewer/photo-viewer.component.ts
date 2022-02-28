@@ -1,6 +1,7 @@
 import { Location, LocationStrategy } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { PhotoViewResponse } from '../share/photo/photo-view-response';
 import { PhotoService } from '../share/photo/photo.service';
 
@@ -18,6 +19,9 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
 
   isError = false;
   currentHistoryStateId = 0;
+  isNavigationReverse = false;
+  navigateForward = this.nextPhoto;
+  navigateBackward = this.previousPhoto;
   constructor(
     private renderer: Renderer2,
     private location: Location,
@@ -37,16 +41,9 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
     if (!this.isPage) {
       this.configureOnDisplayPhotoViewer();
     }
-    this.configureOnPopState();
   }
 
   ngAfterViewInit(): void {
-    if (this.isPage) {
-      this.renderer.setStyle(this.self.nativeElement, 'dipslay', 'block');
-    }
-  }
-
-  configureOnPopState() {
   }
 
   configureHideOnRouteChange() {
@@ -60,8 +57,21 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
     this.photoService.onOpenPhotoViewCalled().subscribe(data => {
       this.photoId = data.id;
       this.setId = data.setId;
+      this.configureNavigation(data.isNavigationReverse);
       this.loadPhoto();
     });
+  }
+
+  configureNavigation(isReverse: boolean) {
+    this.isNavigationReverse = isReverse;
+    this.navigateBackward = isReverse ? this.nextPhoto : this.previousPhoto;
+    this.navigateForward = isReverse ? this.previousPhoto : this.nextPhoto;
+  }
+
+  getHasPreviousHasNext() {
+    return this.isNavigationReverse 
+      ? [this.photo?.hasNext, this.photo?.hasPrevious]
+      : [this.photo?.hasPrevious, this.photo?.hasNext];
   }
 
   loadPhoto() {
@@ -82,6 +92,7 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
 
   resolveLoadedPhoto(photo: PhotoViewResponse) {
     this.photo = photo;
+
     if (photo == null) {
       this.isError = true;
     }
@@ -111,19 +122,17 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   }
 
   nextPhoto() {
-    if (!this.setId) return;
-    this.photoService.getPhotoAfterThisInSet(this.setId, this.photoId)
-    .subscribe(photo => {
-      this.photo = photo;
-      this.photoId = photo.id;
-      this.updateUrl();
-    });
+    this.fetchPhoto(this.photoService.getPhotoAfter);
   }
 
   previousPhoto() {
+    this.fetchPhoto(this.photoService.getPhotoBefore);
+  }
+
+  fetchPhoto(get: (setId: number, photoId: number) => Observable<PhotoViewResponse>) {
     if (!this.setId) return;
 
-    this.photoService.getPhotoBeforeThisInSet(this.setId, this.photoId)
+    get.call(this.photoService, this.setId, this.photoId)
     .subscribe(photo => {
       this.photo = photo;
       this.photoId = photo.id;

@@ -39,7 +39,7 @@ export class PhotoService {
     return this.http.get<PhotoViewResponse>(url);
   }
 
-  getPhotoAfterThisInSet(
+  getPhotoAfter(
     setId: number,
     photoId: number,
   ): Observable<PhotoViewResponse> {
@@ -47,7 +47,7 @@ export class PhotoService {
     return this.http.get<PhotoViewResponse>(url);
   }
 
-  getPhotoBeforeThisInSet(
+  getPhotoBefore(
     setId: number,
     photoId: number,
   ): Observable<PhotoViewResponse> {

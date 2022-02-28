@@ -20,8 +20,6 @@ export class CreatePostComponent implements OnInit {
 
   photos: any[] = [];
   files: Blob[] = [];
-  principalAvatar = this.authenticationService.getAvatarUrl();
-  principalName = this.authenticationService.getUserFullName();
   postable: boolean = false;
   postForm!: FormGroup;
   isPrivacyOptsVisible = false;
@@ -39,15 +37,13 @@ export class CreatePostComponent implements OnInit {
   @ViewChild('textArea', {static: true}) textArea!: ElementRef;
 
   constructor(
-    private http: HttpClient,
     private self: ElementRef,
-    private messageService: MessageService,
     private postService: PostService,
     private toasterService: ToasterService,
     private profileService: ProfileService,
     private renderer: Renderer2,
     private fb: FormBuilder,
-    private authenticationService: AuthenticationService
+    public authenticationService: AuthenticationService
   ) {
   }
 

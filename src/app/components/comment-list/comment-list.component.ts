@@ -97,11 +97,20 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
 
       if (data.postId == this.parentId) {
         this.highlightedCommentId = data.commentId;
-      }
-      else {
+      } else {
         this.highlightedCommentId = data.childCommentId;
       }
+
+      this.loadHighlightedCommentIfHavent();
     })
+  }
+
+  loadHighlightedCommentIfHavent() {
+    if (this.highlightedCommentId) {
+      if (!this.commentIdSet.has(this.highlightedCommentId)) {
+        this.loadComments();
+      }
+    }
   }
 
   loadComments() {
@@ -121,12 +130,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
 
         this.isAllLoaded = !response.hasNext;
         this.comments = this.comments.concat(resp);
-
-        if (this.highlightedCommentId) {
-          if (!this.commentIdSet.has(this.highlightedCommentId)) {
-            this.loadComments();
-          }
-        }
+        this.loadHighlightedCommentIfHavent();
       });
   }
 

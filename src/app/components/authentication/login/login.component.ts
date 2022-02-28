@@ -167,7 +167,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     this.disableAnimation = false;
-    this.changeDetector.detectChanges();
+    // this.changeDetector.detectChanges();
   }
 
   @HostListener('window:popstate', [])

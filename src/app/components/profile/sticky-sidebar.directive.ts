@@ -47,12 +47,6 @@ export class StickySidebarDirective implements OnInit {
       const SIDEBAR_WIDTH = PARENT.offsetWidth;
 
       const SPEED = (window.scrollY - oldY)
-          
-        console.log(SIDEBAR.style.position , 'fixed');
-        console.log(SIDEBAR_RECT.bottom - SPEED, window.innerHeight - MARGIN);
-        console.log(SIDEBAR.offsetHeight, window.innerHeight - FIXED_TOP - MARGIN*2)
-        console.log(SIDEBAR.offsetHeight < PARENT.offsetHeight);
-      
       if (SPEED < 0) { // Scroll up
         const mainContentY = window.scrollY + PARENT_RECT.top;
 

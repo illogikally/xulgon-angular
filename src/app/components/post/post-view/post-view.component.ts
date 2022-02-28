@@ -41,8 +41,8 @@ export class PostViewComponent implements OnInit {
   highlightComment(route: ActivatedRouteSnapshot) {
     let postId = Number(route.paramMap.get('id'));
     const queryParams = route.queryParamMap;
-    const commentId = Number(queryParams.get('comment_id'));
-    const childCommentId = Number(queryParams.get('child_comment_id'));
+    const commentId = Number(queryParams.get('comment'));
+    const childCommentId = Number(queryParams.get('child_comment'));
 
     const data = {
       postId: postId,
@@ -50,8 +50,6 @@ export class PostViewComponent implements OnInit {
       childCommentId: childCommentId
     }
 
-    console.log(data);
-    
     this.postViewService.highlight$.next(data);
   }
 

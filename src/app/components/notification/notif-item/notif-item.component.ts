@@ -31,11 +31,11 @@ export class NotifItemComponent implements OnInit {
       case 'COMMENT': {
         this.url = `${pageType == 'GROUP' ? '/groups' : ''}/${pageId}/posts/${rcId}`;
         if (this.notification.recipientContentType == 'COMMENT') {
-          this.url += '?comment_id=' + this.notification.recipientContentId;
-          this.url += '&child_comment_id=' + this.notification.actorContentId;
+          this.url += '?comment=' + this.notification.recipientContentId;
+          this.url += '&child_comment=' + this.notification.actorContentId;
         }
         else {
-          this.url += '?comment_id=' + this.notification.actorContentId;
+          this.url += '?comment=' + this.notification.actorContentId;
         }
       }
     }
@@ -53,7 +53,7 @@ export class NotifItemComponent implements OnInit {
   click(): void {
     this.read();
     this.itemClick.emit();
-    this.router.navigateByUrl(this.url);
+    this.router.navigateByUrl(this.url, {state: {routeReuseScroll: false}});
   }
 
 }

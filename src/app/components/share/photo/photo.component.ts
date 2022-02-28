@@ -11,6 +11,7 @@ export class PhotoComponent implements OnInit {
   @Input() url = '';
   @Input() id?: number;
   @Input() setId?: number;
+  @Input() isPhotoViewNavigationReverse = false;
 
   @ViewChild('image', {static: true}) image!: ElementRef;
 
@@ -31,7 +32,8 @@ export class PhotoComponent implements OnInit {
     
     this.photoService.openPhotoView({
       id: this.id,
-      setId: this.setId
+      setId: this.setId,
+      isNavigationReverse: this.isPhotoViewNavigationReverse
     });
   }
 }
