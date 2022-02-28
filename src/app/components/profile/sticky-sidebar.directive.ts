@@ -18,7 +18,7 @@ export class StickySidebarDirective implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setupWindowResizeListener();
+    this.configureOnWindowResize();
     this.configureStickySidebar();
   }
 
@@ -48,6 +48,11 @@ export class StickySidebarDirective implements OnInit {
 
       const SPEED = (window.scrollY - oldY)
           
+        console.log(SIDEBAR.style.position , 'fixed');
+        console.log(SIDEBAR_RECT.bottom - SPEED, window.innerHeight - MARGIN);
+        console.log(SIDEBAR.offsetHeight, window.innerHeight - FIXED_TOP - MARGIN*2)
+        console.log(SIDEBAR.offsetHeight < PARENT.offsetHeight);
+      
       if (SPEED < 0) { // Scroll up
         const mainContentY = window.scrollY + PARENT_RECT.top;
 
@@ -95,6 +100,7 @@ export class StickySidebarDirective implements OnInit {
           this.sidebarCss('width', SIDEBAR_WIDTH + 'px');
         }
 
+        // Stick to bottom
         else if (
           SIDEBAR.style.position  !== 'fixed'
           && SIDEBAR_RECT.bottom - SPEED  < window.innerHeight - MARGIN
@@ -129,7 +135,7 @@ export class StickySidebarDirective implements OnInit {
     this.renderer.setStyle(this.sidebarInner, style, value);
   }
 
-  setupWindowResizeListener() {
+  configureOnWindowResize() {
     let previousWidth = window.innerWidth;
     const onWindowResize$ = fromEvent(window, 'resize').pipe(takeUntil(this.onDetach$));
     this.onAttach$.pipe(
@@ -142,7 +148,7 @@ export class StickySidebarDirective implements OnInit {
       }
 
       if (currentWidth >= 900 && previousWidth < 900) {
-        window.scrollBy(0, 1);
+        window.dispatchEvent(new CustomEvent('scroll'));
       }
 
       const parentLeft = this.parent.getBoundingClientRect().left;

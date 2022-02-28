@@ -8,13 +8,17 @@ class="user-profile">
           <img 
           *ngIf="pageHeader.coverPhotoUrl"
           [src]="pageHeader.coverPhotoUrl || ''">
-          <div
+          <app-button
+          background="#fff"
           *ngIf="pageHeader.id == principalId"
           (click)="showUpdateProfilePic('cover')"
-          class="change-cover">
-            <i class='bx bxs-camera'></i>
-            <span>Thay ảnh bìa</span>
-          </div>
+          class="change-cover"
+          >
+            <div button="">
+              <i class='bx bxs-camera'></i>
+              <span>Thay ảnh bìa</span>
+            </div>
+          </app-button>
         </div>
         <div  class="avatar-container flex-center">
           <div class="avatar">
@@ -24,12 +28,19 @@ class="user-profile">
             [id]="pageHeader.avatar?.id"
             ></app-photo>
           </div>
-          <div
+          <app-button
+          width="35px"
+          height="35px"
+          [isRounded]="true"
+          background="#eee"
           *ngIf="pageHeader.id == principalId"
           (click)="showUpdateProfilePic('avatar')"
           class="change-avatar">
-            <i class='bx bxs-camera'></i>
-          </div>
+          >
+            <div button="">
+              <i class='bx bxs-camera'></i>
+            </div>
+          </app-button>
         </div>
       </div>
     </div>

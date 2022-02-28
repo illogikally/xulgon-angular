@@ -30,25 +30,9 @@ $header-content-width: 940px;
       @extend %fc;
 
       .change-cover {
-        @extend %fc;
         position: absolute;
-        padding: 7px 10px;
-        border-radius: 5px;
-        background-color: #fff;
-        cursor: pointer;
-        right: 40px;
+        right: 20px;
         bottom: 20px;
-        font-weight: 500;
-
-        &:hover {
-          background-color: #eee;
-        }
-
-        i {
-          font-size: 20px;
-          margin-right: 5px;
-        }
-
       }
 
       img {
@@ -68,23 +52,10 @@ $header-content-width: 940px;
       bottom: -20px;
 
       .change-avatar {
-        @extend %fc;
         position: absolute;
-        width: 35px;
-        border-radius: 50%;
-        height: 35px;
-        background-color: #eee;
         bottom: 6%;
         right: 6%;
         cursor: pointer;
-
-        &:hover {
-          background-color: #dedede;
-        }
-
-        i {
-          font-size: 25px;
-        }
       }
 
       .avatar {
