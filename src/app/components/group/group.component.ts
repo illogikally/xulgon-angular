@@ -1,11 +1,11 @@
-import {Location} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Title} from '@angular/platform-browser';
-import {ActivatedRoute} from '@angular/router';
-import {MessageService} from '../share/message.service';
+import { Location } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from '../share/message.service';
 import { TitleService } from '../share/title.service';
-import {GroupResponse} from './group-response';
+import { GroupResponse } from './group-response';
+import { GroupService } from './group.service';
 
 @Component({
   selector: 'app-group',
@@ -22,6 +22,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     private location: Location,
     private messageService: MessageService,
     private route: ActivatedRoute,
+    private groupService: GroupService,
     private titleService: TitleService,
     private http: HttpClient) {
   }
@@ -32,7 +33,6 @@ export class GroupComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-
       const id = +(params.get('id') as string);
       this.getGroupProfile(id);
     });
@@ -40,14 +40,11 @@ export class GroupComponent implements OnInit, OnDestroy {
 
   getGroupProfile(id: number): void {
     this.messageService.loadPostsByPageId(id);
-    this.http.get<GroupResponse>(`http://localhost:8080/api/groups/${id}`).subscribe(resp => {
-      this.titleService.setTitle(resp.name);
-      this.groupResponse = resp;
-      this.messageService.groupLoaded.next(resp);
-    }, error => {
+    this.groupService.getGroupHeader(id).subscribe(response => {
+      this.titleService.setTitle(response.name);
+      this.groupService.groupResponse$.next(response);
+      this.messageService.groupLoaded.next(response);
     });
 
   }
-
-
 }

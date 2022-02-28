@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http'
-import {LoginRequest} from './login/login-request'
-import {LoginResponse} from './login/login-response';
-import {LocalStorageService} from 'ngx-webstorage';
-import {map, switchMap, tap} from 'rxjs/operators'
-import {Observable, throwError} from 'rxjs';
-import {Router} from '@angular/router';
-import {environment} from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { LocalStorageService } from 'ngx-webstorage';
+import { Observable, throwError } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { LoginRequest } from './login/login-request';
+import { LoginResponse } from './login/login-response';
 
 @Injectable({
   providedIn: 'root'
@@ -25,12 +25,10 @@ export class AuthenticationService {
   }
 
   login(loginRequest: LoginRequest): Observable<boolean> {
-    console.log(loginRequest);
     const url = `${this.baseApiUrl}/authentication/token/retrieve`;
     return this.http.post<LoginResponse>(url, loginRequest)
       .pipe(map(data => {
         this.storeResponse(data);
-        console.log(data);
         return true;
       }));
   }
@@ -45,7 +43,6 @@ export class AuthenticationService {
     return this.http.get<any>(url).pipe(
       map(data => {
         this.storeResponse(data)
-        console.log(data)
         return true;
       })
     );

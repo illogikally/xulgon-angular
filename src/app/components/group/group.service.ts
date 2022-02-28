@@ -4,6 +4,7 @@ import {Observable, ReplaySubject} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {Post} from '../post/post';
 import { OffsetResponse } from '../share/offset-response';
+import { GroupResponse } from './group-response';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class GroupService {
   private baseApiUrl = environment.baseApiUrl;
   public attach$ = new ReplaySubject<number>(1);
   public detach$ = new ReplaySubject<number>(1);
+  public groupResponse$ = new ReplaySubject<GroupResponse>(1);
 
   constructor(private http: HttpClient) {}
 
@@ -52,8 +54,13 @@ export class GroupService {
   }
 
   getTimeline(groupId: number): Observable<OffsetResponse<Post>> {
-    const url = `http://localhost:8080/api/pages/${groupId}/posts`;
+    const url = `${this.baseApiUrl}/pages/${groupId}/posts`;
     return this.http.get<OffsetResponse<Post>>(url);
+  }
+
+  getGroupHeader(groupId: number): Observable<GroupResponse> {
+    const url = `${this.baseApiUrl}/groups/${groupId}`;
+    return this.http.get<GroupResponse>(url);
   }
 
 }

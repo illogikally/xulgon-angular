@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
 import { ChatMessage } from '../../chat-msg';
 
 @Component({

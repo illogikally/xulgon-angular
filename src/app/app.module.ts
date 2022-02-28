@@ -77,6 +77,7 @@ import { StickySidebarDirective } from './components/profile/sticky-sidebar.dire
 import { TabBarComponent } from './components/profile/tab-bar/tab-bar.component';
 import { SpinnerComponent } from './components/share/spinner/spinner.component';
 import { ToasterComponent } from './components/share/toaster/toaster.component';
+import { PhotoViewerPlaceholderComponent } from './components/photo/photo-viewer/photo-viewer-placeholder/photo-viewer-placeholder.component';
 
 @NgModule({
   declarations: [
@@ -143,6 +144,7 @@ import { ToasterComponent } from './components/share/toaster/toaster.component';
     TabBarComponent,
     SpinnerComponent,
     ToasterComponent,
+    PhotoViewerPlaceholderComponent,
   ],
   imports: [
     FormsModule,

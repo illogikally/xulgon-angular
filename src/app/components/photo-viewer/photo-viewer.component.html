@@ -1,41 +1,36 @@
-<div 
+<div
 *ngIf="photo"
+[ngStyle]="{
+  'top': isPage ? '56px' : '0px',
+  'z-index': isPage ? 30 : 9e4
+}"
 class="photo-viewer">
   <div class="viewer-content">
-    <div (click)="hide()" class="x-btn">
+    <div 
+    [ngStyle]="{'display': isPage ? 'none' : 'flex'}"
+    (click)="hide()" class="x-btn">
       <i class='bx bx-x'></i>
     </div>
     <img [src]="photo?.url">
 
-    <app-button
-    background="transparent"
-    width="50px"
-    height="50px"
-    color="rgba(255, 255, 255, .8)"
-    backgroundHover="rgba(255, 255, 255, .2)"
-    [isRounded]="true"
-    *ngIf="photo.index && photo.index > 1"
-    class="prev-button"
-    (click)="previousPhoto()">
-      <div button="">
-        <i class='bx bx-chevron-left'></i>
-      </div>
-    </app-button>
+    <div *ngFor="let has of [photo.hasPrevious, photo.hasNext]; index as index">
+      <app-button
+      background="transparent"
+      width="50px" 
+      height="50px"
+      [isRounded]="true"
+      color="rgba(255, 255, 255, .8)"
+      backgroundHover="rgba(255, 255, 255, .2)"
+      *ngIf="has"
+      [ngClass]="index == 0 ? 'prev-button' : 'next-button'"
+      (click)="index == 0 ? previousPhoto() : nextPhoto()">
+        <div *ngIf="has" button="">
+          <i *ngIf="index == 0" class='bx bx-chevron-left'></i>
+          <i *ngIf="index == 1" class='bx bx-chevron-right'></i>
+        </div>
+      </app-button>
+    </div>
 
-    <app-button
-    width="50px"
-    height="50px"
-    [isRounded]="true"
-    background="transparent"
-    color="rgba(255, 255, 255, .8)"
-    backgroundHover="rgba(255, 255, 255, .2)"
-    *ngIf="photo.hasNext"
-    class="next-button"
-    (click)="nextPhoto()">
-      <div button="">
-        <i class='bx bx-chevron-right'></i>
-      </div>
-    </app-button>
   </div>
   <div class="viewer-sidebar">
     <app-post 
@@ -44,3 +39,7 @@ class="photo-viewer">
     [post]="photo"></app-post>
   </div>
 </div>
+
+<app-error-page
+*ngIf="isError && isPage"
+></app-error-page>

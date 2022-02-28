@@ -1,13 +1,11 @@
-import {HttpClient} from '@angular/common/http';
-import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {AuthenticationService} from '../../authentication/authentication.service';
-import {MessageService} from '../../share/message.service';
-import { ChatService } from '../chat.service';
-import {ChatMessage} from '../chat-msg';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { UserBasic } from '../../share/user-basic';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RxStompService } from '@stomp/ng2-stompjs';
+import { AuthenticationService } from '../../authentication/authentication.service';
+import { MessageService } from '../../share/message.service';
+import { ChatMessage } from '../chat-msg';
+import { ChatService } from '../chat.service';
 
 @Component({
   selector: 'app-chat-box',

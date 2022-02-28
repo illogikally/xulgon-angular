@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { GroupMemberComponent } from './group-member.component';
 
-import {GroupMemberComponent} from './group-member.component';
 
 describe('GroupMemberComponent', () => {
   let component: GroupMemberComponent;

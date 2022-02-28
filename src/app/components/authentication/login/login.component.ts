@@ -1,14 +1,13 @@
-import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
-import {Location} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
-import {AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit, Renderer2} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {fromEvent, interval, Observable, of, throwError, timer} from 'rxjs';
-import { catchError, debounce, map, switchMap, tap } from 'rxjs/operators';
+import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
+import { Location } from '@angular/common';
+import { AfterViewChecked, ChangeDetectorRef, Component, HostListener, OnInit, Renderer2 } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of, timer } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { UserService } from '../../share/user.service';
-import {AuthenticationService} from '../authentication.service';
-import {LoginRequest} from './login-request';
+import { AuthenticationService } from '../authentication.service';
+import { LoginRequest } from './login-request';
 
 @Component({
   selector: 'app-login',

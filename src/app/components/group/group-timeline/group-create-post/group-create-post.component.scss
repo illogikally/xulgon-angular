@@ -7,12 +7,10 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
-  font-weight: 500;
 
   &:hover {
-
     .icon {
-      background-color: rgba(#eee, .7);
+      background-color: rgba(#eee, 1);
     }
   }
 
@@ -22,11 +20,19 @@
     height: 35px;
     margin-right: 20px;
     border-radius: 50%;
+    padding: 5px;
+    background-color: rgba(#eee, .7);
     color: $btn-blue;
-    font-size: 25px;
+    font-size: 35px;
   }
 
   .des {
     font-size: 16px;
+
+    .top {
+      font-weight: 500;
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
   }
 }

@@ -1,13 +1,13 @@
-import {Location} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {Title} from '@angular/platform-browser';
-import {Router} from '@angular/router';
-import {MessageService} from '../../share/message.service';
-import {UserService} from '../../share/user.service';
-import {GroupResponse} from '../group-response';
-import {GroupService} from '../group.service';
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { MessageService } from '../../share/message.service';
+import { TitleService } from '../../share/title.service';
+import { UserService } from '../../share/user.service';
+import { GroupResponse } from '../group-response';
+import { GroupService } from '../group.service';
 
 @Component({
   selector: 'app-group-general',
@@ -34,6 +34,7 @@ export class GroupGeneralComponent implements OnInit {
     private title$: Title,
     private location: Location,
     private userService: UserService,
+    private titleService: TitleService,
     private messageService: MessageService) {
 
     this.createGroupForm = new FormGroup({
@@ -42,7 +43,7 @@ export class GroupGeneralComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title$.setTitle('Groups');
+    this.titleService.setTitle('Groups');
     this.userService.getJoinedGroups().subscribe(groups => {
       this.managedGroups = groups.filter(group => group.role == 'ADMIN');
       this.groups = groups.filter(group => group.role == 'MEMBER');

@@ -1,19 +1,14 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, NgZone, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ProfileService} from './profile.service';
-import {UserPage} from './user-profile';
-import {MessageService} from '../share/message.service';
-import {UserService} from '../share/user.service';
-import {AuthenticationService} from '../authentication/authentication.service';
-import {Location} from '@angular/common';
-import {Title} from '@angular/platform-browser';
-import {switchMap, takeUntil} from 'rxjs/operators';
-import {fromEvent, ReplaySubject, Subject} from 'rxjs';
-import {Post} from '../post/post';
-import {PostService} from '../post/post.service';
-import { toBase64String } from '@angular/compiler/src/output/source_map';
-import { PageHeader } from './page-header';
+import { Component, EventEmitter, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { ReplaySubject } from 'rxjs';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { MessageService } from '../share/message.service';
 import { TitleService } from '../share/title.service';
+import { UserService } from '../share/user.service';
+import { PageHeader } from './page-header';
+import { ProfileService } from './profile.service';
+import { UserPage } from './user-profile';
 
 @Component({
   selector: 'app-profile',

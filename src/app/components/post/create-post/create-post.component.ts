@@ -33,6 +33,7 @@ export class CreatePostComponent implements OnInit {
 
   @Input() groupResponse!: GroupResponse;
   @Input() open$!: Subject<any>;
+  @Input() visible = false;
 
   @ViewChild('privacyBtn') privacyBtn!: ElementRef;
   @ViewChild('textArea', {static: true}) textArea!: ElementRef;
@@ -58,7 +59,6 @@ export class CreatePostComponent implements OnInit {
     });
 
     this.open$.subscribe(() => {
-      console.log('???');
       this.show();
     });
   }

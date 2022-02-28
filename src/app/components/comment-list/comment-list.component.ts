@@ -1,14 +1,11 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {CommentService} from './comment/comment.service';
-import {CommentResponse} from './comment/comment-response';
-import {FormBuilder} from '@angular/forms';
-import {MessageService} from '../share/message.service';
-import {AuthenticationService} from '../authentication/authentication.service';
-import {filter, switchMap, takeUntil} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
-import {concat, merge, of, ReplaySubject} from 'rxjs';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { merge, of, ReplaySubject } from 'rxjs';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { AuthenticationService } from '../authentication/authentication.service';
 import { PostViewService } from '../post/post-view/post-view.service';
-import { ThisReceiver } from '@angular/compiler';
+import { CommentResponse } from './comment/comment-response';
+import { CommentService } from './comment/comment.service';
 
 @Component({
   selector: 'app-comment-list',

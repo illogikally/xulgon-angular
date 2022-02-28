@@ -69,14 +69,8 @@ export class UserService {
 
   isUserExisted(username: string): Observable<boolean> {
     console.log("Trigger API call");
-    const url = `${this.baseApiUrl}/users/existed?username=${username}`;
+    const url = `${this.baseApiUrl}/authentication/username-existed/${username}`;
     return this.http.get<boolean>(url);
-    // let existedUsers = ["trungvo", "tieppt", "chautran"];
-    // let isTaken = existedUsers.some(x => x === username);
-    // console.log(isTaken, 'valid');
-    
-    // return of(isTaken).pipe(delay(500));
-    // return of(isTaken);
   }
 
   isEmailExisted(email: string): Observable<boolean> {

@@ -1,12 +1,12 @@
-import {Location} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
-import {Component, OnDestroy, OnInit, Renderer2} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ReplaySubject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {MessageService} from '../../share/message.service';
-import {GroupResponse} from '../group-response';
-import {GroupService} from '../group.service';
+import { Location } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ReplaySubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MessageService } from '../../share/message.service';
+import { GroupResponse } from '../group-response';
+import { GroupService } from '../group.service';
 
 @Component({
   selector: 'app-group-content',

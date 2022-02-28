@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {GroupResponse} from '../../group-response';
+import { Component, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { GroupResponse } from '../../group-response';
 
 @Component({
   selector: 'app-group-create-post',
@@ -8,15 +9,16 @@ import {GroupResponse} from '../../group-response';
 })
 export class GroupCreatePostComponent implements OnInit {
 
-  createPostVisible = false;
+  open$ = new Subject<any>();
   @Input() groupResponse!: GroupResponse;
 
   constructor() {
   }
 
   ngOnInit(): void {
-    console.log(this.groupResponse);
-
   }
 
+  show() {
+    this.open$.next();
+  }
 }

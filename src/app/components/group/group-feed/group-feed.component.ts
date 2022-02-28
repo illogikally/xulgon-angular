@@ -1,7 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MessageService} from '../../share/message.service';
-import {UserService} from '../../share/user.service';
-import {Post} from '../../post/post';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Post } from '../../post/post';
+import { UserService } from '../../share/user.service';
 
 @Component({
   selector: 'app-group-feed',

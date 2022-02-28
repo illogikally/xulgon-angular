@@ -1,7 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
-import { NumberValueAccessor } from '@angular/forms';
-import { PhotoResponse } from './photo-response';
-import {PhotoViewResponse} from './photo-view-response';
+import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core';
 import { PhotoService } from './photo.service';
 
 @Component({
@@ -32,7 +29,7 @@ export class PhotoComponent implements OnInit {
     if (!this.id) return;
     console.log(this.setId);
     
-    this.photoService.photoView$.next({
+    this.photoService.openPhotoView({
       id: this.id,
       setId: this.setId
     });

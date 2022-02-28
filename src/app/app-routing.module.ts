@@ -30,6 +30,7 @@ import { GroupMemberComponent } from './components/group/group-member/group-memb
 import { GroupTimelineComponent } from './components/group/group-timeline/group-timeline.component';
 import { ButtonComponent } from './components/share/button/button.component';
 import { TestingComponent } from './components/share/testing/testing.component';
+import { PhotoViewerPlaceholderComponent } from './components/photo/photo-viewer/photo-viewer-placeholder/photo-viewer-placeholder.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -73,6 +74,12 @@ const routes: Routes = [
           { path: 'posts', component: ByPostsComponent},
         ]
 
+      },
+      {
+        path: 'photo',
+        children: [
+          {path: ':id', component: PhotoViewerPlaceholderComponent},
+        ]
       },
       {
         path: 'groups',

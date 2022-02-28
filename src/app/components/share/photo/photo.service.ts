@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { OpenPhotoViewData } from './open-photo-view-data';
 import { PhotoResponse } from './photo-response';
 import { PhotoViewResponse } from './photo-view-response';
 
@@ -11,11 +12,20 @@ import { PhotoViewResponse } from './photo-view-response';
 export class PhotoService {
 
   private baseApiUrl = environment.baseApiUrl;
-  public photoView$ = new Subject<any>();
+  private photoView$ = new Subject<OpenPhotoViewData>();
+
   constructor(
     private http: HttpClient
   ) { }
   
+  openPhotoView(data: OpenPhotoViewData) {
+    this.photoView$.next(data);
+  }
+
+  onOpenPhotoViewCalled(): Observable<OpenPhotoViewData> {
+    return this.photoView$.asObservable();
+  }
+
   getPhoto(id: number): Observable<PhotoViewResponse> {
     const url = `${this.baseApiUrl}/photos/${id}`
     return this.http.get<PhotoViewResponse>(url);
@@ -25,15 +35,23 @@ export class PhotoService {
     setId: number,
     photoId: number,
   ): Observable<PhotoViewResponse> {
-    const url = `${this.baseApiUrl}/photo-sets/${setId}/photos/by-id/${photoId}`
+    const url = `${this.baseApiUrl}/photo-sets/${setId}/photos/${photoId}`
     return this.http.get<PhotoViewResponse>(url);
   }
 
-  getPhotoBySetIdAndIndex(
+  getPhotoAfterThisInSet(
     setId: number,
-    index: number,
+    photoId: number,
   ): Observable<PhotoViewResponse> {
-    const url = `${this.baseApiUrl}/photo-sets/${setId}/photos/by-index/${index}`
+    const url = `${this.baseApiUrl}/photo-sets/${setId}/photos/after/${photoId}`;
+    return this.http.get<PhotoViewResponse>(url);
+  }
+
+  getPhotoBeforeThisInSet(
+    setId: number,
+    photoId: number,
+  ): Observable<PhotoViewResponse> {
+    const url = `${this.baseApiUrl}/photo-sets/${setId}/photos/before/${photoId}`;
     return this.http.get<PhotoViewResponse>(url);
   }
 

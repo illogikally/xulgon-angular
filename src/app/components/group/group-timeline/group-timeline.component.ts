@@ -1,8 +1,9 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Post} from '../../post/post';
-import {GroupResponse} from '../group-response';
-import {GroupService} from '../group.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { Post } from '../../post/post';
+import { GroupResponse } from '../group-response';
+import { GroupService } from '../group.service';
 
 @Component({
   selector: 'app-group-timeline',
@@ -32,11 +33,20 @@ export class GroupTimelineComponent implements OnInit {
       this.groupService
         .getTimeline(this.groupId)
         .subscribe(response => {
-          console.log(response);
-          
           this.posts = response.data;
         });
     }
+
+    this.configureOnGroupResponse();
+  }
+
+  configureOnGroupResponse() {
+    this.groupService.groupResponse$.pipe(
+      take(1)
+    ).subscribe(response => {
+      console.log(response);
+      this.groupResponse = response;
+    });
   }
 
 }

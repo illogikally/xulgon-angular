@@ -1,13 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { concat, merge, of, ReplaySubject, Subject } from 'rxjs';
-import { filter, pluck, switchMap, takeUntil, throttleTime } from 'rxjs/operators';
+import { merge, of } from 'rxjs';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { PostViewService } from '../../post/post-view/post-view.service';
 import { MessageService } from '../../share/message.service';
-import {ReactionType} from '../../share/reaction-type';
-import {ReactionPayload} from '../../share/reaction.payload';
-import {ReactionService} from '../../share/reaction.service';
-import {CommentResponse} from './comment-response'
+import { ReactionType } from '../../share/reaction-type';
+import { ReactionPayload } from '../../share/reaction.payload';
+import { ReactionService } from '../../share/reaction.service';
+import { CommentResponse } from './comment-response';
 
 @Component({
   selector: 'app-comment',
