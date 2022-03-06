@@ -251,8 +251,6 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   }
 
   googleLogin() {
-    console.log('???');
-
     this.authService.oauthAuthorize('google');
   }
 }

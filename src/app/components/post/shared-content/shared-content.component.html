@@ -1,26 +1,22 @@
-<div 
-*ngIf="content"
-[ngClass]="isCreatePostChild ? 'create-post-child' : ''"
-class="root">
+<div *ngIf="content"
+     [ngClass]="isCreatePostChild ? 'create-post-child' : ''"
+     class="root">
   <div class="root__inner">
-    <div 
-    [ngStyle]="{'margin': mediaMargin}"
-    class="media">
-      <app-media-layout
-      [photos]="content.photos"
-      [photoSetId]="content.photoSetId"
-      [photoCount]="content.photoCount"
+    <div [ngStyle]="{'margin': mediaMargin}"
+         class="media">
+      <app-media-layout [photos]="content.photos"
+                        [photoSetId]="content.photoSetId"
+                        [photoCount]="content.photoCount"
       ></app-media-layout>
     </div>
-    <div 
-    [ngClass]="content.photos?.length ? 'has-media' : 'no-media'"
-    class="body">
+    <div
+      [ngClass]="content.photos?.length ? 'has-media' : 'no-media'"
+      class="body">
       <div class="body__inner">
         <div class="name--timestamp">
-          <app-post-header 
-          [isAvatarVisible]="false"
-          [isPageNameVisible]="true"
-          [content]="content"></app-post-header>
+          <app-post-header [isAvatarVisible]="false"
+                           [isPageNameVisible]="true"
+                           [content]="content"></app-post-header>
         </div>
         <div class="text">{{ content.text }}</div>
       </div>

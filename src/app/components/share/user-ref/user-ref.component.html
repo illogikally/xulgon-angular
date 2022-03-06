@@ -1,20 +1,16 @@
-<div
-(mouseenter)="onMouseEnter()"
-(mouseleave)="onMouseLeave()"
-(click)="onMouseLeave()"
-class="user-ref-container">
-  <a
-    class="user-ref-a"
-    routerLink="/{{ userDto?.profileId }}">
-    <div
-      *ngIf="borderRadius"
-      class="avatar-container"
-      #avatarContainer>
+<div (mouseenter)="onMouseEnter()"
+     (mouseleave)="onMouseLeave()"
+     (click)="onMouseLeave()"
+     class="user-ref-container">
+  <a class="user-ref-a"
+     routerLink="/{{ userDto?.profileId }}">
+    <div *ngIf="borderRadius"
+         class="avatar-container"
+         #avatarContainer>
       <img [src]="avatarUrl">
     </div>
-    <div
-      class="username"
-      *ngIf="!borderRadius"
+    <div class="username"
+         *ngIf="!borderRadius"
     >
       {{ userDto?.username }}
     </div>

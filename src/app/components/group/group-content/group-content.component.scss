@@ -52,8 +52,15 @@
 
             .group-meta {
               margin-top: 5px;
+              display: flex;
+              align-items: center;
               color: #666;
               font-size: 17px;
+              column-gap: 3px;
+
+              i {
+                margin-right: 3px;
+              }
             }
           }
         }

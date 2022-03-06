@@ -1,8 +1,6 @@
-<div
-  class="chat-noti-item">
-  <div 
-  (click)="openChatBox()"
-  class="content">
+<div class="chat-noti-item">
+  <div (click)="openChatBox()"
+       class="content">
     <div class="avatar">
       <div class="avatar-container">
         <img [src]="conversation.user.avatarUrl || 'assets/avatar.jpg'"/>
@@ -11,12 +9,9 @@
     <div class="body">
       <div class="name">{{ conversation.user.username }}</div>
       <div class="msg--ago">
-				<span
-          [ngStyle]="{'color': isConversationRead() ? 'inherit' : '#1877f2' }"
-          class="msg">
-					<span
-            *ngIf="conversation.latestMessage.userId == principalId"
-          >Bạn: </span>
+				<span [ngStyle]="{'color': isConversationRead() ? 'inherit' : '#1877f2' }"
+              class="msg">
+					<span *ngIf="conversation.latestMessage.userId == principalId">Bạn: </span>
           {{ conversation.latestMessage.message }}
 				</span>
         <span>&nbsp;·&nbsp;</span>

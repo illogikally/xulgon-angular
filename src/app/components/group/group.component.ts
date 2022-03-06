@@ -23,7 +23,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private groupService: GroupService,
     private titleService: TitleService,
-    private http: HttpClient) {
+  ) {
   }
 
   ngOnDestroy(): void {
@@ -40,8 +40,7 @@ export class GroupComponent implements OnInit, OnDestroy {
   getGroupProfile(id: number): void {
     this.messageService.loadPostsByPageId(id);
     this.groupService.getGroupHeader(id).subscribe(response => {
-      console.log(response);
-      
+      this.group = response;
       this.titleService.setTitle(response.name);
       this.groupService.groupResponse$.next(response);
       this.messageService.groupLoaded.next(response);

@@ -6,6 +6,7 @@ import { Oauth2CallbackComponent } from './components/authentication/login/oauth
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { FriendRequestComponent } from './components/friend-request/friend-request.component';
 import { GroupAboutComponent } from './components/group/group-about/group-about.component';
+import { GroupAdminGuard } from './components/group/group-admin.guard';
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
 import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
 import { GroupGeneralComponent } from './components/group/group-general/group-general.component';
@@ -102,8 +103,6 @@ const routes: Routes = [
                       { path: 'members', component: GroupMemberComponent },
                     ]
                   },
-                  { path: 'member_request', component: JoinRequestListComponent},
-                  { path: 'settings', component: GroupSettingsComponent}
                 ]
               }
             ]
@@ -123,8 +122,8 @@ const routes: Routes = [
                   { path: 'members', component: GroupMemberComponent },
                 ]
               },
-              { path: 'member_request', component: JoinRequestListComponent},
-              { path: 'settings', component: GroupSettingsComponent}
+              { path: 'member_request', component: JoinRequestListComponent, canActivate: [GroupAdminGuard]},
+              { path: 'settings', component: GroupSettingsComponent, canActivate: [GroupAdminGuard]}
             ]
           }
         ]

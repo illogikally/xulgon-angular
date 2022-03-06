@@ -1,18 +1,14 @@
 <div class="comment-list">
-
-  <div 
-  #commentContainer
-  class="comments">
-    <app-comment
-      *ngFor="let comment of comments"
-      [comment]="comment">
+  <div #commentContainer
+       class="comments">
+    <app-comment *ngFor="let comment of comments"
+                 [comment]="comment">
     </app-comment>
   </div>
 
-  <div 
-  class="load-comments" 
-  *ngIf="!isAllLoaded"
-  (click)="loadComments()">
+  <div class="load-comments"
+       *ngIf="!isAllLoaded"
+       (click)="loadComments()">
     <span>Xem thêm {{ totalCommentCount - comments.length }} bình luận</span>
   </div>
   <form [formGroup]="commentForm" (keydown.enter)="submit($event)">
@@ -24,42 +20,37 @@
       </div>
 
       <div class="textarea-wrapper">
-        <textarea
-        type="text"
-        placeholder="Bình luận..."
-        autocomplete="off"
-        #textArea
-        rows="1"
-        (input)="textAreaAutoGrow($event)"
-        formControlName="comment">
+        <textarea type="text"
+                  placeholder="Bình luận..."
+                  autocomplete="off"
+                  #textArea
+                  rows="1"
+                  (input)="textAreaAutoGrow($event)"
+                  formControlName="comment">
         </textarea>
       </div>
-      <div
-        *ngIf="!image"
-        (click)="uploadImage.click()"
-        class="add-image-btn">
+      <div *ngIf="!image"
+           (click)="uploadImage.click()"
+           class="add-image-btn">
         <i class='bx bxs-image'></i>
       </div>
 
     </div>
     <div *ngIf="image" class="upload-image-container">
-      <div
-        class="upload-image-thumb">
-        <img
-          [ngClass]="imageSizeRatio < 1 ? 'full-width' : 'full-height'"
-          [src]="imgUrl">
+      <div class="upload-image-thumb">
+        <img [ngClass]="imageSizeRatio < 1 ? 'full-width' : 'full-height'"
+             [src]="imgUrl">
 
       </div>
       <div (click)="clearInput()" class="reset">
         <i class='bx bx-x'></i>
       </div>
     </div>
-    <input
-    #input
-    type="file"
-    accept="image/*"
-    #uploadImage
-    formControlName="fileInput"
-    (change)="onSelectImage($event)"/>
+    <input #input
+           type="file"
+           accept="image/*"
+           #uploadImage
+           formControlName="fileInput"
+           (change)="onSelectImage($event)"/>
   </form>
 </div>

@@ -113,14 +113,11 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
     const wrapper = this.wrapper.nativeElement;
     const timeline = this.timeline.nativeElement;
     const defaultWidth = 892;
-    console.log(defaultWidth);
     
     let isStyleSet = false;
     new ResizeObserver(entries => {
       if (!entries[0].contentRect.width) return;
       this.ngZone.run(() => {
-        console.log(wrapper.offsetWidth);
-        
         if (wrapper.offsetWidth < defaultWidth && !isStyleSet) {
           this.renderer.setStyle(this.sidebar.nativeElement, 'display', 'none');
           this.renderer.setStyle(timeline, 'max-width', '515px');

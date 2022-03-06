@@ -1,18 +1,15 @@
-<div
-#self
-(mouseenter)="onMouseEnter()"
-(mouseleave)="onMouseLeave()"
-class="user-ref-popup">
+<div #self
+     (mouseenter)="onMouseEnter()"
+     (mouseleave)="onMouseLeave()"
+     class="user-ref-popup">
   <div class="avatar--info">
-    <div 
-    routerLink="/{{ userDto?.profileId }}"
-    class="avatar">
+    <div routerLink="/{{ userDto?.profileId }}"
+         class="avatar">
       <img [src]="userDto?.avatarUrl"/>
     </div>
     <div class="info--name">
-      <div 
-      routerLink="/{{ userDto?.profileId }}"
-      class="name">
+      <div routerLink="/{{ userDto?.profileId }}"
+           class="name">
         <span>{{ userDto?.username }}</span>
       </div>
 
@@ -29,27 +26,24 @@ class="user-ref-popup">
     </div>
   </div>
   <div class="actions">
-    <div
-    *ngIf="userDto?.friendshipStatus"
-    class="others">
+    <div *ngIf="userDto?.friendshipStatus"
+         class="others">
       <app-button
-      (click)="openChatBox()">
+        (click)="openChatBox()">
         <div button>
           <i class='bx bxs-message-square-dots'></i>
           <span>Nhắn tin</span>
         </div>
       </app-button>
 
-      <app-friendship-button
-      id="friendship-button"
-      [userId]="userDto?.id || -1"
-      [friendshipStatus]="userDto?.friendshipStatus || ''"
-      [userName]="userDto?.username || ''"
+      <app-friendship-button id="friendship-button"
+                             [userId]="userDto?.id || -1"
+                             [friendshipStatus]="userDto?.friendshipStatus || ''"
+                             [userName]="userDto?.username || ''"
       ></app-friendship-button>
-      
-      <app-button
-      id="more-actions-button"
-      [hasOptions]="true">
+
+      <app-button id="more-actions-button"
+                  [hasOptions]="true">
         <div button>
           <div>
             <i class='bx bx-dots-horizontal-rounded'></i>

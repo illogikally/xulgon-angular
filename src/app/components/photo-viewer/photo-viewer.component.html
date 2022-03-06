@@ -1,33 +1,33 @@
-<div
-*ngIf="photo"
-[ngStyle]="{
-  'top': isPlaceHolderChild ? '56px' : '0px',
-  'z-index': isPlaceHolderChild ? 30 : 998
-}"
-class="photo-viewer">
+<div *ngIf="photo"
+     [ngStyle]="{
+     'top': isPlaceHolderChild ? '56px' : '0px',
+       'z-index': isPlaceHolderChild ? 30 : 998
+     }"
+     class="photo-viewer">
   <div class="viewer-content">
-    <div 
-    [ngStyle]="{'display': isPlaceHolderChild ? 'none' : 'flex'}"
-    (click)="hide()" class="x-btn">
+    <div [ngStyle]="{'display': isPlaceHolderChild ? 'none' : 'flex'}"
+         (click)="hide()" class="x-btn">
       <!-- <i class='bx bx-x'></i> -->
-      <i data-visualcompletion="css-img" style="filter: invert(100%); background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png'); background-position: -105px -67px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
+      <i data-visualcompletion="css-img"
+         style="filter: invert(100%); background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png'); background-position: -105px -67px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
     </div>
     <img [src]="photo?.photos && photo.photos[0].url">
 
     <div *ngFor="let has of getHasPreviousHasNext(); index as index">
-      <app-button
-      background="transparent"
-      width="50px" 
-      height="50px"
-      [isRounded]="true"
-      color="rgba(255, 255, 255, .8)"
-      backgroundHover="rgba(255, 255, 255, .1)"
-      *ngIf="has"
-      [ngClass]="index == 0 ? 'prev-button' : 'next-button'"
-      (click)="index == 0 ? navigateBackward() : navigateForward()">
+      <app-button [background]="'transparent'"
+                  width="50px"
+                  height="50px"
+                  [isRounded]="true"
+                  color="rgba(255, 255, 255, .8)"
+                  backgroundHover="rgba(255, 255, 255, .1)"
+                  *ngIf="has"
+                  [ngClass]="index == 0 ? 'prev-button' : 'next-button'"
+                  (click)="index == 0 ? navigateBackward() : navigateForward()">
         <div *ngIf="has" button="">
-          <i *ngIf="index == 1" data-visualcompletion="css-img" style="filter: invert(100%); background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png&quot;); background-position: -83px -13px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
-          <i  *ngIf="index == 0" data-visualcompletion="css-img" style="filter: invert(100%); background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/y6/r/lwBekknsaqF.png&quot;); background-position: -37px -122px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
+          <i *ngIf="index == 1" data-visualcompletion="css-img"
+             style="filter: invert(100%); background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png&quot;); background-position: -83px -13px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
+          <i *ngIf="index == 0" data-visualcompletion="css-img"
+             style="filter: invert(100%); background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/y6/r/lwBekknsaqF.png&quot;); background-position: -37px -122px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
           <!-- <i class='bx bx-chevron-left'></i>
           <i  class='bx bx-chevron-right'></i> -->
         </div>
@@ -36,13 +36,12 @@ class="photo-viewer">
 
   </div>
   <div class="viewer-sidebar">
-    <app-post 
-    [isCommentVisible]="true"
-    [initCommentCount]="20"
-    [post]="photo"></app-post>
+    <app-post [isCommentVisible]="true"
+              [initCommentCount]="20"
+              [post]="photo"></app-post>
   </div>
 </div>
 
 <app-error-page
-*ngIf="isError && isPlaceHolderChild"
+  *ngIf="isError && isPlaceHolderChild"
 ></app-error-page>

@@ -1,12 +1,10 @@
-<div
-(click)="chatboxClick()"
-#self
-class="chat-box">
+<div (click)="chatboxClick()"
+     #self
+     class="chat-box">
   <div class="content">
     <div class="title">
-      <div 
-      (click)="navigateToUserProfile()"
-      class="avatar-name">
+      <div (click)="navigateToUserProfile()"
+           class="avatar-name">
         <div class="avatar">
           <div class="avatar-container">
             <img [src]="user?.avatarUrl || 'assets/avatar.jpg'">
@@ -16,26 +14,24 @@ class="chat-box">
           {{ user?.username }}
         </div>
       </div>
-      <div
-        (click)="close()"
-        class="x-btn">
+      <div (click)="close()"
+           class="x-btn">
         <i class='bx bx-x'></i>
       </div>
     </div>
     <div class="msg">
-      <app-chat-msg
-        *ngFor="let message of messages; let i = index"
-        [avatarUrl]="user?.avatarUrl"
-        [thisMsg]="messages[i]"
-        [nextMsg]="i == 0 ? null : messages[i-1]"
-        [prevMsg]="messages[i+1]"
-      ></app-chat-msg>
+      <app-chat-msg *ngFor="let message of messages; let i = index"
+                    [avatarUrl]="user?.avatarUrl"
+                    [thisMsg]="messages[i]"
+                    [nextMsg]="i == 0 ? null : messages[i-1]"
+                    [prevMsg]="messages[i+1]">
+      </app-chat-msg>
     </div>
     <form [formGroup]="msgForm" (keyup.enter)="sendMessage()" class="input-bar">
       <input type="text" class="input" formControlName="input" placeholder="Aa">
-      <i 
-      (click)="sendMessage()"
-      class='bx bxs-send'></i>
+      <i
+        (click)="sendMessage()"
+        class='bx bxs-send'></i>
     </form>
   </div>
 </div>

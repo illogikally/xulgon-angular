@@ -23,6 +23,11 @@ export class GroupService {
     return this.http.get<any[]>(url);
   }
 
+  getRole(groupId: number): Observable<string> {
+    const url = `${this.baseApiUrl}/groups/${groupId}/role`;
+    return this.http.get<string>(url);
+  }
+
   acceptRequest(requestId: number): Observable<any> {
     const url = `${this.baseApiUrl}/group-join-requests/${requestId}/accept`;
     return this.http.put<any>(url, {});

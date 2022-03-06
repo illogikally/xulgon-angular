@@ -1,16 +1,12 @@
-<div 
-[ngStyle]="{'top': isGroup ? '' : '20px'}"
-class="post-view">
-  <div 
-  [ngStyle]="{'width': isGroup ? '100%' : '680px'}"
-  class="post-view__inner">
-    <div 
-    *ngIf="post"
-    class="post">
-      <app-post
-      *ngIf="post"
-      [isCommentVisible]="true"
-      [post]="post">
+<div [ngStyle]="{'top': isGroup ? '' : '20px'}"
+     class="post-view">
+  <div [ngStyle]="{'width': isGroup ? '100%' : '680px'}"
+       class="post-view__inner">
+    <div *ngIf="post"
+         class="post">
+      <app-post *ngIf="post"
+                [isCommentVisible]="true"
+                [post]="post">
       </app-post>
     </div>
     <app-post-skeleton *ngIf="!post"></app-post-skeleton>

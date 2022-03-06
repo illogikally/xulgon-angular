@@ -1,17 +1,17 @@
-<div 
-#self
-class="create-post-container">
-  <form 
-  class="create-post" 
-  enctype="multipart/form-data" 
-  [formGroup]="postForm" 
-  (ngSubmit)="submit()">
+<div
+  #self
+  class="create-post-container">
+  <form
+    class="create-post"
+    enctype="multipart/form-data"
+    [formGroup]="postForm"
+    (ngSubmit)="submit()">
     <div class="flex-center post-title">
       <span>Tạo bài viết</span>
       <app-button (click)="hide()"
                   [isX]="true"
                   iconSize="35px"
-                  class="x-btn"> 
+                  class="x-btn">
       </app-button>
     </div>
     <div class="create-post-body">
@@ -28,15 +28,15 @@ class="create-post-container">
         <div class="name--privacy">
           <div class="name">{{ authenticationService.getUserFullName() }}</div>
           <div class="privacy">
-            <span *ngIf="groupName" 
+            <span *ngIf="groupName"
                   class="page-target">
               <span *ngIf=" groupPrivacy == 'GROUP' ">
                 <i class='bx bxs-network-chart'></i>
               </span>
               <span *ngIf=" groupPrivacy == 'PUBLIC' ">
                 <i class='bx bx-globe'></i>
-              </span> 
-              {{ groupName }} 
+              </span>
+              {{ groupName }}
             </span>
             <span *ngIf="!groupName"
                   (click)="showPrivacyOpts()"
@@ -53,11 +53,11 @@ class="create-post-container">
                 <i class='bx bxs-lock-alt'></i>
                 <span style="padding: 0 3px">Mình tôi</span>
               </span>
-              <i style="font-size: 9px; margin-left: 2px" 
-              class='bx bxs-down-arrow'></i>
+              <i style="font-size: 9px; margin-left: 2px"
+                 class='bx bxs-down-arrow'></i>
             </span>
-            <div (clickOutside)="clickOutsidePrivacyOpts()" 
-                 *ngIf="isPrivacyOptsVisible" 
+            <div (clickOutside)="clickOutsidePrivacyOpts()"
+                 *ngIf="isPrivacyOptsVisible"
                  [delayClickOutsideInit]="true"
                  class="privacy-opts">
               <div (click)="setPrivacy('PUBLIC')"
@@ -89,27 +89,26 @@ class="create-post-container">
       </div>
       <div class="post-content">
         <div class="post-text">
-          <textarea
-          #textArea
-          placeholder="Hãy viết gì đó..."
-          spellcheck="false"
-          (input) = textAreaAutoGrow($event)
-          formControlName="textarea" 
-          required
-          autofocus>
+          <textarea #textArea
+                    placeholder="Hãy viết gì đó..."
+                    spellcheck="false"
+                    (input)=textAreaAutoGrow($event)
+                    formControlName="textarea"
+                    required
+                    autofocus>
           </textarea>
         </div>
         <div
-        *ngIf="photos.length > 0"
-        class="post-photos">
+          *ngIf="photos.length > 0"
+          class="post-photos">
           <div *ngIf="photos.length > 2">
             <div *ngFor="let photo of photos.slice(2, 4); index as index">
               <div
-              [ngClass]="photos.length == 3 ? 'three': ''">
+                [ngClass]="photos.length == 3 ? 'three': ''">
                 <img [src]="photo.url">
                 <div
-                class="photos-left" 
-                *ngIf="index == 1 && photos.length - 4 > 0">
+                  class="photos-left"
+                  *ngIf="index == 1 && photos.length - 4 > 0">
                   <span>+{{ photos.length - 4 }}</span>
                 </div>
               </div>
@@ -137,17 +136,17 @@ class="create-post-container">
         <div>Thêm vào bài viết</div>
 
         <div class="post-addition__actions">
-          <div 
-          id="emoji-picker-button"
-          #addEmoji
-          class="actions__add-emoji">
+          <div
+            id="emoji-picker-button"
+            #addEmoji
+            class="actions__add-emoji">
             <div (click)="isEmojiPickerHidden = !isEmojiPickerHidden" class="add-emoji__button">
               <i class='bx bx-smile'></i>
             </div>
 
             <app-pop-up [parent]="addEmoji"
                         [triangle]="false"
-                        (clickOutside)="isEmojiPickerHidden = true" 
+                        (clickOutside)="isEmojiPickerHidden = true"
                         exclude="#emoji-picker-button"
                         position="ABOVE"
                         padding="0px"
@@ -167,29 +166,27 @@ class="create-post-container">
           </div>
 
           <div class="actions__add-photo">
-            <input 
-            formControlName="fileInput" 
-            accept="image/*" 
-            type="file" 
-            (change)="onSelectImage($event)" 
-            #uploadImage>
+            <input formControlName="fileInput"
+                   accept="image/*"
+                   type="file"
+                   (change)="onSelectImage($event)"
+                   #uploadImage>
 
-            <div 
-            [ngStyle]="sharedContent ? {
-              'color': '#ddd',
-              'cursor': 'not-allowed'
-            } : {}"
-            (click)="!sharedContent ? uploadImage.click() : null" 
-            class="upload-image">
+            <div [ngStyle]="sharedContent ? {
+                  'color': '#ddd',
+                  'cursor': 'not-allowed'
+                  } : {}"
+                 (click)="!sharedContent ? uploadImage.click() : null"
+                 class="upload-image">
               <i class='bx bxs-file-image'></i>
             </div>
           </div>
         </div>
       </div>
-      <button 
-      type="submit" 
-      class="btn-post"
-      [attr.disabled]="(!sharedContent && !photos.length && !textArea.value.trim()) ? true : null"> 
+      <button
+        type="submit"
+        class="btn-post"
+        [attr.disabled]="(!sharedContent && !photos.length && !textArea.value.trim()) ? true : null">
         <span>Đăng</span>
       </button>
     </div>

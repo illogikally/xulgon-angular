@@ -1,12 +1,10 @@
-<div 
-#triangleElement
-[ngClass]="triangle ? 'visible' : 'hidden'"
-class="triangle">
+<div #triangleElement
+     [ngClass]="triangle ? 'visible' : 'hidden'"
+     class="triangle">
 </div>
 
-<div 
-#self
-[ngStyle]="{'padding': padding}"
-class="root">
+<div #self
+     [ngStyle]="{'padding': padding}"
+     class="root">
   <ng-content></ng-content>
 </div>

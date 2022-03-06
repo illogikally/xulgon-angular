@@ -4,14 +4,11 @@
        [ngClass]="{'active': isPopupVisible}"
        class="button">
     <i class='bx bxs-bell'></i>
-    <div
-      *ngIf="unreadCount > 0"
-      class="unread">
+    <div *ngIf="unreadCount > 0"
+         class="unread">
       {{ unreadCount }}
     </div>
-    <div class="markAsRead">
-
-    </div>
+    <div class="markAsRead"></div>
   </div>
   <div [ngStyle]="{'display': isPopupVisible ? 'block' : 'none'}"
        class="popup">
