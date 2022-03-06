@@ -1,74 +1,63 @@
-<div 
-#actionMenu class="actions-menu-container flex-center">
+<div #actionMenu 
+     class="actions-menu-container flex-center">
   <div class="wrapper">
     <div class="actions-menu">
       <div *ngIf="isTabBarSticky" class="to-top">
-        <a 
-        routerLink="/{{ header.id }}"
-        class="container">
+        <a href="pagePath"
+           (click)="scrollToTop($event)"
+           class="container">
           <div class="content">
             <div class="avatar-container">
               <div class="avatar">
-                <img [src]="header?.avatar?.thumbnails?.s160x160.url || 'assets/avatar.jpg'">
+                <img [src]="avatar || 'assets/avatar.jpg'">
               </div>
             </div>
           
             <div class="name">
-              <span>{{ header.name }}</span>
+              <span>{{ pageName }}</span>
             </div>
           </div>
         </a>
       </div>
-      <div 
-      [ngClass]="isTabBarConfigured ? '' : 'hidden'"
-      #tabsWrapper
-      class="tab-bar-wrapper">
-        <!-- *ngIf="!isTabBarSticky"  -->
-        <div 
-        #tabs
-        [ngClass]="isTabBarSticky ? 'hidden' : ''"
-        class="tab-bar">
-          <a 
-          *ngFor="let tab of visibleTabs"
-          routerLink="./{{ tab.path }}"
-          routerLinkActive="tab-active"
-          class="visible-tab"
-          [routerLinkActiveOptions]="{exact: true}">
+      <div [ngClass]="isTabBarConfigured ? '' : 'hidden'"
+           #tabsWrapper
+           class="tab-bar-wrapper">
+        <div #tabs
+             [ngClass]="isTabBarSticky ? 'hidden' : ''"
+             class="tab-bar">
+          <a *ngFor="let tab of visibleTabs"
+              routerLink="./{{ tab.path }}"
+              routerLinkActive="tab-active"
+              class="visible-tab"
+              [routerLinkActiveOptions]="{exact: true}">
             <div>
               <div class="flex-center">
                 <span>{{ tab.name }}</span>
               </div>
             </div>
           </a>
-          <li 
-          [ngClass]="hiddenTabs.length && !isTabBarSticky ? '' : 'hidden'"
-          #moreTabs
+          <li [ngClass]="hiddenTabs.length && !isTabBarSticky ? '' : 'hidden'"
+              #moreTabs
           class="more-tabs">
-            <div
-            id="more-tabs"
-            (click)="isMoreTabsVisible = !isMoreTabsVisible">
+            <div id="more-tabs"
+                 (click)="isMoreTabsVisible = !isMoreTabsVisible">
               <div class="flex-center">
                 <span>Thêm</span>
                 <i class='bx bx-caret-down'></i>
               </div>
-            
-            
             </div>
-            <app-pop-up
-            *ngIf="isMoreTabsVisible"
-            [triangle]="false"
-            aligment="LEFT"
-            [margin]="-5"
-            [parent]="moreTabs">
-              <div 
-              (clickOutside)="isMoreTabsVisible = false"
-              exclude="#more-tabs"
-              class="hidden-tabs">
-                <a 
-                (click)="isMoreTabsVisible = false"
-                *ngFor="let tab of hiddenTabs"
-                routerLink="./{{ tab.path }}"
-                class="tab">
+            <app-pop-up *ngIf="isMoreTabsVisible"
+                        [triangle]="false"
+                        aligment="LEFT"
+                        [margin]="-5"
+                        [parent]="moreTabs">
+              <div (clickOutside)="isMoreTabsVisible = false"
+                   exclude="#more-tabs"
+                   class="hidden-tabs">
+                <a (click)="isMoreTabsVisible = false"
+                   *ngFor="let tab of hiddenTabs"
+                   routerLink="./{{ tab.path }}"
+                   class="tab">
                   <span>{{ tab.name }}</span>
                 </a>
               </div>
@@ -76,9 +65,8 @@
           </li>
         </div>
       </div>
-      <div 
-      #buttons
-      class="profile-actions">
+      <div #buttons 
+           class="profile-actions">
         <ng-content select="[actions]"></ng-content>
       </div>
     </div>

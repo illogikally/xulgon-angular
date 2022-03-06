@@ -53,14 +53,36 @@ export class GroupService {
     return this.http.put<any>(url, {});
   }
 
-  getTimeline(groupId: number): Observable<OffsetResponse<Post>> {
-    const url = `${this.baseApiUrl}/pages/${groupId}/posts`;
+  getGroupFeed(
+    size: number,
+    offset: number,
+  ): Observable<OffsetResponse<Post>> {
+    const url = `${this.baseApiUrl}/users/group-feed?size=${size}&offset=${offset}`;
+    return this.http.get<OffsetResponse<Post>>(url);
+  }
+
+  getTimeline(
+    groupId: number,
+    size: number,
+    offset: number
+  ): Observable<OffsetResponse<Post>> {
+    const url = `${this.baseApiUrl}/pages/${groupId}/posts?size=${size}&offset=${offset}`;
     return this.http.get<OffsetResponse<Post>>(url);
   }
 
   getGroupHeader(groupId: number): Observable<GroupResponse> {
     const url = `${this.baseApiUrl}/groups/${groupId}`;
     return this.http.get<GroupResponse>(url);
+  }
+
+  sendJoinRequest(groupId: number): Observable<any> {
+    const url = `${this.baseApiUrl}/groups/${groupId}/join-requests`;
+    return this.http.post(url, {})
+  }
+
+  cancelJoinRequest(groupId: number): Observable<any> {
+    const url = `${this.baseApiUrl}/groups/join-requests`;
+    return this.http.delete(url, {})
   }
 
 }

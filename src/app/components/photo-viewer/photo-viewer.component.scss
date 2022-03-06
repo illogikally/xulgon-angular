@@ -1,5 +1,9 @@
 @import 'src/styles';
 
+:host {
+  display: none;
+}
+
 .photo-viewer {
   display: flex;
   position: fixed;

@@ -1,7 +1,6 @@
 @import "src/styles";
 
 .notif-item {
-  padding: 7px 5px;
   display: block;
   margin: auto -5px;
   border-radius: 10px;
@@ -11,9 +10,15 @@
     background-color: #eee;
   }
 
+  .container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
   .content {
     display: flex;
     position: relative;
+    padding: 7px 5px;
     align-items: center;
 
     .mark-as-read {
@@ -66,7 +71,7 @@
     position: absolute;
     width: 12px;
     height: 12px;
-    right: 20px;
+    right: 10px;
     border-radius: 50%;
     background-color: $btn-blue;
   }

@@ -1,0 +1,54 @@
+<div class="notif-item">
+  <div class="container">
+  <div
+  (click)="click()"
+  class="content">
+    <div class="avatar">
+      <div class="img-container">
+        <img [src]="notification.actorAvatarUrl || 'assets/avatar.jpg'" alt="avatar"/>
+      </div>
+    </div>
+    <div [ngStyle]="{ 'color': notification.isRead ? 'var(--secondary-text)' : '#fff'}"
+        class="body">
+      <div class="notif-text">
+        <span *ngIf="notification.type == NotificationType.COMMENT">
+          <strong>{{ notification.actorFullName }}</strong>
+          <span *ngIf="notification.actorCount > 1">
+            và {{ notification.actorCount-1 }} người khác
+          </span>
+
+          <span *ngIf="notification.targetContentType == 'POST'"> đã bình luận trong một bài viết </span>
+
+          <span *ngIf="notification.targetContentType == 'COMMENT'"> đã trả lời một bình luận </span>
+
+          <span *ngIf="notification.targetContentUserId == principalId"> của bạn</span>
+          <span *ngIf="notification.targetContentUserId != principalId"> mà bạn theo dõi</span>
+          <span *ngIf="notification.targetContentBody">: "{{ notification.targetContentBody }}"</span>
+          <span>.</span>
+        </span>
+
+        <span *ngIf="notification.type == NotificationType.REACTION">
+          <strong>{{ notification.actorFullName }}</strong>
+          đã thích một bài viết của bạn.
+        </span>
+
+        <span *ngIf="notification.type == NotificationType.NEW_POST">
+          <strong>{{ notification.actorFullName }}</strong>
+          <span> đã đăng một bài viết mới</span>
+          <span *ngIf="notification.pageType == 'GROUP'"> trong <strong>{{ notification.pageName }}</strong></span>
+          <span *ngIf="notification.targetContentBody">: "{{ notification.targetContentBody }}"</span>
+          <span>.</span>
+        </span>
+
+      </div>
+      <div class="ago">
+        <span>{{ notification.createdAgo }}</span>
+      </div>
+    </div>
+  </div>
+    <div (click)="read()"
+        [ngClass]="notification.isRead ? 'hidden' : 'visible'"
+        class="mark-as-read">
+    </div>
+  </div>
+</div>

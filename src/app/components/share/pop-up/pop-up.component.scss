@@ -1,13 +1,15 @@
 @import "src/styles";
 
+:host {
+  z-index: z('popup');
+}
 .root {
   padding: 5px;
   border-radius: 5px;
   box-sizing: border-box;
-  z-index: 9e5;
   position: absolute;
   background-color: #fff;
-  width: 300px;
+  min-width: 300px;
   left: 0;
   box-shadow: 0 0px 14px 0 rgba(#000, .2), 
     0 0px 4px 0 rgba(#000, .1), 
@@ -20,7 +22,7 @@
   border-color: transparent transparent #fff transparent;
   position: absolute;
   top: calc(100% + 1px);
-  z-index: 9e5+1;
+  z-index: 1;
   left: 50%;
   transform: translateX(-50%);
 }

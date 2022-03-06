@@ -43,7 +43,7 @@
     position: fixed;
     width: 360px;
     top: 54px;
-    bottom: 20px;
+    bottom: 70px;
     cursor: auto;
     user-select: none;
     right: 15px;
@@ -51,6 +51,10 @@
     &__inner {
       @include card(10px);
       box-shadow: 0 12px 28px 0 rgba(#000, .2), 0 2px 4px 0 rgba(#000,.1), inset 0 0 0 1px rgba(#fff, .5);
+      max-height: 100%;
+      box-sizing: border-box;
+      overflow-y: overlay;
+      @include scrollbar(15px);
       padding: 10px 15px;
 
       .title {

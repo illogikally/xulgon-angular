@@ -4,6 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
 import { OffsetResponse } from '../share/offset-response';
+import { UserBasic } from '../share/user-basic';
 import {Post} from './post';
 
 @Injectable({
@@ -17,7 +18,6 @@ export class PostService {
     private http: HttpClient, 
     ) {
   }
-
   getPostsByPageId(
     pageId: number,
     size  : number,
@@ -32,10 +32,17 @@ export class PostService {
   }
 
   createPost(data: FormData): Observable<Post> {
-    return this.http.post<Post>("http://localhost:8080/api/posts", data);
+    const url = `${this.baseApiUrl}/posts`
+    return this.http.post<Post>(url, data);
   }
 
   delete(postId: number): Observable<any> {
-    return this.http.delete(`http://localhost:8080/api/posts/${postId}`);
+    const url = `${this.baseApiUrl}/posts/${postId}`
+    return this.http.delete(url);
+  }
+
+  getCommenters(postId: number): Observable<UserBasic[]> {
+    const url = `${this.baseApiUrl}/posts/${postId}/commenters`
+    return this.http.get<UserBasic[]>(url);
   }
 }

@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { ChatMessage } from '../chat/chat-msg';
 import {GroupResponse} from '../group/group-response';
 import {Post} from '../post/post';
+import { OffsetResponse } from './offset-response';
+import { UserBasic } from './user-basic';
 
 @Injectable({
   providedIn: 'root'
@@ -47,11 +49,6 @@ export class UserService {
     return this.http.post(url, {});
   }
 
-  getGroupFeed(): Observable<Post[]> {
-    const url = `${this.baseApiUrl}/users/group-feed`;
-    return this.http.get<Post[]>(url);
-  }
-
   getNewsFeed(size: number, offset: number): Observable<Post[]> {
     const url = `${this.baseApiUrl}/users/news-feed?size=${size}&offset=${offset}`;
     return this.http.get<Post[]>(url);
@@ -77,4 +74,10 @@ export class UserService {
     const url = `${this.baseApiUrl}/users/existed?email=${email}`
     return this.http.get<boolean>(url);
   }
+
+  getFriends(userId: number): Observable<UserBasic[]> {
+    const url = `${this.baseApiUrl}/users/${userId}/basic-friends`
+    return this.http.get<UserBasic[]>(url);
+  }
+
 }

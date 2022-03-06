@@ -8,35 +8,36 @@
       </div>
       <div class="search">
         <form [formGroup]="searchForm">
-          <div 
+          <div
           (click)="showSearchBar()"
           (clickOutside)="hideSearchBar()"
+          clickOutsideEvents="mousedown,click"
           class="input-group">
             <div class="icon-wrapper">
-              <span 
+              <span
               class="icon">
                 <i class='bx bx-search'></i>
               </span>
             </div>
-            <input
-            #searchInput
-            (keyup.enter)="search($event)"
-            type="text"
-            placeholder="Tìm kiếm..."
-            id="search" name="search" autocomplete="off">
+            <input #searchInput
+                   (keyup.enter)="search($event)"
+                   type="text"
+                   placeholder="Tìm kiếm..."
+                   id="search"
+                   name="search"
+                   autocomplete="off">
           </div>
         </form>
       </div>
     </div>
     <ul class="menu">
-      <li 
-        class="home" 
+      <li
+        class="home"
         [ngClass]="{'menu-active-div': homeRla.isActive}">
-        <a
-        routerLink="/"
-        [routerLinkActiveOptions]="{exact: true}"
-        routerLinkActive="menu-routerLink-active"
-        #homeRla="routerLinkActive">
+        <a routerLink="/"
+           [routerLinkActiveOptions]="{exact: true}"
+           routerLinkActive="menu-routerLink-active"
+           #homeRla="routerLinkActive">
           <i *ngIf="!homeRla.isActive" class='bx bx-home-circle'></i>
           <i *ngIf="homeRla.isActive" class='bx bxs-home-circle'></i>
         </a>
@@ -44,17 +45,16 @@
       <li
         class="home"
         [ngClass]="{'menu-active-div': friendRla.isActive}">
-        <a
-        [routerLink]="'/friends'"
-        [routerLinkActiveOptions]="{exact: true}"
-        #friendRla="routerLinkActive"
-        routerLinkActive="menu-routerLink-active">
-          <i
-            *ngIf="!friendRla.isActive"
-            class='bx bx-group'></i>
-          <i
-            *ngIf="friendRla.isActive"
-            class='bx bxs-group'></i>
+        <a [routerLink]="'/friends'"
+           [routerLinkActiveOptions]="{exact: true}"
+           #friendRla="routerLinkActive"
+           routerLinkActive="menu-routerLink-active">
+          <i *ngIf="!friendRla.isActive"
+             class='bx bx-group'>
+          </i>
+          <i *ngIf="friendRla.isActive"
+             class='bx bxs-group'>
+          </i>
         </a>
       </li>
       <li
@@ -65,12 +65,12 @@
         #groupRla="routerLinkActive"
         [routerLinkActiveOptions]="{exact: true}"
         routerLinkActive="menu-routerLink-active">
-          <i
-          *ngIf="!groupRla.isActive"
-          class='bx bx-network-chart'></i>
-          <i
-          *ngIf="groupRla.isActive"
-          class='bx bxs-network-chart'></i>
+          <i *ngIf="!groupRla.isActive"
+             class='bx bx-network-chart'>
+          </i>
+          <i *ngIf="groupRla.isActive"
+             class='bx bxs-network-chart'>
+          </i>
         </a>
       </li>
     </ul>
@@ -94,7 +94,7 @@
       <ul class="notis">
         <li>
           <div class="wrapper">
-            <div 
+            <div
             (click)="showCreatePost()">
               <i class='bx bx-plus'></i>
             </div>
@@ -105,14 +105,14 @@
             <app-chat-notification></app-chat-notification>
         </li>
         <li>
-            <div 
+            <div
             class="general-noti"></div>
             <app-notification></app-notification>
         </li>
         <li>
           <div class="wrapper">
             <div
-            [ngClass]="{'route-active': moreOptsVisible}" 
+            [ngClass]="{'route-active': moreOptsVisible}"
             (click)="moreOptsVisible = !moreOptsVisible"
             class="more-opts">
               <i class='bx bx-chevron-down'></i>
@@ -138,5 +138,6 @@
     </div>
   </div>
 </nav>
-<app-create-post [open$]="openCreatePost"></app-create-post>
+<app-create-post
+[open$]="openCreatePost"></app-create-post>
 <app-confirm-dialog></app-confirm-dialog>

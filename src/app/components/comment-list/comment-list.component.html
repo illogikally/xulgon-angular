@@ -15,25 +15,32 @@
   (click)="loadComments()">
     <span>Xem thêm {{ totalCommentCount - comments.length }} bình luận</span>
   </div>
-  <form [formGroup]="commentForm" (keyup.enter)="submit()">
+  <form [formGroup]="commentForm" (keydown.enter)="submit($event)">
     <div class="input-container">
       <div class="input-avatar">
         <div class="avatar-container">
           <img [src]="loggedInUserAvatarUrl">
         </div>
       </div>
-      <input
+
+      <div class="textarea-wrapper">
+        <textarea
         type="text"
         placeholder="Bình luận..."
         autocomplete="off"
-        formControlName="comment"/>
-
+        #textArea
+        rows="1"
+        (input)="textAreaAutoGrow($event)"
+        formControlName="comment">
+        </textarea>
+      </div>
       <div
         *ngIf="!image"
         (click)="uploadImage.click()"
         class="add-image-btn">
         <i class='bx bxs-image'></i>
       </div>
+
     </div>
     <div *ngIf="image" class="upload-image-container">
       <div

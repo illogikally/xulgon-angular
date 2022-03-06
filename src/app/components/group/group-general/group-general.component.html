@@ -4,7 +4,6 @@
       <div class="sidebar">
         <div class="menu">
           <div class="title">
-
             <span>Nhóm</span>
           </div>
           <div class="input-group">
@@ -20,37 +19,32 @@
             </div>
             <div class="discover">
               <div class="icon-cont">
-
                 <i class='bx bxs-compass'></i>
               </div>
               <span>Khám phá</span>
             </div>
           </div>
-          <div
-            (click)="createGroupVisible = !createGroupVisible"
-            class="create-group">
+          <div (click)="createGroupVisible = !createGroupVisible"
+               class="create-group">
             <div class="create-group__inner">
               <i class='bx bx-plus'></i>
               <div>Tạo nhóm mới</div>
             </div>
           </div>
 
-          <form
-            class="create-group-form"
-            *ngIf="createGroupVisible"
-            [formGroup]="createGroupForm">
+          <form class="create-group-form"
+                *ngIf="createGroupVisible"
+                [formGroup]="createGroupForm">
 
             <div class="input-group-name">
               <span [ngClass]="{'focus': groupNameInput.value}">Tên nhóm</span>
-              <input
-                #groupNameInput
-                formControlName="groupName" type="text"/>
+              <input #groupNameInput
+                     formControlName="groupName" type="text"/>
             </div>
             <div class="privacy-drop">
-              <div
-                (click)="createGroupPrivacyDropVisible = !createGroupPrivacyDropVisible"
-                #chose
-                class="chose">
+              <div (click)="createGroupPrivacyDropVisible = !createGroupPrivacyDropVisible"
+                   #chose
+                   class="chose">
                 <div class="arrow">
                   <i class='bx bxs-down-arrow'></i>
                 </div>
@@ -68,9 +62,7 @@
                     Công khai
                   </div>
                 </div>
-                <div
-                  *ngIf="createGroupIsPrivate === true"
-                >
+                <div *ngIf="createGroupIsPrivate === true">
                   <div class="icon">
                     <i class='bx bxs-lock-alt'></i>
                   </div>
@@ -78,12 +70,11 @@
                 </div>
               </div>
 
-              <div
-                *ngIf="createGroupPrivacyDropVisible"
-                (clickOutside)="createGroupPrivacyDropVisible = false"
-                (click)="createGroupPrivacyDropVisible = false"
-                [delayClickOutsideInit]="true"
-                class="drop-list">
+              <div *ngIf="createGroupPrivacyDropVisible"
+                   (clickOutside)="createGroupPrivacyDropVisible = false"
+                   (click)="createGroupPrivacyDropVisible = false"
+                   [delayClickOutsideInit]="true"
+                   class="drop-list">
                 <div (click)="createGroupIsPrivate = false">
                   <div class="icon">
                     <div class="icon__inner">
@@ -93,12 +84,13 @@
                   </div>
                   <div class="text">
                     <div class="primary">Công khai</div>
-                    <div class="secondary">Bất kì ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng
+                    <div class="secondary">
+                      Bất kì ai cũng có thể nhìn thấy mọi người trong 
+                      nhóm và những gì họ đăng
                     </div>
                   </div>
                 </div>
-                <div
-                  (click)="createGroupIsPrivate = true">
+                <div (click)="createGroupIsPrivate = true">
                   <div class="icon">
                     <div class="icon__inner">
                       <i class='bx bxs-lock-alt'></i>
@@ -107,20 +99,22 @@
                   </div>
                   <div class="text">
                     <div class="primary">Riêng tư</div>
-                    <div class="secondary">Chỉ thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng</div>
+                    <div class="secondary">
+                      Chỉ thành viên mới nhìn thấy 
+                      mọi người trong nhóm và những gì họ đăng
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="buttons">
-              <div
-                (click)="abort()"
-                class="abort">Huỷ
+              <div (click)="abort()"
+                   class="abort">Huỷ
               </div>
-              <button
-                (click)="submit()"
-                [disabled]="submitable() ? null : true"
-                class="submit">Tạo nhóm
+              <button (click)="submit()"
+                      [disabled]="submitable() ? null : true"
+                      class="submit">
+                Tạo nhóm
               </button>
             </div>
           </form>
@@ -131,12 +125,10 @@
             <span>Nhóm do bạn quản lý</span>
           </div>
           <div class="group-list">
-            <a
-              *ngFor="let group of managedGroups"
-              routerLink="/groups/{{ group.id }}"
-              class="group-item">
-              <div
-                class="group-item__inner">
+            <a *ngFor="let group of managedGroups"
+               routerLink="/groups/{{ group.id }}"
+               class="group-item">
+              <div class="group-item__inner">
                 <div class="avatar">
                   <img [src]="group.coverPhotoUrl"/>
                 </div>
@@ -152,14 +144,12 @@
             Nhóm bạn đã tham gia
           </div>
           <div class="group-list">
-            <a
-              *ngFor="let group of groups"
-              href="/groups/{{ group.id }}"
-              (click)="changeGroup($event, group)"
-              class="group-item">
-              <div
-                (click)="currentTab = 'groups'"
-                class="group-item__inner">
+            <a *ngFor="let group of groups"
+               href="/groups/{{ group.id }}"
+               (click)="changeGroup($event, group)"
+               class="group-item">
+              <div (click)="currentTab = 'groups'"
+                   class="group-item__inner">
                 <div class="avatar">
                   <img [src]="group.coverPhotoUrl"/>
                 </div>
@@ -173,8 +163,8 @@
       </div>
     </div>
     <div class="content">
-      <app-group-feed></app-group-feed>
-      <!-- <router-outlet></router-outlet> -->
+      <!-- <app-group-feed></app-group-feed> -->
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

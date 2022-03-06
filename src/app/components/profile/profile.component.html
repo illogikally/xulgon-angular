@@ -21,21 +21,18 @@ class="user-profile">
         </div>
         <div  class="avatar-container flex-center">
           <div class="avatar">
-            <app-photo 
-            [url]="pageHeader.avatar?.thumbnails?.s200x200.url"
-            [setId]="pageHeader.avatarPhotoSetId"
-            [id]="pageHeader.avatar?.id"
+            <app-photo [url]="pageHeader.avatar?.thumbnails?.s200x200.url"
+                       [setId]="pageHeader.avatarPhotoSetId"
+                       [id]="pageHeader.avatar?.id"
             ></app-photo>
           </div>
-          <app-button
-          width="35px"
-          height="35px"
-          [isRounded]="true"
-          background="#eee"
-          *ngIf="pageHeader.id == principalId"
-          (click)="showUpdateProfilePic('avatar')"
-          class="change-avatar">
-          >
+          <app-button width="35px"
+                      height="35px"
+                      [isRounded]="true"
+                      background="#eee"
+                      *ngIf="pageHeader.id == principalId"
+                      (click)="showUpdateProfilePic('avatar')"
+                      class="change-avatar">
             <div button="">
               <i class='bx bxs-camera'></i>
             </div>
@@ -50,27 +47,26 @@ class="user-profile">
       </h1>
     </div>
   </div>
-  <app-tab-bar
-  [header]="pageHeader">
+  <app-tab-bar [pageId]="pageHeader.id"
+               [pageName]="pageHeader.name"
+               [pagePath]="'/' + pageHeader.id"
+               [avatar]="pageHeader.avatar?.thumbnails?.s200x200.url">
     <div actions="">
-      <app-friendship-button
-      [userId]="pageHeader.id"
-      [friendshipStatus]="pageHeader.friendshipStatus"
-      [userName]="pageHeader.name"
+      <app-friendship-button [userId]="pageHeader.id"
+                             [friendshipStatus]="pageHeader.friendshipStatus"
+                             [userName]="pageHeader.name"
       ></app-friendship-button>
 
-      <app-button
-      *ngIf="pageHeader.friendshipStatus != undefined"
-      (click)="openChatBox()">
+      <app-button *ngIf="pageHeader.friendshipStatus != undefined"
+                  (click)="openChatBox()">
         <div button>
           <i class='bx bxs-message-square-dots'></i>
           <span>Nhắn tin</span>
         </div>
-      ></app-button>
+      </app-button>
 
-      <app-button
-      [hasOptions]="true"
-      *ngIf="pageHeader.friendshipStatus" >
+      <app-button [hasOptions]="true"
+                  *ngIf="pageHeader.friendshipStatus" >
         <div button>
           <i class='bx bx-dots-horizontal-rounded'></i>
         </div>
@@ -97,8 +93,6 @@ class="user-profile">
     <div class="content-container">
       <router-outlet></router-outlet>
     </div>
-  </div>
-  <div *ngIf="pageNotFound == undefined" class="loading-page">
   </div>
 </div>
 <app-error-page *ngIf="pageNotFound"></app-error-page>

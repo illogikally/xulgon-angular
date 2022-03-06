@@ -4,15 +4,12 @@
     <div class="title">
       <span>{{ title }}</span>
       
-      <div class="x">
+      <div 
+      (click)="response(false)"
+      class="x">
         <app-button 
         iconSize="30px"
         [isX]="true">
-          <div 
-          (click)="response(false)"
-          button>
-            <i class='bx bx-x'></i>
-          </div>
         </app-button>
       </div>
     </div>

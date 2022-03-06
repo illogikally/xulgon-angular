@@ -4,7 +4,7 @@
   @extend %fc;
   position: fixed;
   background-color: #fff;
-  z-index: 999;
+  z-index: z('navbar')-1;
   top: 56px;
   left: 0;
   right: 0px;

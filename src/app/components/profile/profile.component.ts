@@ -138,7 +138,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       id: this.pageHeader.userId,
       username: this.pageHeader.name,
       profileId: this.pageHeader.id,
-      avatarUrl: this.pageHeader.avatar.thumbnails.s40x40
+      avatarUrl: this.pageHeader?.avatar?.thumbnails.s40x40
     });
   }
 

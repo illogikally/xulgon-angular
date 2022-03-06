@@ -1,14 +1,14 @@
 @import 'src/styles';
 
 :host {
-  visibility: hidden;
+  display: none;
 }
 
 .create-post-container {
   position: fixed;
   height: 100%;
   width: 100%;
-  z-index: 99999;
+  z-index: z('modal');
   font-weight: 500;
   top: 0;
   left: 0;
@@ -35,15 +35,7 @@
       padding: 20px 0;
 
       .x-btn {
-        @include x-btn(35px, #777, #333);
-        z-index: 9e8;
         position: absolute;
-        background-color: #ddd;
-
-        &:hover {
-          background-color: #d2d2d2;
-        }
-
         right: 15px;
       }
     }
@@ -76,6 +68,7 @@
         .name--privacy {
           margin-left: 10px;
           font-weight: 500;
+          user-select: none;
 
           .name {
             font-size: 15px;
@@ -93,10 +86,19 @@
               opacity: .8;
               cursor: not-allowed;
               margin-right: 5px;
-              display: inline-block;
+              display: inline-flex;
               white-space: nowrap;
               overflow-x: hidden;
               text-overflow: ellipsis;
+
+              > span {
+                display: flex;
+                align-items: center;
+              
+                i {
+                  margin-right: 3px;
+                }
+              }
             }
 
             > span {
@@ -127,9 +129,10 @@
       }
 
       .post-content {
-        max-height: 300px;
+        max-height: 450px;
         overflow-y: scroll;
         margin: 15px 0;
+        min-height: 130px;
 
         @include scrollbar(15px);
         margin-right: -15px;
@@ -137,13 +140,13 @@
 
         .post-text {
           width: 100%;
+          margin-bottom: 30px;
 
           textarea {
             display: block;
             font-family: Roboto;
             width: 100%;
             max-width: 100%;
-            min-height: 150px;
             box-sizing: border-box;
 
             border: none;
@@ -242,13 +245,48 @@
           display: none;
         }
 
+        &__actions {
+          display: flex;
+          column-gap: 5px;
+
+          .actions__add-emoji {
+            width: 35px;
+            height: 35px;
+            font-size: 28px;
+            position: relative;
+            z-index: 5;
+            border-radius: 50%;
+            display: flex;
+            user-select: none;
+            color: #FFB72B;
+            justify-content: center;
+
+            ::ng-deep {
+
+              .emoji-mart-scroll {
+                @include scrollbar(15px);
+              }
+            }
+
+            .add-emoji__button {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+
+            &:hover {
+              background-color: #efefef;
+            }
+          }
+
+        }
         .upload-image {
           display: flex;
+          box-sizing: border-box;
           justify-content: center;
           align-items: center;
           height: 35px;
           width: 35px;
-          cursor: pointer;
           font-size: 28px;
           border-radius: 50%;
           color: #867ae9;

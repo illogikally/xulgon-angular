@@ -1,8 +1,9 @@
 <div class="group-feed">
-  <div class="group-feed__inner">
+  <div #postsContainer class="group-feed__inner">
     <app-post-list
       [isGroupNameVisible]="true"
-      [posts]="groupFeedPosts"
+      [isLoading]="isLoading"
+      [posts]="posts"
     ></app-post-list>
   </div>
 </div>

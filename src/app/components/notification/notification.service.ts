@@ -1,8 +1,7 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {AuthenticationService} from '../authentication/authentication.service';
-import {Notification} from './notification/notification';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { Notification } from './notification/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,6 @@ export class NotificationService {
 
   constructor(
     private http: HttpClient,
-    private authenticationService: AuthenticationService
   ) {
   }
 

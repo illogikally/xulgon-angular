@@ -5,7 +5,7 @@
   class="content">
     <div class="avatar">
       <div class="avatar-container">
-        <img [src]="conversation.user.avatarUrl"/>
+        <img [src]="conversation.user.avatarUrl || 'assets/avatar.jpg'"/>
       </div>
     </div>
     <div class="body">

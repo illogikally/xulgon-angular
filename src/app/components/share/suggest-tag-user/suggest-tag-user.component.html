@@ -1,0 +1,8 @@
+<ul 
+[hidden]="isHidden"
+class="suggest" #self>
+  <li 
+  *ngFor="let item of [].constructor(9); index as index"
+  [ngClass]="index == itemIndex ? 'active' : ''"
+  class="item">{{index}}</li>
+</ul>

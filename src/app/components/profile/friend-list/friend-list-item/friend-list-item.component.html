@@ -1,16 +1,14 @@
 <div class="friend-list-item">
   <div class="avatar-container">
-    <!-- <a routerLink="/{{userDto.profileId}}/"> -->
     <a
       routerLink="/{{userDto.profileId}}">
       <div class="avatar">
-        <img [src]="userDto.avatarUrl"/>
+        <img [src]="userDto.avatarUrl || 'assets/avatar.jpg'"/>
       </div>
     </a>
   </div>
 
   <div class="body">
-    <!-- <a routerLink="/{{userDto.profileId}}/" class="body-c"> -->
     <a
       routerLink="/{{userDto.profileId}}"
       class="body-c">

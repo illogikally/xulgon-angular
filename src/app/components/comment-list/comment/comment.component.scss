@@ -62,6 +62,10 @@
     word-break: break-all;
     position: relative;
 
+    &__text {
+      white-space: pre-line;
+    }
+
     .reaction-count {
       position: absolute;
       border-radius: 15px;

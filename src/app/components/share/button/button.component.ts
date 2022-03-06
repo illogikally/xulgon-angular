@@ -1,5 +1,5 @@
 import { ThisReceiver } from '@angular/compiler';
-import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
 import * as Color from 'color';
 import { Subject } from 'rxjs';
 import { MessageService } from '../message.service';
@@ -9,7 +9,7 @@ import { MessageService } from '../message.service';
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss']
 })
-export class ButtonComponent implements OnInit {
+export class ButtonComponent implements OnInit, AfterViewInit {
 
   @Input() background = '#d8dadf';
   @Input() color = '#050505';
@@ -39,6 +39,10 @@ export class ButtonComponent implements OnInit {
     this.setButtonStyle();
   }
 
+  ngAfterViewInit(): void {
+
+  }
+
   get style() {
     return {
       'height': this.height,
@@ -55,7 +59,7 @@ export class ButtonComponent implements OnInit {
       this.padding = '';
       this.hasOptions = false;
       this.radius = '50%';
-      this.color = 'rgba(#555, .9)';
+      this.color = 'rgba(0, 0, 0, .4)';
     }
 
     if (this.isRounded) {

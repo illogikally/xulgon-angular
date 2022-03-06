@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { fromEvent, ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageService } from '../message.service';
@@ -8,12 +8,14 @@ import { MessageService } from '../message.service';
   templateUrl: './pop-up.component.html',
   styleUrls: ['./pop-up.component.scss']
 })
-export class PopUpComponent implements OnInit, OnDestroy {
+export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() parent!: HTMLElement;
   @Input() aligment = 'CENTER';
   @Input() triangle = true;
   @Input() margin = 5;
+  @Input() padding = '5px';
+  @Input() position: 'ABOVE' | 'BELOW' = 'BELOW';
 
   @ViewChild('self', {static: true}) self!: ElementRef;
   @ViewChild('triangleElement', {static: true}) triangleElement!: ElementRef;
@@ -33,8 +35,11 @@ export class PopUpComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.init();
     this.configureOnWindowResize();
+  }
+
+  ngAfterViewInit(): void {
+    this.init();
   }
 
   configureOnWindowResize() {
@@ -62,7 +67,7 @@ export class PopUpComponent implements OnInit, OnDestroy {
     const self = this.self.nativeElement;
     const selfRect = self.getBoundingClientRect();
     
-    let left = this.calculateLeft();
+    let left = this.calculateLeftPositionToParent();
     if (selfRect.left + left < 0) {
       left -= selfRect.left + left;
     }
@@ -75,11 +80,13 @@ export class PopUpComponent implements OnInit, OnDestroy {
 
     let top = this.parent.offsetHeight + VER_MARGIN + TRIANGLE_HEIGHT;
     this.setSelfStyle('transform', `translateX(${left}px)`);
-    this.setSelfStyle('top', top + 'px');
+    const position = this.position == 'BELOW' ? 'top' : 'bottom';
+    this.setSelfStyle(position, top + 'px');
+
     this.renderer.setStyle(this.triangleElement.nativeElement, 'transform', `translate(-50%, ${VER_MARGIN}px)`);
   }
 
-  calculateLeft(): number {
+  calculateLeftPositionToParent(): number {
     let left = this.parent.offsetWidth / 2;
     switch (this.aligment) {
       case 'LEFT': 

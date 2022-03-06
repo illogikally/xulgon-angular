@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,27 +13,31 @@ import { GroupService } from '../group.service';
   templateUrl: './group-content.component.html',
   styleUrls: ['./group-content.component.scss']
 })
-export class GroupContentComponent implements OnInit, OnDestroy {
+export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  groupResponse!: GroupResponse;
+  group!: GroupResponse;
   loadedTabs = new Set<string>();
   currentTab = '';
   isMoreActionsVisible = false;
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
+  tabs = [
+    {name: 'Thảo luận', path: '', distance: NaN, element: undefined},
+    {name: 'Giới thiệu', path: 'about', distance: NaN, element: undefined},
+    {name: 'Thành viên', path: 'members', distance: NaN, element: undefined},
+    {name: 'Ảnh', path: 'media', distance: NaN, element: undefined},
+  ]
+
+  @ViewChild('groupTimeline') groupTimeline!: ElementRef;
   constructor(
-    private location: Location,
+    private ngZone: NgZone,
     private groupService: GroupService,
     private message$: MessageService,
-    private renderer: Renderer2,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private http: HttpClient) {
+  ) {
   }
 
   ngOnDestroy() {
-    // this.message$.groupLoaded.next(null);
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }
@@ -44,34 +48,28 @@ export class GroupContentComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(groupResponse => {
         if (!groupResponse) return;
-
-
-        this.groupResponse = groupResponse;
+        this.group = groupResponse;
       });
+  }
+
+  ngAfterViewInit(): void {
+    
   }
 
   onAttach() {
-    console.log('attach');
-    
-    this.groupService.attach$.next(this.groupResponse.id);
+    this.groupService.attach$.next(this.group.id);
   }
 
   onDetach() {
-    this.groupService.detach$.next(this.groupResponse.id);
+    this.groupService.detach$.next(this.group.id);
   }
 
-  sendJoinRequest(): void {
-    this.http.post(`http://localhost:8080/api/groups/${this.groupResponse.id}/join-requests`, {})
-      .subscribe(_ => {
-        this.groupResponse.isRequestSent = true;
-      });
+  sendJoinRequest() {
+    this.groupService.sendJoinRequest(this.group.id).subscribe();
   }
 
   cancelJoinRequest(): void {
-    this.http.delete(`http://localhost:8080/api/groups/${this.groupResponse.id}/join-requests`)
-      .subscribe(_ => {
-        this.groupResponse.isRequestSent = false;
-      });
+    this.groupService.cancelJoinRequest(this.group.id).subscribe();
   }
 
   toggleMoreActions() {
@@ -79,7 +77,7 @@ export class GroupContentComponent implements OnInit, OnDestroy {
   }
 
   leaveGroup(): void {
-    this.groupService.leaveGroup(this.groupResponse.id).subscribe(_ => {
+    this.groupService.leaveGroup(this.group.id).subscribe(_ => {
       window.location.reload();
     });
   }

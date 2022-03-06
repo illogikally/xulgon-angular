@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from '../../share/message.service';
+import { PhotoResponse } from '../../share/photo/photo-response';
 import { UserService } from '../../share/user.service';
 import { PageHeader } from '../page-header';
 
@@ -10,7 +11,6 @@ import { PageHeader } from '../page-header';
 })
 export class TabBarComponent implements OnInit, AfterViewInit {
 
-  @Input() header!: PageHeader;
   @Input() visibleTabs = [
     {name: 'Bài viết', path: '', distance: NaN, element: undefined},
     {name: 'Giới thiệu', path: 'about', distance: NaN, element: undefined},
@@ -21,6 +21,11 @@ export class TabBarComponent implements OnInit, AfterViewInit {
     {name: 'Bạn bè', path: 'friends', distance: NaN, element: undefined},
     {name: 'Ảnh', path: 'photos', distance: NaN, element: undefined},
   ]
+
+  @Input() pageId!: number;
+  @Input() pageName = '';
+  @Input() avatar = '';
+  @Input() pagePath = '';
 
   @ViewChild('tabs') tabsElement!: ElementRef;
   @ViewChild('tabsWrapper') tabsWrapperElement!: ElementRef;
@@ -113,4 +118,8 @@ export class TabBarComponent implements OnInit, AfterViewInit {
     }).observe(tabBar);
   }
 
+  scrollToTop(event: any) {
+    event.preventDefault();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
 }

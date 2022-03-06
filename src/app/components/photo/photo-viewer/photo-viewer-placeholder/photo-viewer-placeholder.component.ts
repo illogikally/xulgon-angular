@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
 import { PhotoService } from 'src/app/components/share/photo/photo.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class PhotoViewerPlaceholderComponent implements OnInit {
 
   id!: number;
   setId?: number;
+  openPhotoViewer$ = new Subject<any>();
   constructor(
     private route: ActivatedRoute,
     private photoService: PhotoService
@@ -20,6 +22,10 @@ export class PhotoViewerPlaceholderComponent implements OnInit {
 
   ngOnInit(): void {
     this.configureOpenPhotoViewer();
+  }
+
+  onAttach() {
+    this.openPhotoViewer$.next();
   }
 
   configureOpenPhotoViewer() {
@@ -31,8 +37,6 @@ export class PhotoViewerPlaceholderComponent implements OnInit {
     
     this.id = photoId;
     this.setId = Number(photoSetId) || undefined;
-    console.log(this.id, this.setId);
-    
   }
 
 }

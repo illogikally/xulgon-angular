@@ -1,9 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { MessageService } from '../../share/message.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TitleService } from '../../share/title.service';
 import { UserService } from '../../share/user.service';
 import { GroupResponse } from '../group-response';
@@ -31,12 +29,11 @@ export class GroupGeneralComponent implements OnInit {
   constructor(
     private router: Router,
     private groupService: GroupService,
-    private title$: Title,
     private location: Location,
     private userService: UserService,
     private titleService: TitleService,
-    private messageService: MessageService) {
-
+    private activatedRoute: ActivatedRoute
+  ) {
     this.createGroupForm = new FormGroup({
       groupName: new FormControl('')
     });
@@ -51,10 +48,12 @@ export class GroupGeneralComponent implements OnInit {
   }
 
   changeGroup(event: any, group: GroupResponse): void {
-    event.preventDefault();
     this.location.go(`/groups/${group.id}`);
-    this.messageService.groupLoaded.next(group);
-    this.messageService.loadPostsByPageId(group.id);
+    this.router.navigate([group.id], {
+      skipLocationChange: true, 
+      relativeTo: this.activatedRoute
+    });
+    event.preventDefault();
   }
 
   abort(): void {

@@ -28,7 +28,6 @@ export class PhotoComponent implements OnInit {
   openPhotoView(event: any): void {
     event.preventDefault();
     if (!this.id) return;
-    console.log(this.setId);
     
     this.photoService.openPhotoView({
       id: this.id,

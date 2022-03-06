@@ -74,7 +74,8 @@ $header-content-width: 940px;
   }
 
   .wrapper {
-    width: $header-content-width;
+    max-width: $header-content-width;
+    width: 100%;
   }
   .actions-menu {
     height: 60px;

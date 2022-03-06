@@ -18,7 +18,7 @@
             [userDto]="comment.user"
           ></app-user-ref>
         </div>
-        <div>
+        <div class="comment-body__text">
           {{ comment.body }}
         </div>
         <div class="reaction-count" *ngIf="comment.reactionCount > 0">
@@ -36,7 +36,7 @@
     <div *ngIf="comment.photo" class="comment-media">
       <app-photo
       [isComment]="true"
-      [url]="comment.photo.url"
+      [url]="comment.photo.thumbnails.s400x400.url"
       [id]="comment.photo.id"
       [style]="'height'">
       </app-photo>

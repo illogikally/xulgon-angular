@@ -2,95 +2,69 @@
   <div class="group-header">
     <div class="content">
       <div class="cover-container">
-        <img [src]="groupResponse?.coverPhotoUrl"/>
+        <img [src]="group?.coverPhotoUrl"/>
       </div>
       <div class="name--tabs--container">
         <div class="group-name">
           <div class="name-content">
-            <div class="name">{{ groupResponse?.name }}</div>
+            <div class="name">{{ group?.name }}</div>
             <div class="group-meta">
-                <span *ngIf="groupResponse?.isHidden">
+                <span *ngIf="!group?.isPrivate">
                   <i class='bx bx-globe'></i>
                   <span>Nhóm công khai</span>
                 </span>
-              <span *ngIf="!groupResponse?.isHidden">
+              <span *ngIf="group?.isPrivate">
                   <i class='mr-5 bx bx-lock-alt'></i>
                   <span>Nhóm riêng tư</span>
                 </span>
               <span> · </span>
-              <span> {{ groupResponse?.memberCount }} thành viên </span>
+              <span> {{ group?.memberCount }} thành viên </span>
             </div>
           </div>
           <div class="invite"></div>
         </div>
-        <div class="tabs--actions">
-          <div class="tabs">
-            <a
-            routerLink="./"
-            [routerLinkActiveOptions]="{exact: true}"
-            routerLinkActive="active">
-              
-              <div>
-                <div>Thảo luận</div>
-              </div>
-            </a>
-            <a
-            *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate"
-            routerLink="./members"
-            routerLinkActive="active">
-              <div>
-                <div>Thành viên</div>
-              </div>
-            </a>
-            <a
-            routerLink="./media"
-            routerLinkActive="active"
-            *ngIf="groupResponse?.isMember || !groupResponse?.isPrivate">
-              <a>
-                <div>File phương tiện</div>
-              </a>
-            </a>
-          </div>
-          <div class="actions">
-            <div
-              *ngIf="!groupResponse?.isMember && !groupResponse?.isRequestSent"
-              (click)="sendJoinRequest()"
-              class="join-group">
-              Tham gia nhóm
-            </div>
-            <div
-              *ngIf="groupResponse?.isRequestSent"
-              (click)="cancelJoinRequest()"
-              class="cancel-request">
-              Huỷ yêu cầu
-            </div>
-            <div
-              (click)="toggleMoreActions()"
-              class="more-action-btn">
-              <i class='bx bx-dots-horizontal-rounded'></i>
-              <div
-                (clickOutside)="isMoreActionsVisible = false"
-                *ngIf="isMoreActionsVisible"
-                [delayClickOutsideInit]="true"
-                #moreAction
-                class="more-actions">
-                <div
-                  (click)="leaveGroup()"
-                  *ngIf="groupResponse.isMember"
-                >
-                  <i class='bx bxs-door-open'></i>
-                  <span>Rời nhóm</span>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
+  <app-tab-bar [visibleTabs]="tabs" 
+               [pageId]="group?.id || 0"
+               [pageName]="group?.name || ''"
+               [pagePath]="'/groups/' + group?.id || ''"
+               [avatar]="group?.coverPhotoUrl || ''">
+    <div actions class="actions">
+      <app-button *ngIf="!group?.isMember && !group?.isRequestSent"
+                  class="join-group">
+        <div button="">
+          <div (click)="sendJoinRequest()">Tham gia nhóm</div>
+        </div>
+      </app-button>
+      <app-button *ngIf="group?.isRequestSent"
+                  (click)="cancelJoinRequest()"
+                  class="cancel-request">
+          <div button="">
+            <div>Huỷ yêu cầu</div>
+          </div>
+      </app-button>
+      <app-button [hasOptions]="true" class="more-action-btn">
+        <div button="">
+          <div (click)="toggleMoreActions()">
+            <i class='bx bx-dots-horizontal-rounded'></i>
+          </div>
+        </div>
+        <div options>
+          <div (click)="leaveGroup()"
+               *ngIf="group?.isMember">
+            <i class='bx bxs-door-open'></i>
+            <span>Rời nhóm</span>
+          </div>
+        </div>
+      </app-button>
+    </div>
+  </app-tab-bar>
 
-  <div class="group-body">
+  <div 
+  #groupTimeline
+  class="group-body">
     <div class="content-container">
       <router-outlet></router-outlet>
     </div>

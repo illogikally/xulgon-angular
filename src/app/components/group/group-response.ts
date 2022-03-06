@@ -1,3 +1,5 @@
+import { PhotoResponse } from "../share/photo/photo-response";
+
 export interface GroupResponse {
   id: number;
   coverPhotoUrl: string;

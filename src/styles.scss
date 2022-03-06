@@ -12,6 +12,23 @@
   color: #050505;
 }
 
+$modal-z-index: 1000;
+$z-indexes: (
+  "toaster",
+  "user-ref",
+  "modal",
+  "navbar",
+  "popup",
+);
+@function z($name) {
+    @if index($z-indexes, $name) {
+        @return ($modal-z-index - index($z-indexes, $name));
+    } @else {
+        @warn 'There is no item "#{$name}" in this list; choose one of: #{$z-indexes}';
+        @return null;
+    }
+}
+
 $bg-color: #f0f2f5;
 $secondary-text: #65676b;
 $btn-blue: #1877f2;
@@ -189,7 +206,6 @@ div {
       background-color: rgba(#777, .3);
     }
   }
-
 }
 
 

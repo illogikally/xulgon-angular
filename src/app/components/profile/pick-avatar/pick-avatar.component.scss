@@ -4,7 +4,7 @@
   @extend %fc;
   @extend %f-scr;
   background-color: rgba(#000, .7);
-  z-index: 20;
+  z-index: $modal-z-index;
 
 
   .content {

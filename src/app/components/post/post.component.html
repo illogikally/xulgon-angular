@@ -1,14 +1,12 @@
 <div class="post">
   <div class="opts-container">
-    <app-button
-    optionsAlignment="RIGHT"
-    [hasOptions]="hasOptions()"
-    width="40px"
-    height="40px"
-    padding=""
-    background="transparent"
-    backgroundHover="#f0f2f5"
-    radius="50%" >
+    <app-button optionsAlignment="RIGHT"
+                [hasOptions]="true"
+                width="40px"
+                height="40px"
+                [isRounded]="true"
+                background="transparent"
+                backgroundHover="#f0f2f5">
       <div button>
         <i class='bx bx-dots-horizontal-rounded'></i>
       </div>
@@ -16,128 +14,65 @@
           <!-- <div>
             <i class='bx bx-group' ></i>
             <span>Chỉnh sửa riêng tư</span>
-          </div>
-          <div>
-            <i class='bx bx-bell-off' ></i>
-            <span>Tắt thông báo với bài viết này</span>
           </div> -->
 
-        <div
-        (click)="delete()"
-        *ngIf="post.user.id == principalId || groupReponse?.role == 'ADMIN'">
+        <div (click)="unfollow()"
+             *ngIf="post.isFollow">
+          <i class='bx bx-bell-off' ></i>
+          <span>Tắt thông báo với bài viết này</span>
+        </div>
+
+        <div (click)="follow()"
+             *ngIf="!post.isFollow">
+          <i class='bx bx-bell' ></i>
+          <span>Bật thông báo với bài viết này</span>
+        </div>
+
+        <div (click)="delete()"
+             *ngIf="post.user.id == principalId || groupReponse?.role == 'ADMIN'">
           <i class='bx bx-trash'></i>
           <span>Xoá bài viết</span>
         </div>
       </div>
     </app-button>
   </div>
+
   <div class="post-header">
-    <div class="avatar-name">
-      <div class="post-avatar">
-        <app-user-ref
-        borderRadius="50%"
-        [userDto]="post.user"
-        ></app-user-ref>
-      </div>
-      <div class="name-date" style="position: relative;">
-        <div class="name--page">
-          <div class="name">
-            <app-user-ref
-              [userDto]="post.user">
-            </app-user-ref>
-          </div>
-          <span
-            *ngIf="isGroupNameVisible && post.pageType == 'GROUP'">
-            <span><i class='bx bxs-right-arrow'></i></span>
-            <a routerLink="/groups/{{ post.pageId }}">
-              <span>{{ post.pageName }}</span>
-            </a>
-
-          </span>
-        </div>
-        <div class="date--privacy">
-          <span>{{ post.createdAt }}</span>
-          <span class="privacy">
-            <i
-            *ngIf="post.privacy == 'FRIEND'"
-            class='bx bxs-group'>
-            </i>
-
-            <i 
-            class='bx bx-globe'
-            *ngIf="post.privacy == 'PUBLIC'">
-            </i>
-
-            <i 
-            class='bx bxs-lock-alt'
-            *ngIf="post.privacy == 'ME'">
-            </i>
-
-            <i
-            *ngIf="post.privacy == 'GROUP'"
-            class='bx bxs-network-chart'>
-            </i>
-          </span>
-        </div>
-      </div>
-    </div>
+    <app-post-header [content]="post"
+                     [isPageNameVisible]="isGroupNameVisible">
+    </app-post-header>
   </div>
+  
   <div class="post-body">
-    <div class="post-text">{{ post.body }}</div>
+    <div class="post-body__text">{{ post.text }}</div>
 
-    <div *ngIf="post.photos?.length" class="post-media">
-      <div>
-        <div *ngFor="let photo of post.photos.slice(0, 2)">
-          <div>
-            <app-photo 
-            [url]="post.photos.length == 1 
-              ? photo.thumbnails.s900x900.url 
-              : photo.thumbnails.s400x400.url "
-            [setId]="post.photoSetId"
-            [id]="photo.id"
-            [style]="'width'"></app-photo>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="post.photos.length > 2">
-        <div *ngFor="let photo of post.photos.slice(2, 4); index as index;">
-          <div
-          [ngClass]="post.photos.length == 3 ? 'three': ''">
-            <app-photo 
-            [url]="post.photos.length == 3 
-              ? photo.thumbnails.s600x600.url 
-              : photo.thumbnails.s400x400.url"
-            [id]="photo.id"
-            [setId]="post.photoSetId"
-            [style]="'width'"></app-photo>
-            <div 
-            (click)="morePhotoClick($event)"
-            class="photos-left" 
-            *ngIf="index == 1 && post.photoCount - 4 > 0">
-              <span>+{{ post.photoCount - 4 }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="media">
+      <app-media-layout [photos]="post.type == 'POST' ? post.photos : []"
+                        [photoSetId]="post.photoSetId"
+                        [photoCount]="post.photoCount" >
+      </app-media-layout>
     </div>
 
+    <app-shared-content [content]="post.sharedContent"
+                        mediaMargin="0px -15px"
+    ></app-shared-content>
   </div>
   <div class="post-meta">
     <div>
-      <div *ngIf="post.reactionCount > 0" class="flex-center reaction-count">
-        <img src="assets/like-16x16.png" style="margin-right: 2px;"> {{ post.reactionCount }}
+      <div *ngIf="post.reactionCount > 0" 
+           class="flex-center reaction-count">
+        <img src="assets/like-16x16.png" 
+             style="margin-right: 2px;"> {{ post.reactionCount }}
       </div>
     </div>
     <div class="comment-share-count">
-      <span
-        (click)="toggleComment()"
-        *ngIf="post.commentCount > 0"
-        class="comment-count">
+      <span (click)="toggleComment()"
+            *ngIf="post.commentCount > 0"
+            class="comment-count">
         {{ post.commentCount }} bình luận
       </span>
-      <span
-        *ngIf="post.shareCount > 0"
-        class="share-count">
+      <span *ngIf="post.shareCount > 0"
+            class="share-count">
         {{ post.shareCount }} lượt chia sẻ
       </span>
     </div>
@@ -145,9 +80,7 @@
 
   <div class="post-actions">
     <div (click)="react()" class="reaction-action">
-      <span
-      [ngStyle]="{'color': post.isReacted ? '#1876F2' : 'inherit'}">
-
+      <span [ngStyle]="{'color': post.isReacted ? '#1876F2' : 'inherit'}">
         <i *ngIf="!post.isReacted" class='bx bx-like'></i>
         <i *ngIf="post.isReacted" class='bx bxs-like'></i>
         <span>Thích</span>
@@ -158,20 +91,24 @@
         <i class='bx bx-message-alt'></i> Bình luận
       </span>
     </div>
-    <div *ngIf="post.privacy == 'PUBLIC'" class="share-action">
+    <div (click)="share()" 
+         *ngIf="post.privacy == 'PUBLIC'|| post.sharedContent?.privacy == 'PUBLIC'" 
+         class="share-action">
       <span>
         <i class='bx bx-share'></i>
         <span>Chia sẻ</span>
       </span>
     </div>
   </div>
-  <div
-  [hidden]="!isCommentVisible"
-  class="comments">
-    <app-comment-list
-    [totalCommentCount]="post.commentCount"
-    [initCommentCount]="initCommentCount"
-    [parentId]="post.id"
-    [rootContentId]="post.id"></app-comment-list>
+  <div [hidden]="!isCommentVisible"
+       class="comments">
+    <app-comment-list [totalCommentCount]="post.commentCount"
+                      [initCommentCount]="initCommentCount"
+                      [parentId]="post.id"
+                      [rootContentId]="post.id"></app-comment-list>
   </div>
 </div>
+<app-create-post *ngIf="post.privacy == 'PUBLIC' || post.sharedContent"
+                 [sharedContent]="post.sharedContent || post"
+                 [open$]="openCreatePostToShare$">
+</app-create-post>

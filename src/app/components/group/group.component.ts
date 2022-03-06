@@ -14,12 +14,11 @@ import { GroupService } from './group.service';
 })
 export class GroupComponent implements OnInit, OnDestroy {
 
-  groupResponse!: GroupResponse;
+  group!: GroupResponse;
 
   @ViewChild('moreAction') moreAction!: ElementRef;
 
   constructor(
-    private location: Location,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private groupService: GroupService,
@@ -41,6 +40,8 @@ export class GroupComponent implements OnInit, OnDestroy {
   getGroupProfile(id: number): void {
     this.messageService.loadPostsByPageId(id);
     this.groupService.getGroupHeader(id).subscribe(response => {
+      console.log(response);
+      
       this.titleService.setTitle(response.name);
       this.groupService.groupResponse$.next(response);
       this.messageService.groupLoaded.next(response);

@@ -31,10 +31,11 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@ctrl/ngx-emoji-mart/picker.css"
             ],
             "scripts": [
+              "node_modules/textarea-caret/index.js"
             ]
           },
           "configurations": {

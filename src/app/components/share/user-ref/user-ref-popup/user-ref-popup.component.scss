@@ -9,7 +9,7 @@
   top: 50%;
   opacity: 1;
   left: 50%;
-  z-index: 1010;
+  z-index: $modal-z-index + 1;
   background-color: #fff;
   width: 400px;
   box-sizing: border-box;

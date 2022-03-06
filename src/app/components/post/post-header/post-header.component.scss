@@ -1,0 +1,61 @@
+.post-header {
+  background-color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+
+  .avatar-name {
+    width: 100%;
+    display: flex;
+
+    .name--page {
+      display: flex;
+
+      i {
+        font-size: 11px;
+        margin: 0 5px;
+        color: #777;
+      }
+
+      .group-name {
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .post-avatar {
+      width: 45px;
+      position: relative;
+      height: 45px;
+      margin-right: 10px;
+
+      img {
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+
+    .name-date {
+      font-weight: 500;
+
+      .date--privacy {
+        font-size: 13px;
+        color: grey;
+        display: flex;
+
+        a {
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .privacy {
+          display: flex;
+          align-items: center;
+          font-size: 15px;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}

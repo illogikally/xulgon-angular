@@ -1,8 +1,6 @@
 <div class="group">
-  <div
-    class="sidebar-below"
-    *ngIf="groupResponse?.role == 'ADMIN'"
-  >
+  <div class="sidebar-below"
+       *ngIf="group?.role == 'ADMIN'">
     <div class="group-sidebar">
       <div class="title">
         <span>Quản lý nhóm</span>
@@ -12,28 +10,29 @@
           <i class='bx bx-slider'></i>
         </div>
         <div class="cover-img">
-          <img [src]="groupResponse?.coverPhotoUrl">
+          <img [src]="group?.coverPhotoUrl">
         </div>
         <div class="name--privacy">
           <div class="name">
-            <span>{{ groupResponse?.name }}</span>
+            <span>{{ group?.name }}</span>
           </div>
           <div class="privacy">
-            <div>
+            <div *ngIf="group?.isPrivate">
               <i class='bx bxs-lock-alt'></i>
               <span>Nhóm riêng tư</span>
             </div>
-            <div></div>
+            <div *ngIf="!group?.isPrivate">
+              <i class='bx bx-globe'></i>
+              <span>Nhóm công khai</span>
+            </div>
           </div>
         </div>
       </div>
       <div
         class="home">
-        <a
-          routerLink="/groups/{{groupResponse?.id}}"
-          routerLinkActive="active-sidebar-tab"
-          [routerLinkActiveOptions]="{exact: true}"
-        >
+        <a routerLink="/groups/{{group?.id}}"
+           routerLinkActive="active-sidebar-tab"
+           [routerLinkActiveOptions]="{exact: true}">
           <div class="icon">
             <i class='bx bxs-home'></i>
           </div>
@@ -42,11 +41,10 @@
       </div>
       <div class="tools">
         <div class="tools-title">Công cụ quản trị</div>
-        <a
-          routerLink="/groups/{{ groupResponse?.id }}/member_request"
-          routerLinkActive="active-sidebar-tab"
-          [routerLinkActiveOptions]="{exact: true}"
-          class="tool">
+        <a routerLink="/groups/{{ group?.id }}/member_request"
+           routerLinkActive="active-sidebar-tab"
+           [routerLinkActiveOptions]="{exact: true}"
+           class="tool">
           <div class="icon">
             <i class='bx bxs-user-plus'></i>
           </div>
@@ -54,11 +52,10 @@
             <div>Yêu cầu tham gia</div>
           </div>
         </a>
-        <a
-          routerLink="/groups/{{ groupResponse?.id }}/settings"
-          routerLinkActive="active-sidebar-tab"
-          [routerLinkActiveOptions]="{exact: true}"
-          class="tool">
+        <a routerLink="/groups/{{ group?.id }}/settings"
+           routerLinkActive="active-sidebar-tab"
+           [routerLinkActiveOptions]="{exact: true}"
+           class="tool">
           <div class="icon-container">
             <div class="icon">
               <i class='bx bxs-cog'></i>

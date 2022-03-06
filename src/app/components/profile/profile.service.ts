@@ -17,7 +17,7 @@ export class ProfileService {
   public friendshipStatus$ = new Subject<string>();
   public onAttach$ = new Subject<number>();
   public onDetach$ = new Subject<number>();
-  public onPostCreate$ = new Subject<Post>();
+  public newPostCreated$ = new Subject<Post>();
 
   constructor(private http: HttpClient) {}
 

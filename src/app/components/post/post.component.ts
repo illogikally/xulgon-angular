@@ -1,17 +1,20 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ReactionType} from '../share/reaction-type';
-import {ReactionPayload} from '../share/reaction.payload';
-import {ReactionService} from '../share/reaction.service';
-import {Post} from './post';
-import {MessageService} from '../share/message.service';
-import {PhotoViewResponse} from '../share/photo/photo-view-response';
-import {AuthenticationService} from '../authentication/authentication.service';
-import {GroupResponse} from '../group/group-response';
-import {HttpClient} from '@angular/common/http';
-import {CommentService} from '../comment-list/comment/comment.service';
-import {filter} from 'rxjs/operators';
-import {PostService} from './post.service';
-import {ConfirmDialogService} from '../share/confirm-dialog/confirm-dialog.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { CommentService } from '../comment-list/comment/comment.service';
+import { GroupResponse } from '../group/group-response';
+import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
+import { FollowService } from '../share/follow.service';
+import { MessageService } from '../share/message.service';
+import { PhotoViewResponse } from '../share/photo/photo-view-response';
+import { ReactionType } from '../share/reaction-type';
+import { ReactionPayload } from '../share/reaction.payload';
+import { ReactionService } from '../share/reaction.service';
+import { ToasterMessageType } from '../share/toaster/toaster-message-type';
+import { ToasterService } from '../share/toaster/toaster.service';
+import { Post } from './post';
+import { PostService } from './post.service';
 
 
 @Component({
@@ -27,17 +30,20 @@ export class PostComponent implements OnInit {
   @Input() isGroupNameVisible = false;
   @Input() initCommentCount = 2;
 
+  openCreatePostToShare$ = new Subject<any>();
+
   principalId: number;
   groupReponse!: GroupResponse;
 
   constructor(
     private commentService: CommentService,
+    private followService: FollowService,
     private reactionService: ReactionService,
     private confirmService: ConfirmDialogService,
     private postService: PostService,
-    private http: HttpClient,
     private authService: AuthenticationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private toaster: ToasterService
   ) {
     this.principalId = authService.getPrincipalId();
   }
@@ -74,6 +80,40 @@ export class PostComponent implements OnInit {
     this.isCommentVisible = true;
   }
 
+  unfollow() {
+    this.followService.unfollowContent(this.post.id).subscribe(
+      () => {
+        this.toaster.message$.next({
+          type: ToasterMessageType.SUCCESS,
+          message: 'Tắt thông báo thành công'
+        }); 
+      },
+      () => {
+        this.toaster.message$.next({
+          type: ToasterMessageType.ERROR,
+          message: 'Đã xảy ra lỗi trong quá trình tắt thông báo'
+        }); 
+      }
+    );
+  }
+
+  follow() {
+    this.followService.followContent(this.post.id).subscribe(
+      () => {
+        this.toaster.message$.next({
+          type: ToasterMessageType.SUCCESS,
+          message: 'Bật thông báo thành công'
+        }); 
+      },
+      () => {
+        this.toaster.message$.next({
+          type: ToasterMessageType.ERROR,
+          message: 'Đã xảy ra lỗi trong quá trình bật thông báo'
+        }); 
+      }
+    );
+  }
+
   delete(): void {
     const data = {
       title: `Xoá bài viết`,
@@ -90,14 +130,8 @@ export class PostComponent implements OnInit {
     })
   }
 
-  hasOptions(): boolean {
-    const canDelete = 
-      this.post.user.id == this.principalId || 
-      this.groupReponse?.role == 'ADMIN';
-    return canDelete;
+  share() {
+    this.openCreatePostToShare$.next();
   }
 
-  morePhotoClick(event: any) {
-    event.target.parentElement.children[0].children[0].click();
-  }
 }

@@ -7,13 +7,10 @@ class="button">
   (clickOutside)="isOptionsVisible = false"
   class="button__inner">
     <ng-content select="[button]"></ng-content>
+    <div *ngIf="isX" button="">
+        <i class='bx bx-x'></i>
+    </div>
   </div>
-  <!-- <div 
-  *ngIf="isOptionsVisible"
-  [ngStyle]="optionsStyle"
-  #options
-  class="button__options">
-  </div> -->
   <div 
   *ngIf="isOptionsVisible"
   class="triangle"></div>

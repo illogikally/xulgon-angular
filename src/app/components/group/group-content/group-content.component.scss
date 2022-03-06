@@ -12,7 +12,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 940px;
+      max-width: 940px;
+      width: 100%;
 
       .cover-container {
         @extend %fc;
@@ -34,12 +35,15 @@
       }
 
       .name--tabs--container {
-        width: 892px;
-        margin-top: 20px;
+        width: 100%;
+        margin: 20px 0px;
 
         .group-name {
+          margin: 0 25px;
+
           .name-content {
-            width: 400px;
+            max-width: 400px;
+            width: 100%;
 
             .name {
               font-weight: 700;
@@ -53,91 +57,19 @@
             }
           }
         }
-
-        .tabs--actions {
-          display: flex;
-          justify-content: space-between;
-          border-top: 1px solid rgba(#333, .3);
-          margin-top: 20px;
-          height: 60px;
-          color: #666;
-          font-weight: 500;
-
-          .tabs {
-            display: flex;
-
-            > a {
-              height: 100%;
-              box-sizing: border-box;
-              height: 100%;
-              padding: 4px 0;
-
-              > * {
-                display: block;
-                height: 100%;
-                width: 100%;
-
-                > div {
-                  @extend %fc;
-                  width: 100%;
-                  height: 100%;
-                  border-radius: 5px;
-                  box-sizing: border-box;
-                  padding: 0 17px;
-
-                  &:hover {
-                    background-color: rgba(#eee, .7);
-                  }
-                }
-
-              }
-            }
-
-          }
-
-          .actions {
-            display: flex;
-            align-items: center;
-
-            > *:not(:last-child) {
-              margin-right: 10px;
-            }
-
-            .more-action-btn {
-              @include button($btn-grey, #050505);
-              position: relative;
-
-              i {
-                font-size: 20px;
-              }
-
-              .more-actions {
-                @extend %opts;
-              }
-            }
-
-            .join-group {
-              @include button($btn-blue, #fff);
-              padding: 0 30px;
-            }
-
-            .cancel-request {
-              @include button($btn-grey, #050505);
-              padding: 0 30px;
-            }
-          }
-        }
       }
     }
   }
 
   .group-body {
     display: flex;
+    margin: 0 15px;
     margin-top: 17px;
     justify-content: center;
 
     .content-container {
-      width: 892px;
+      max-width: 892px;
+      width: 100%;
     }
   }
 }

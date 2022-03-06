@@ -1,0 +1,44 @@
+.root {
+  position: relative;
+  &__inner {
+    .body {
+      border: 1px solid rgba(0, 0, 0, .2);
+      &__inner {
+        padding: 10px;
+        .name--timestamp {
+          margin-bottom: 7px;
+        }
+
+        .text {
+          font-weight: 400;
+        }
+      }
+    }
+
+    .has-media {
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      border-top: none;
+    }
+
+    .no-media {
+      border-radius: 10px;
+    }
+  }
+  .disabled {
+    position: absolute;
+    background-color: transparent;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+}
+
+.create-post-child {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  overflow: hidden;
+}

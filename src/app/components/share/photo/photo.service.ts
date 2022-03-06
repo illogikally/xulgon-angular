@@ -22,7 +22,7 @@ export class PhotoService {
     this.photoView$.next(data);
   }
 
-  onOpenPhotoViewCalled(): Observable<OpenPhotoViewData> {
+  onOpenPhotoViewerCalled(): Observable<OpenPhotoViewData> {
     return this.photoView$.asObservable();
   }
 

@@ -4,7 +4,7 @@ a {
   user-select: none;
   @extend %fz;
 
-  display: block;
+  display: flex;
   img {
     object-fit: cover;
     background-color: #ddd;

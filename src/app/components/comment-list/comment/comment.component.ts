@@ -21,8 +21,6 @@ export class CommentComponent implements OnInit, AfterViewInit {
   @Output() onCommentAdded: EventEmitter<boolean> = new EventEmitter();
   @ViewChild('commentBody') commentBodyElement!: ElementRef;
 
-  userProfile!: string;
-
   onAttach$ = this.postViewService.attach$.pipe(
     filter(postId => postId == this.comment.rootContentId)
   );
@@ -36,16 +34,18 @@ export class CommentComponent implements OnInit, AfterViewInit {
     private reactionService: ReactionService,
     private postViewService: PostViewService,
     private changeDetector: ChangeDetectorRef,
-    private route:ActivatedRoute,
-    private messageService: MessageService
   ) {
   }
 
   ngOnInit(): void {
-    this.userProfile = `/${this.comment.user.profileId}`;
   }
 
-  setupOnHighlight() {
+  ngAfterViewInit(): void {
+    this.configureOnHighlight();
+    this.changeDetector.detectChanges();
+  }
+
+  configureOnHighlight() {
     merge(
       this.onAttach$,
       of(null)
@@ -61,32 +61,33 @@ export class CommentComponent implements OnInit, AfterViewInit {
           this.replyVisible = true;
         } else {
           this.highlight();
+          this.scrollToView();
         }
       }
       else if (data.childCommentId == this.comment.id) {
         this.highlight();
+        this.scrollToView();
       }
     });
   }
 
   highlight() {
     const comment = this.commentBodyElement.nativeElement;
-    // Prevent click outside
+    // Prevent click outside canceling
     setTimeout(() => {
       this.renderer.addClass(comment, 'highlight')
     }, 100);
+  }
 
-    // Wait for element to be attached to the DOM
+  scrollToView() {
+    const comment = this.commentBodyElement.nativeElement;
+    // Wait for the element to be attached to the DOM
     setTimeout(() => {
       comment.scrollIntoView({behavior: 'smooth', block: 'center'});
     }, 500);
   }
 
 
-  ngAfterViewInit(): void {
-    this.setupOnHighlight();
-    this.changeDetector.detectChanges();
-  }
 
   showReplies(): void {
     this.replyVisible = true;

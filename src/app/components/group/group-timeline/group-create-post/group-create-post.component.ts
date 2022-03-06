@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
+import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
 import { GroupResponse } from '../../group-response';
 
 @Component({
@@ -11,8 +12,12 @@ export class GroupCreatePostComponent implements OnInit {
 
   open$ = new Subject<any>();
   @Input() groupResponse!: GroupResponse;
+  @Input() isGroup = true;
 
-  constructor() {
+  constructor(
+    public authenticationService: AuthenticationService
+  ) {
+
   }
 
   ngOnInit(): void {

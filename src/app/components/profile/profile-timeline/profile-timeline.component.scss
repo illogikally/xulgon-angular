@@ -11,6 +11,17 @@
   grid-template-columns: 1fr 515px;
   grid-gap: 17px;
 
+  .no-posts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(#333, .5);
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+  }
+
   @media screen and (max-width: 900px){
     display: flex;
     flex-direction: column;

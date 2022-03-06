@@ -1,9 +1,13 @@
-import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { merge, of, ReplaySubject } from 'rxjs';
+import { concat, fromEvent, merge, of } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import textarea_caret from 'textarea-caret';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { PostViewService } from '../post/post-view/post-view.service';
+import { PostService } from '../post/post.service';
+import { UserBasic } from '../share/user-basic';
+import { UserService } from '../share/user.service';
 import { CommentResponse } from './comment/comment-response';
 import { CommentService } from './comment/comment.service';
 
@@ -12,7 +16,7 @@ import { CommentService } from './comment/comment.service';
   templateUrl: './comment-list.component.html',
   styleUrls: ['./comment-list.component.scss']
 })
-export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
+export class CommentListComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
 
   @Input() parentId!: number;
   @Input() totalCommentCount!: number;
@@ -21,12 +25,14 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
 
 
   @ViewChild('commentContainer') commentContainer!:ElementRef;
-  highlight$ = new ReplaySubject<number>(1);
+  @ViewChild('textArea') textArea!: ElementRef;
 
   isAllLoaded = false;
   comments: CommentResponse[] = [];
   commentIdSet = new Set();
+
   isCommentsVisible = true;
+  isSuggestTagUserHidden = true;
 
   commentForm = this.fb.group({
     comment: [''],
@@ -53,6 +59,9 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
     private commentService: CommentService,
     private authService: AuthenticationService,
     private fb: FormBuilder,
+    private userService: UserService,
+    private postService: PostService
+
   ) {
     this.loggedInUserAvatarUrl = this.authService.getAvatarUrl();
   }
@@ -62,6 +71,9 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
     this.loadComments();
   }
 
+  ngAfterViewInit(): void {
+    this.onInputValueChange();
+  }
   ngOnChanges(changes: SimpleChanges): void {
     this.configureOnParentIdChange(changes);
   }
@@ -134,14 +146,14 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  submit() {
+  submit(enterPressedEvent: any) {
+    enterPressedEvent.preventDefault();
     let formData = new FormData();
     let commentRequest = new Blob(
       [JSON.stringify({
         parentId: this.parentId,
         rootContentId: this.rootContentId,
         body: this.commentForm.get('comment')?.value,
-        sizeRatio: this.imageSizeRatio
       })],
       {type: 'application/json'}
     );
@@ -156,7 +168,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
       });
     });
 
-    this.commentForm.get('comment')?.setValue('');
+    this.commentForm.reset();
     this.clearInput();
   }
 
@@ -182,5 +194,15 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges {
   clearInput() {
     this.imgUrl = '';
     this.image = undefined;
+    this.textAreaAutoGrow({target: this.textArea.nativeElement})
+  }
+
+  onInputValueChange() {
+  }
+
+  textAreaAutoGrow(event: any) {
+    event.target.style.height = 'auto';
+    event.target.style.height = event.target.scrollHeight + "px";
   }
 }
+

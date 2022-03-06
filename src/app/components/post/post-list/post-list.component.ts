@@ -18,7 +18,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   @Input() pageId: number | undefined;
   @Input() posts: Post[] = [];
   @Input() isLoading = false;
-
   @Input() isGroupNameVisible = false;
   @Input() isCommentVisible = false;
 
@@ -41,7 +40,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.profileService.onPostCreate$.subscribe(post => {
+    this.profileService.newPostCreated$.subscribe(post => {
       if (post.pageId == this.pageId) {
         this.posts?.unshift(post);
       }

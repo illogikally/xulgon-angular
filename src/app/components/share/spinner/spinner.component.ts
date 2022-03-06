@@ -13,6 +13,7 @@ export class SpinnerComponent implements OnInit, AfterViewInit {
   @Input() color = '#fff';
   @Input() text = 'Loading';
   @Input() displayText = false;
+  @Input() isFullScreen = false;
 
   @ViewChild('spinner') spinnerElement!: ElementRef;
 
@@ -33,7 +34,8 @@ export class SpinnerComponent implements OnInit, AfterViewInit {
       '--color': this.color,
       '--text-size': this.text,
       '--background-color': this.backgroundColor,
-      '--text-display': this.displayText ? 'block' : 'none'
+      '--text-display': this.displayText ? 'block' : 'none',
+      '--position': this.isFullScreen ? 'fixed' : 'absolute'
     }
 
     for (const [variable, value] of Object.entries(style)) {

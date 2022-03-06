@@ -4,12 +4,16 @@ class="post-view">
   <div 
   [ngStyle]="{'width': isGroup ? '100%' : '680px'}"
   class="post-view__inner">
-    <div class="post">
+    <div 
+    *ngIf="post"
+    class="post">
       <app-post
       *ngIf="post"
       [isCommentVisible]="true"
       [post]="post">
       </app-post>
     </div>
+    <app-post-skeleton *ngIf="!post"></app-post-skeleton>
   </div>
 </div>
+

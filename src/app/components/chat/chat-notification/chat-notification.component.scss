@@ -47,9 +47,10 @@
     font-size: 15px;
     top: 54px;
     right: 15px;
-    bottom: 20px;
+    bottom: 70px;
     z-index: 1001;
     width: 360px;
+    overflow-y: overlay;
 
     .content {
       @include scrollbar(15px);

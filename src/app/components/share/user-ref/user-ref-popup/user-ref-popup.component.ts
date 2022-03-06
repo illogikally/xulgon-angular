@@ -109,7 +109,7 @@ export class UserRefPopupComponent implements OnInit {
     const self = this.self.nativeElement;
     
     let left = targetRect.left + target.offsetWidth/2 - self.offsetWidth/2;
-    left = left < 0 ? 0 : left;
+    left = left < 10 ? 10 : left;
     
 
     const isInTopHalf = targetRect.top < window.innerHeight / 2;

@@ -1,15 +1,20 @@
 <div
-  (click)="show()"
-  class="group-create-post">
-  <div class="icon">
-    <i class='bx bx-plus'></i>
-  </div>
-  <div class="des">
-    <div class="top">Tạo bài viết</div>
-    <div>Hãy đăng gì đó cho các thành viên trong nhóm.</div>
+(click)="show()"
+class="root">
+  <div class="root__inner">
+    <div class="icon">
+      <i class='bx bx-plus'></i>
+    </div>
+    <div class="des">
+      <div class="top">Tạo bài viết</div>
+      <div *ngIf="groupResponse">Hãy đăng gì đó cho các thành viên trong nhóm.</div>
+      <div *ngIf="!groupResponse">{{ authenticationService.getFirstName() }}, bạn đang nghĩ gì thế?</div>
+    </div>
   </div>
 </div>
-<app-create-post
-  [groupResponse]="groupResponse"
-  [open$]="open$"
-></app-create-post>
+<app-create-post 
+[groupId]="groupResponse?.id || 0"
+[groupName]="groupResponse?.name || ''"
+[groupPrivacy]="groupResponse?.isPrivate ? 'GROUP' : 'PUBLIC'"
+[open$]="open$">
+</app-create-post>

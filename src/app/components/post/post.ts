@@ -1,7 +1,9 @@
 import {UserDto} from "../share/user-dto";
+import { SharedContent } from "./shared-content";
 
 export interface Post {
   id: number;
+  type: string;
   pageName: string;
   user: UserDto;
   pageId: number;
@@ -11,8 +13,10 @@ export interface Post {
   isReacted: boolean;
   photos: any[];
   photoCount: number;
-  body: string;
+  text: string;
+  isFollow: boolean;
   reactionCount: number;
+  sharedContent: SharedContent;
   commentCount: number;
   shareCount: number
   photoSetId: number;

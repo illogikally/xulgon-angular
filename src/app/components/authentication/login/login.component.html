@@ -1,6 +1,8 @@
 <div style="background-image: url('assets/bg.gif')" class="container">
   <div class="content">
-    <div class="sidebar" style="background-image: url('assets/rocket.jpg');"></div>
+    <div class="sidebar" 
+         style="background-image: url('assets/rocket.jpg');">
+    </div>
     <div class="form-container">
       <div class="fc-container">
         <div class="oauth">
@@ -17,19 +19,17 @@
         </div>
 
         <div style="position: relative;">
-        <form
-        *ngIf="!isLogin"
-        [@.disabled]="disableAnimation"
-        [@slideInOutRight]
-        (@slideInOutRight.start)="calculateHeight($event)"
-        (@slideInOutRight.done)="discardHeight($event)"
-        id="login-form"
-        [formGroup]="registerForm"
-        (ngSubmit)="register()">
+        <form *ngIf="!isLogin"
+              [@.disabled]="disableAnimation"
+              [@slideInOutRight]
+              (@slideInOutRight.start)="calculateHeight($event)"
+              (@slideInOutRight.done)="discardHeight($event)"
+              id="login-form"
+              [formGroup]="registerForm"
+              (ngSubmit)="register()">
           <div class="input-group">
             <span [ngClass]="{'focus': registerForm.get('lastName')?.value}">họ</span>
-            <input
-            [ngClass]="!registerForm.get('lastName')?.valid && registerForm.get('lastName')?.touched ? 'error' : ''"
+            <input [ngClass]="!registerForm.get('lastName')?.valid && registerForm.get('lastName')?.touched ? 'error' : ''" 
             autocomplete="off"
             [formControlName]="'lastName'" 
             name="username" 

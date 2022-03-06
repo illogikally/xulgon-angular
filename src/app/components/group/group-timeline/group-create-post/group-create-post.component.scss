@@ -1,34 +1,36 @@
 @import "src/styles";
 
-.group-create-post {
+.root {
   @include card(10px);
-  padding: 15px;
+  padding: 7px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 17px;
 
-  &:hover {
-    .icon {
-      background-color: rgba(#eee, 1);
+  &__inner {
+    display: flex;
+    align-items: center;
+    padding: 7px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #f0f2f5;
     }
   }
 
   .icon {
     @extend %fc;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     margin-right: 20px;
     border-radius: 50%;
     padding: 5px;
-    background-color: rgba(#eee, .7);
+    background-color: rgba($btn-blue, .1);
     color: $btn-blue;
-    font-size: 35px;
+    font-size: 30px;
   }
-
+  
   .des {
     font-size: 16px;
-
     .top {
       font-weight: 500;
       font-size: 17px;

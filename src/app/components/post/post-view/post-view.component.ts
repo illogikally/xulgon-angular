@@ -34,8 +34,13 @@ export class PostViewComponent implements OnInit {
     this.highlightComment(this.activatedRoute.snapshot);
     this.onRouteReuse().subscribe(route => this.highlightComment(route));
 
-    this.groupService.attach$.pipe(filter(id => this.groupId == id)).subscribe(() => this.onAttach());
-    this.groupService.detach$.pipe(filter(id => this.groupId == id)).subscribe(() => this.onDetach());
+    this.groupService.attach$.pipe(
+      filter(id => this.groupId == id)
+    ).subscribe(() => this.onAttach());
+
+    this.groupService.detach$.pipe(
+      filter(id => this.groupId == id)
+    ).subscribe(() => this.onDetach());
   }
 
   highlightComment(route: ActivatedRouteSnapshot) {
@@ -85,7 +90,7 @@ export class PostViewComponent implements OnInit {
 
   onDetach() {
     this.isAttached = false;
-    this.postViewService.detach$.next(this.post.id);
+    this.postViewService.detach$.next(this.post?.id);
     this.postViewService.highlight$.next(null);
   }
 
