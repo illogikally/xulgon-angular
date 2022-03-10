@@ -22,4 +22,14 @@ export class FollowService {
     const url = `${this.baseApiUrl}/contents/${contentId}/unfollow`;
     return this.http.delete<any>(url);
   }
+
+  followPage(pageId: number): Observable<any> {
+    const url = `${this.baseApiUrl}/pages/${pageId}/follow`;
+    return this.http.post(url, {});
+  }
+
+  unfollowPage(pageId: number): Observable<any> {
+    const url = `${this.baseApiUrl}/pages/${pageId}/unfollow`;
+    return this.http.delete(url, {});
+  }
 }

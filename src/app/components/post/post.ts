@@ -11,6 +11,8 @@ export interface Post {
   privacy: string;
   createdAt: string;
   isReacted: boolean;
+  hasShare: boolean;
+  isFollowPage: boolean;
   photos: any[];
   photoCount: number;
   text: string;

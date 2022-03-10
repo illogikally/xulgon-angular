@@ -1,0 +1,60 @@
+<app-modal [toggle]="toggleModalNgIf"
+           (closed)="reset()">
+  <div #self
+       class="selector">
+    <div *ngIf="isTransitioned"
+         class="back-button">
+      <app-button [isRounded]="true"
+                  width="40px"
+                  color="rgba(0, 0, 0, .4)"
+                  iconSize="30px"
+                  background="#f0f2f5"
+                  height="40px">
+        <div (click)="transition()"
+             button="">
+          <i class='bx bx-left-arrow-alt'></i>
+        </div>
+      </app-button>
+    </div>
+    <div [@slideInOutLeft]
+         *ngIf="!isTransitioned"
+         (@slideInOutLeft.start)="calculateHeight($event)"
+         (@slideInOutLeft.done)="discardHeight($event)"
+         class="selector__inner">
+      <app-card-header (click)="toggleModalNgIf.next()"
+                       title="Chọn một nhóm để chia sẻ"></app-card-header>
+      <div class="inner__body">
+
+        <div class="input">
+          <div class="icon">
+            <i class='bx bx-search'></i>
+          </div>
+          <input placeholder="Tìm kiếm nhóm"
+                 type="text"
+                 [formControl]="search" />
+        </div>
+        <div class="title">Nhóm đã tham gia</div>
+        <div class="group-list">
+          <app-group-share-item *ngFor="let group of groups"
+                                [group]="group"
+                                (clicked)="itemClicked($event)"></app-group-share-item>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isTransitioned"
+         [@slideInOutRight]
+         (@slideInOutRight.start)="calculateHeight($event)"
+         (@slideInOutRight.done)="discardHeight($event)"
+         class="create-post">
+
+      <app-create-post [groupId]="selectedGroup.id"
+                       (close)="toggleModalNgIf.next()"
+                       [groupName]="selectedGroup.name"
+                       [sharedContent]="sharedContent"
+                       [groupPrivacy]="selectedGroup.isPrivate ? 'GROUP' : 'PUBLIC'"
+                       width="100%">
+
+      </app-create-post>
+    </div>
+  </div>
+</app-modal>

@@ -21,6 +21,7 @@
   <div class="items">
     <app-friend-list-item
       (removeItem)="removeItem($event)"
+      [pageId]="pageId"
       *ngFor="let friend of friends"
       [userDto]="friend"></app-friend-list-item>
   </div>

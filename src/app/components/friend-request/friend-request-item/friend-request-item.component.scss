@@ -25,6 +25,7 @@ a {
     img {
       object-fit: cover;
       width: 100%;
+      height: 100%;
     }
   }
 
@@ -51,16 +52,11 @@ a {
     .request-actions {
 
       display: flex;
+      column-gap: 10px;
       justify-content: space-between;
 
-      .accept-request {
-        flex-basis: 48%;
-        @include button(#1877f2, #fff);
-      }
-
-      .delete-request {
-        flex-basis: 48%;
-        @include button(#ddd, #000);
+      > * {
+        flex-grow: 1;
       }
     }
   }

@@ -1,9 +1,8 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
-import {MessageService} from 'src/app/components/share/message.service';
-import {UserDto} from 'src/app/components/share/user-dto';
-import {UserService} from 'src/app/components/share/user.service';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
+import { FollowService } from 'src/app/components/share/follow.service';
+import { UserDto } from 'src/app/components/share/user-dto';
+import { UserService } from 'src/app/components/share/user.service';
 
 @Component({
   selector: 'app-friend-list-item',
@@ -17,39 +16,15 @@ export class FriendListItemComponent implements OnInit {
   @ViewChild('optionsBtn') optionsBtn!: ElementRef;
   @Output() removeItem: EventEmitter<UserDto> = new EventEmitter();
 
-  isOptionsVisible: boolean = false;
-  loggedInUserId!: number;
-  loggedInProfileId!: number;
-
-  profileId!: number;
-
-  constructor(private userService: UserService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private message$: MessageService,
-              private auth: AuthenticationService) {
+  constructor(
+    private followService: FollowService,
+    private userService: UserService,
+    public auth: AuthenticationService) {
   }
 
   ngOnInit(): void {
-    this.message$.onLoadPostsByPageId().subscribe(pageId => {
-      if (!pageId) return;
-      this.profileId = pageId;
-    });
-    this.loggedInProfileId = this.auth.getProfileId();
-    this.loggedInUserId = this.auth.getPrincipalId();
-  }
-
-  showOptions(): void {
-    this.isOptionsVisible = !this.isOptionsVisible;
-  }
-
-  hideOptions(event: any): void {
-    let btnAndChildren = [...this.optionsBtn.nativeElement.children,
-      this.optionsBtn.nativeElement];
-
-    if (!btnAndChildren.includes(event.target)) {
-      this.isOptionsVisible = false;
-    }
+    console.log(this.pageId);
+    
   }
 
   unfriend(): void {
@@ -59,7 +34,7 @@ export class FriendListItemComponent implements OnInit {
   }
 
   unfollow(): void {
-    this.userService.unfollow(this.userDto.id).subscribe(_ => {
+    this.followService.unfollowPage(this.userDto.id).subscribe(_ => {
       this.userDto.isFollow = false;
     });
   }

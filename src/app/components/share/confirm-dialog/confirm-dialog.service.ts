@@ -27,8 +27,6 @@ export class ConfirmDialogService {
       ).subscribe(response => {
         resolve(!!response.isConfirmed)
       });
-
     });
-
   }
 }

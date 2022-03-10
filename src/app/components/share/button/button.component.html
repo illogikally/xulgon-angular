@@ -1,17 +1,18 @@
 <div #self
      class="button">
-  <div #inner
-       (click)="toggleOptionsVisibility()"
-       (clickOutside)="isOptionsVisible = false"
-       class="button__inner">
+  <button #inner
+          (click)="toggleOptionsVisibility()"
+          type="button"
+          (clickOutside)="isOptionsVisible = false"
+          class="button__inner">
     <ng-content select="[button]"></ng-content>
-    <div *ngIf="isX" button="">
+    <div *ngIf="isX"
+         button="">
       <i class='bx bx-x'></i>
     </div>
-  </div>
-  <div
-    *ngIf="isOptionsVisible"
-    class="triangle"></div>
+  </button>
+  <div *ngIf="isOptionsVisible"
+       class="triangle"></div>
   <app-pop-up *ngIf="isOptionsVisible"
               #options
               class="button__options"

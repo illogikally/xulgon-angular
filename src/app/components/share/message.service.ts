@@ -17,37 +17,15 @@ export class MessageService {
 
   updateAvatar = new Subject<PhotoResponse>();
   updateCoverPhoto = new Subject<PhotoResponse>();
+  updateAvatarOrCover = new Subject<'avatar' | 'cover'>();
+  errorPage$ = new Subject<any>();
   constructor() {
   }
 
   notif = new BehaviorSubject<any>('');
   loadGroupFeed = new Subject<any>();
   generalSearch = new BehaviorSubject<string>('');
-  loadGroupProfile = new BehaviorSubject<number | null>(null);
-  groupLoaded = new BehaviorSubject<GroupResponse | null>(null);
   userRef$ = new Subject<any>();
   loggedIn = new Subject<void>();
-  private pageId = new BehaviorSubject<number | undefined>(undefined);
-
-
-
-  loadPostsByPageId(pageId: number | undefined): void {
-    this.pageId.next(pageId);
-  }
-
-  onLoadPostsByPageId(): Observable<number | undefined> {
-    return this.pageId.asObservable();
-  }
-
   openChatBox$ = new Subject<UserBasic>();
-  updateAvatarOrCover = new BehaviorSubject<string>('');
-  private userProfileLoaded = new BehaviorSubject<UserPage>({} as UserPage);
-
-  onProfileLoaded(): Observable<UserPage> {
-    return this.userProfileLoaded.asObservable();
-  }
-
-  sendLoadedProfile(profile: UserPage): void {
-    this.userProfileLoaded.next(profile);
-  }
 }

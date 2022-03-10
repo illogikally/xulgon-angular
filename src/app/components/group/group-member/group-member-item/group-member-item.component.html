@@ -1,0 +1,31 @@
+<div class="member">
+  <div class="avatar">
+    <div class="avatar-cont">
+      <app-user-ref [borderRadius]="'50%'"
+                    [userDto]="member.user">
+      </app-user-ref>
+    </div>
+  </div>
+  <app-user-ref [userDto]="member.user"></app-user-ref>
+  <app-button *ngIf="member.user.id != principalId" 
+              [hasOptions]="true" 
+              class="options">
+    <div button="">
+      <div><i class='bx bx-dots-horizontal-rounded'></i></div>
+    </div>
+    <div options="">
+      <div *ngIf="role == 'ADMIN' && member.role == 'MEMBER'" 
+           (click)="promote()">
+        Cho thành viên làm quản trị viên
+      </div>
+      <div *ngIf="role == 'ADMIN'"
+           (click)="kick()">
+           Xoá thành viên
+      </div>
+      <div *ngIf="role == 'ADMIN' && member.role == 'ADMIN'"
+           (click)="demote()">
+           Giáng xuống thành viên
+      </div>
+    </div>
+  </app-button>
+</div>

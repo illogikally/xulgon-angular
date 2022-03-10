@@ -11,20 +11,26 @@
         <i class='bx bx-dots-horizontal-rounded'></i>
       </div>
       <div options>
-          <!-- <div>
+        <!-- <div>
             <i class='bx bx-group' ></i>
             <span>Chỉnh sửa riêng tư</span>
           </div> -->
 
+        <div (click)="unfollowPage()"
+             *ngIf="post.isFollowPage">
+          <i class='bx bx-user-minus'></i>
+          <span>Bỏ theo dõi {{ post.user.username }}</span>
+        </div>
+
         <div (click)="unfollow()"
              *ngIf="post.isFollow">
-          <i class='bx bx-bell-off' ></i>
+          <i class='bx bx-bell-off'></i>
           <span>Tắt thông báo với bài viết này</span>
         </div>
 
         <div (click)="follow()"
              *ngIf="!post.isFollow">
-          <i class='bx bx-bell' ></i>
+          <i class='bx bx-bell'></i>
           <span>Bật thông báo với bài viết này</span>
         </div>
 
@@ -42,26 +48,27 @@
                      [isPageNameVisible]="isGroupNameVisible">
     </app-post-header>
   </div>
-  
+
   <div class="post-body">
     <div class="post-body__text">{{ post.text }}</div>
 
     <div class="media">
       <app-media-layout [photos]="post.type == 'POST' ? post.photos : []"
                         [photoSetId]="post.photoSetId"
-                        [photoCount]="post.photoCount" >
+                        [photoCount]="post.photoCount">
       </app-media-layout>
     </div>
 
     <app-shared-content [content]="post.sharedContent"
-                        mediaMargin="0px -15px"
-    ></app-shared-content>
+                        *ngIf="post.hasShare"
+                        mediaMargin="0px -15px">
+    </app-shared-content>
   </div>
   <div class="post-meta">
     <div>
-      <div *ngIf="post.reactionCount > 0" 
+      <div *ngIf="post.reactionCount > 0"
            class="flex-center reaction-count">
-        <img src="assets/like-16x16.png" 
+        <img src="assets/like-16x16.png"
              style="margin-right: 2px;"> {{ post.reactionCount }}
       </div>
     </div>
@@ -79,25 +86,39 @@
   </div>
 
   <div class="post-actions">
-    <div (click)="react()" class="reaction-action">
+    <div (click)="react()"
+         class="reaction-action">
       <span [ngStyle]="{'color': post.isReacted ? '#1876F2' : 'inherit'}">
-        <i *ngIf="!post.isReacted" class='bx bx-like'></i>
-        <i *ngIf="post.isReacted" class='bx bxs-like'></i>
+        <i *ngIf="!post.isReacted"
+           class='bx bx-like'></i>
+        <i *ngIf="post.isReacted"
+           class='bx bxs-like'></i>
         <span>Thích</span>
       </span>
     </div>
-    <div class="comment-action" (click)="comment()">
+    <div class="comment-action"
+         (click)="comment()">
       <span>
         <i class='bx bx-message-alt'></i> Bình luận
       </span>
     </div>
-    <div (click)="share()" 
-         *ngIf="post.privacy == 'PUBLIC'|| post.sharedContent?.privacy == 'PUBLIC'" 
+    <div (click)="isShareOptionsHidden = !isShareOptionsHidden"
+         #shareButton
+         *ngIf="(post.privacy == 'PUBLIC' && (post?.text?.trim() || post?.photos?.length))|| post.sharedContent?.privacy == 'PUBLIC'"
          class="share-action">
       <span>
         <i class='bx bx-share'></i>
         <span>Chia sẻ</span>
       </span>
+      <app-pop-up [parent]="shareButton"
+                  *ngIf="!isShareOptionsHidden">
+        <div (clickOutside)="isShareOptionsHidden = true"
+             [delayClickOutsideInit]="true"
+             class="share-action__options">
+          <div (click)="shareOnTimeline()">Chia sẻ trên trang cá nhân</div>
+          <div (click)="shareInGroup()">Chia sẻ trong nhóm</div>
+        </div>
+      </app-pop-up>
     </div>
   </div>
   <div [hidden]="!isCommentVisible"
@@ -108,7 +129,3 @@
                       [rootContentId]="post.id"></app-comment-list>
   </div>
 </div>
-<app-create-post *ngIf="post.privacy == 'PUBLIC' || post.sharedContent"
-                 [sharedContent]="post.sharedContent || post"
-                 [open$]="openCreatePostToShare$">
-</app-create-post>

@@ -4,7 +4,8 @@ export interface PageHeader {
   id: number;
   userId: number;
   blocked: boolean;
-  coverPhotoUrl: string;
+  coverPhoto: PhotoResponse;
+  isFollow: boolean;
   friendshipStatus: string;
   avatar: PhotoResponse;
   name: string;

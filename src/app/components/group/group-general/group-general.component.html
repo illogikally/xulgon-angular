@@ -8,15 +8,21 @@
           </div>
           <div class="input-group">
             <i class='bx bx-search'></i>
-            <input type="text" placeholder="Tìm kiếm nhóm" name="" id="">
+            <input type="text"
+                   placeholder="Tìm kiếm nhóm"
+                   name=""
+                   id="">
           </div>
           <div class="menu-items">
-            <div class="my-feed">
+            <a routerLink="/groups/feed"
+               routerLinkActive="selected"
+               [routerLinkActiveOptions]="{exact: true}"
+               class="my-feed">
               <div class="icon-cont">
                 <i class='bx bx-news'></i>
               </div>
               <span>Bảng tin của bạn</span>
-            </div>
+            </a>
             <div class="discover">
               <div class="icon-cont">
                 <i class='bx bxs-compass'></i>
@@ -24,119 +30,17 @@
               <span>Khám phá</span>
             </div>
           </div>
-          <div (click)="createGroupVisible = !createGroupVisible"
-               class="create-group">
-            <div class="create-group__inner">
-              <i class='bx bx-plus'></i>
-              <div>Tạo nhóm mới</div>
-            </div>
-          </div>
-
-          <form class="create-group-form"
-                *ngIf="createGroupVisible"
-                [formGroup]="createGroupForm">
-
-            <div class="input-group-name">
-              <span [ngClass]="{'focus': groupNameInput.value}">Tên nhóm</span>
-              <input #groupNameInput
-                     formControlName="groupName" type="text"/>
-            </div>
-            <div class="privacy-drop">
-              <div (click)="createGroupPrivacyDropVisible = !createGroupPrivacyDropVisible"
-                   #chose
-                   class="chose">
-                <div class="arrow">
-                  <i class='bx bxs-down-arrow'></i>
-                </div>
-                <div
-                  class="placeholder"
-                  [ngClass]="{'focus': createGroupIsPrivate !== undefined}">Quyền riêng tư
-                </div>
-                <div
-                  *ngIf="createGroupIsPrivate === false"
-                >
-                  <div class="icon">
-                    <i class='bx bx-globe'></i>
-                  </div>
-                  <div class="text">
-                    Công khai
-                  </div>
-                </div>
-                <div *ngIf="createGroupIsPrivate === true">
-                  <div class="icon">
-                    <i class='bx bxs-lock-alt'></i>
-                  </div>
-                  <div class="text">Riêng tư</div>
-                </div>
-              </div>
-
-              <div *ngIf="createGroupPrivacyDropVisible"
-                   (clickOutside)="createGroupPrivacyDropVisible = false"
-                   (click)="createGroupPrivacyDropVisible = false"
-                   [delayClickOutsideInit]="true"
-                   class="drop-list">
-                <div (click)="createGroupIsPrivate = false">
-                  <div class="icon">
-                    <div class="icon__inner">
-                      <i class='bx bx-globe'></i>
-                    </div>
-
-                  </div>
-                  <div class="text">
-                    <div class="primary">Công khai</div>
-                    <div class="secondary">
-                      Bất kì ai cũng có thể nhìn thấy mọi người trong 
-                      nhóm và những gì họ đăng
-                    </div>
-                  </div>
-                </div>
-                <div (click)="createGroupIsPrivate = true">
-                  <div class="icon">
-                    <div class="icon__inner">
-                      <i class='bx bxs-lock-alt'></i>
-                    </div>
-
-                  </div>
-                  <div class="text">
-                    <div class="primary">Riêng tư</div>
-                    <div class="secondary">
-                      Chỉ thành viên mới nhìn thấy 
-                      mọi người trong nhóm và những gì họ đăng
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="buttons">
-              <div (click)="abort()"
-                   class="abort">Huỷ
-              </div>
-              <button (click)="submit()"
-                      [disabled]="submitable() ? null : true"
-                      class="submit">
-                Tạo nhóm
-              </button>
-            </div>
-          </form>
-
+          <app-create-new-group></app-create-new-group>
         </div>
         <div class="admin-groups">
           <div class="admin-groups__title">
             <span>Nhóm do bạn quản lý</span>
           </div>
           <div class="group-list">
-            <a *ngFor="let group of managedGroups"
-               routerLink="/groups/{{ group.id }}"
-               class="group-item">
-              <div class="group-item__inner">
-                <div class="avatar">
-                  <img [src]="group.coverPhotoUrl"/>
-                </div>
-                <div class="name">
-                  <span>{{ group.name }}</span>
-                </div>
-              </div>
-            </a>
+            <app-group-general-group-item *ngFor="let group of managedGroups"
+                                          [selectedGroup]="selectedGroup"
+                                          [group]="group">
+            </app-group-general-group-item>
           </div>
         </div>
         <div class="groups">
@@ -144,26 +48,15 @@
             Nhóm bạn đã tham gia
           </div>
           <div class="group-list">
-            <a *ngFor="let group of groups"
-               href="/groups/{{ group.id }}"
-               (click)="changeGroup($event, group)"
-               class="group-item">
-              <div (click)="currentTab = 'groups'"
-                   class="group-item__inner">
-                <div class="avatar">
-                  <img [src]="group.coverPhotoUrl"/>
-                </div>
-                <div class="name">
-                  <span>{{ group.name }}</span>
-                </div>
-              </div>
-            </a>
+            <app-group-general-group-item *ngFor="let group of groups"
+                                          [selectedGroup]="selectedGroup"
+                                          [group]="group">
+            </app-group-general-group-item>
           </div>
         </div>
       </div>
     </div>
     <div class="content">
-      <!-- <app-group-feed></app-group-feed> -->
       <router-outlet></router-outlet>
     </div>
   </div>

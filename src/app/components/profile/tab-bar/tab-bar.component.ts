@@ -1,8 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
-import { MessageService } from '../../share/message.service';
-import { PhotoResponse } from '../../share/photo/photo-response';
-import { UserService } from '../../share/user.service';
-import { PageHeader } from '../page-header';
+import { Location } from '@angular/common';
+import { AfterViewInit, Component, DoCheck, ElementRef, Input, NgZone, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Tab } from './tab';
 
 @Component({
   selector: 'app-tab-bar',
@@ -11,23 +9,16 @@ import { PageHeader } from '../page-header';
 })
 export class TabBarComponent implements OnInit, AfterViewInit {
 
-  @Input() visibleTabs = [
-    {name: 'Bài viết', path: '', distance: NaN, element: undefined},
-    {name: 'Giới thiệu', path: 'about', distance: NaN, element: undefined},
-    {name: 'Bạn bè', path: 'friends', distance: NaN, element: undefined},
-    {name: 'Ảnh', path: 'photos', distance: NaN, element: undefined},
-    {name: 'Bài viết', path: '', distance: NaN, element: undefined},
-    {name: 'Giới thiệu', path: 'about', distance: NaN, element: undefined},
-    {name: 'Bạn bè', path: 'friends', distance: NaN, element: undefined},
-    {name: 'Ảnh', path: 'photos', distance: NaN, element: undefined},
-  ]
+  @Input() tabs!: Tab[];
 
   @Input() pageId!: number;
   @Input() pageName = '';
   @Input() avatar = '';
   @Input() pagePath = '';
+  @Input() pageType = 'PROFILE';
+  @Input() blocked = false;
 
-  @ViewChild('tabs') tabsElement!: ElementRef;
+  @ViewChild('tabsElement') tabsElement!: ElementRef;
   @ViewChild('tabsWrapper') tabsWrapperElement!: ElementRef;
   @ViewChild('moreTabs') moreTabsElement!: ElementRef;
   @ViewChild('actionMenu', {static: true}) tabBarElement!: ElementRef;
@@ -38,6 +29,7 @@ export class TabBarComponent implements OnInit, AfterViewInit {
   isTabBarConfigured = false;
 
   constructor(
+    private location: Location,
     private ngZone: NgZone,
   ) { }
 
@@ -75,15 +67,15 @@ export class TabBarComponent implements OnInit, AfterViewInit {
       isRunning = true;
 
       this.ngZone.run(() => {
-        let [lastTab] = this.visibleTabs.slice(-1);
+        let [lastTab] = this.tabs.slice(-1);
         while (lastTab && isLastTabOverflowed(lastTab)) {
-          this.hiddenTabs.unshift(this.visibleTabs.pop());
-          [lastTab] = this.visibleTabs.slice(-1);
+          this.hiddenTabs.unshift(this.tabs.pop());
+          [lastTab] = this.tabs.slice(-1);
         }
 
         let firstHiddenTab = this.hiddenTabs[0];
         while (firstHiddenTab && isThereSpaceToFitHiddenTab(firstHiddenTab)) {
-          this.visibleTabs.push(this.hiddenTabs.shift());
+          this.tabs.push(this.hiddenTabs.shift());
           firstHiddenTab = this.hiddenTabs[0];
         }
 
@@ -95,11 +87,9 @@ export class TabBarComponent implements OnInit, AfterViewInit {
 
   saveTabSizes() {
     const tabs = this.tabsElement.nativeElement.children;
-    this.visibleTabs[0].distance = tabs[0].offsetWidth;
-    this.visibleTabs[0].element = tabs[0];
-    for (let i = 1; i < this.visibleTabs.length; ++i) {
-      this.visibleTabs[i].distance = tabs[i].offsetWidth + this.visibleTabs[i-1].distance;
-      this.visibleTabs[i].element = tabs[i];
+    this.tabs[0].distance = tabs[0].offsetWidth;
+    for (let i = 1; i < this.tabs.length; ++i) {
+      this.tabs[i].distance = tabs[i].offsetWidth + this.tabs[i-1].distance;
     }
   }
 
@@ -121,5 +111,17 @@ export class TabBarComponent implements OnInit, AfterViewInit {
   scrollToTop(event: any) {
     event.preventDefault();
     window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  locationGo(path: string) {
+    path = `/${this.pageId}/${path}`;
+    path = this.pageType == 'PROFILE' ? path : '/groups' + path;
+    this.location.go(path)
+  }
+
+  href(path: string) {
+    path = `/${this.pageId}/${path}`;
+    path = this.pageType == 'PROFILE' ? path : '/groups' + path;
+    return path;
   }
 }

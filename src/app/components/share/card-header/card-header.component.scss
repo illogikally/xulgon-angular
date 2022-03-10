@@ -1,0 +1,14 @@
+.title {
+  display: flex;
+  font-size: 19px;
+  padding: 20px 15px;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(#333, .2);
+
+  .x {
+    position: absolute;
+    right: 15px;
+  }
+}

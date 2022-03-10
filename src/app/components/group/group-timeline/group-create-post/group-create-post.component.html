@@ -12,9 +12,3 @@ class="root">
     </div>
   </div>
 </div>
-<app-create-post 
-[groupId]="groupResponse?.id || 0"
-[groupName]="groupResponse?.name || ''"
-[groupPrivacy]="groupResponse?.isPrivate ? 'GROUP' : 'PUBLIC'"
-[open$]="open$">
-</app-create-post>

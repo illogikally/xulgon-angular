@@ -3,6 +3,7 @@
 .friend-list-item {
   display: flex;
   padding: 16px;
+  align-items: center;
   border-radius: 10px;
   border: 1px solid rgba(#999, .2);
   box-shadow: 0 1px 1px rgba(#333, .1);
@@ -46,28 +47,9 @@
     .common-friend-count {
       font-size: 14px;
     }
+
   }
 
-  .options-btn {
-    @extend %fc;
-    border-radius: 50%;
-    position: relative;
-    height: 30px;
-    width: 30px;
-    font-size: 20px;
-    // right: 10px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: rgba(#ccc, .9);
-    }
-
-    .options {
-      @extend %opts;
-
-      i {
-        font-size: 23px !important;
-      }
-    }
+  .options {
   }
 }

@@ -2,6 +2,7 @@
      class="post-view">
   <div [ngStyle]="{'width': isGroup ? '100%' : '680px'}"
        class="post-view__inner">
+    <app-post-not-found *ngIf="notFound"></app-post-not-found>
     <div *ngIf="post"
          class="post">
       <app-post *ngIf="post"
@@ -9,7 +10,7 @@
                 [post]="post">
       </app-post>
     </div>
-    <app-post-skeleton *ngIf="!post"></app-post-skeleton>
+    <app-post-skeleton *ngIf="!post && !notFound"></app-post-skeleton>
   </div>
 </div>
 

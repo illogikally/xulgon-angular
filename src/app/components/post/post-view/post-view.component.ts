@@ -19,6 +19,7 @@ export class PostViewComponent implements OnInit {
   @Input() groupId!: number | undefined;
   post!: Post;
   isAttached = true;
+  notFound = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -73,8 +74,15 @@ export class PostViewComponent implements OnInit {
   }
 
   getPost(postId: number) {
-    if (isNaN(postId)) return;
+    if (isNaN(postId)) {
+      this.notFound = true;
+      return;
+    }
     this.postService.getPost(postId).subscribe(post => {
+      if (!post) {
+        this.notFound = true;
+        return;
+      }
       this.post = post;
     });
   }
@@ -82,7 +90,7 @@ export class PostViewComponent implements OnInit {
   onAttach() {
     // Prevent getting called twice on attach
     if (!this.isAttached) {
-      this.postViewService.attach$.next(this.post.id);
+      this.postViewService.attach$.next(this.post?.id);
       this.highlightComment(this.activatedRoute.snapshot);
       this.isAttached = true;
     }

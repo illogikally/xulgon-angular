@@ -6,6 +6,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
 import { OffsetResponse } from '../share/offset-response';
 import { UserBasic } from '../share/user-basic';
 import {Post} from './post';
+import { SharedContent } from './shared-content';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,30 @@ import {Post} from './post';
 export class PostService {
 
   private baseApiUrl = environment.baseApiUrl;
+  private groupShareSelector$ = new Subject<SharedContent>();
+  private createPost$ = new Subject<any>();
 
   constructor(
     private http: HttpClient, 
     ) {
   }
+
+  openCreatePost(data: any) {
+    this.createPost$.next(data);
+  }
+
+  onOpenCreatePostCalled(): Observable<any> {
+    return this.createPost$.asObservable();
+  }
+
+  openGroupShareSelector(content: SharedContent) {
+    this.groupShareSelector$.next(content);
+  }
+
+  onOpenGroupShareSelectorCalled(): Observable<SharedContent> {
+    return this.groupShareSelector$.asObservable();
+  }
+
   getPostsByPageId(
     pageId: number,
     size  : number,

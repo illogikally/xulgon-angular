@@ -20,7 +20,6 @@ export class FriendshipButtonComponent implements OnInit {
   isWaitingConfirmation = false;
   constructor(
     private userService: UserService,
-    private messageService: MessageService,
     private confirmService: ConfirmDialogService
 
   ) { }
@@ -29,17 +28,13 @@ export class FriendshipButtonComponent implements OnInit {
   }
 
   sendFriendRequest() {
-    this.userService
-    .sendFriendRequest(this.userId)
-    .subscribe(() => {
+    this.userService.sendFriendRequest(this.userId).subscribe(() => {
       this.friendshipStatus = 'SENT';
     });
   }
 
   deleteFriendRequest() {
-    this.userService
-    .deleteFriendRequest(this.userId)
-    .subscribe(() => {
+    this.userService.deleteFriendRequest(this.userId).subscribe(() => {
       this.friendshipStatus = 'NULL';
     });
   }
@@ -53,18 +48,14 @@ export class FriendshipButtonComponent implements OnInit {
     });
 
     if (isConfirmed) {
-      this.userService
-      .unfriend(this.userId)
-      .subscribe(() => {
+      this.userService.unfriend(this.userId).subscribe(() => {
         this.friendshipStatus = 'NULL';
       });
     }
   }
 
   acceptFriendRequest() {
-    this.userService
-    .acceptFriendRequest(this.userId)
-    .subscribe(() => {
+    this.userService.acceptFriendRequest(this.userId) .subscribe(() => {
       this.friendshipStatus = 'FRIEND';
     });
   }

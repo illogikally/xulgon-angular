@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { SharedContent } from '../../post/shared-content';
 import { OpenPhotoViewData } from './open-photo-view-data';
 import { PhotoResponse } from './photo-response';
 import { PhotoViewResponse } from './photo-view-response';
@@ -21,6 +22,7 @@ export class PhotoService {
   openPhotoView(data: OpenPhotoViewData) {
     this.photoView$.next(data);
   }
+
 
   onOpenPhotoViewerCalled(): Observable<OpenPhotoViewData> {
     return this.photoView$.asObservable();

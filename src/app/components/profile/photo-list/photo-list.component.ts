@@ -21,8 +21,6 @@ export class PhotoListComponent implements OnInit, OnDestroy {
   private destroyed$ =  new ReplaySubject<boolean>(1);
 
   constructor(
-    private http: HttpClient,
-    private messageService: MessageService,
     private activatedRoute: ActivatedRoute,
     private photoService: PhotoService
   ) { }

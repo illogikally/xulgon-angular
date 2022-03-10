@@ -12,12 +12,13 @@
 
     .content-sidebar {
       flex: 0 0 360px;
+      z-index: 6;
 
       .sidebar {
         background-color: #fff;
         position: fixed;
         top: 56px;
-        box-shadow: -2px 0 4px 0 rgba(#000, .2);
+        box-shadow: 1px 0px 2px #00000033;
         font-weight: 500;
         padding: 10px 8px;
         box-sizing: border-box;
@@ -37,27 +38,29 @@
           .input-group {
             @extend %input-group;
             margin: 10px 8px;
-            height: 35px;
+            height: 40px;
           }
         }
 
         .menu-items {
           font-weight: 500;
+          margin-bottom: 5px;
 
-          .my-feed {
-            background-color: #e7f3ff;
-            // .icon-cont {
-            // 	background-color: $btn-blue;
-            // }
-          }
-
-          > div {
+          > * {
             border-radius: 10px;
             padding: 0 8px;
             display: flex;
             align-items: center;
             height: 52px;
             box-sizing: border-box;
+
+            &:hover {
+              background-color: #f0f2f5;
+            }
+
+            &.selected.selected{
+              background-color:  rgba(#1877f2, .1);
+            }
 
             .icon-cont {
               @extend %fc;
@@ -74,209 +77,6 @@
 
           }
         }
-
-        .create-group {
-          @extend %fc;
-          padding: 10px 5px;
-          border-radius: 5px;
-          color: $btn-blue;
-          background-color: #e7f3ff;
-          cursor: pointer;
-          margin: 5px 8px;
-
-          &:hover {
-            background-color: darken(#e7f3ff, 3);
-          }
-
-          &__inner {
-            display: flex;
-            align-items: center;
-          }
-        }
-
-        .create-group-form {
-          margin: 15px 8px;
-          user-select: none;
-          position: relative;
-
-          label {
-            margin-bottom: 2px;
-            margin-left: 5px;
-          }
-
-          .input-group-name {
-            position: relative;
-            align-items: center;
-            display: flex;
-            height: 50px;
-            margin-bottom: 10px;
-            font-size: 16px;
-
-            span {
-              position: absolute;
-              left: 20px;
-              transition: .2s ease;
-            }
-
-            &:focus-within {
-              span {
-                transform: translate(0, -10px);
-                font-size: 13px;
-                color: $btn-blue;
-                font-weight: 400;
-              }
-            }
-
-            .focus {
-              transform: translate(0, -10px);
-              font-size: 13px;
-              font-weight: 400;
-              color: $btn-blue
-            }
-
-            input {
-              width: 100%;
-              height: 100%;
-              border-radius: 10px;
-              box-sizing: border-box;
-              border: 1px solid rgba(#333, .2);
-              outline: none;
-              padding: 0 20px;
-              padding-top: 20px;
-
-              &:focus {
-                box-shadow: 0 0 0 2px rgba($btn-blue, .6);
-                border-color: transparent;
-              }
-            }
-          }
-
-          .privacy-drop {
-
-            .chose {
-              width: 100%;
-              cursor: pointer;
-              height: 50px;
-              border-radius: 10px;
-              box-sizing: border-box;
-              display: flex;
-              align-items: center;
-              position: relative;
-              padding: 0 20px;
-              border: 1px solid rgba(#333, .2);
-
-
-              .placeholder {
-                position: absolute;
-                left: 20px;
-                transition: transform .2s ease, font-size .2s ease;
-              }
-
-              .focus {
-                transform: translate(30px, -10px);
-                font-size: 13px;
-                font-weight: 400;
-                color: $btn-blue;
-              }
-
-              &:focus {
-                box-shadow: 0 0 0 2px rgba($btn-blue, .6);
-                border: none;
-              }
-
-
-              > div {
-                display: flex;
-                align-items: center;
-
-                .icon {
-                  margin-right: 10px;
-                  font-size: 20px;
-                }
-
-                .text {
-                  padding-top: 20px;
-                }
-              }
-
-              .arrow {
-                position: absolute;
-                right: 10px;
-                font-size: 13px;
-              }
-            }
-
-
-            .drop-list {
-              @include card(10px);
-              padding: 5px;
-              box-shadow: 0 0 16px rgba(#000, .2);
-              z-index: 1;
-              position: absolute;
-
-
-              > div:not(.arrow) {
-                cursor: pointer;
-                display: flex;
-                border-radius: 10px;
-                padding: 5px;
-
-                &:hover {
-                  background-color: rgba(#ddd, .6);
-                }
-              }
-
-              .icon {
-                @extend %fc;
-                margin-right: 10px;
-
-                &__inner {
-                  @extend %fc;
-                  width: 36px;
-                  height: 36px;
-                  font-size: 20px;
-                  border-radius: 50%;
-                  overflow: hidden;
-                  background-color: #ddd;
-                }
-              }
-
-              .text {
-                .primary {
-                  font-weight: 500;
-                }
-
-                .secondary {
-                  font-size: 13px;
-                  font-weight: 400;
-                  color: var(--secondary-text);
-                }
-              }
-            }
-          }
-
-          .buttons {
-            display: flex;
-            margin-top: 10px;;
-            justify-content: space-between;
-            width: 100%;
-
-            .abort {
-              flex-basis: 30%;
-              @include button($btn-grey, #050505);
-            }
-
-            .submit {
-              flex-basis: 60%;
-              @include button($btn-blue, #fff);
-
-              &:disabled {
-                background-color: rgba($btn-blue, .5) !important;
-                cursor: not-allowed !important;
-              }
-            }
-          }
-        }
       }
 
       .admin-groups {
@@ -285,7 +85,7 @@
 
         &__title {
           font-size: 17px;
-
+          margin-bottom: 10px;
         }
       }
 
@@ -293,40 +93,9 @@
         &__title {
           margin-top: 10px;
           font-size: 17px;
-
+          margin-bottom: 10px;
         }
-
       }
     }
-
-  }
-}
-
-.group-item {
-  margin-top: 10px;
-  padding: 2px 5px;
-
-  &__inner {
-    display: flex;
-  }
-
-  .avatar {
-    width: 60px;
-    height: 60px;
-    margin-right: 10px;
-    border: 1px solid rgba(#333, .15);
-    border-radius: 5px;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-    }
-  }
-
-  .name {
-    display: flex;
-    align-items: center;
   }
 }

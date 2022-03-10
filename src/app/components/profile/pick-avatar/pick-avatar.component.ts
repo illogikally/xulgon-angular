@@ -1,62 +1,59 @@
-import {HttpClient} from '@angular/common/http';
-import {Component, EventEmitter, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MessageService} from '../../share/message.service';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { MessageService } from '../../share/message.service';
 import { PhotoResponse } from '../../share/photo/photo-response';
-import {PhotoViewResponse} from '../../share/photo/photo-view-response';
 import { PhotoService } from '../../share/photo/photo.service';
+import { PageHeader } from '../page-header';
 import { ProfileService } from '../profile.service';
-import {UserPage} from '../user-profile';
 
 @Component({
   selector: 'app-pick-avatar',
   templateUrl: './pick-avatar.component.html',
   styleUrls: ['./pick-avatar.component.scss']
 })
-export class PickAvatarComponent implements OnInit, OnDestroy {
-
-  @Output() closeMe: EventEmitter<void> = new EventEmitter();
+export class PickAvatarComponent implements OnInit {
 
   updateType = '';
   photos!: PhotoResponse[];
   pickedPhoto!: PhotoResponse | undefined;
   uploadFileForm!: FormGroup;
   photoBlob: Blob | undefined;
-  photoSizeRatio = 0;
-  photoBlobUrl = '';
-  userProfile!: UserPage;
-  isVisible = true;
+  userProfile!: PageHeader;
 
-
+  aspectRatio = 1;
+  imageChangedEvent: any = '';
+  toggleModal = new Subject<any>();
   constructor(
-    private renderer: Renderer2,
     private profileService: ProfileService,
     private photoService: PhotoService,
     private messageService: MessageService
   ) {
   }
 
-  ngOnDestroy(): void {
-    this.renderer.setStyle(document.body, 'position', 'relative');
-  }
-
   ngOnInit(): void {
-    this.renderer.setStyle(document.body, 'position', 'fixed');
     this.uploadFileForm = new FormGroup({
       fileInput: new FormControl('')
     });
 
     this.messageService.updateAvatarOrCover.subscribe(msg => {
+      this.toggleModal.next();
+
       if (msg == 'avatar') {
         this.updateType = 'avatar';
       }
 
       if (msg == 'cover') {
         this.updateType = 'cover';
+        this.aspectRatio = 940/350.0;
       }
     });
 
-    this.messageService.onProfileLoaded().subscribe(profile => {
+    this.profileService.currentProfile().pipe(
+      take(1)
+    ).subscribe(profile => {
       this.userProfile = profile;
       this.photoService.getPagePhotos(profile.id).subscribe(photos => {
         this.photos = photos;
@@ -69,68 +66,69 @@ export class PickAvatarComponent implements OnInit, OnDestroy {
   }
 
   onSelectFile(event: any): void {
-    if (event.target?.files && event.target.files[0]) {
-      this.photoBlob = event.target.files[0];
-      var reader = new FileReader();
-
-      reader.readAsDataURL(event.target.files[0]);
-
-      reader.onload = (event) => {
-        let img = new Image();
-        img.src = event.target?.result as string;
-        img.onload = () => {
-          this.photoSizeRatio = img.width / img.height;
-        }
-
-        this.photoBlobUrl = event.target?.result as string;
-      }
-    }
+    this.imageChangedEvent = event;
   }
 
   close(): void {
-    this.closeMe.emit();
+    this.toggleModal.next();
+  }
+
+  reset() {
+    this.pickedPhoto = undefined;
+    this.photoBlob = undefined;
+    this.imageChangedEvent = null;
+    this.uploadFileForm.reset();
   }
 
   abort(): void {
-    this.pickedPhoto = undefined;
-    this.photoBlobUrl = '';
-    this.photoBlob = undefined;
-    this.photoSizeRatio = 0;
+    // For some reason clickoutside triggers
+    setTimeout(() => {
+      this.pickedPhoto = undefined;
+      this.imageChangedEvent = null;
+    }, 0);
   }
 
   confirm(): void {
-    if (this.pickedPhoto) {
-      if (this.updateType == 'avatar') {
-        this.profileService.updateAvatar(this.pickedPhoto.id).subscribe(() => {
-          this.messageService.updateAvatar.next(this.pickedPhoto);
-        });
-      } else {
-        this.profileService.updateCoverPhoto(this.pickedPhoto.id).subscribe(() => {
-          this.messageService.updateCoverPhoto.next(this.pickedPhoto);
-        }); 
-      }
-    } else {
-      let formData = new FormData();
-      let photoRequest = new Blob([JSON.stringify({
+    let formData = new FormData();
+
+    let photoRequest = new Blob(
+      [JSON.stringify({
         privacy: 'PUBLIC',
         pageId: this.userProfile.id
-      })], {type: 'application/json'});
-      formData.append('photoRequest', photoRequest);
+      })], 
+      {type: 'application/json'}
+    );
+    formData.append('photoRequest', photoRequest);
 
-      formData.append('photo', this.photoBlob == undefined ? new Blob() : this.photoBlob);
+    formData.append('photo', this.photoBlob == undefined ? new Blob() : this.photoBlob);
 
-      if (this.updateType == 'avatar') {
-        this.profileService.uploadAvatar(formData).subscribe(photo => {
-          this.messageService.updateAvatar.next(photo);
-        });
-      } else {
-        this.profileService.uploadCoverPhoto(formData).subscribe(photo => {
-          this.messageService.updateCoverPhoto.next(photo);
-        });
-      }
+    if (this.updateType == 'avatar') {
+      this.profileService.uploadAvatar(formData).subscribe(photo => {
+        this.messageService.updateAvatar.next(photo);
+      });
+    } else {
+      this.profileService.uploadCoverPhoto(formData).subscribe(photo => {
+        this.messageService.updateCoverPhoto.next(photo);
+      });
     }
-
     this.close();
   }
+
+  imageCropped(event: ImageCroppedEvent) {
+    if (!event.base64) return;
+    this.photoBlob = this.base64toBlob(event.base64);
+  }
+
+  base64toBlob(dataURI: string): Blob {
+    var byteString = atob(dataURI.split(',')[1]);
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: 'image/jpeg' });
+}
 
 }

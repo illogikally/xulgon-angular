@@ -34,18 +34,6 @@ export class ChatNotificationComponent implements OnInit {
     private renderer: Renderer2) {
   }
 
-  private setTitle(): void {
-    // let regex = /\([\d ]+\)/g;
-    // let title = this.title.getTitle();
-
-    // let totalUnread = this.unreadCount + this.unreadNotificationCount;
-    // if (regex.test(title)) {
-    //   let title = this.title.getTitle().replace(regex, totalUnread > 0 ? `(${totalUnread})` : '');
-    //   this.title.setTitle(title);
-    // } else if (totalUnread > 0)
-    //   this.title.setTitle(`(${totalUnread}) ${this.title.getTitle()}`)
-  }
-
   ngOnInit(): void {
     this.loadConversations();
 

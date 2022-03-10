@@ -2,8 +2,11 @@ import {LocationStrategy} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
+import { RxStompService } from '@stomp/ng2-stompjs';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {MessageService} from '../share/message.service';
+import { TitleService } from '../share/title.service';
+import { UserService } from '../share/user.service';
 import {FriendRequestDto} from './friend-request-dto';
 
 @Component({
@@ -13,35 +16,38 @@ import {FriendRequestDto} from './friend-request-dto';
 })
 export class FriendRequestComponent implements OnInit {
 
-  friendRequests!: FriendRequestDto[];
+  friendRequests: FriendRequestDto[] = [];
   profileId!: number;
   isProfilePicked: boolean = false;
 
   constructor(
     private auth: AuthenticationService,
-    private locationStrategy: LocationStrategy,
-    private messageService: MessageService,
-    private title: Title,
+    private titleService: TitleService,
+    private userService: UserService,
+    private rxStompService: RxStompService,
     private http: HttpClient
   ) {
-// history.pushState(null, this.title.getTitle(), window.location.href);
-    // this.locationStrategy.onPopState(() => {
-    //   history.pushState(null, this.title.getTitle(), window.location.href);
-    // });
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Friends')
+    this.titleService.setTitle('Friends')
 
     let userId: number = this.auth.getPrincipalId();
-    this.http.get<FriendRequestDto[]>(`http://localhost:8080/api/users/${userId}/friend-requests`)
-      .subscribe(resp => {
-        this.friendRequests = resp;
-      })
+    this.userService.getFriendRequests(userId).subscribe(resp => {
+      this.friendRequests = resp;
+    });
+    this.listenToWebSocket();
   }
+
 
   preventDefault(event: any): void {
     event.preventDefault();
+  }
+
+  listenToWebSocket() {
+    this.rxStompService.watch('/user/queue/friend-request').subscribe(message => {
+      this.friendRequests.push(JSON.parse(message.body));
+    });
   }
 
   deleteRequest(request: FriendRequestDto): void {

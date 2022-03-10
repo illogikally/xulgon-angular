@@ -1,5 +1,5 @@
 <div class="container">
-  <div id="main-content" 
+  <div #self id="main-content" 
        class="content">
     <div id="sidebar" 
          #sidebar
@@ -57,9 +57,8 @@
           </div>
           <div class="photo-container">
             <div class="photo">
-              <div 
-              *ngIf="!userPage?.photos"
-              class="photo-skeletons-container">
+              <div *ngIf="!userPage?.photos"
+                   class="photo-skeletons-container">
                 <div
                 style="background-color: #dfdfdf;"
                 *ngFor="let i of [].constructor(9)">
@@ -70,7 +69,7 @@
               *ngIf="userPage?.photos"
               class="photo-container">
                 <div *ngFor="let photo of userPage?.photos">
-                  <app-photo [url]="photo.thumbnails.s160x160.url"
+                  <app-photo [url]="photo.thumbnails?.s160x160?.url"
                              [id]="photo.id"
                              [setId]="this.pagePhotoSetId"
                   ></app-photo>
@@ -90,7 +89,7 @@
                               borderRadius="10px"
                 ></app-user-ref>
               </div>
-              <app-user-ref [userDto]="friend" ></app-user-ref>
+              <app-user-ref [userDto]="friend"></app-user-ref>
               <div *ngIf="friend.commonFriendCount > 0 && friend.id != principleId" 
                    class="common-friend-count">
                 {{ friend.commonFriendCount }}
@@ -103,7 +102,7 @@
     </div>
 
     <div id="content" class="timeline">
-      <div *ngIf="timeline.length == 0" class="no-posts">
+      <div *ngIf="isInitLoaded && timeline.length == 0" class="no-posts">
         <h3>Không có bài viết</h3>
       </div>
 

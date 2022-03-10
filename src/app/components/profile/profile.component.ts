@@ -3,8 +3,13 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { ErrorPageService } from '../error-page/error-page.service';
+import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
+import { FollowService } from '../share/follow.service';
 import { MessageService } from '../share/message.service';
 import { TitleService } from '../share/title.service';
+import { ToasterMessageType } from '../share/toaster/toaster-message-type';
+import { ToasterService } from '../share/toaster/toaster.service';
 import { UserService } from '../share/user.service';
 import { PageHeader } from './page-header';
 import { ProfileService } from './profile.service';
@@ -20,52 +25,59 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private destroyed$ = new ReplaySubject<boolean>(1);
   profileLoaded = new EventEmitter<UserPage>();
   isUpdateAvatar = false;
-  principalId: number;
   pageNotFound = false;
   isFriendOptsVisible = false;
   moreActionOptsVisible = false;
-  isBlocked = false;
   pageHeader!: PageHeader;
   userProfile!: UserPage;
-
+  principalId = this.authenticationService.getPrincipalId();
   pageAvatarUrl!: string;
 
+  tabs = [
+    {name: 'Bài viết', path: ''},
+    {name: 'Giới thiệu', path: 'about'},
+    {name: 'Bạn bè', path: 'friends'},
+    {name: 'Ảnh', path: 'photos'},
+    {name: 'Video', path: 'videos', disabled: true},
+    {name: 'Thể thao', path: 'sports', disabled: true},
+    {name: 'Âm nhạc', path: 'music', disabled: true},
+    {name: 'Sách', path: 'books', disabled: true},
+    {name: 'Thích', path: 'likes', disabled: true},
+    {name: 'Sự kiện', path: 'events', disabled: true},
+  ]
+
   constructor(
+    private followService: FollowService,
+    private toaster: ToasterService,
+    private confirmService: ConfirmDialogService,
     private route: ActivatedRoute,
     private renderer: Renderer2,
     private userService: UserService,
     private profileService: ProfileService,
     private authenticationService: AuthenticationService,
-    private title: Title,
     private titleService: TitleService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private errorPageService: ErrorPageService
   ) {
-    this.principalId = authenticationService.getPrincipalId();
   }
 
   ngOnInit(): void {
+    this.getPageHeaderFromRoute();
+    this.configureOnAvatarChange();
+    this.configureOnCoverPhotoChange();
+  }
+
+  getPageHeaderFromRoute() {
     const header = this.route.snapshot.data.header;
-    if (!header) {
-      this.pageError();
+    if (!header || header.isBlocked) {
+      this.errorPageService.showErrorPage();
       return;
     }
 
     this.pageHeader = header;
     this.pageAvatarUrl = header.avatar?.thumbnails.s200x200.url;
-
+    this.profileService.nextCurrentProfile(this.pageHeader);
     this.titleService.setTitle(this.pageHeader.name);
-
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!isNaN(id)) {
-      this.isUserBlocked(id);
-      this.loadProfile(id);
-    } else {
-      this.pageError();
-    }
-
-    this.configureOnAvatarChange();
-    this.configureOnCoverPhotoChange();
-
   }
 
   configureOnAvatarChange() {
@@ -76,7 +88,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   configureOnCoverPhotoChange() {
     this.messageService.updateCoverPhoto.subscribe(photo => {
-      this.pageHeader.coverPhotoUrl = photo.thumbnails.s900x900.url;
+      this.pageHeader.coverPhoto = photo;
     });
   }
 
@@ -97,40 +109,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadProfile(id: number): void {
-    if (isNaN(id)) return;
-
-    this.profileService.getUserProfile(id)
-      .subscribe(resp => {
-        this.pageNotFound = false;
-        if (resp.isBlocked) this.pageError();
-        this.title.setTitle(resp.fullName);
-
-        this.userProfile = resp;
-        this.messageService.sendLoadedProfile(this.userProfile);
-        this.profileLoaded.emit(this.userProfile);
-        this.profileLoaded.emit({} as UserPage);
-      }, () => {
-        this.pageError();
-      });
-    this.messageService.loadPostsByPageId(id);
-  }
-
   pageError() {
     this.pageNotFound = true;
   }
 
-  showUpdateProfilePic(type: string): void {
+  showUpdateProfilePic(type: 'cover' | 'avatar'): void {
     this.isUpdateAvatar = true;
     this.messageService.updateAvatarOrCover.next(type);
-  }
-
-  isUserBlocked(profileId: number): void {
-    this.profileService.isBlocked(profileId).subscribe(isBlocked => {
-      if (isBlocked) this.pageError();
-      this.pageNotFound = isBlocked;
-      this.isBlocked = isBlocked;
-    })
   }
 
   openChatBox(): void {
@@ -143,15 +128,33 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   block(): void {
-    this.userService.block(this.pageHeader.userId).subscribe(() => {
-      this.isBlocked = true;
-    });
+    this.confirmService.confirm({
+      title: 'Chặn người dùng',
+      body: `Bạn có chắc muốn chăn người dùng này?`
+    }).then(isConfirmed => {
+      if (isConfirmed) {
+        this.userService.block(this.pageHeader.userId).subscribe(() => {
+          this.pageHeader.blocked = true;
+        });
+      }
+    })
   }
 
   unblock(): void {
     this.userService.unblock(this.pageHeader.userId).subscribe(() => {
-      this.isBlocked = false;
+      this.pageHeader.blocked = false;
     });
   }
 
+  follow() {
+    this.followService.followPage(this.pageHeader.id).subscribe(() => {
+      this.pageHeader.isFollow = true;
+    })
+  }
+
+  unfollow() {
+    this.followService.unfollowPage(this.pageHeader.id).subscribe(() => {
+      this.pageHeader.isFollow = false;
+    })
+  }
 }

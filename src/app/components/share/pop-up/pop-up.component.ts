@@ -66,8 +66,8 @@ export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
     const TRIANGLE_HEIGHT = this.triangle ? 8 : 0;
     const self = this.self.nativeElement;
     const selfRect = self.getBoundingClientRect();
-    
     let left = this.calculateLeftPositionToParent();
+
     if (selfRect.left + left < 0) {
       left -= selfRect.left + left;
     }
@@ -81,7 +81,7 @@ export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
     let top = this.parent.offsetHeight + VER_MARGIN + TRIANGLE_HEIGHT;
     this.setSelfStyle('transform', `translateX(${left}px)`);
     const position = this.position == 'BELOW' ? 'top' : 'bottom';
-    this.setSelfStyle(position, top + 'px');
+    this.setSelfStyle(position, top + 'px' );
 
     this.renderer.setStyle(this.triangleElement.nativeElement, 'transform', `translate(-50%, ${VER_MARGIN}px)`);
   }
@@ -100,7 +100,7 @@ export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
         break;
     }
     this.INITIAL_X = left;
-    return left;
+    return this.INITIAL_X;
   }
 
   private setSelfStyle(style: string, value: string) {

@@ -24,48 +24,58 @@
       <div #postsContainer class="posts">
         <app-post-list *ngIf="!isPostView"
                        [pageId]="groupResponse?.id"
+                       [isCommentVisible]="true"
                        [isLoading]="isLoading"
                        [posts]="posts">
         </app-post-list>
       </div>
     </div>
 
-    <div #sidebar class="timeline-sidebar">
-      <div class="group-meta">
-        <div class="about mb-20">
-          <div class="w-500 f-17 mb-20">Giới thiệu</div>
-          <span>{{ groupResponse?.about }}</span>
+    <div #sidebar 
+         class="timeline-sidebar">
+      <div #sidebar__inner
+           StickySidebar 
+           [parent]="sidebar"
+           [onAttach$]="onAttach$"
+           [onDetach$]="onDetach$"
+           [sidebarInner]="sidebar__inner"
+           class="sidebar__inner">
+        <div class="group-meta">
+          <div class="about mb-20">
+            <div class="w-500 f-17 mb-20">Giới thiệu</div>
+            <span>{{ groupResponse?.about }}</span>
 
-        </div>
-        <div class="hidden">
-          <!-- <div>
-
-            <span>Ẩn</span>
           </div>
-          <div>
-            <span>Hiển thị</span>
-          </div> -->
-        </div>
-        <div class="privacy">
-          <div *ngIf="groupResponse?.isPrivate">
-            <div class="f-17">
-              <i class='bx bxs-lock-alt'></i>
+          <div class="hidden">
+            <!-- <div>
+
+              <span>Ẩn</span>
             </div>
             <div>
-              <div class="f-17 w-500" style="margin-bottom: 5px">Riêng tư</div>
-              <div>Chỉ thành viên mới nhìn thấy mọi 
-                người trong nhóm và những gì họ đăng.</div>
-            </div>
+              <span>Hiển thị</span>
+            </div> -->
           </div>
-
-          <div *ngIf="!groupResponse?.isPrivate">
-            <div class="f-17">
-              <i class='bx bx-globe'></i>
+          <div class="privacy">
+            <div *ngIf="groupResponse?.isPrivate">
+              <div class="f-17">
+                <i class='bx bxs-lock-alt'></i>
+              </div>
+              <div>
+                <div class="f-17 w-500" style="margin-bottom: 5px">Riêng tư</div>
+                <div>Chỉ thành viên mới nhìn thấy mọi 
+                  người trong nhóm và những gì họ đăng.</div>
+              </div>
             </div>
-            <div>
-              <div class="f-17 w-500" style="margin-bottom: 5px">Công khai</div>
-              <div>Ai cũng có thể nhìn thấy mọi người 
-                trong nhóm và những gì họ đăng.</div>
+
+            <div *ngIf="!groupResponse?.isPrivate">
+              <div class="f-17">
+                <i class='bx bx-globe'></i>
+              </div>
+              <div>
+                <div class="f-17 w-500" style="margin-bottom: 5px">Công khai</div>
+                <div>Ai cũng có thể nhìn thấy mọi người 
+                  trong nhóm và những gì họ đăng.</div>
+              </div>
             </div>
           </div>
         </div>

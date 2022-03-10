@@ -1,8 +1,6 @@
-import { ThisReceiver } from '@angular/compiler';
-import { AfterContentInit, AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
 import * as Color from 'color';
 import { Subject } from 'rxjs';
-import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-button',
@@ -14,7 +12,7 @@ export class ButtonComponent implements OnInit, AfterViewInit {
   @Input() background = '#d8dadf';
   @Input() color = '#050505';
   @Input() height = '37px';
-  @Input() width = 'auto';
+  @Input() width = '100%';
   @Input() backgroundHover = '';
   @Input() radius = '5px';
   @Input() isX = false;

@@ -4,15 +4,13 @@ import { filter } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CommentService } from '../comment-list/comment/comment.service';
 import { GroupResponse } from '../group/group-response';
+import { ProfileService } from '../profile/profile.service';
 import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
 import { FollowService } from '../share/follow.service';
-import { MessageService } from '../share/message.service';
 import { PhotoViewResponse } from '../share/photo/photo-view-response';
 import { ReactionType } from '../share/reaction-type';
 import { ReactionPayload } from '../share/reaction.payload';
 import { ReactionService } from '../share/reaction.service';
-import { ToasterMessageType } from '../share/toaster/toaster-message-type';
-import { ToasterService } from '../share/toaster/toaster.service';
 import { Post } from './post';
 import { PostService } from './post.service';
 
@@ -32,29 +30,22 @@ export class PostComponent implements OnInit {
 
   openCreatePostToShare$ = new Subject<any>();
 
-  principalId: number;
+  principalId = this.authService.getPrincipalId();
   groupReponse!: GroupResponse;
+  isShareOptionsHidden = true;
 
   constructor(
     private commentService: CommentService,
     private followService: FollowService,
     private reactionService: ReactionService,
     private confirmService: ConfirmDialogService,
-    private postService: PostService,
+    private profileService: ProfileService,
     private authService: AuthenticationService,
-    private messageService: MessageService,
-    private toaster: ToasterService
+    private postService: PostService,
   ) {
-    this.principalId = authService.getPrincipalId();
   }
 
   ngOnInit(): void {
-    this.messageService.groupLoaded
-      .subscribe(group => {
-        if (!group) return;
-        this.groupReponse = group;
-      });
-
     this.commentService.commentAdded$.pipe(
       filter(msg => msg.parentId == this.post.id)
     ).subscribe(() => this.post.commentCount += 1);
@@ -82,35 +73,13 @@ export class PostComponent implements OnInit {
 
   unfollow() {
     this.followService.unfollowContent(this.post.id).subscribe(
-      () => {
-        this.toaster.message$.next({
-          type: ToasterMessageType.SUCCESS,
-          message: 'Tắt thông báo thành công'
-        }); 
-      },
-      () => {
-        this.toaster.message$.next({
-          type: ToasterMessageType.ERROR,
-          message: 'Đã xảy ra lỗi trong quá trình tắt thông báo'
-        }); 
-      }
+      () => this.post.isFollow = false
     );
   }
 
   follow() {
     this.followService.followContent(this.post.id).subscribe(
-      () => {
-        this.toaster.message$.next({
-          type: ToasterMessageType.SUCCESS,
-          message: 'Bật thông báo thành công'
-        }); 
-      },
-      () => {
-        this.toaster.message$.next({
-          type: ToasterMessageType.ERROR,
-          message: 'Đã xảy ra lỗi trong quá trình bật thông báo'
-        }); 
-      }
+      () => this.post.isFollow = true
     );
   }
 
@@ -130,8 +99,20 @@ export class PostComponent implements OnInit {
     })
   }
 
-  share() {
-    this.openCreatePostToShare$.next();
+  shareOnTimeline() {
+    this.postService.openCreatePost({
+      sharedContent: this.post.sharedContent || this.post
+    });
   }
 
+  shareInGroup() {
+    const content = this.post.sharedContent || this.post;
+    this.postService.openGroupShareSelector(content);
+  }
+
+  unfollowPage() {
+    this.followService.unfollowPage(this.post.pageId).subscribe(() => {
+      this.post.isFollowPage = false;
+    });
+  }
 }

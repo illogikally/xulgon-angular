@@ -1,8 +1,8 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, ReplaySubject} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import {Post} from '../post/post';
+import { Post } from '../post/post';
 import { OffsetResponse } from '../share/offset-response';
 import { GroupResponse } from './group-response';
 
@@ -14,12 +14,25 @@ export class GroupService {
   private baseApiUrl = environment.baseApiUrl;
   public attach$ = new ReplaySubject<number>(1);
   public detach$ = new ReplaySubject<number>(1);
-  public groupResponse$ = new ReplaySubject<GroupResponse>(1);
+  private groupResponse$ = new ReplaySubject<GroupResponse>(1);
 
   constructor(private http: HttpClient) {}
 
+  currentGroup(): Observable<GroupResponse> {
+    return this.groupResponse$.asObservable();
+  }
+
+  nextCurrentGroup(group: GroupResponse) {
+    this.groupResponse$.next(group);
+  }
+
   getJoinRequests(groupId: number): Observable<any[]> {
     const url = `${this.baseApiUrl}/groups/${groupId}/join-requests`;
+    return this.http.get<any[]>(url);
+  }
+
+  getMembers(groupId: number): Observable<any[]> {
+    const url = `${this.baseApiUrl}/groups/${groupId}/members`;
     return this.http.get<any[]>(url);
   }
 
@@ -86,8 +99,16 @@ export class GroupService {
   }
 
   cancelJoinRequest(groupId: number): Observable<any> {
-    const url = `${this.baseApiUrl}/groups/join-requests`;
+    const url = `${this.baseApiUrl}/groups/${groupId}/join-requests`;
     return this.http.delete(url, {})
   }
 
+  demote(memberId: number, groupId: number): Observable<any> {
+    const url = `${this.baseApiUrl}/groups/${groupId}/demote/${memberId}`;
+    return this.http.put(url, {});
+  }
+
+  getDefaultCoverPhotoUrl(): string {
+    return 'assets/cover.png';
+  }
 }

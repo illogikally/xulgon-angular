@@ -3,12 +3,14 @@
 :host {
   z-index: z('popup');
 }
+
 .root {
-  padding: 5px;
+  padding: 7px;
   border-radius: 5px;
   box-sizing: border-box;
-  position: absolute;
   background-color: #fff;
+  cursor: pointer;
+  position: absolute;
   min-width: 300px;
   left: 0;
   box-shadow: 0 0px 14px 0 rgba(#000, .2), 

@@ -1,7 +1,7 @@
-import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ErrorPageComponent } from '../error-page/error-page.component';
+import { ErrorPageService } from '../error-page/error-page.service';
 import { MessageService } from '../share/message.service';
 import { TitleService } from '../share/title.service';
 import { GroupResponse } from './group-response';
@@ -12,22 +12,24 @@ import { GroupService } from './group.service';
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss']
 })
-export class GroupComponent implements OnInit, OnDestroy {
+export class GroupComponent implements OnInit {
+
 
   group!: GroupResponse;
+  defaultCoverPhotoUrl = this.groupService.getDefaultCoverPhotoUrl();
 
   @ViewChild('moreAction') moreAction!: ElementRef;
+  @ViewChild('sidebarBelow') sidebarBelow!: ElementRef;
+  @ViewChild('sidebar') sidebar!: ElementRef;
+  @ViewChild('toggleButton') toggleButton!: ElementRef;
 
   constructor(
-    private messageService: MessageService,
     private route: ActivatedRoute,
     private groupService: GroupService,
+    private renderer: Renderer2,
     private titleService: TitleService,
+    private errorPageService: ErrorPageService
   ) {
-  }
-
-  ngOnDestroy(): void {
-    this.messageService.groupLoaded.next(null);
   }
 
   ngOnInit(): void {
@@ -37,14 +39,35 @@ export class GroupComponent implements OnInit, OnDestroy {
     });
   }
 
+  toggleSidebar() {
+    const sidebarBelow = this.sidebarBelow.nativeElement;
+    const sidebar = this.sidebar.nativeElement;
+    const toggleButton = this.toggleButton.nativeElement;
+    if (sidebarBelow.style['margin-left'] != '-360px') {
+      this.renderer.setStyle(sidebarBelow, 'margin-left', '-360px');
+      this.renderer.setStyle(sidebar, 'margin-left', '-360px');
+      this.renderer.setStyle(toggleButton, 'right', '-60px');
+    }
+    else {
+      this.renderer.setStyle(sidebarBelow, 'margin-left', '0px');
+      this.renderer.setStyle(sidebar, 'margin-left', '0px');
+      this.renderer.setStyle(toggleButton, 'right', '20px');
+    }
+  }
+
   getGroupProfile(id: number): void {
-    this.messageService.loadPostsByPageId(id);
     this.groupService.getGroupHeader(id).subscribe(response => {
       this.group = response;
-      this.titleService.setTitle(response.name);
-      this.groupService.groupResponse$.next(response);
-      this.messageService.groupLoaded.next(response);
-    });
-
+      if (response) {
+        this.titleService.setTitle(response.name);
+        this.groupService.nextCurrentGroup(response);
+      }
+      else {
+        this.errorPageService.showErrorPage();
+      }
+    }, () => {
+      this.errorPageService.showErrorPage();
+    }
+    );
   }
 }

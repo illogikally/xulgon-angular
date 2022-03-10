@@ -1,0 +1,37 @@
+.group-item {
+  display: block;
+  padding: 7px;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: #f0f2f5;
+  }
+  &.selected.selected {
+    background-color: rgba(#1877f2, .1);
+  }
+
+
+  &__inner {
+    display: flex;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    border: 1px solid rgba(#333, .15);
+    border-radius: 5px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+  }
+
+  .name {
+    display: flex;
+    align-items: center;
+  }
+}

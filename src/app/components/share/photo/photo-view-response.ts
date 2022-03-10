@@ -8,6 +8,8 @@ export interface PhotoViewResponse {
   pageId: number;
   photoCount: number;
   sharedContent: SharedContent;
+  isFollowPage: boolean;
+  hasShare: boolean;
 
   id: number;
   type: string;

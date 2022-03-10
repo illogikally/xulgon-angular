@@ -1,0 +1,8 @@
+<app-modal [toggle]="toggleModalNgIf">
+  <app-create-post (close)="toggleModalNgIf.next()"
+                   [groupName]="data?.groupName || ''"
+                   [sharedContent]="data?.sharedContent"
+                   [groupId]="data?.groupId"
+                   [groupPrivacy]="data?.groupPrivacy">
+  </app-create-post>
+</app-modal>

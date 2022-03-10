@@ -1,12 +1,10 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { concat, fromEvent, merge, of } from 'rxjs';
+import { merge, of } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import textarea_caret from 'textarea-caret';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { PostViewService } from '../post/post-view/post-view.service';
 import { PostService } from '../post/post.service';
-import { UserBasic } from '../share/user-basic';
 import { UserService } from '../share/user.service';
 import { CommentResponse } from './comment/comment-response';
 import { CommentService } from './comment/comment.service';
@@ -74,6 +72,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
   ngAfterViewInit(): void {
     this.onInputValueChange();
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.configureOnParentIdChange(changes);
   }

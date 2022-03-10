@@ -1,0 +1,100 @@
+<!-- <div (click)="createGroupVisible = !createGroupVisible"
+    class="create-group">
+  <div class="create-group__inner">
+    <i class='bx bx-plus'></i>
+    <div>Tạo nhóm mới</div>
+  </div>
+</div> -->
+
+<app-button color="#1877f2">
+  <div (click)="createGroupVisible = !createGroupVisible"
+       button>
+    <i class='bx bx-plus'></i>
+    <div>Tạo nhóm mới</div>
+  </div>
+</app-button>
+
+<form class="create-group-form"
+      *ngIf="createGroupVisible"
+      [formGroup]="createGroupForm">
+
+  <div class="input-group-name">
+    <span [ngClass]="{'focus': groupNameInput.value}">Tên nhóm</span>
+    <input #groupNameInput
+           formControlName="groupName"
+           type="text" />
+  </div>
+  <div class="privacy-drop">
+    <div (click)="privacySelectVisible = !privacySelectVisible"
+         #chose
+         class="chose">
+      <div class="arrow">
+        <i class='bx bxs-down-arrow'></i>
+      </div>
+      <div class="placeholder"
+           [ngClass]="{'focus': privacy !== undefined}">Quyền riêng tư
+      </div>
+      <div *ngIf="privacy === false">
+        <div class="icon">
+          <i class='bx bx-globe'></i>
+        </div>
+        <div class="text">
+          Công khai
+        </div>
+      </div>
+      <div *ngIf="privacy === true">
+        <div class="icon">
+          <i class='bx bxs-lock-alt'></i>
+        </div>
+        <div class="text">Riêng tư</div>
+      </div>
+    </div>
+
+    <div *ngIf="privacySelectVisible"
+         (clickOutside)="privacySelectVisible = false"
+         (click)="privacySelectVisible = false"
+         [delayClickOutsideInit]="true"
+         class="drop-list">
+      <div (click)="privacy = false">
+        <div class="icon">
+          <div class="icon__inner">
+            <i class='bx bx-globe'></i>
+          </div>
+
+        </div>
+        <div class="text">
+          <div class="primary">Công khai</div>
+          <div class="secondary">
+            Bất kì ai cũng có thể nhìn thấy mọi người trong
+            nhóm và những gì họ đăng
+          </div>
+        </div>
+      </div>
+      <div (click)="privacy = true">
+        <div class="icon">
+          <div class="icon__inner">
+            <i class='bx bxs-lock-alt'></i>
+          </div>
+
+        </div>
+        <div class="text">
+          <div class="primary">Riêng tư</div>
+          <div class="secondary">
+            Chỉ thành viên mới nhìn thấy
+            mọi người trong nhóm và những gì họ đăng
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="buttons">
+    <div (click)="abort()"
+         class="abort">Huỷ
+    </div>
+    <button (click)="submit()"
+            [disabled]="submitable() ? null : true"
+            class="submit">
+      Tạo nhóm
+    </button>
+  </div>
+</form>

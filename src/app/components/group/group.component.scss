@@ -6,22 +6,33 @@
 
   .sidebar-below {
     flex: 0 0 360px;
+    transition: margin-left .4s ease;
   }
 
   .group-sidebar {
     position: fixed;
+    transition: margin-left .4s ease;
     top: 56px;
     left: 0;
     height: 100%;
     background-color: #fff;
     width: 360px;
     box-sizing: border-box;
-    box-shadow: 1px 0 3px rgba(#333, .2);
+    z-index: 4;
+    box-shadow: 1px 0px 2px #00000033;
     padding: 10px 10px;
 
     .title {
       font-size: 24px;
       font-weight: 700;
+      position: relative;
+
+      .toggle-sidebar {
+        transition: right .4s ease;
+        position: absolute;
+        right: 20px;
+        top: 0px;
+      }
 
     }
 
@@ -31,10 +42,6 @@
       padding: 16px 5px;
       display: flex;
       position: relative;
-
-      .hide {
-        @include x-btn(35px, $btn-grey, #050505);
-      }
 
       .cover-img {
         width: 48px;
@@ -120,6 +127,15 @@
           background-color: #eee;
         }
 
+        &.active-sidebar-tab.active-sidebar-tab {
+          background-color: rgba($btn-blue, .1);
+
+          .icon {
+            color: white;
+            background-color: $btn-blue !important;
+          }
+        }
+
         .icon {
           @extend %fc;
           width: 36px;
@@ -145,16 +161,4 @@
   }
 }
 
-.active-sidebar-tab {
-  background-color: rgba($btn-blue, .2);
-
-  .icon {
-    color: white;
-    background-color: $btn-blue !important;
-  }
-
-  &:hover {
-    background-color: rgba($btn-blue, .2) !important;
-  }
-}
 

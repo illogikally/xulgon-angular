@@ -1,16 +1,28 @@
-<div class="group">
-  <div class="sidebar-below">
-       <!-- *ngIf="group?.role == 'ADMIN'"> -->
-    <div class="group-sidebar">
+<div *ngIf="group" class="group">
+  <div class="sidebar-below"
+       #sidebarBelow
+       *ngIf="group?.role == 'ADMIN'">
+    <div #sidebar class="group-sidebar">
       <div class="title">
         <span>Quản lý nhóm</span>
+        <div #toggleButton class="toggle-sidebar">
+          <app-button [hasOptions]="false"
+                      background="#fff"
+                      width="40px"
+                      height="40px"
+                      iconSize="30px"
+                      [isRounded]="true">
+            <div (click)="toggleSidebar()" button="">
+              <div>
+                <i class='bx bx-sidebar'></i>
+              </div>
+            </div>
+          </app-button>
+        </div>
       </div>
       <div class="group-meta">
-        <div class="hide">
-          <i class='bx bx-slider'></i>
-        </div>
         <div class="cover-img">
-          <img [src]="group?.coverPhotoUrl">
+          <img [src]="group?.coverPhotoUrl || defaultCoverPhotoUrl">
         </div>
         <div class="name--privacy">
           <div class="name">

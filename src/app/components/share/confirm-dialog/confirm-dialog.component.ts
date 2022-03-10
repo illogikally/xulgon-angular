@@ -1,4 +1,5 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MessageService } from '../message.service';
 import { ConfirmDialogService } from './confirm-dialog.service';
@@ -14,11 +15,9 @@ export class ConfirmDialogComponent implements OnInit {
   body = '';
   dialogId = 0;
 
-  @ViewChild('self', {static: true}) self!: ElementRef;
+  toggleModal = new Subject<any>();
   constructor(
-    private messagesService: MessageService,
     private confirmService: ConfirmDialogService,
-    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -42,17 +41,10 @@ export class ConfirmDialogComponent implements OnInit {
   }
 
   show() {
-    this.renderer.setStyle(this.self.nativeElement, 'visibility', 'visible');
-    this.renderer.setStyle(this.self.nativeElement, 'top', '0px');
-    this.renderer.setStyle(document.body, 'top', -window.scrollY + 'px');
-    this.renderer.setStyle(document.body, 'position', 'fixed');
+    this.toggleModal.next();
   }
 
   hide() {
-    const top = -parseInt(document.body.style.top);
-    this.renderer.setStyle(this.self.nativeElement, 'visibility', 'hidden');
-    this.renderer.removeStyle(document.body, 'position');
-    window.scrollTo({top: top});
+    this.toggleModal.next();
   }
-
 }

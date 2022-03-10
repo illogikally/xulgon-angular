@@ -1,4 +1,5 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ThisReceiver } from '@angular/compiler';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { AuthenticationService } from '../../authentication/authentication.service';
@@ -14,17 +15,16 @@ import { SharedContent } from '../shared-content';
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.scss']
 })
-export class CreatePostComponent implements OnInit {
+export class CreatePostComponent implements OnInit, AfterViewInit {
 
-  @Input() open$!: Subject<any>;
-  @Input() visible = false;
+  @Input() width = '500px';
 
   @Input() groupName = '';
   @Input() groupId = NaN;
   @Input() groupPrivacy = '';
   @Input() sharedContent?: SharedContent;
-  @Input() isHidden = true;
 
+  @Output() close = new EventEmitter();
   @ViewChild('privacyBtn') privacyButton!: ElementRef;
   @ViewChild('textArea', {static: true}) textArea!: ElementRef;
 
@@ -55,9 +55,15 @@ export class CreatePostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.open$.subscribe(() => {
-      this.show();
-    });
+  }
+
+  ngAfterViewInit(): void {
+    this.setStyleHost();
+  }
+
+  setStyleHost() {
+    this.renderer.setStyle(this.self.nativeElement, 'display', 'block');
+    this.renderer.setStyle(this.self.nativeElement, 'max-width', this.width);
   }
 
   onSelectImage(event: any): void {
@@ -86,8 +92,8 @@ export class CreatePostComponent implements OnInit {
   submit(): void {
     this.isPosting = true;
     let data = new FormData();
-    data = this.constructCreatePhotoRequest(data);
-    data = this.constructCreatePostRequest(data);
+    data = this.constructAndAddPhotoRequests(data);
+    data = this.constructAndAddPostRequst(data);
     this.postService.createPost(data).subscribe(
       this.onCreatePostSuccess.bind(this),
       this.onCreatePostError.bind(this)
@@ -115,11 +121,10 @@ export class CreatePostComponent implements OnInit {
     this.hide();
   }
 
-  constructCreatePostRequest(data: FormData): FormData {
+  constructAndAddPostRequst(data: FormData): FormData {
     this.privacy = this.groupPrivacy || this.privacy;
     const pageId = this.groupId || this.authenticationService.getProfileId();
-    console.log(this.sharedContent?.id);
-    
+
     let postRequest =  new Blob(
       [JSON.stringify({
         pageId: pageId,
@@ -134,7 +139,7 @@ export class CreatePostComponent implements OnInit {
     return data;
   }
 
-  constructCreatePhotoRequest(data: FormData): FormData {
+  constructAndAddPhotoRequests(data: FormData): FormData {
     this.privacy = this.groupPrivacy || this.privacy;
     let photoRequests: any[] = []
 
@@ -159,8 +164,6 @@ export class CreatePostComponent implements OnInit {
 
   onEmojiSelect(event: any) {
     const input = this.postForm.get('textarea');
-    console.log(event);
-    
     input!.setValue(input!.value + event.emoji.native);
   }
 
@@ -176,8 +179,6 @@ export class CreatePostComponent implements OnInit {
   }
 
   showPrivacyOpts(): void {
-
-    console.log('hhehehe');
     this.isPrivacyOptsVisible = !this.isPrivacyOptsVisible;
   }
 
@@ -189,19 +190,8 @@ export class CreatePostComponent implements OnInit {
     this.files = [];
     this.photos = [];
   }
-
-  show() {
-    this.renderer.setStyle(this.self.nativeElement, 'display', 'block');
-    this.renderer.setStyle(this.self.nativeElement, 'top', '0px');
-    this.renderer.setStyle(document.body, 'top', -window.scrollY + 'px');
-    this.renderer.setStyle(document.body, 'position', 'fixed');
-    this.textArea.nativeElement.focus();
-  }
-
+  
   hide() {
-    const top = -parseInt(document.body.style.top);
-    this.renderer.setStyle(this.self.nativeElement, 'display', 'none');
-    this.renderer.removeStyle(document.body, 'position');
-    window.scrollTo({top: top});
+    this.close.emit();
   }
 }

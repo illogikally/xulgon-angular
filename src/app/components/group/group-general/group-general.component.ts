@@ -1,7 +1,6 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { TitleService } from '../../share/title.service';
 import { UserService } from '../../share/user.service';
 import { GroupResponse } from '../group-response';
@@ -18,25 +17,12 @@ export class GroupGeneralComponent implements OnInit {
   managedGroups!: GroupResponse[];
   groups!: GroupResponse[];
 
-  createGroupVisible = false;
-
-  currentTab = 'feed';
-  createGroupForm: FormGroup;
-
-  createGroupIsPrivate: undefined | boolean;
-  createGroupPrivacyDropVisible = false;
-
+  selectedGroup = new Subject<number>();
   constructor(
-    private router: Router,
-    private groupService: GroupService,
-    private location: Location,
+    public groupService: GroupService,
     private userService: UserService,
     private titleService: TitleService,
-    private activatedRoute: ActivatedRoute
   ) {
-    this.createGroupForm = new FormGroup({
-      groupName: new FormControl('')
-    });
   }
 
   ngOnInit(): void {
@@ -47,35 +33,7 @@ export class GroupGeneralComponent implements OnInit {
     });
   }
 
-  changeGroup(event: any, group: GroupResponse): void {
-    this.location.go(`/groups/${group.id}`);
-    this.router.navigate([group.id], {
-      skipLocationChange: true, 
-      relativeTo: this.activatedRoute
-    });
-    event.preventDefault();
-  }
-
-  abort(): void {
-    this.createGroupVisible = false;
-    this.createGroupIsPrivate = undefined;
-    this.createGroupForm.get('groupName')?.setValue('');
-  }
-
-  submit(): void {
-    if (!this.submitable()) return;
-    let createGroupRequest = {
-      isPrivate: this.createGroupIsPrivate,
-      name: this.createGroupForm.get('groupName')?.value
-    }
-
-    this.groupService.createGroup(createGroupRequest).subscribe(groupId => {
-      this.router.navigateByUrl(`/groups/${groupId}`);
-    });
-  }
-
-  submitable(): boolean {
-    return !!this.createGroupForm.get('groupName')?.value
-      && this.createGroupIsPrivate !== undefined;
+  onDetach() {
+    this.selectedGroup.next(-1);
   }
 }

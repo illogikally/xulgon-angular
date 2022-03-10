@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { MessageService } from '../../share/message.service';
+import { filter, take } from 'rxjs/operators';
 import { GroupResponse } from '../group-response';
 import { GroupService } from '../group.service';
 
@@ -17,16 +16,16 @@ export class GroupMemberComponent implements OnInit, OnDestroy {
   admins = new Array<any>();
 
   groupId!: number;
-  groupProfile!: GroupResponse;
+  group!: GroupResponse;
   private destroyed$ = new ReplaySubject<boolean>(1);
 
   @ViewChild('opts') opts!: ElementRef;
   memberOptsVisible = false;
 
-  constructor(private http: HttpClient,
-              private renderer: Renderer2,
-              private group$: GroupService,
-              private messageService: MessageService) {
+  constructor(
+    private groupService: GroupService,
+    private activatedRoute: ActivatedRoute,
+  ) {
   }
 
   ngOnDestroy(): void {
@@ -35,40 +34,44 @@ export class GroupMemberComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.messageService.groupLoaded.subscribe(group => {
-      if (!group) return;
-      this.groupProfile = group;
-    });
-    this.messageService.onLoadPostsByPageId()
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(id => {
-        if (!id) return;
-        this.groupId = id;
+    this.getGroupResponseFromParent();
+    this.getMembers();
+  }
 
-        this.http.get<any[]>(`http://localhost:8080/api/groups/${id}/members`).subscribe(members => {
-          this.members = members;
-          console.log(members);
+  getGroupResponseFromParent() {
+    this.groupService.currentGroup().pipe(
+      take(1),
+      filter(group => !!group)
+    ).subscribe(group => this.group = group);
+  }
 
-          this.admins = members.filter(m => m.role == 'ADMIN');
-          this.members = members.filter(m => m.role == 'MEMBER');
-        });
+  getMembers() {
+    const groupId = Number(this.activatedRoute.snapshot.parent?.paramMap.get('id'));
+    if(!isNaN(groupId)) {
+      this.groupService.getMembers(groupId).subscribe(members => {
+        this.members = members;
+        this.admins = members.filter(m => m.role == 'ADMIN');
+        this.members = members.filter(m => m.role == 'MEMBER');
       });
+    }
   }
 
-  promote(member: any): void {
-    this.group$.promote(member.user.id, this.groupId).subscribe(_ => {
-      this.admins.push(member);
-      this.members = this.members.filter(e => e.user.id != member.user.id);
-    });
+  kicked(id: number) {
+    this.admins = this.admins.filter(m => m.user.id != id);
+    this.members = this.members.filter(m => m.user.id != id);
   }
 
-  kick(member: any): void {
-    this.group$.kick(member.user.id, this.groupId).subscribe(_ => {
-      this.admins = this.admins.filter(e => e.user.id != member.user.id);
-      this.members = this.members.filter(e => e.user.id != member.user.id);
-    });
+  promoted(id: number) {
+    const member = this.members.find(m => m.user.id == id);
+    this.members = this.members.filter(m => m.user.id != id);
+    member.role = 'ADMIN';
+    this.admins.push(member);
   }
 
-  showOpts(event: any): void {
+  demoted(id: number) {
+    const admin = this.admins.find(m => m.user.id == id);
+    this.admins = this.admins.filter(m => m.user.id != id);
+    admin.role = 'ADMIN';
+    this.members.push(admin);
   }
 }

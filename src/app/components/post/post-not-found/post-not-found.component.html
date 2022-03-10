@@ -1,0 +1,18 @@
+<div [ngStyle]="{'height': size == 'small' ? '' : '400px'}"
+     class="content-not-found">
+  <div class="image">
+    <img [ngStyle]="size == 'small' ? {
+      'width': '50px',
+      'height': '50px'
+    } : {}"
+         src="assets/content-not-found.svg">
+  </div>
+  <div [ngStyle]="size == 'small' ? {
+    'font-size': '.95rem',
+    'font-weight': '400'
+  } : {}"
+       class="text">
+    {{ isShare ? 'Nội dung được chia sẻ' : 'Nội dung mà bạn muốn truy cập' }} không tồn tại, đã bị xoá
+    hoặc chủ nội dụng đã thay đổi quyền riêng tư.
+  </div>
+</div>

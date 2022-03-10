@@ -1,17 +1,16 @@
-<div *ngIf="content"
-     [ngClass]="isCreatePostChild ? 'create-post-child' : ''"
+<div [ngClass]="isCreatePostChild ? 'create-post-child' : ''"
      class="root">
   <div class="root__inner">
-    <div [ngStyle]="{'margin': mediaMargin}"
+    <div *ngIf="content"
+         [ngStyle]="{'margin': mediaMargin}"
          class="media">
       <app-media-layout [photos]="content.photos"
                         [photoSetId]="content.photoSetId"
-                        [photoCount]="content.photoCount"
-      ></app-media-layout>
+                        [photoCount]="content.photoCount"></app-media-layout>
     </div>
-    <div
-      [ngClass]="content.photos?.length ? 'has-media' : 'no-media'"
-      class="body">
+    <div *ngIf="content"
+         [ngClass]="content.photos?.length ? 'has-media' : 'no-media'"
+         class="body">
       <div class="body__inner">
         <div class="name--timestamp">
           <app-post-header [isAvatarVisible]="false"
@@ -22,5 +21,12 @@
       </div>
     </div>
   </div>
-  <div *ngIf="isDisabled" class="disabled"></div>
+  <div class="content-not-found"
+       *ngIf="!content">
+    <app-post-not-found size="small"
+                        [isShare]="true">
+    </app-post-not-found>
+  </div>
+  <div *ngIf="isDisabled"
+       class="disabled"></div>
 </div>

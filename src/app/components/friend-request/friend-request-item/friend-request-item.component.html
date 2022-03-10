@@ -1,7 +1,7 @@
-<a (click)="preventDefault($event)" href="http://locahost:8080/{{request?.requesterId}}">
+<a (click)="route($event)" href="http://locahost:8080/{{request?.requesterId}}">
   <li class="request">
     <div class="avatar">
-      <img [src]="request?.requesterAvatarUrl">
+      <img [src]="request?.requesterAvatarUrl || 'assets/avatar.jpg'">
     </div>
     <div class="request-info">
       <div class="username--time">
@@ -14,12 +14,17 @@
         {{ request?.commonFriendCount }} bạn chung
       </div>
       <div class="request-actions">
-        <button #accept (click)="acceptRequest()" class="accept-request">
-          Xác nhận
-        </button>
-        <button #decline (click)="deleteRequest()" class="delete-request">
-          Xoá
-        </button>
+        <app-button background="#1877f2">
+          <div (click)="accept($event) "button="">
+            <div>Xác nhận</div>
+          </div>
+        </app-button>
+
+        <app-button >
+          <div (click)="decline($event) "button="">
+            <div>Xoá</div>
+          </div>
+        </app-button>
       </div>
     </div>
   </li>

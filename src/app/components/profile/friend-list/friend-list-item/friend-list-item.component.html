@@ -1,52 +1,48 @@
 <div class="friend-list-item">
   <div class="avatar-container">
-    <a
-      routerLink="/{{userDto.profileId}}">
+    <a routerLink="/{{userDto.profileId}}">
       <div class="avatar">
-        <img [src]="userDto.avatarUrl || 'assets/avatar.jpg'"/>
+        <img [src]="userDto.avatarUrl || 'assets/avatar.jpg'" />
       </div>
     </a>
   </div>
 
   <div class="body">
-    <a
-      routerLink="/{{userDto.profileId}}"
-      class="body-c">
+    <a routerLink="/{{userDto.profileId}}"
+       class="body-c">
       <div class="username">
         {{ userDto.username }}
       </div>
-      <div
-        *ngIf="userDto.commonFriendCount > 0 && userDto.id != loggedInUserId"
-        class="common-friend-count">
+      <div *ngIf="userDto.commonFriendCount > 0 && userDto.id != auth.getPrincipalId()"
+           class="common-friend-count">
         {{ userDto.commonFriendCount }} bạn bè chung
       </div>
     </a>
   </div>
 
-  <div class="flex-center">
-    <div
-      (click)="showOptions()"
-      #optionsBtn
-      *ngIf="loggedInProfileId == profileId"
-      class="options-btn">
-      <i class='bx bx-dots-horizontal-rounded'></i>
-      <div
-        *ngIf="isOptionsVisible"
-        (clickOutside)="hideOptions($event)"
-        class="options">
-        <div
-          (click)="unfriend()">
+  <div class="options"
+       *ngIf="auth.getProfileId() == pageId">
+    <app-button [hasOptions]="true"
+                background="transparent"
+                backgroundHover="#f0f2f5"
+                [isRounded]="true"
+                width="40px"
+                height="40px">
+      <div button="">
+        <i class='bx bx-dots-horizontal-rounded'></i>
+      </div>
+
+      <div options="">
+        <div (click)="unfriend()">
           <i class='bx bx-user-x'></i>
           <span>Huỷ bỏ bạn bè</span>
         </div>
-        <div
-          *ngIf="userDto?.isFollow"
-          (click)="unfollow()"
-        >
+        <div *ngIf="userDto?.isFollow"
+             (click)="unfollow()">
           <i class='bx bx-outline'></i>
           <span>Bỏ theo dõi</span>
         </div>
       </div>
-    </div>
+    </app-button>
   </div>
 </div>

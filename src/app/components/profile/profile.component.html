@@ -1,30 +1,29 @@
-<div 
-*ngIf="!pageNotFound"
-class="user-profile">
+<div *ngIf="pageHeader"
+     class="user-profile">
   <div class="profile-header">
     <div class="flex-center">
       <div class="cover-avatar">
         <div class="cover">
-          <img 
-          *ngIf="pageHeader.coverPhotoUrl"
-          [src]="pageHeader.coverPhotoUrl || ''">
-          <app-button
-          background="#fff"
-          *ngIf="pageHeader.id == principalId"
-          (click)="showUpdateProfilePic('cover')"
-          class="change-cover">
+          <img *ngIf="pageHeader.coverPhoto"
+               [src]="pageHeader.coverPhoto.url || ''">
+          <app-button background="#fff"
+                      *ngIf="pageHeader.id == principalId"
+                      (click)="showUpdateProfilePic('cover')"
+                      class="change-cover">
             <div button="">
               <i class='bx bxs-camera'></i>
               <span>Thay ảnh bìa</span>
             </div>
           </app-button>
         </div>
-        <div  class="avatar-container flex-center">
+        <div class="avatar-container flex-center">
           <div class="avatar">
             <app-photo [url]="pageHeader.avatar?.thumbnails?.s200x200.url"
+                       [isPhotoViewNavigationReverse]="true"
                        [setId]="pageHeader.avatarPhotoSetId"
-                       [id]="pageHeader.avatar?.id"
-            ></app-photo>
+                       [id]="pageHeader.avatar?.id">
+            </app-photo>
+            <div class="blocked" (click)="$event.preventDefault()" *ngIf="pageHeader.blocked"></div>
           </div>
           <app-button width="35px"
                       height="35px"
@@ -41,23 +40,24 @@ class="user-profile">
       </div>
     </div>
     <div class="flex-center">
-      <h1
-        class="profile-name flex-center">
+      <h1 class="profile-name flex-center">
         {{ pageHeader.name }}
       </h1>
     </div>
   </div>
   <app-tab-bar [pageId]="pageHeader.id"
+               [tabs]="tabs"
                [pageName]="pageHeader.name"
                [pagePath]="'/' + pageHeader.id"
+               [blocked]="pageHeader.blocked"
                [avatar]="pageHeader.avatar?.thumbnails?.s200x200.url">
     <div actions="">
       <app-friendship-button [userId]="pageHeader.id"
+                             *ngIf="!pageHeader.blocked"
                              [friendshipStatus]="pageHeader.friendshipStatus"
-                             [userName]="pageHeader.name"
-      ></app-friendship-button>
+                             [userName]="pageHeader.name"></app-friendship-button>
 
-      <app-button *ngIf="pageHeader.friendshipStatus != undefined"
+      <app-button *ngIf="pageHeader.friendshipStatus != undefined && !pageHeader.blocked"
                   (click)="openChatBox()">
         <div button>
           <i class='bx bxs-message-square-dots'></i>
@@ -66,22 +66,32 @@ class="user-profile">
       </app-button>
 
       <app-button [hasOptions]="true"
-                  *ngIf="pageHeader.friendshipStatus" >
+                  *ngIf="pageHeader.friendshipStatus">
         <div button>
           <i class='bx bx-dots-horizontal-rounded'></i>
         </div>
 
         <div options>
-          <div
-          *ngIf="!isBlocked"
-          (click)="block()">
+          <div *ngIf="!pageHeader.isFollow && !pageHeader.blocked"
+               (click)="follow()">
+            <i class='bx bx-folder-plus'></i>
+            <span>Theo dõi</span>
+          </div>
+
+          <div *ngIf="pageHeader.isFollow && !pageHeader.blocked"
+               (click)="unfollow()">
+            <i class='bx bx-folder-minus'></i>
+            <span>Huỷ bỏ theo dõi</span>
+          </div>
+
+          <div *ngIf="!pageHeader.blocked"
+               (click)="block()">
             <i class='bx bx-block'></i>
             <span>Chặn người này</span>
           </div>
 
-          <div
-          *ngIf="isBlocked"
-          (click)="unblock()" >
+          <div *ngIf="pageHeader.blocked"
+               (click)="unblock()">
             <i class='bx bx-block'></i>
             <span>Gỡ chặn người này</span>
           </div>
@@ -89,14 +99,11 @@ class="user-profile">
       </app-button>
     </div>
   </app-tab-bar>
-  <div class="profile-body">
+  <div *ngIf="!pageHeader.blocked"
+       class="profile-body">
     <div class="content-container">
       <router-outlet></router-outlet>
     </div>
   </div>
 </div>
-<app-error-page *ngIf="pageNotFound"></app-error-page>
-<app-pick-avatar
-  *ngIf="isUpdateAvatar"
-  (closeMe)="isUpdateAvatar = false"
-></app-pick-avatar>
+<app-pick-avatar></app-pick-avatar>

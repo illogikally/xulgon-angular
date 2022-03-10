@@ -85,9 +85,19 @@ import { UserRefComponent } from './components/share/user-ref/user-ref.component
 import { MyReuseStrategy } from './my-reuse-trategy';
 import { MyRxStompConfig } from './my-rx-stomp.config';
 import { LoadOnScrollDirective } from './components/share/load-on-scroll.directive';
+import { GroupMemberItemComponent } from './components/group/group-member/group-member-item/group-member-item.component';
+import { GroupShareSelectorComponent } from './components/post/group-share-selector/group-share-selector.component';
+import { CreatePostModalComponent } from './components/post/create-post-modal/create-post-modal.component';
+import { GroupShareItemComponent } from './components/post/group-share-selector/group-share-item/group-share-item.component';
+import { CardHeaderComponent } from './components/share/card-header/card-header.component';
+import { CreateNewGroupComponent } from './components/group/group-general/create-new-group/create-new-group.component';
+import { GroupGeneralGroupItemComponent } from './components/group/group-general/group-general-group-item/group-general-group-item.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { PostNotFoundComponent } from './components/post/post-not-found/post-not-found.component';
 
 @NgModule({
   declarations: [
+    GroupShareItemComponent,
     LoggedInComponent,
     AppComponent,
     LoginComponent,
@@ -158,8 +168,16 @@ import { LoadOnScrollDirective } from './components/share/load-on-scroll.directi
     ModalComponent,
     SuggestTagUserComponent,
     LoadOnScrollDirective,
+    GroupMemberItemComponent,
+    GroupShareSelectorComponent,
+    CreatePostModalComponent,
+    CardHeaderComponent,
+    CreateNewGroupComponent,
+    GroupGeneralGroupItemComponent,
+    PostNotFoundComponent,
   ],
   imports: [
+    ImageCropperModule,
     PickerModule,
     FormsModule,
     ClickOutsideModule,

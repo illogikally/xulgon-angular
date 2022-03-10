@@ -5,14 +5,19 @@ $triangle-height: 8px;
 .button {
   position: relative;
   user-select: none;
-  cursor: pointer;
   z-index: 1;
   font-family: inherit;
+  cursor: pointer;
 
   &__inner {
     --icon-size: 23px;
     height: 37px;
     font-weight: 500;
+    outline: none;
+    font-family: inherit;
+    cursor: pointer;
+    width: 100%;
+    border: none;
     background-color: var(--bg);
     color: var(--fg);
     font-size: 16px;
@@ -37,6 +42,7 @@ $triangle-height: 8px;
       > * {
         display: flex;
         justify-content: center;
+        width: 100%;
         align-items: center;
         height: 100%;
 
@@ -47,6 +53,12 @@ $triangle-height: 8px;
         i {
           font-size: var(--icon-size);
         }
+
+        img {
+          width: var(--icon-size);
+          height: var(--icon-size);
+          filter: invert(100%);
+        }
       }
     }
   }  
@@ -55,7 +67,6 @@ $triangle-height: 8px;
   &__options {
     font-weight: 500;
     font-size: 16px;
-
 
     ::ng-deep {
 
@@ -79,5 +90,4 @@ $triangle-height: 8px;
       }
     }
   }
-
 }

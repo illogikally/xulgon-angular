@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {ReplaySubject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {filter, take, takeUntil} from 'rxjs/operators';
 import {MessageService} from '../../share/message.service';
 import {GroupService} from '../group.service';
 
@@ -16,8 +17,10 @@ export class JoinRequestListComponent implements OnInit, OnDestroy {
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
-  constructor(private groupService: GroupService,
-              private messageService: MessageService) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private groupService: GroupService,
+    private messageService: MessageService) {
   }
 
   ngOnDestroy(): void {
@@ -26,16 +29,15 @@ export class JoinRequestListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.messageService.groupLoaded
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(group => {
-        if (!group) return;
+    this.getRequests();
+  }
 
-        this.groupService.getJoinRequests(group.id).subscribe(requests => {
-          this.joinRequests = requests;
-          this.dummy = this.joinRequests;
-        })
-      });
+  getRequests() {
+    const groupId = Number(this.activatedRoute.snapshot.parent?.paramMap.get('id'));
+    this.groupService.getJoinRequests(groupId).subscribe(requests => {
+      this.joinRequests = requests;
+      this.dummy = this.joinRequests;
+    })
   }
 
   deleteRequest(requestId: number): void {

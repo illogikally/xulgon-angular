@@ -51,18 +51,21 @@ const routes: Routes = [
       {
         path: 'friends',
         component: FriendRequestComponent,
-        // children: [
-        //   {
-        //     path: ':id',
-        //     component: ProfileComponent,
-        //     children: [
-        //       { path: '', component: ProfileTimelineComponent},
-        //       { path: 'about', component: ProfileAboutComponent},
-        //       { path: 'friends', component: FriendListComponent},
-        //       { path: 'photos', component: PhotoListComponent}
-        //     ]
-        //   }
-        // ]
+        children: [
+          {
+            path: ':id',
+            component: ProfileComponent,
+            resolve: {
+              header: ProfileHeaderResolver
+            },
+            children: [
+              { path: '', component: ProfileTimelineComponent},
+              { path: 'about', component: ProfileAboutComponent},
+              { path: 'friends', component: FriendListComponent},
+              { path: 'photos', component: PhotoListComponent}
+            ]
+          }
+        ]
       },
       {
         path: 'search',
@@ -145,18 +148,7 @@ const routes: Routes = [
           { path: 'photos', component: PhotoListComponent}
         ]
       },
-      // {
-      //   path: ':id',
-      //   component: ProfileComponent,
-      //   outlet: 'profile',
-      //   children: [
-      //     { path: '', component: ProfileTimelineComponent},
-      //     { path: 'about', component: ProfileAboutComponent},
-      //     { path: 'friends', component:  FriendListComponent},
-      //     { path: 'photos', component: PhotoListComponent}
-      //   ]
-      // },
-      { path: '**', component: ErrorPageComponent}
+      { path: '**', component: ErrorPageComponent, data: {displayErrorPage: true}}
     ]
   },
 

@@ -26,8 +26,10 @@ export class ToasterComponent implements OnInit {
     this.toasterService.message$.subscribe(message => {
       this.messageType = message.type;
       this.message = message.message;
-      console.log(message);
       this.displayToaster();
+      setTimeout(() => {
+        this.hideToaster(); 
+      }, 5000);
     });
   }
 

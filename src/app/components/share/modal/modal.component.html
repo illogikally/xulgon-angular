@@ -1,9 +1,10 @@
-<div 
-#self
-class="root">
-  <div class="content">
-    <div class="content__inner">
-      <ng-content select="[content]"></ng-content>
-    </div>
+<div #self
+     [ngStyle]="{'background-color': background}"
+     *ngIf="!isHidden"
+     class="root">
+  <div (clickOutside)="hide()"
+       [clickOutsideEvents]="'mousedown'"
+       class="root__inner">
+    <ng-content></ng-content>
   </div>
 </div>

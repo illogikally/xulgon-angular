@@ -1,0 +1,14 @@
+<a [routerLink]="[group.id]"
+   [relativeTo]="route"
+   routerLinkActive="selected"
+   (click)="select($event)"
+   class="group-item">
+  <div class="group-item__inner">
+    <div class="avatar">
+      <img [src]="group?.coverPhotoUrl || groupService.getDefaultCoverPhotoUrl()" />
+    </div>
+    <div class="name">
+      <span>{{ group.name }}</span>
+    </div>
+  </div>
+</a>

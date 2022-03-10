@@ -1,8 +1,9 @@
 import { Location, LocationStrategy } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { timeout } from 'rxjs/operators';
+import { merge, Observable, of } from 'rxjs';
+import { catchError, filter, timeout } from 'rxjs/operators';
+import { ErrorPageService } from '../error-page/error-page.service';
 import { PhotoViewResponse } from '../share/photo/photo-view-response';
 import { PhotoService } from '../share/photo/photo.service';
 
@@ -13,14 +14,14 @@ import { PhotoService } from '../share/photo/photo.service';
 })
 export class PhotoViewerComponent implements OnInit, AfterViewInit {
 
-  @Input() photo?: PhotoViewResponse;
+  @Input() photo?: PhotoViewResponse | null;
   @Input() photoId!: number;
   @Input() setId?: number;
   @Input() isPlaceHolderChild = false;
   @Input() placeHolderOnAttachLisenter?: Observable<any>;
 
   photoStack: any[] = [];
-  isError = false;
+  nullPhoto = false;
   isHidden = true;
   currentHistoryStateId = 0;
   isNavigationReverse = false;
@@ -39,7 +40,7 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
 
     if (this.photoId) {
-      this.loadPhoto();
+      this.getPhoto();
     }
     this.placeHolderOnAttachLisenter?.subscribe(() => this.show());
 
@@ -61,16 +62,17 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
 
   configureOnOpenPhotoViewer() {
     this.photoService.onOpenPhotoViewerCalled().subscribe(data => {
-      if (!this.isHidden) {
-        this.photoStack.push({
-          setId: this.setId,
-          photo: this.photo
-        });
-      }
+      this.photoStack.push({
+        setId: this.setId,
+        photo: this.photo,
+        url: this.isHidden
+          ? window.location.pathname + window.location.search
+          : this.constructPhotoUrl()
+      });
       this.photoId = data.id;
       this.setId = data.setId;
       this.configureNavigation(data.isNavigationReverse);
-      this.loadPhoto();
+      this.getPhoto();
     });
   }
 
@@ -81,51 +83,36 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   }
 
   getHasPreviousHasNext() {
-    return this.isNavigationReverse 
+    return this.isNavigationReverse
       ? [this.photo?.hasNext, this.photo?.hasPrevious]
       : [this.photo?.hasPrevious, this.photo?.hasNext];
   }
 
-  loadPhoto() {
-    if (this.setId) {
-      this.photoService.getPhotoBySetIdAndPhotoId(this.setId, this.photoId)
-      .subscribe(this.resolveLoadedPhoto.bind(this), 
-      error => {
-        this.isError = true;
-      });
-    }
-    else {
-      this.photoService.getPhoto(this.photoId).subscribe(this.resolveLoadedPhoto.bind(this),
-      error => {
-        this.isError = true;
-      });
-    }
-  }
+  getPhoto() {
+    const observer = this.setId 
+        ? this.photoService.getPhotoBySetIdAndPhotoId(this.setId, this.photoId)
+        : this.photoService.getPhoto(this.photoId);
 
-  resolveLoadedPhoto(photo: PhotoViewResponse) {
-    this.photo = photo;
-    if (photo == null) {
-      this.isError = true;
-    }
-    this.show();
+    observer.pipe(catchError(() => of(null))).subscribe(photo => {
+      this.nullPhoto = !photo;
+      this.photo = photo;
+      this.show();
+    });
   }
 
   hide(): void {
-    if (this.photoStack.length) {
-      let data = this.photoStack.pop();
-      console.log(this.photoStack);
-      this.photo = data.photo;
-      this.photoId = data.photo.id;
-      this.setId = data.setId;
-      console.log(data.photo);
-      this.location.replaceState(this.constructPhotoUrl());
-    }
-    else {
-      this.location.back();
-      this.isHidden = true;
+    if (this.photoStack.length <= 1) {
       this.resumeBodyScroll();
+      this.isHidden = true;
       this.photo = undefined;
     }
+
+    let data = this.photoStack.pop();
+    this.photo = data?.photo;
+    this.photoId = data?.photo?.id;
+    this.setId = data?.setId;
+    this.location.replaceState(data.url);
+
   }
 
   resumeBodyScroll() {
@@ -134,21 +121,22 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   }
 
   show() {
-    if (!this.isHidden && !this.isPlaceHolderChild) {
-      this.location.replaceState(this.constructPhotoUrl());
+    this.isHidden = false;
+    if (!this.isPlaceHolderChild) {
+      this.location.go(this.constructPhotoUrl());
     }
     else {
-      this.isHidden = false;
-      setTimeout(() => {
-        this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
-        this.renderer.setStyle(this.self.nativeElement, 'display', 'block');
-        if (!this.isPlaceHolderChild) {
-          console.log('go zom zom');
-          
-          this.location.go(this.constructPhotoUrl());
-        }
-      }, 200);
+      this.location.replaceState(this.constructPhotoUrl());
     }
+
+    if (!this.photo && !this.isPlaceHolderChild) {
+      window.location.reload();
+    }
+
+    setTimeout(() => {
+      this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
+      this.renderer.setStyle(this.self.nativeElement, 'display', 'block');
+    }, 200);
   }
 
   nextPhoto() {
@@ -163,11 +151,11 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
     if (!this.setId) return;
 
     get.call(this.photoService, this.setId, this.photoId)
-    .subscribe(photo => {
-      this.photo = photo;
-      this.photoId = photo.id;
-      this.updateUrl();
-    });
+      .subscribe(photo => {
+        this.photo = photo;
+        this.photoId = photo.id;
+        this.updateUrl();
+      });
   }
 
   constructPhotoUrl() {
@@ -183,8 +171,7 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
       this.location.go(this.constructPhotoUrl());
     }
     else {
-      // this.location.replaceState(this.constructPhotoUrl());
-      window.history.replaceState(null, document.title, this.constructPhotoUrl());
+      this.location.replaceState(this.constructPhotoUrl());
     }
   }
 }

@@ -6,7 +6,8 @@
   padding: 20px;
 
   .content {
-    width: 844px;
+    width: 100%;
+    max-width: 844px;
 
     .search {
       @include card(10px);

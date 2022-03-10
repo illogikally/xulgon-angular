@@ -1,12 +1,12 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { RxStompService } from '@stomp/ng2-stompjs';
+import { Observable, ReplaySubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ChatMessage } from '../chat/chat-msg';
-import {GroupResponse} from '../group/group-response';
-import {Post} from '../post/post';
-import { OffsetResponse } from './offset-response';
+import { FriendRequestDto } from '../friend-request/friend-request-dto';
+import { GroupResponse } from '../group/group-response';
+import { Post } from '../post/post';
 import { UserBasic } from './user-basic';
 
 @Injectable({
@@ -16,9 +16,12 @@ export class UserService {
 
   private baseApiUrl = environment.baseApiUrl;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient){
   }
 
+  getFriendRequests(userId: number): Observable<FriendRequestDto[]> {
+    return this.http.get<FriendRequestDto[]>(`${this.baseApiUrl}/users/${userId}/friend-requests`);
+  }
   block(userId: number): Observable<any> {
     const url = `${this.baseApiUrl}/users/${userId}/block`;
     return this.http.post(url, {});
@@ -57,11 +60,6 @@ export class UserService {
   getJoinedGroups(): Observable<GroupResponse[]> {
     const url = `${this.baseApiUrl}/users/groups`
     return this.http.get<GroupResponse[]>(url);
-  }
-
-  unfollow(userId: number): Observable<any> {
-    const url = `${this.baseApiUrl}/users/${userId}/unfollow`;
-    return this.http.delete<any>(url);
   }
 
   isUserExisted(username: string): Observable<boolean> {

@@ -1,10 +1,7 @@
-import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { MessageService } from '../../share/message.service';
+import { filter, take } from 'rxjs/operators';
+import { FollowService } from '../../share/follow.service';
 import { GroupResponse } from '../group-response';
 import { GroupService } from '../group.service';
 
@@ -19,21 +16,21 @@ export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
   loadedTabs = new Set<string>();
   currentTab = '';
   isMoreActionsVisible = false;
+  defaultCoverPhotoUrl = this.groupService.getDefaultCoverPhotoUrl();
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
   tabs = [
-    {name: 'Thảo luận', path: '', distance: NaN, element: undefined},
-    {name: 'Giới thiệu', path: 'about', distance: NaN, element: undefined},
-    {name: 'Thành viên', path: 'members', distance: NaN, element: undefined},
-    {name: 'Ảnh', path: 'media', distance: NaN, element: undefined},
+    {name: 'Thảo luận', path: ''},
+    {name: 'Giới thiệu', path: 'about'},
+    {name: 'Thành viên', path: 'members'},
+    {name: 'Ảnh', path: 'media'},
   ]
 
   @ViewChild('groupTimeline') groupTimeline!: ElementRef;
   constructor(
-    private ngZone: NgZone,
     private groupService: GroupService,
-    private message$: MessageService,
+    private followService: FollowService,
   ) {
   }
 
@@ -43,17 +40,25 @@ export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-
-    this.message$.groupLoaded
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(groupResponse => {
-        if (!groupResponse) return;
-        this.group = groupResponse;
-      });
+    this.getGroupResponseFromParent();
+    this.configureDisableTabsIfNotMemberOrPrivate();
   }
 
   ngAfterViewInit(): void {
-    
+  }
+
+  configureDisableTabsIfNotMemberOrPrivate() {
+    let disable = !(this.group.isMember || !this.group.isPrivate);
+    if (disable) {
+      this.tabs = this.tabs.filter(tab => !['members', 'media'].includes(tab.path));
+    }
+  }
+
+  getGroupResponseFromParent() {
+    this.groupService.currentGroup().pipe(
+      take(1),
+      filter(group => !!group)
+    ).subscribe(group =>  this.group = group);
   }
 
   onAttach() {
@@ -65,21 +70,29 @@ export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   sendJoinRequest() {
-    this.groupService.sendJoinRequest(this.group.id).subscribe();
+    this.groupService.sendJoinRequest(this.group.id).subscribe(() => {
+      this.group.isRequestSent = true;
+    });
   }
 
   cancelJoinRequest(): void {
-    this.groupService.cancelJoinRequest(this.group.id).subscribe();
-  }
-
-  toggleMoreActions() {
-    this.isMoreActionsVisible = !this.isMoreActionsVisible;
+    this.groupService.cancelJoinRequest(this.group.id).subscribe(() => {
+      this.group.isRequestSent = false;
+    });
   }
 
   leaveGroup(): void {
     this.groupService.leaveGroup(this.group.id).subscribe(_ => {
       window.location.reload();
     });
+  }
+
+  follow() {
+    this.followService.followPage(this.group.id).subscribe();
+  }
+
+  unfollow() {
+    this.followService.followPage(this.group.id).subscribe();
   }
 
 }

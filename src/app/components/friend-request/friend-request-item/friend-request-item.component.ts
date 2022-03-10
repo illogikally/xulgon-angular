@@ -1,9 +1,8 @@
-import {Location} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {MessageService} from '../../share/message.service';
-import {FriendRequestDto} from '../friend-request-dto';
+import { Location } from '@angular/common';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../../share/user.service';
+import { FriendRequestDto } from '../friend-request-dto';
 
 @Component({
   selector: 'app-friend-request-item',
@@ -19,43 +18,37 @@ export class FriendRequestItemComponent implements OnInit {
   @Output() onDeleteRequest: EventEmitter<FriendRequestDto> = new EventEmitter();
   @Output() profilePicked: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private http: HttpClient,
-              private router: Router,
-              private location: Location,
-              private route: ActivatedRoute,
-              private messageService: MessageService) {
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private location: Location,
+    private activatedRoute: ActivatedRoute
+  ) {
   }
 
   ngOnInit(): void {
   }
 
-  preventDefault(event: any): void {
+  accept(event: any): void {
     event.preventDefault();
-    if (event.target == this.acceptBtn.nativeElement
-      || event.target == this.declineBtn.nativeElement) {
-      return;
-    }
-
-    // this.messageService.changeFriendRequest(this.request.requesterProfileId);
-    this.router.navigate([this.request.requesterId],
-      {relativeTo: this.route});
-    // , skipLocationChange: true});
-    // this.profilePicked.emit(true);
-    // this.location.go("/" + this.request.requesterProfileId);
+    this.userService.acceptFriendRequest(this.request.requesterId).subscribe(() => {
+      this.onDeleteRequest.emit(this.request);
+    });
   }
 
-  acceptRequest(): void {
-    this.http.post(`http://localhost:8080/api/users/${this.request.requesterId}/friends`, {})
-      .subscribe(_ => {
-        this.onDeleteRequest.emit(this.request);
-      })
+  decline(event: any): void {
+    event.preventDefault();
+    this.userService.deleteFriendRequest(this.request.requesterId).subscribe(() => {
+      this.onDeleteRequest.emit(this.request);
+    });
   }
 
-  deleteRequest(): void {
-    this.http.delete(`http://localhost:8080/api/users/${this.request.requesterId}/friend-requests`)
-      .subscribe(_ => {
-        this.onDeleteRequest.emit(this.request);
-      })
+  route(event: any) {
+    event.preventDefault();
+    this.router.navigate([this.request.requesterId], {
+      skipLocationChange: true,
+      relativeTo: this.activatedRoute
+    });
+    this.location.replaceState(`/${this.request.requesterId}`);
   }
-
 }

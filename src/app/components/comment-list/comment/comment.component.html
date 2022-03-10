@@ -1,28 +1,24 @@
 <div class="comment">
   <div>
     <div class="comment-avatar">
-      <app-user-ref
-        [userDto]="comment.user"
-        borderRadius="50%"
-      ></app-user-ref>
+      <app-user-ref [userDto]="comment.user"
+                    borderRadius="50%"></app-user-ref>
     </div>
   </div>
   <div class="comment-right">
     <div style="display: flex;">
-      <div 
-      #commentBody
-      (clickOutside)="commentBody.classList.remove('highlight')"
-      class="comment-body">
+      <div #commentBody
+           (clickOutside)="commentBody.classList.remove('highlight')"
+           class="comment-body">
         <div class="comment-username">
-          <app-user-ref
-            [userDto]="comment.user"
-          ></app-user-ref>
+          <app-user-ref [userDto]="comment.user"></app-user-ref>
         </div>
         <div class="comment-body__text">
           {{ comment.body }}
         </div>
-        <div class="reaction-count" *ngIf="comment.reactionCount > 0">
-          <img src="assets/like-16x16.png"> 
+        <div class="reaction-count"
+             *ngIf="comment.reactionCount > 0">
+          <img src="assets/like-16x16.png">
           {{ comment.reactionCount}}
         </div>
       </div>
@@ -33,27 +29,25 @@
       </div>
 
     </div>
-    <div *ngIf="comment.photo" class="comment-media">
-      <app-photo
-      [isComment]="true"
-      [url]="comment.photo.thumbnails.s400x400.url"
-      [id]="comment.photo.id"
-      [style]="'height'">
+    <div *ngIf="comment.photo"
+         class="comment-media">
+      <app-photo [isComment]="true"
+                 [url]="comment.photo.thumbnails.s400x400.url"
+                 [id]="comment.photo.id"
+                 [style]="'height'">
       </app-photo>
     </div>
     <div class="comment-meta">
-      <span
-      class="comment-like hover-underline"
-      [ngClass]="{'reacted': comment.isReacted}"
-      (click)="like()">
+      <span class="comment-like hover-underline"
+            [ngClass]="{'reacted': comment.isReacted}"
+            (click)="like()">
         <span class="w500">Thích</span>
       </span>
       <span> · </span>
 
-      <span
-      class="comment-reply hover-underline"
-      *ngIf="!(comment.parentType == 'COMMENT')"
-      (click)="showReplies()">
+      <span class="comment-reply hover-underline"
+            *ngIf="!(comment.parentType == 'COMMENT')"
+            (click)="showReplies()">
         <span class="w500">Trả lời</span>
         <span> · </span>
       </span>
@@ -64,24 +58,22 @@
     </div>
     <div class="comment-reply-container">
       <div class="placeholder">
-        <span 
-        class="hover-underline"
-        *ngIf="
+        <span class="hover-underline"
+              *ngIf="
           comment.parentType != 'COMMENT' 
           && !replyVisible 
           && comment.replyCount
         "
-        (click)="showReplies()">
-          <i class='bx bx-subdirectory-right'></i> 
+              (click)="showReplies()">
+          <i class='bx bx-subdirectory-right'></i>
           {{ comment.replyCount }} trả lời
         </span>
       </div>
       <div>
-        <app-comment-list
-        *ngIf="replyVisible"
-        [totalCommentCount]="comment.replyCount"
-        [rootContentId]="comment.rootContentId"
-        [parentId]="comment.id">
+        <app-comment-list *ngIf="replyVisible"
+                          [totalCommentCount]="comment.replyCount"
+                          [rootContentId]="comment.rootContentId"
+                          [parentId]="comment.id">
         </app-comment-list>
       </div>
     </div>

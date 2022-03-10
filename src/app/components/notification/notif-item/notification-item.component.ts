@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthenticationService} from '../../authentication/authentication.service';
-import {NotificationService} from '../notification.service';
-import {Notification} from '../notification/notification';
-import {NotificationType} from '../notification/notification-type';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../authentication/authentication.service';
+import { NotificationService } from '../notification.service';
+import { Notification } from '../notification/notification';
+import { NotificationType } from '../notification/notification-type';
 
 @Component({
   selector: 'app-notification-item',
@@ -34,7 +34,7 @@ export class NotificationItemComponent implements OnInit {
 
   constructPath() {
     let pageId = this.notification.pageId;
-    let rootContentId = this.notification.rootContentId;
+    let rootContentId = this.notification.rootContent?.id;
     let pageType = this.notification.pageType;
     this.path = `${pageType == 'GROUP' ? '/groups' : ''}/${pageId}/posts/${rootContentId}`;
 
@@ -51,9 +51,17 @@ export class NotificationItemComponent implements OnInit {
         this.constructPathForNewPostNotification();
         break;
 
+      case NotificationType.GROUP_JOIN_REQUEST:
+        this.constructPathForGroupJoinRequestNotification();
+        break;
+
       default:
         break;
     }
+  }
+
+  constructPathForGroupJoinRequestNotification() {
+    this.path = `groups/${this.notification.pageId}/member_request`;
   }
 
   constructPathForNewPostNotification() {
@@ -63,22 +71,22 @@ export class NotificationItemComponent implements OnInit {
   }
 
   constructPathForCommentNotification() {
-    if (this.notification.targetContentType == 'COMMENT') {
-      this.queryParams.set('comment', this.notification.targetContentId);
-      this.queryParams.set('child_comment', this.notification.actorContentId);
+    if (this.notification.targetContent?.type == 'COMMENT') {
+      this.queryParams.set('comment', this.notification.targetContent.id);
+      this.queryParams.set('child_comment', this.notification.actorContent.id);
     }
     else {
-      this.queryParams.set('comment', this.notification.actorContentId);
+      this.queryParams.set('comment', this.notification.actorContent.id);
     }
   }
 
   constructPathForReactNotification() {
-    if (this.notification.targetContentParentType == 'COMMENT') {
-      this.queryParams.set('comment', this.notification.targetContentParentId);
-      this.queryParams.set('child_comment', this.notification.targetContentId);
+    if (this.notification.targetContetParent?.type == 'COMMENT') {
+      this.queryParams.set('comment', this.notification.targetContetParent?.id);
+      this.queryParams.set('child_comment', this.notification.targetContent?.id);
     }
-    else if (this.notification.targetContentType == 'COMMENT') {
-      this.queryParams.set('comment', this.notification.targetContentId);
+    else if (this.notification.targetContent.type == 'COMMENT') {
+      this.queryParams.set('comment', this.notification.targetContent?.id);
     }
     if (this.queryParams.size == 0) {
       this.routeReuseScrollToTop = true;
@@ -99,7 +107,7 @@ export class NotificationItemComponent implements OnInit {
     this.read();
     this.itemClick.emit();
     this.router.navigate([this.path], {
-      state: {routeReuseScroll: this.routeReuseScrollToTop},
+      state: { routeReuseScroll: this.routeReuseScrollToTop },
       queryParams: Object.fromEntries(this.queryParams)
     });
   }

@@ -1,0 +1,17 @@
+<div (click)="click()"
+     class="group-list__item">
+  <div class="avatar">
+    <div class="avatar__inner">
+      <img [src]="group.coverPhotoUrl || 'assets/cover.png'"
+           alt=""
+           srcset="">
+    </div>
+  </div>
+  <div class="body">
+    <div class="body__name">{{ group.name }}</div>
+    <div class="body__privacy">{{ group.isPrivate ? 'Riêng tư' : 'Công khai' }}</div>
+    <div class="icon">
+      <i class='bx bx-chevron-right'></i>
+    </div>
+  </div>
+</div>

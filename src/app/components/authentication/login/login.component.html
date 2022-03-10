@@ -1,15 +1,12 @@
-<div style="background-image: url('assets/bg.gif')" class="container">
+<div style="background-image: url('assets/bg.gif')"
+     class="container">
   <div class="content">
-    <div class="sidebar"
-         style="background-image: url('assets/rocket.jpg');">
-    </div>
     <div class="form-container">
       <div class="fc-container">
         <div class="oauth">
-          <button
-            (click)="googleLogin()"
-            class="google-login">
-            <img src="assets/google.png"/>
+          <button (click)="googleLogin()"
+                  class="google-login">
+            <img src="assets/google.png" />
             <span>Tiếp tục với Google</span>
           </button>
         </div>
@@ -29,48 +26,42 @@
                 (ngSubmit)="register()">
             <div class="input-group">
               <span [ngClass]="{'focus': registerForm.get('lastName')?.value}">họ</span>
-              <input
-                [ngClass]="!registerForm.get('lastName')?.valid && registerForm.get('lastName')?.touched ? 'error' : ''"
-                autocomplete="off"
-                [formControlName]="'lastName'"
-                name="username"
-                required/>
+              <input [ngClass]="!registerForm.get('lastName')?.valid && registerForm.get('lastName')?.touched ? 'error' : ''"
+                     autocomplete="off"
+                     [formControlName]="'lastName'"
+                     name="username"
+                     required />
             </div>
 
-            <div
-              class="warning"
-              *ngIf="!registerForm.get('lastName')?.value && registerForm.get('lastName')?.touched">
+            <div class="warning"
+                 *ngIf="!registerForm.get('lastName')?.value && registerForm.get('lastName')?.touched">
               <i class='bx bx-error'></i>
               <span>Họ không được bỏ trống</span>
             </div>
 
-            <div
-              *ngIf="registerForm.get('lastName')?.validator"></div>
+            <div *ngIf="registerForm.get('lastName')?.validator"></div>
             <div class="input-group">
               <span [ngClass]="{'focus': registerForm.get('firstName')?.value}">tên</span>
-              <input
-                [ngClass]="!registerForm.get('firstName')?.valid && registerForm.get('firstName')?.touched ? 'error' : ''"
-                autocomplete="off"
-                [formControlName]="'firstName'"
-                required>
+              <input [ngClass]="!registerForm.get('firstName')?.valid && registerForm.get('firstName')?.touched ? 'error' : ''"
+                     autocomplete="off"
+                     [formControlName]="'firstName'"
+                     required>
             </div>
 
-            <div
-              class="warning"
-              *ngIf="!registerForm.get('firstName')?.value && registerForm.get('firstName')?.touched">
+            <div class="warning"
+                 *ngIf="!registerForm.get('firstName')?.value && registerForm.get('firstName')?.touched">
               <i class='bx bx-error'></i>
               <span>Tên không được bỏ trống</span>
             </div>
 
             <div class="input-group">
               <span [ngClass]="{'focus': registerForm.get('username')?.value}">tên đăng nhập</span>
-              <input
-                [ngClass]="!registerForm.get('username')?.valid && registerForm.get('username')?.touched ? 'error' : ''"
-                type="text"
-                autocomplete="off"
-                [formControlName]="'username'"
-                name="username"
-                required/>
+              <input [ngClass]="!registerForm.get('username')?.valid && registerForm.get('username')?.touched ? 'error' : ''"
+                     type="text"
+                     autocomplete="off"
+                     [formControlName]="'username'"
+                     name="username"
+                     required />
             </div>
 
             <div class="warning"
@@ -96,12 +87,11 @@
             </div>
             <div class="input-group">
               <span [ngClass]="{'focus': registerForm.get('password')?.value}">mật khẩu</span>
-              <input
-                [ngClass]="!registerForm.get('password')?.valid && registerForm.get('password')?.touched ? 'error' : ''"
-                type="password"
-                [formControlName]="'password'"
-                #pwdr
-                required>
+              <input [ngClass]="!registerForm.get('password')?.valid && registerForm.get('password')?.touched ? 'error' : ''"
+                     type="password"
+                     [formControlName]="'password'"
+                     #pwdr
+                     required>
               <div class="eye">
                 <i (click)="pwdr.type = 'text'"
                    *ngIf="pwdr.type == 'password'"
@@ -143,20 +133,26 @@
               <span>Email không hợp lệ</span>
             </div>
             <div class="flex-center">
-              <button class="submit-btn register-btn" id="submit-button" type="submit">ĐĂNG KÝ</button>
+              <button class="submit-btn register-btn"
+                      id="submit-button"
+                      type="submit">ĐĂNG KÝ</button>
             </div>
 
-            <div class="result" *ngIf="registerError">
+            <div class="result"
+                 *ngIf="registerError">
               <i class='bx bx-x'></i>
               <div>Đăng kí thất bại</div>
             </div>
 
-            <div class="result" style="color: green" *ngIf="registerError === false">
+            <div class="result"
+                 style="color: green"
+                 *ngIf="registerError === false">
               <div>Đăng kí thành công</div>
             </div>
             <div class="switch-form">
               <span>Đã có tài khoản?</span>
-              <a (click)="switchForm($event)" href="/login">
+              <a (click)="switchForm($event)"
+                 href="/login">
                 Đăng nhập ngay
               </a>
 
@@ -168,7 +164,9 @@
                 [@.disabled]="disableAnimation"
                 (@slideInOutLeft.start)="calculateHeight($event)"
                 (@slideInOutLeft.done)="discardHeight($event)"
-                id="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+                id="login-form"
+                [formGroup]="loginForm"
+                (ngSubmit)="login()">
             <div class="input-group">
               <span [ngClass]="{'focus': loginForm.get('username')?.value}">TÊN ĐĂNG NHẬP</span>
               <input [ngClass]="!loginForm.get('username')?.valid && loginForm.get('username')?.touched ? 'error' : ''"
@@ -193,14 +191,12 @@
                      #pwdl
                      required>
               <div class="eye">
-                <i
-                  (click)="pwdl.type='text'"
-                  *ngIf="pwdl.type == 'password'"
-                  class='bx bxs-hide'></i>
-                <i
-                  *ngIf="pwdl.type == 'text'"
-                  (click)="pwdl.type='password'"
-                  class='bx bxs-show'></i>
+                <i (click)="pwdl.type='text'"
+                   *ngIf="pwdl.type == 'password'"
+                   class='bx bxs-hide'></i>
+                <i *ngIf="pwdl.type == 'text'"
+                   (click)="pwdl.type='password'"
+                   class='bx bxs-show'></i>
               </div>
             </div>
             <div class="warning"
@@ -209,10 +205,12 @@
               <span>Mật khẩu không được bỏ trống</span>
             </div>
             <div class="flex-center">
-              <button class="submit-btn login-btn" type="submit">ĐĂNG NHẬP</button>
+              <button class="submit-btn login-btn"
+                      type="submit">ĐĂNG NHẬP</button>
             </div>
 
-            <div class="result" *ngIf="loginError">
+            <div class="result"
+                 *ngIf="loginError">
               <i class='bx bx-x'></i>
               <span>Sai tên tài khoản hoặc mật khẩu</span>
             </div>

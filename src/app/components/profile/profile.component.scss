@@ -14,7 +14,8 @@ $header-content-width: 940px;
 
   .cover-avatar {
     height: 350px;
-    width: $header-content-width;
+    max-width: $header-content-width;
+    width: 100%;
     display: flex;
     position: relative;
     justify-content: center;
@@ -66,6 +67,17 @@ $header-content-width: 940px;
         overflow: hidden;
         background-color: #dfdfdf;
         cursor: pointer;
+        position: relative;
+
+        .blocked {
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          background-color: transparent;
+          z-index: 1;
+          top: 0;
+          left: 0;
+        }
 
       }
     }

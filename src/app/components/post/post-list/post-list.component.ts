@@ -30,7 +30,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.messageService.loadPostsByPageId(undefined);
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }

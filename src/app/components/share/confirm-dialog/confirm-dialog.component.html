@@ -1,15 +1,9 @@
-<div #self class="dialog">
+<app-modal [toggle]="toggleModal"
+           background="transparent">
   <div class="dialog__inner">
-    <div class="title">
-      <span>{{ title }}</span>
-
-      <div (click)="response(false)"
-           class="x">
-        <app-button iconSize="30px"
-                    [isX]="true">
-        </app-button>
-      </div>
-    </div>
+    <app-card-header [title]="title"
+                     (close)="toggleModal.next()">
+    </app-card-header>
     <div class="body">
       <span>{{ body }}</span>
       <div class="confirmation">
@@ -36,4 +30,4 @@
       </div>
     </div>
   </div>
-</div>
+</app-modal>

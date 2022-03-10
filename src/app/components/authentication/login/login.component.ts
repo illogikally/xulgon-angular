@@ -1,10 +1,12 @@
-import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
+import { AnimationEvent } from '@angular/animations';
 import { Location } from '@angular/common';
-import { AfterViewChecked, ChangeDetectorRef, Component, HostListener, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable, of, timer } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { slideInOutLeft } from '../../share/animations/slide-in-out-left.animation';
+import { slideInOutRight } from '../../share/animations/slide-in-out-right.animation';
 import { UserService } from '../../share/user.service';
 import { AuthenticationService } from '../authentication.service';
 import { LoginRequest } from './login-request';
@@ -13,64 +15,9 @@ import { LoginRequest } from './login-request';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  animations: [
-    trigger('slideInOutRight', [
-      transition(':enter', [
-        style({
-          position: 'relative',
-          transform: 'translateX(200%)',
-          opacity: '0',
-        }),
-        animate(
-          '.3s ease-in',
-          style({
-            transform: 'translateX(0%)',
-            opacity: '1'
-          })
-        ),
-      ]),
-      transition(':leave', [
-        style({
-          position: 'absolute',
-          top: '0',
-          opacity: '1'
-        }),
-        animate(
-          '.3s ease-in',
-          style({
-            transform: 'translateX(200%)',
-            opacity: '0'
-          })
-        ),
-      ])
-    ]),
-    trigger('slideInOutLeft', [
-      transition(':enter', [
-        style({
-          position: 'relative',
-          transform: 'translateX(-200%)',
-          opacity: '0',
-        }),
-        animate(
-          '.3s ease-in',
-          style({
-            transform: 'translateX(0%)',
-            opacity: '1',
-          })
-        ),
-      ]),
-      transition(':leave', [
-        style({
-          position: 'absolute',
-          top: '0',
-          opacity: '1',
-        }),
-        animate('.3s ease-in', style({transform: 'translateX(-200%)', opacity: '0'})),
-      ])
-    ])
-  ]
+  animations: [slideInOutLeft, slideInOutRight]
 })
-export class LoginComponent implements OnInit, AfterViewChecked {
+export class LoginComponent implements OnInit, AfterViewInit {
 
   loginForm: FormGroup;
   registerForm: FormGroup;
@@ -83,7 +30,6 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     private renderer: Renderer2,
     private authService: AuthenticationService,
     private location: Location,
-    private route: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
     private router: Router,
     private userService: UserService,
@@ -165,9 +111,12 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  ngAfterViewChecked(): void {
-    this.disableAnimation = false;
-    // this.changeDetector.detectChanges();
+  ngAfterViewInit(): void {
+
+    // Prevent ExpressionChangedAfterItHasBeenCheckedError
+    setTimeout(() => {
+      this.disableAnimation = false;
+    }, 1);
   }
 
   @HostListener('window:popstate', [])
@@ -181,12 +130,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     this.registerForm.markAllAsTouched();
     this.registerError = undefined;
 
-    console.log(this.registerForm.get('username')?.errors);
-
     if (!this.registerForm.valid) {
       return;
     }
-
 
     const registerDto = {
       username: this.registerForm.get('username')?.value,
@@ -202,6 +148,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       }, () => {
         this.registerError = true;
       })
+    this.registerForm.reset();
   }
 
   login(): void {

@@ -1,4 +1,3 @@
-import { PhotoResponse } from "../share/photo/photo-response";
 
 export interface GroupResponse {
   id: number;
@@ -10,5 +9,6 @@ export interface GroupResponse {
   memberCount: number;
   role: string;
   isMember: boolean;
+  isFollow: boolean;
   about: string;
 }

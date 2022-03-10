@@ -1,9 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PhotoViewerComponent } from '../../photo-viewer/photo-viewer.component';
-import { PhotoResponse } from '../../share/photo/photo-response';
-import { PhotoViewResponse } from '../../share/photo/photo-view-response';
-import { UserDto } from '../../share/user-dto';
-import { Post } from '../post';
 import { SharedContent } from '../shared-content';
 
 @Component({

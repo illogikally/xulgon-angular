@@ -1,5 +1,5 @@
 import { Directive, ElementRef as HTMLElment, Input, OnInit, Renderer2 } from '@angular/core';
-import { fromEvent, Observable, Subject } from 'rxjs';
+import { fromEvent, merge, Observable, of, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 @Directive({
@@ -39,7 +39,7 @@ export class StickySidebarDirective implements OnInit {
 
     let oldY = window.scrollY;
     const onScroll$ = fromEvent(window, 'scroll').pipe(takeUntil(this.onDetach$));
-    this.onAttach$.pipe(
+    merge( this.onAttach$, of(null)).pipe(
       switchMap(() => onScroll$)
     ).subscribe(() => {
       const SIDEBAR_RECT = SIDEBAR.getBoundingClientRect();
@@ -48,7 +48,6 @@ export class StickySidebarDirective implements OnInit {
 
       const SPEED = (window.scrollY - oldY)
       if (SPEED < 0) { // Scroll up
-        const mainContentY = window.scrollY + PARENT_RECT.top;
 
         if (
           SIDEBAR.style.position === 'fixed'
@@ -132,17 +131,19 @@ export class StickySidebarDirective implements OnInit {
   configureOnWindowResize() {
     let previousWidth = window.innerWidth;
     const onWindowResize$ = fromEvent(window, 'resize').pipe(takeUntil(this.onDetach$));
-    this.onAttach$.pipe(
+    merge(this.onAttach$, of(null)).pipe(
       switchMap(() => onWindowResize$)
     ).subscribe((event: any) => {
-      const currentWidth = event.target.innerWidth;
+      const currentWidth = window.innerWidth;
       if (currentWidth < 900 && previousWidth >= 900) {
         this.sidebarCss('width', 'auto');
         this.sidebarCss('position', 'static');
       }
 
       if (currentWidth >= 900 && previousWidth < 900) {
-        window.dispatchEvent(new CustomEvent('scroll'));
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('scroll'));
+        }, 100);
       }
 
       const parentLeft = this.parent.getBoundingClientRect().left;

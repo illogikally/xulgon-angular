@@ -102,7 +102,7 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
   }
 
   getPostResponseFromParent() {
-    this.groupService.groupResponse$.pipe(
+    this.groupService.currentGroup().pipe(
       take(1)
     ).subscribe(response => {
       this.groupResponse = response;
@@ -119,13 +119,13 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
       if (!entries[0].contentRect.width) return;
       this.ngZone.run(() => {
         if (wrapper.offsetWidth < defaultWidth && !isStyleSet) {
-          this.renderer.setStyle(this.sidebar.nativeElement, 'display', 'none');
+          this.renderer.setStyle(this.sidebar.nativeElement, 'visibility', 'hidden');
           this.renderer.setStyle(timeline, 'max-width', '515px');
           this.renderer.setStyle(timeline, 'display', 'block');
           isStyleSet = true;
         }
         else if (wrapper.offsetWidth >= defaultWidth) {
-          this.renderer.setStyle(this.sidebar.nativeElement, 'display', 'block');
+          this.renderer.setStyle(this.sidebar.nativeElement, 'visibility', 'visible');
           this.renderer.setStyle(timeline, 'display', 'grid');
           this.renderer.removeStyle(timeline, 'max-width');
           isStyleSet = false;

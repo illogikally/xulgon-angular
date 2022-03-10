@@ -2,17 +2,17 @@
   <div class="group-header">
     <div class="content">
       <div class="cover-container">
-        <img [src]="group?.coverPhotoUrl"/>
+        <img [src]="group?.coverPhotoUrl || defaultCoverPhotoUrl"/>
       </div>
       <div class="name--tabs--container">
         <div class="group-name">
           <div class="name-content">
             <div class="name">{{ group?.name }}</div>
             <div class="group-meta">
-                <span *ngIf="!group?.isPrivate">
-                  <i class='bx bx-globe'></i>
-                  <span>Nhóm công khai</span>
-                </span>
+              <span *ngIf="!group?.isPrivate">
+                <i class='bx bx-globe'></i>
+                <span>Nhóm công khai</span>
+              </span>
               <span *ngIf="group?.isPrivate">
                   <i class='mr-5 bx bx-lock-alt'></i>
                   <span>Nhóm riêng tư</span>
@@ -26,18 +26,22 @@
       </div>
     </div>
   </div>
-  <app-tab-bar [visibleTabs]="tabs" 
+  <app-tab-bar [tabs]="tabs" 
                [pageId]="group?.id || 0"
+               pageType="GROUP"
                [pageName]="group?.name || ''"
                [pagePath]="'/groups/' + group?.id || ''"
                [avatar]="group?.coverPhotoUrl || ''">
     <div actions class="actions">
       <app-button *ngIf="!group?.isMember && !group?.isRequestSent"
-                  class="join-group">
+                  class="join-group"
+                  color="#fff"
+                  background="#1877f2">
         <div button="">
           <div (click)="sendJoinRequest()">Tham gia nhóm</div>
         </div>
       </app-button>
+
       <app-button *ngIf="group?.isRequestSent"
                   (click)="cancelJoinRequest()"
                   class="cancel-request">
@@ -45,9 +49,10 @@
             <div>Huỷ yêu cầu</div>
           </div>
       </app-button>
+
       <app-button [hasOptions]="true" class="more-action-btn">
         <div button="">
-          <div (click)="toggleMoreActions()">
+          <div>
             <i class='bx bx-dots-horizontal-rounded'></i>
           </div>
         </div>
@@ -56,6 +61,18 @@
                *ngIf="group?.isMember">
             <i class='bx bxs-door-open'></i>
             <span>Rời nhóm</span>
+          </div>
+
+          <div (click)="unfollow()"
+               *ngIf="group?.isMember && group?.isFollow">
+            <i class='bx bxs-user-x' ></i>
+            <span>Bỏ theo dõi nhóm</span>
+          </div>
+
+          <div (click)="follow()"
+               *ngIf="group?.isMember && !group?.isFollow">
+            <i class='bx bxs-user-check'></i>
+            <span>Theo dõi nhóm</span>
           </div>
         </div>
       </app-button>

@@ -1,12 +1,12 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, ReplaySubject, Subject} from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Post } from '../post/post';
 import { PhotoResponse } from '../share/photo/photo-response';
 import { PageHeader } from './page-header';
-import {UserPage} from './user-profile';
+import { UserPage } from './user-profile';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,17 @@ export class ProfileService {
   public onAttach$ = new Subject<number>();
   public onDetach$ = new Subject<number>();
   public newPostCreated$ = new Subject<Post>();
+  private pageHeader$ = new ReplaySubject<PageHeader>(1);
+
+  currentProfile(): Observable<PageHeader> {
+    return this.pageHeader$.asObservable().pipe(
+      filter(profile => !!profile)
+    );
+  }
+
+  nextCurrentProfile(profile: PageHeader) {
+    this.pageHeader$.next(profile);
+  }
 
   constructor(private http: HttpClient) {}
 

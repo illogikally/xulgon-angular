@@ -32,6 +32,8 @@ export class NotificationComponent implements OnInit {
 
     this.notificationService.getNotifications().subscribe(notifications => {
       this.notifications = notifications;
+      console.log(this.notifications);
+      
       this.unreadCount = notifications.filter(n => !n.isRead).length;
       this.titleService.modifyNotificationCount(this.unreadCount);
     });
@@ -42,12 +44,5 @@ export class NotificationComponent implements OnInit {
       this.notificationService.modifyUnread$.next(1);
       this.notifications.unshift(notification);
     });
-
-    }
-    @HostListener('window:click', ['$event'])
-    onClick(event: any) {
-      
-    }
-
-
+  }
 }

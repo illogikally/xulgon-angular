@@ -1,10 +1,11 @@
-import {Location} from '@angular/common';
-import {Component, ElementRef, HostListener, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {Router} from '@angular/router';
-import { fromEvent, Subject } from 'rxjs';
-import {AuthenticationService} from '../authentication/authentication.service';
-import {MessageService} from '../share/message.service';
+import { Location } from '@angular/common';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { PostService } from '../post/post.service';
+import { MessageService } from '../share/message.service';
 
 @Component({
   selector: 'app-navbar',
@@ -27,8 +28,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private messageService: MessageService,
-    private location: Location,
     private router: Router,
+    private postService: PostService,
     private renderer: Renderer2,
     private authenticationService: AuthenticationService
   ) {
@@ -40,7 +41,7 @@ export class NavbarComponent implements OnInit {
   configureOnAvatarUpdated() {
     this.messageService.updateAvatar.subscribe(photo => {
       this.principalAvatar = photo.thumbnails.s40x40.url;
-      this.authenticationService.setAvatarUrl(photo.thumbnails.s40x40.url);
+      this.authenticationService.setAvatarUrl(this.principalAvatar);
     });
   }
 
@@ -61,13 +62,12 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-
   logout(): void {
     this.authenticationService.logout();
   }
 
   showCreatePost() {
-    this.openCreatePost.next('');
+    this.postService.openCreatePost(null);
   }
 
   search(event: any): void {

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
@@ -19,12 +19,14 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   @Input() userPage!: UserPage;
 
   @ViewChild('postsContainer') postsContainer!: ElementRef;
+  @ViewChild('self') self!: ElementRef;
 
-  principleId: number;
+  principleId = this.authenticationService.getAuthentication()!.userId;
   pageId     : number;
 
   timeline: Post[] = [];
   isLoadingPosts   = false;
+  isInitLoaded = false;
   isLoadedAll      = false;
   pagePhotoSetId!: number;
 
@@ -42,12 +44,13 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   constructor(
     private profileService: ProfileService,
     private route   : ActivatedRoute,
-    private post$   : PostService,
+    private ngZone: NgZone,
+    private renderer: Renderer2,
+    private postService   : PostService,
     private profile$: ProfileService,
-    private auth$   : AuthenticationService,
+    private authenticationService   : AuthenticationService,
     private photoService: PhotoService
   ) {
-    this.principleId = this.auth$.getAuthentication()!.userId as number;
     const id = this.route.parent?.snapshot.paramMap.get('id');
     this.pageId = Number(id);
   }
@@ -75,6 +78,7 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   
   ngAfterViewInit(): void {
     this.configureLoadPostOnScroll();
+    this.configureOnResize();
     this.profileService.onAttach$.next(this.pageId);
   }
 
@@ -84,10 +88,11 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
     const offset = this.timeline.length;
 
     if (this.pageId !== NaN) {
-      this.post$.getPostsByPageId(this.pageId, size, offset)
+      this.postService.getPostsByPageId(this.pageId, size, offset)
         .subscribe(response => {
           this.timeline = this.timeline.concat(response.data);
           this.isLoadingPosts = false;
+          this.isInitLoaded = true;
           if (!response.hasNext) {
             this.isLoadedAll = true;
           }
@@ -111,5 +116,28 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
         this.getPosts();
       }
     })
+  }
+
+  configureOnResize() {
+    const self = this.self.nativeElement;
+    const parent = self.parentElement;
+    const defaultWidth = 892;
+    let isStyleSet = false;
+    new ResizeObserver(entries => {
+      if (!entries[0].contentRect.width) return;
+      this.ngZone.run(() => {
+        if (parent.offsetWidth < defaultWidth && !isStyleSet) {
+          this.renderer.setStyle(self, 'max-width', '515px');
+          this.renderer.setStyle(self, 'display', 'flex');
+          this.renderer.setStyle(self, 'flex-direction', 'column');
+          isStyleSet = true;
+        }
+        else if (parent.offsetWidth >= defaultWidth) {
+          this.renderer.setStyle(self, 'display', 'grid');
+          this.renderer.setStyle(self, 'max-width', '892px');
+          isStyleSet = false;
+        }
+      });
+    }).observe(parent);
   }
 }

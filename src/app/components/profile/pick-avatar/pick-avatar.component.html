@@ -1,53 +1,55 @@
-<div class="pick-avatar">
+<app-modal [toggle]="toggleModal"
+           (closed)="reset()">
   <div class="content">
     <div class="title">
-      <h2
-        [innerText]="updateType == 'avatar' ? 'Thay ảnh đại diện' : 'Thay ảnh bìa'"></h2>
-      <div
-        (click)="fileInput.click()"
-        class="upload-file">
-        <i class='bx bx-plus'></i>
-        <span>Tải ảnh lên</span>
-        <form [formGroup]="uploadFileForm">
-          <input
-            #fileInput
-            (change)="onSelectFile($event)"
-            type="file"
-            accept="image/*"
-            formControlName="fileInput">
-        </form>
-      </div>
-      <div
-        (click)="close()"
-        class="x-btn">
-        <i class='bx bx-x'></i>
+      <h2 [innerText]="updateType == 'avatar' ? 'Thay ảnh đại diện' : 'Thay ảnh bìa'"></h2>
+      <app-button class="upload-file"
+                  (click)="fileInput.click()">
+        <div button="">
+          <i class='bx bx-plus'></i>
+          <span>Tải ảnh lên</span>
+        </div>
+      </app-button>
+      <form [formGroup]="uploadFileForm">
+        <input #fileInput
+               (change)="onSelectFile($event)"
+               type="file"
+               accept="image/*"
+               formControlName="fileInput">
+      </form>
+      <div (click)="close()"
+           class="x-btn">
+        <app-button [isX]="true"
+                    iconSize="30px"></app-button>
       </div>
     </div>
     <div class="body">
       <div class="photos">
-        <app-square-image
-          [photo]="photo"
-          (photoPicked)="photoPicked($event)"
-          *ngFor="let photo of photos"></app-square-image>
+        <app-square-image [photo]="photo"
+                          (photoPicked)="photoPicked($event)"
+                          *ngFor="let photo of photos">
+        </app-square-image>
       </div>
-      <div
-        *ngIf="pickedPhoto != undefined || photoBlobUrl != ''"
-        class="confirmation">
+      <div *ngIf="pickedPhoto != undefined || imageChangedEvent"
+           class="confirmation">
         <div class="photo-container">
-          <img
-            [src]="pickedPhoto?.thumbnails?.s900x900.url|| photoBlobUrl"/>
+          <image-cropper format="jpeg"
+                         [maintainAspectRatio]="true"
+                         [aspectRatio]="aspectRatio"
+                         [imageChangedEvent]="imageChangedEvent"
+                         [imageURL]="pickedPhoto?.url"
+                         (imageCropped)="imageCropped($event)">
+          </image-cropper>
         </div>
         <div class="buttons">
-          <div
-            (click)="abort()"
-            class="abort">Huỷ
+          <div (click)="abort()"
+               class="abort">Huỷ
           </div>
-          <div
-            (click)="confirm()"
-            class="confirm">Xác nhận
+          <div (click)="confirm()"
+               class="confirm">Xác nhận
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</app-modal>

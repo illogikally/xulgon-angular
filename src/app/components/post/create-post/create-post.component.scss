@@ -1,314 +1,285 @@
 @import 'src/styles';
 
 :host {
-  display: none;
+  display: block;
+  max-width: 500px;
+  width: 100%;
 }
 
-.create-post-container {
-  position: fixed;
-  height: 100%;
+.create-post {
+  --post-width: 500px;
+  background-color: #fff;
+  position: relative;
+  border-radius: 10px;
   width: 100%;
-  z-index: z('modal');
-  font-weight: 500;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba($color: #000, $alpha: .7);
 
-  .create-post {
-    --post-width: 500px;
-    background-color: #fff;
+  .create-post-body {
+    padding: 20px 15px;
     position: relative;
-    position: fixed;
-    border-radius: 10px;
-    max-width: var(--post-width);
-    width: 100%;
 
-    .post-title {
-      border-bottom: 1px solid #00000033;
-      font-size: 20px;
-      font-weight: 700;
-      padding: 20px 0;
+    .post-info {
+      display: flex;
 
-      .x-btn {
-        position: absolute;
-        right: 15px;
+      .avatar {
+        margin-top: 3px;
+        width: 40px;
+        box-sizing: border-box;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid #00000033;
+
+        @extend %fc;
+
+        img {
+          width: 100%;
+          aspect-ratio: 1;
+          object-fit: cover;
+        }
+      }
+
+      .name--privacy {
+        margin-left: 10px;
+        font-weight: 500;
+        user-select: none;
+
+        .name {
+          font-size: 15px;
+          margin-bottom: 5px;
+        }
+
+        .privacy {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          position: relative;
+
+          .page-target {
+            max-width: 200px;
+            opacity: .8;
+            cursor: not-allowed;
+            margin-right: 5px;
+            display: inline-flex;
+            white-space: nowrap;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+
+            > span {
+              display: flex;
+              align-items: center;
+            
+              i {
+                margin-right: 3px;
+              }
+            }
+          }
+
+          > span {
+            padding: 3px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: $btn-grey;
+          }
+
+          .privacy-opts {
+            @extend %opts;
+            z-index: 2;
+            left: 0;
+            transform: none;
+            &::before {
+              border: none;
+            }
+            top: 150%;
+            width: 400px;
+            box-shadow: $box-shadow-wide;
+
+            i {
+              font-size: 20px;
+            }
+          }
+        }
       }
     }
 
-    .create-post-body {
-      padding: 20px 15px;
-      position: relative;
+    .post-content {
+      max-height: 450px;
+      overflow-y: scroll;
+      margin: 15px 0;
+      min-height: 130px;
 
-      .post-info {
-        display: flex;
+      @include scrollbar(15px);
+      margin-right: -15px;
 
-        .avatar {
-          margin-top: 3px;
-          width: 40px;
+
+      .post-text {
+        width: 100%;
+        margin-bottom: 30px;
+
+        textarea {
+          display: block;
+          font-family: Roboto;
+          width: 100%;
+          max-width: 100%;
           box-sizing: border-box;
-          height: 40px;
-          border-radius: 50%;
-          overflow: hidden;
-          border: 1px solid #00000033;
 
-          @extend %fc;
-
-          img {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-          }
-        }
-
-        .name--privacy {
-          margin-left: 10px;
-          font-weight: 500;
-          user-select: none;
-
-          .name {
-            font-size: 15px;
-            margin-bottom: 5px;
-          }
-
-          .privacy {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            position: relative;
-
-            .page-target {
-              max-width: 200px;
-              opacity: .8;
-              cursor: not-allowed;
-              margin-right: 5px;
-              display: inline-flex;
-              white-space: nowrap;
-              overflow-x: hidden;
-              text-overflow: ellipsis;
-
-              > span {
-                display: flex;
-                align-items: center;
-              
-                i {
-                  margin-right: 3px;
-                }
-              }
-            }
-
-            > span {
-              padding: 3px 5px;
-              cursor: pointer;
-              border-radius: 5px;
-              background-color: $btn-grey;
-            }
-
-            .privacy-opts {
-              @extend %opts;
-              z-index: 1;
-              left: 0;
-              transform: none;
-              &::before {
-                border: none;
-              }
-              top: 150%;
-              width: 400px;
-              box-shadow: $box-shadow-wide;
-
-              i {
-                font-size: 20px;
-              }
-            }
-          }
+          border: none;
+          font-weight: 400;
+          outline: none;
+          font-size: 15px;
+          resize: none;
         }
       }
 
-      .post-content {
-        max-height: 450px;
-        overflow-y: scroll;
-        margin: 15px 0;
-        min-height: 130px;
+      .post-photos {
+        border-radius: 10px;
+        padding: 0;
+        position: relative;
+        border: var(--border);
+        box-sizing: border-box;
+        overflow: hidden;
 
-        @include scrollbar(15px);
-        margin-right: -15px;
-
-
-        .post-text {
-          width: 100%;
-          margin-bottom: 30px;
-
-          textarea {
-            display: block;
-            font-family: Roboto;
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-
-            border: none;
-            font-weight: 400;
-            outline: none;
-            font-size: 15px;
-            resize: none;
-          }
+        .x-btn {
+          @include x-btn(30px, #555, #eee);
+          position: absolute;
+          z-index: 1;
+          background-color: #fff;
+          right: 10px;
+          top: 10px;
         }
 
-        .post-photos {
-          border-radius: 10px;
-          padding: 0;
-          position: relative;
-          border: var(--border);
+        > div:nth-child(2) {
+          margin-top: 3px;
+        }
+
+        > div {
+          display: flex;
+          width: 100%;
           box-sizing: border-box;
-          overflow: hidden;
+          justify-content: space-between;
+          column-gap: 3px;
 
-          .x-btn {
-            @include x-btn(30px, #555, #eee);
-            position: absolute;
-            z-index: 1;
-            background-color: #fff;
-            right: 10px;
-            top: 10px;
-          }
-
-          > div:nth-child(2) {
-            margin-top: 3px;
-          }
 
           > div {
-            display: flex;
-            width: 100%;
-            box-sizing: border-box;
-            justify-content: space-between;
-            column-gap: 3px;
-
+            flex-grow: 1;
+            overflow: hidden;
+            flex-basis: 50%;
 
             > div {
-              flex-grow: 1;
-              overflow: hidden;
-              flex-basis: 50%;
-
-              > div {
-                width: 100%;
-                aspect-ratio: 1;
-                position: relative;
-              }
-
-              .three {
-                // aspect-ratio: 1.4;
-              }
-
-              .photos-left {
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                user-select: none;
-                left: 0px;
-                top: 0px;
-                background-color: rgba(0, 0, 0, .4);
-                color: #fff;
-                font-size: 40px;
-
-              }
+              width: 100%;
+              aspect-ratio: 1;
+              position: relative;
             }
 
-          }
-
-          img {
-            width: 100%;
-            display: block;
-            height: 100%;
-            object-fit: cover;
-          }
-        }
-      }
-
-      .post-addition {
-        padding: 10px 15px;
-        border: 1px solid #00000033;
-        border-radius: 5px;
-        font-weight: inherit;
-        display: flex;
-        box-shadow: 0 1px 2px rgba(#000, .2);
-        align-items: center;
-        justify-content: space-between;
-
-
-        input[type='file'] {
-          display: none;
-        }
-
-        &__actions {
-          display: flex;
-          column-gap: 5px;
-
-          .actions__add-emoji {
-            width: 35px;
-            height: 35px;
-            font-size: 28px;
-            position: relative;
-            z-index: 5;
-            border-radius: 50%;
-            display: flex;
-            user-select: none;
-            color: #FFB72B;
-            justify-content: center;
-
-            ::ng-deep {
-
-              .emoji-mart-scroll {
-                @include scrollbar(15px);
-              }
+            .three {
+              // aspect-ratio: 1.4;
             }
 
-            .add-emoji__button {
+            .photos-left {
+              width: 100%;
+              height: 100%;
+              position: absolute;
               display: flex;
               justify-content: center;
               align-items: center;
-            }
+              cursor: pointer;
+              user-select: none;
+              left: 0px;
+              top: 0px;
+              background-color: rgba(0, 0, 0, .4);
+              color: #fff;
+              font-size: 40px;
 
-            &:hover {
-              background-color: #efefef;
             }
           }
 
         }
-        .upload-image {
-          display: flex;
-          box-sizing: border-box;
-          justify-content: center;
-          align-items: center;
-          height: 35px;
+
+        img {
+          width: 100%;
+          display: block;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .post-addition {
+      padding: 10px 15px;
+      border: 1px solid #00000033;
+      border-radius: 5px;
+      font-weight: inherit;
+      display: flex;
+      box-shadow: 0 1px 2px rgba(#000, .2);
+      align-items: center;
+      justify-content: space-between;
+
+
+      input[type='file'] {
+        display: none;
+      }
+
+      &__actions {
+        display: flex;
+        column-gap: 5px;
+
+        .actions__add-emoji {
           width: 35px;
+          height: 35px;
           font-size: 28px;
+          position: relative;
+          z-index: 5;
           border-radius: 50%;
-          color: #867ae9;
+          display: flex;
+          user-select: none;
+          color: #FFB72B;
+          justify-content: center;
+
+          ::ng-deep {
+
+            .emoji-mart-scroll {
+              @include scrollbar(15px);
+            }
+          }
+
+          .add-emoji__button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
 
           &:hover {
             background-color: #efefef;
           }
         }
+
       }
+      .upload-image {
+        display: flex;
+        box-sizing: border-box;
+        justify-content: center;
+        align-items: center;
+        height: 35px;
+        width: 35px;
+        font-size: 28px;
+        border-radius: 50%;
+        color: #867ae9;
 
-      .btn-post {
-        width: 100%;
-        margin-top: 20px;
-        @include button($btn-blue, #fff);
-
-        &:disabled {
-          background-color: #ccc;
-          cursor: not-allowed;
-
+        &:hover {
+          background-color: #efefef;
         }
       }
     }
-  }
 
+    .btn-post {
+      width: 100%;
+      margin-top: 20px;
+      @include button($btn-blue, #fff);
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+
+      }
+    }
+  }
 }

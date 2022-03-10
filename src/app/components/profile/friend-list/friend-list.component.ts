@@ -15,37 +15,39 @@ export class FriendListComponent implements OnInit {
 
   friends!: UserDto[];
   friendsCopy!: UserDto[];
-  @Input() profileId!: number | undefined;
   searchForm!: FormGroup;
+  pageId!: number;
 
-  constructor(private http: HttpClient,
-              private messageService: MessageService,
-              private location: Location,
-              private activatedRoute: ActivatedRoute) {
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService,
+    private location: Location,
+    private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+
+    this.searchForm = new FormGroup({
+      searchInput: new FormControl('')
+    });
+
+    this.configureOnSearch();
+    this.getFriends();
+  }
+
+  getFriends() {
     let id = Number(this.activatedRoute.parent?.snapshot.paramMap.get('id'));
     if (id !== NaN) {
+      this.pageId = id;
       this.http.get<UserDto[]>(`http://localhost:8080/api/profiles/${id}/friends`)
         .subscribe(resp => {
           this.friends = resp;
           this.friendsCopy = this.friends;
         });
     }
-    // this.messageService.onProfileLoaded()
-    // .pipe(
-    //   filter(p => !!Object.keys(p)),
-    //   take(1)
-    // )
-    // .subscribe(profile => {
-    //   if (profile === undefined) return;
-    // })
+  }
 
-    this.searchForm = new FormGroup({
-      searchInput: new FormControl('')
-    });
-
+  configureOnSearch() {
     this.searchForm.get('searchInput')?.valueChanges.subscribe(value => {
       this.friends = this.friendsCopy.filter(friend => {
         let name = friend.username.normalize("NFD")

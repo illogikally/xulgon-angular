@@ -14,8 +14,8 @@ $width: calc(892px * .2);
 
   @for $i from 1 through 4 {
     @media screen 
-      and (max-width: calc(#{$width} * #{$i})) 
-      and (min-width: calc(#{$width} * #{$i - 1})){
+      and (max-width: calc(#{$width} * #{$i} * 1.2)) 
+      and (min-width: calc(#{$width} * #{$i - 1} * 1.2)){
       .content {
         grid-template-columns: repeat($i, 1fr);
       }

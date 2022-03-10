@@ -1,0 +1,10 @@
+<div class="title">
+  <span>{{ title }}</span>
+
+  <div (click)="close.emit()"
+       class="x">
+    <app-button iconSize="30px"
+                [isX]="true">
+    </app-button>
+  </div>
+</div>

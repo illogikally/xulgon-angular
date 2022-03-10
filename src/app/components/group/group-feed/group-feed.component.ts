@@ -59,15 +59,13 @@ export class GroupFeedComponent implements OnInit, OnDestroy {
   }
 
   configureLoadPostOnScroll() {
-    merge(
-      this.onAttach$,
-      of(null)
-    ).pipe(
+    merge(this.onAttach$, of(null)).pipe(
       switchMap(() => fromEvent(window, 'scroll')
         .pipe(takeUntil(this.onDetach$))
       )
     ).subscribe(() => {
       const postContainerRect = this.postsContainer.nativeElement.getBoundingClientRect();
+      
       if (
         window.scrollY >= postContainerRect.bottom - 1.2 * window.innerHeight
         && !this.isLoading
