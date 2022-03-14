@@ -23,6 +23,9 @@ export class PhotoService {
     this.photoView$.next(data);
   }
 
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${this.baseApiUrl}/photos/${id}`);
+  }
 
   onOpenPhotoViewerCalled(): Observable<OpenPhotoViewData> {
     return this.photoView$.asObservable();

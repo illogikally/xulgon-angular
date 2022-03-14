@@ -5,6 +5,7 @@ import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { PostViewService } from '../post/post-view/post-view.service';
 import { PostService } from '../post/post.service';
+import { PrincipalService } from '../share/principal.service';
 import { UserService } from '../share/user.service';
 import { CommentResponse } from './comment/comment-response';
 import { CommentService } from './comment/comment.service';
@@ -43,7 +44,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
   imageSizeRatio!: number;
   imgUrl!: string;
 
-  loggedInUserAvatarUrl: string;
+  principalAvatarUrl = this.principalService.getAvatarUrl();
 
   onAttach$ = this.postViewService.attach$.pipe(filter(id => id == this.rootContentId));
   onDetach$ = this.postViewService.detach$.pipe(filter(id => id == this.rootContentId));
@@ -55,13 +56,10 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
   constructor(
     private postViewService: PostViewService,
     private commentService: CommentService,
-    private authService: AuthenticationService,
+    private principalService: PrincipalService,
     private fb: FormBuilder,
-    private userService: UserService,
-    private postService: PostService
 
   ) {
-    this.loggedInUserAvatarUrl = this.authService.getAvatarUrl();
   }
 
   ngOnInit() {

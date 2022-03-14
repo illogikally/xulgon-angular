@@ -11,12 +11,14 @@ $triangle-height: 8px;
 
   &__inner {
     --icon-size: 23px;
+    --padding: 0 15px;
     height: 37px;
     font-weight: 500;
     outline: none;
     font-family: inherit;
     cursor: pointer;
     width: 100%;
+    padding: 0px;
     border: none;
     background-color: var(--bg);
     color: var(--fg);
@@ -24,7 +26,9 @@ $triangle-height: 8px;
     position: relative;
     border: none;
     outline: none;
+    position: relative;
     transition: 
+
       200ms cubic-bezier(.08,.52,.52,1) background-color, 
       200ms cubic-bezier(.08,.52,.52,1) box-shadow, 
       200ms cubic-bezier(.08,.52,.52,1) transform; 
@@ -39,10 +43,12 @@ $triangle-height: 8px;
     }
 
     ::ng-deep  {
-      > * {
+      [button] {
+        box-sizing: border-box;
         display: flex;
         justify-content: center;
         width: 100%;
+        padding: var(--padding);
         align-items: center;
         height: 100%;
 

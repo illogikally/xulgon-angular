@@ -1,0 +1,56 @@
+<div class="root">
+  <div (click)="showEdit()"
+       class="add-info"
+       *ngIf="isProfileOwner && !info && isFormHidden">
+    <i class='bx bx-plus-circle'></i>
+    <span>{{ add }}</span>
+  </div>
+  <form (keydown.enter)="save()" class="form"
+        *ngIf="!isFormHidden">
+    <div class="input-group-name">
+      <input #input
+             autofocus
+             [value]="info"
+             type="text" />
+      <span [ngClass]="{'focus': input.value}">{{ label }}</span>
+    </div>
+    <div class="buttons">
+      <app-button>
+        <div (click)="abort()"
+             button>Huỷ</div>
+      </app-button>
+      <app-button background="#1877f2"
+                  color="#fff">
+        <div (click)="save()"
+             button>Lưu</div>
+      </app-button>
+    </div>
+  </form>
+  <div class="info"
+       *ngIf="info && isFormHidden">
+    <div class="text">
+      <i [class]="'bx ' + icon"></i>
+      <span>{{ text }}</span>
+    </div>
+    <div #options
+         *ngIf="isProfileOwner && !isEditHidden"
+         class="options">
+      <app-button [isRounded]="true"
+                  width="35px"
+                  background="transparent"
+                  backgroundHover="#f0f2f5"
+                  height="35px"
+                  [hasOptions]="true">
+        <div button="">
+          <i class='bx bx-dots-horizontal-rounded'></i>
+        </div>
+        <div options="">
+          <div (click)="showEdit()">
+            <i class='bx bx-edit-alt'></i>
+            <div>Chỉnh sửa</div>
+          </div>
+        </div>
+      </app-button>
+    </div>
+  </div>
+</div>

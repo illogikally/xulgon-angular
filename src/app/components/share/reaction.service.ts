@@ -2,19 +2,20 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http'
 import {Observable} from 'rxjs';
 import {ReactionPayload} from './reaction.payload';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReactionService {
 
+  private baseApiUrl = environment.baseApiUrl;
+
   constructor(private http: HttpClient) {
   }
 
   react(reaction: ReactionPayload): Observable<any> {
-    console.log(reaction);
-
-    return this.http.post("http://localhost:8080/api/reactions", reaction);
+    return this.http.post(`${this.baseApiUrl}/reactions`, reaction);
   }
 
 }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Notification } from './notification/notification';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { Notification } from './notification/notification';
 })
 export class NotificationService {
 
-  notificationApi = 'http://localhost:8080/api/notifications/'
+  baseApiUrl = environment.baseApiUrl;
   public modifyUnread$ = new Subject<number>();
 
   constructor(
@@ -17,11 +18,11 @@ export class NotificationService {
   }
 
   getNotifications(): Observable<Notification[]> {
-    return this.http.get<Notification[]>(this.notificationApi);
+    return this.http.get<Notification[]>(this.baseApiUrl + '/notifications');
   }
 
   read(id: number): Observable<void> {
-    return this.http.put<void>(this.notificationApi + `${id}/read`, {});
+    return this.http.put<void>(this.baseApiUrl + `/notifications/${id}/read`, {});
   }
 
 }

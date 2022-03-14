@@ -1,14 +1,13 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
+import { filter, pluck } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { ErrorPageService } from '../error-page/error-page.service';
 import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
 import { FollowService } from '../share/follow.service';
 import { MessageService } from '../share/message.service';
 import { TitleService } from '../share/title.service';
-import { ToasterMessageType } from '../share/toaster/toaster-message-type';
 import { ToasterService } from '../share/toaster/toaster.service';
 import { UserService } from '../share/user.service';
 import { PageHeader } from './page-header';
@@ -31,19 +30,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
   pageHeader!: PageHeader;
   userProfile!: UserPage;
   principalId = this.authenticationService.getPrincipalId();
+  principalProfileId = this.authenticationService.getProfileId();
   pageAvatarUrl!: string;
 
   tabs = [
-    {name: 'Bài viết', path: ''},
-    {name: 'Giới thiệu', path: 'about'},
-    {name: 'Bạn bè', path: 'friends'},
-    {name: 'Ảnh', path: 'photos'},
-    {name: 'Video', path: 'videos', disabled: true},
-    {name: 'Thể thao', path: 'sports', disabled: true},
-    {name: 'Âm nhạc', path: 'music', disabled: true},
-    {name: 'Sách', path: 'books', disabled: true},
-    {name: 'Thích', path: 'likes', disabled: true},
-    {name: 'Sự kiện', path: 'events', disabled: true},
+    { name: 'Bài viết', path: '' },
+    { name: 'Giới thiệu', path: 'about' },
+    { name: 'Bạn bè', path: 'friends' },
+    { name: 'Ảnh', path: 'photos' },
+    { name: 'Video', path: 'videos', disabled: true },
+    { name: 'Thể thao', path: 'sports', disabled: true },
+    { name: 'Âm nhạc', path: 'music', disabled: true },
+    { name: 'Sách', path: 'books', disabled: true },
+    { name: 'Thích', path: 'likes', disabled: true },
+    { name: 'Sự kiện', path: 'events', disabled: true },
   ]
 
   constructor(
@@ -62,33 +62,39 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getPageHeaderFromRoute();
+    this.getPageHeaderFromRouteData();
     this.configureOnAvatarChange();
     this.configureOnCoverPhotoChange();
   }
 
-  getPageHeaderFromRoute() {
+  getPageHeaderFromRouteData() {
     const header = this.route.snapshot.data.header;
     if (!header || header.isBlocked) {
       this.errorPageService.showErrorPage();
       return;
     }
 
+
     this.pageHeader = header;
+    console.log(this.pageHeader.id, this.principalId);
     this.pageAvatarUrl = header.avatar?.thumbnails.s200x200.url;
     this.profileService.nextCurrentProfile(this.pageHeader);
     this.titleService.setTitle(this.pageHeader.name);
   }
 
   configureOnAvatarChange() {
-    this.messageService.updateAvatar.subscribe(photo => {
-      this.pageHeader.avatar = photo;
+    this.messageService.updateAvatar.pipe(
+      filter(data => data.pageId == this.pageHeader.id),
+    ).subscribe(data => {
+      this.pageHeader.avatar = data.photo;
     });
   }
 
   configureOnCoverPhotoChange() {
-    this.messageService.updateCoverPhoto.subscribe(photo => {
-      this.pageHeader.coverPhoto = photo;
+    this.messageService.updateCoverPhoto.pipe(
+      filter(data => data.pageId == this.pageHeader.id),
+    ).subscribe(data => {
+      this.pageHeader.coverPhoto = data.photo;
     });
   }
 
@@ -109,13 +115,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  pageError() {
-    this.pageNotFound = true;
-  }
-
-  showUpdateProfilePic(type: 'cover' | 'avatar'): void {
+  updateHeaderPicture(type: 'COVER' | 'AVATAR'): void {
     this.isUpdateAvatar = true;
-    this.messageService.updateAvatarOrCover.next(type);
+    this.messageService.updateAvatarOrCover.next({
+      type: type,
+      pageSourceId: this.pageHeader.id,
+      pageToUpdateId: this.pageHeader.id
+    });
   }
 
   openChatBox(): void {

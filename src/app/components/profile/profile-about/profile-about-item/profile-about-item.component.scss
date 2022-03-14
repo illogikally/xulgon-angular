@@ -1,0 +1,103 @@
+@import "src/styles";
+
+.root {
+  margin: 5px 0px;
+
+  .add-info {
+    display: flex;
+    align-items: center;
+    color: $btn-blue;
+    cursor: pointer;
+    column-gap: 5px;
+
+
+    i {
+      font-size: 28px;
+    }
+
+    span {
+      font-size: 16px;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .form {
+    margin: 10px;
+    .input-group-name {
+      position: relative;
+      align-items: center;
+      display: flex;
+      height: 50px;
+      margin-bottom: 10px;
+      font-size: 16px;
+
+      span {
+        position: absolute;
+        left: 20px;
+        transition: .2s ease;
+      }
+
+      &:focus-within {
+        span {
+          transform: translate(0, -10px);
+          font-size: 12px;
+          color: $btn-blue;
+          font-weight: 400;
+        }
+      }
+
+      .focus {
+        transform: translate(0, -10px);
+        font-size: 12px;
+        font-weight: 400;
+        color: $btn-blue
+      }
+
+      input {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        box-sizing: border-box;
+        border: 1px solid rgba(#333, .2);
+        outline: none;
+        font-size: 16px;
+        padding: 0 20px;
+        padding-top: 20px;
+
+        &:focus {
+          outline: rgba($btn-blue, 1) solid 2px;
+          outline-offset: 2px;
+          border: 1px solid rgba(#333, .4);
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: right;
+      column-gap: 5px;
+    }
+  }
+
+  .info {
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+    column-gap: 10px;
+    .text {
+      display: flex;
+      align-items: center;
+
+      i {
+        font-size: 28px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Post } from '../post/post';
 import { PhotoResponse } from '../share/photo/photo-response';
+import { UserDto } from '../share/user-dto';
 import { PageHeader } from './page-header';
 import { UserPage } from './user-profile';
 
@@ -30,6 +31,10 @@ export class ProfileService {
     this.pageHeader$.next(profile);
   }
 
+  getProfileFriends(profileId: number): Observable<UserDto[]> {
+    return this.http.get<UserDto[]>(`${this.baseApiUrl}/profiles/${profileId}/friends`);
+  }
+
   constructor(private http: HttpClient) {}
 
   getUserProfile(id: number): Observable<UserPage> {
@@ -47,13 +52,15 @@ export class ProfileService {
     return this.http.get<any>(url);
   }
 
-  uploadCoverPhoto(data: FormData): Observable<PhotoResponse> {
-    const url = `${this.baseApiUrl}/profiles/upload-cover`;
+  uploadCoverPhoto(data: FormData, pageId: number): Observable<PhotoResponse> {
+    const url = `${this.baseApiUrl}/profiles/${pageId}/upload-cover`;
     return this.http.put<PhotoResponse>(url, data);
   }
 
-  uploadAvatar(data: FormData): Observable<PhotoResponse> {
-    const url = `${this.baseApiUrl}/profiles/upload-avatar`;
+  uploadAvatar(data: FormData, profileId: number): Observable<PhotoResponse> {
+    console.log(profileId);
+    
+    const url = `${this.baseApiUrl}/profiles/${profileId}/upload-avatar`;
     return this.http.put<PhotoResponse>(url, data);
   }
 
@@ -66,4 +73,15 @@ export class ProfileService {
     const url = `${this.baseApiUrl}/profiles/update-cover`
     return this.http.put<PhotoResponse>(url, photoId);
   }
+
+  getInfos(userId: number): Observable<any> {
+    const url = `${this.baseApiUrl}/profiles/${userId}/info`;
+    return this.http.get(url);
+  }
+
+  updateUserInfos(userId: number, data: any): Observable<any> {
+    const url = `${this.baseApiUrl}/profiles/${userId}/info`;
+    return this.http.put(url, data);
+  }
+
 }

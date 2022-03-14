@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Observable, throwError } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { PhotoResponse } from '../share/photo/photo-response';
 import { LoginRequest } from './login/login-request';
 import { LoginResponse } from './login/login-response';
 
@@ -16,12 +16,12 @@ export class AuthenticationService {
 
   private baseApiUrl = environment.baseApiUrl;
   private baseUrl = environment.baseUrl;
+  private avatarUrl = '';
 
   constructor(
     private http: HttpClient,
-    private router: Router,
-    private storage$: LocalStorageService
-    ) {
+    private storage$: LocalStorageService,
+  ) {
   }
 
   login(loginRequest: LoginRequest): Observable<boolean> {
@@ -34,12 +34,11 @@ export class AuthenticationService {
   }
 
   oauth2Login(
-    code: string, 
+    code: string,
     state: string,
     provider: string
   ): Observable<boolean> {
-    const baseUrl = 'http://localhost:8080'
-    const url = `${baseUrl}/login/oauth2/code/${provider}?code=${code}&state=${state}`;
+    const url = `${this.baseUrl}/login/oauth2/code/${provider}?code=${code}&state=${state}`;
     return this.http.get<any>(url).pipe(
       map(data => {
         this.storeResponse(data)
@@ -59,7 +58,7 @@ export class AuthenticationService {
   async fetchToken(): Promise<string> {
     const expiresAt = this.getExpiresAt();
     const current = new Date().getTime();
-    
+
     if (expiresAt - current < 10_000) {
       return await this.refreshAuthToken()
         .pipe(switchMap((r: LoginResponse) => {
@@ -83,8 +82,6 @@ export class AuthenticationService {
     return this.http.post<LoginResponse>(url, refreshRequest)
       .pipe(tap(response => {
         this.storage$.store('authentication', response);
-        // this.storage$.store('expiresAt', response.expiresAt);
-        // this.storage$.store('token', response.token);
       }));
   }
 
@@ -117,11 +114,11 @@ export class AuthenticationService {
   }
 
   getAvatarUrl(): string {
-    return this.getAuthentication()!.avatarUrl || this.getDefaultAvatar();
+    return this.avatarUrl || this.getDefaultAvatar();
   }
 
   getDefaultAvatar(): string {
-    return  'assets/avatar.jpg';
+    return 'assets/avatar.jpg';
   }
 
   getPrincipalId(): number {
@@ -140,7 +137,7 @@ export class AuthenticationService {
 
   logout(): void {
     const url = `${this.baseApiUrl}/authentication/token/delete`;
-    this.http.post(url, this.getAuthentication()!.refreshToken, {responseType: 'text'})
+    this.http.post(url, this.getAuthentication()!.refreshToken, { responseType: 'text' })
       .subscribe(_ => {
         this.storage$.clear('authentication');
         location.href = '/login';

@@ -1,6 +1,6 @@
 <a
   (click)="openPhotoView($event)"
-  href="http://localhost:8080/photos/{{ id }}">
+  href="/photo/{{ id }}">
   <img
     [ngClass]="isComment ? 'isComment' : 'notComment'"
     [src]="url || 'assets/avatar.jpg'">

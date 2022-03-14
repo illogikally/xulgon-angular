@@ -24,11 +24,11 @@ export class GroupMemberItemComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private confirmService: ConfirmDialogService,
     private groupService: GroupService
-  ) { }
+  ) { 
+
+  }
 
   ngOnInit(): void {
-    console.log(this.member);
-    
   }
 
   promote() {

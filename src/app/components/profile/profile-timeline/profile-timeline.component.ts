@@ -85,11 +85,14 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   getPosts(): void {
     this.isLoadingPosts = true;
     const size = this.timeline.length ? 5 : 2;
-    const offset = this.timeline.length;
+    const [lastPost] = this.timeline.slice(-1);
+    const before = lastPost?.id;
 
     if (this.pageId !== NaN) {
-      this.postService.getPostsByPageId(this.pageId, size, offset)
+      this.postService.getPostsByProfile(this.pageId, size, before)
         .subscribe(response => {
+          console.log(response);
+          
           this.timeline = this.timeline.concat(response.data);
           this.isLoadingPosts = false;
           this.isInitLoaded = true;

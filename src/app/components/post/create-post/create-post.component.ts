@@ -171,6 +171,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
     this.photos = [];
     this.files = [];
     this.postForm.reset();
+    this.sharedContent = undefined;
   }
 
   setPrivacy(privacy: string) {
@@ -193,5 +194,6 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
   
   hide() {
     this.close.emit();
+    this.clear();
   }
 }

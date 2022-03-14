@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 export class ButtonComponent implements OnInit, AfterViewInit {
 
   @Input() background = '#d8dadf';
-  @Input() color = '#050505';
+  @Input() color = '#000';
   @Input() height = '37px';
   @Input() width = '100%';
   @Input() backgroundHover = '';
@@ -38,7 +38,6 @@ export class ButtonComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
   }
 
   get style() {
@@ -54,7 +53,7 @@ export class ButtonComponent implements OnInit, AfterViewInit {
       this.width = '40px';
       this.height = '40px';
       this.background = '#f0f2f5';
-      this.padding = '';
+      this.padding = '0px';
       this.hasOptions = false;
       this.radius = '50%';
       this.color = 'rgba(0, 0, 0, .4)';
@@ -62,14 +61,14 @@ export class ButtonComponent implements OnInit, AfterViewInit {
 
     if (this.isRounded) {
       this.radius = '50%';
-      this.padding = '';
+      this.padding = '0px';
     }
     const style = {
       '--bg': this.background,
       '--fg': this.color,
       'width': this.width,
       '--icon-size': this.iconSize,
-      'padding': this.padding,
+      '--padding': this.padding,
       'height': this.height,
       'border-radius': this.radius,
       '--bg-hover': this.backgroundHover || Color(this.background).darken(.1).string()
@@ -84,7 +83,15 @@ export class ButtonComponent implements OnInit, AfterViewInit {
     this.optionSwitch.next({
       target: this.self.nativeElement
     });
+    const parent = this.self.nativeElement.parentElement.parentElement;
+
     if (this.hasOptions) {
+      if (this.isOptionsVisible) {
+        parent.style['z-index'] = '1';
+      }
+      else {
+        parent.style['z-index'] = '2';
+      }
       this.isOptionsVisible = !this.isOptionsVisible;
     }
   }

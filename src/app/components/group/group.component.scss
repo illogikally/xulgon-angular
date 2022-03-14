@@ -127,14 +127,6 @@
           background-color: #eee;
         }
 
-        &.active-sidebar-tab.active-sidebar-tab {
-          background-color: rgba($btn-blue, .1);
-
-          .icon {
-            color: white;
-            background-color: $btn-blue !important;
-          }
-        }
 
         .icon {
           @extend %fc;
@@ -154,6 +146,23 @@
 
       }
     }
+
+    > * {
+      > .active-sidebar-tab.active-sidebar-tab {
+        background-color: rgba($btn-blue, .1);
+
+        .icon {
+          color: white;
+          background-color: $btn-blue !important;
+        }
+        
+        &:hover {
+          background-color: rgba($btn-blue, .1);
+        }
+      }
+
+    }
+
   }
 
   .group-content {

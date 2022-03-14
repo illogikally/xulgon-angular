@@ -3,9 +3,11 @@ import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/co
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { pluck } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { PostService } from '../post/post.service';
 import { MessageService } from '../share/message.service';
+import { PrincipalService } from '../share/principal.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +23,7 @@ export class NavbarComponent implements OnInit {
   searchForm: FormGroup;
   principalName = this.authenticationService.getFirstName();
   principalId = this.authenticationService.getPrincipalId();
-  principalAvatar = this.authenticationService.getAvatarUrl();
+  principalAvatar = this.principalService.getAvatarUrl();
   principalProfileId = this.authenticationService.getProfileId();
   chatNotifVisible = false;
   moreOptsVisible = false;
@@ -31,6 +33,7 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private postService: PostService,
     private renderer: Renderer2,
+    private principalService: PrincipalService,
     private authenticationService: AuthenticationService
   ) {
     this.searchForm = new FormGroup({
@@ -39,9 +42,10 @@ export class NavbarComponent implements OnInit {
   }
 
   configureOnAvatarUpdated() {
-    this.messageService.updateAvatar.subscribe(photo => {
+    this.messageService.updateAvatar.pipe(
+      pluck('photo')
+    ).subscribe(photo => {
       this.principalAvatar = photo.thumbnails.s40x40.url;
-      this.authenticationService.setAvatarUrl(this.principalAvatar);
     });
   }
 

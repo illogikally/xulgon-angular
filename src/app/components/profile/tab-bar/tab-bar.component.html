@@ -32,12 +32,10 @@
              [skipLocationChange]="true"
              routerLinkActive="tab-active"
              class="visible-tab"
-             (mouseover)="tab.disabled ? name.innerText = '[not implemented]' : tab.name"
-             (mouseleave)="name.innerText = tab.name"
              [routerLinkActiveOptions]="{exact: true}">
             <div>
               <div class="flex-center">
-                <span #name>{{ tab.name }}</span>
+                <span>{{ tab.name }}</span>
               </div>
             </div>
           </a>
@@ -64,8 +62,6 @@
                    [routerLink]="tab.disabled ? null : './' + tab.path"
                    [skipLocationChange]="true"
                    routerLinkActive="tab-active"
-                   (mouseover)="tab.disabled ? name.innerText = '[not implemented]' : tab.name"
-                   (mouseleave)="name.innerText = tab.name"
                    [routerLinkActiveOptions]="{exact: true}"
                    class="tab">
                   <span #name>{{ tab.name }}</span>

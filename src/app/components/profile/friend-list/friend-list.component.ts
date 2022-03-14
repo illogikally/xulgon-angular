@@ -5,6 +5,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {MessageService} from '../../share/message.service';
 import {UserDto} from '../../share/user-dto';
+import { ProfileService } from '../profile.service';
 
 @Component({
   selector: 'app-friend-list',
@@ -19,9 +20,7 @@ export class FriendListComponent implements OnInit {
   pageId!: number;
 
   constructor(
-    private http: HttpClient,
-    private messageService: MessageService,
-    private location: Location,
+    private profileSevice: ProfileService,
     private activatedRoute: ActivatedRoute) {
   }
 
@@ -39,11 +38,10 @@ export class FriendListComponent implements OnInit {
     let id = Number(this.activatedRoute.parent?.snapshot.paramMap.get('id'));
     if (id !== NaN) {
       this.pageId = id;
-      this.http.get<UserDto[]>(`http://localhost:8080/api/profiles/${id}/friends`)
-        .subscribe(resp => {
-          this.friends = resp;
-          this.friendsCopy = this.friends;
-        });
+      this.profileSevice.getProfileFriends(id) .subscribe(resp => {
+        this.friends = resp;
+        this.friendsCopy = this.friends;
+      });
     }
   }
 

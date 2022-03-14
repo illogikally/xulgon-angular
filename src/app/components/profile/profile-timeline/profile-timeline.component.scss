@@ -23,12 +23,6 @@
     }
   }
 
-  // @media screen and (max-width: 900px){
-  //   display: flex;
-  //   flex-direction: column;
-  //   max-width: 515px;
-  // }
-
   .sidebar-container {
     font-weight: 500;
   }
@@ -41,7 +35,7 @@
     flex-direction: column;
     row-gap: 17px;
 
-    > * {
+    > *:not(:first-child) {
       @include card(10px);
       background-color: #fff;
       padding: 15px 15px;

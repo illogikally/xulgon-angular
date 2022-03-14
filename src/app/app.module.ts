@@ -94,6 +94,7 @@ import { CreateNewGroupComponent } from './components/group/group-general/create
 import { GroupGeneralGroupItemComponent } from './components/group/group-general/group-general-group-item/group-general-group-item.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { PostNotFoundComponent } from './components/post/post-not-found/post-not-found.component';
+import { ProfileAboutItemComponent } from './components/profile/profile-about/profile-about-item/profile-about-item.component';
 
 @NgModule({
   declarations: [
@@ -175,6 +176,7 @@ import { PostNotFoundComponent } from './components/post/post-not-found/post-not
     CreateNewGroupComponent,
     GroupGeneralGroupItemComponent,
     PostNotFoundComponent,
+    ProfileAboutItemComponent,
   ],
   imports: [
     ImageCropperModule,

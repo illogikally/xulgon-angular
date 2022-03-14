@@ -3,7 +3,6 @@
   <button #inner
           (click)="toggleOptionsVisibility()"
           type="button"
-          (clickOutside)="isOptionsVisible = false"
           class="button__inner">
     <ng-content select="[button]"></ng-content>
     <div *ngIf="isX"
@@ -14,6 +13,9 @@
   <div *ngIf="isOptionsVisible"
        class="triangle"></div>
   <app-pop-up *ngIf="isOptionsVisible"
+              (clickOutside)="toggleOptionsVisibility()"
+              (click)="toggleOptionsVisibility()"
+              [delayClickOutsideInit]="true"
               #options
               class="button__options"
               [parent]="self">

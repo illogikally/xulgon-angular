@@ -35,7 +35,6 @@ export class GroupShareSelectorComponent implements OnInit {
 
   ngOnInit(
   ): void {
-    this.getGroups();
     this.onSearch();
     this.onOpenCalled();
   }
@@ -50,6 +49,7 @@ export class GroupShareSelectorComponent implements OnInit {
 
   onOpenCalled() {
     this.postService.onOpenGroupShareSelectorCalled().subscribe(content => {
+      this.getGroups();
       this.sharedContent = content;
       this.toggleModalNgIf.next();
     });

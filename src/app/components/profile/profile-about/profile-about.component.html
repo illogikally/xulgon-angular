@@ -5,33 +5,22 @@
 
     </div>
     <div class="infos">
-      <div class="info hometown">
-        <div>
-          <i class='bx bxs-building-house'></i>
-          <span>Làm việc tại công ty Hoà Phát</span>
-          <div><i class='bx bx-dots-horizontal-rounded'></i></div>
-        </div>
-        <div>
-          <i class='bx bxs-graduation'></i>
-          <span>Học tại Đại học Mở</span>
-          <div><i class='bx bx-dots-horizontal-rounded'></i></div>
-        </div>
-        <div>
-          <i class='bx bx-current-location'></i>
-          <span>Đang sống tại Hải Dương</span>
-          <div><i class='bx bx-dots-horizontal-rounded'></i></div>
-        </div>
-      </div>
-      <!-- <div class="add">
-        <div class="icon">
-          <div class="icon-cont">
-            <i class='bx bx-plus'></i>
-          </div>
-        </div>
-        <div class="text">Thêm nơi sinh sống</div>
-      </div>	 -->
-      <div class="info workplace"></div>
-      <div class="info school"></div>
+      <ng-container *ngFor="let i of [].constructor(5)">
+        <div class="skeleton" *ngIf="isLoading"></div>
+      </ng-container>
+      <ng-container *ngFor="let field of fields">
+        <app-profile-about-item [field]="field.field"
+                                [text]="field.text"
+                                [add]="field.title"
+                                *ngIf="(isTimeline && field.value) || !isTimeline"
+                                [isProfileOwner]="isProfileOwner"
+                                [label]="field.label"
+                                [icon]="field.icon"
+                                [update]="update"
+                                [isEditHidden]="isTimeline"
+                                [info]="field.value">
+        </app-profile-about-item>
+      </ng-container>
     </div>
   </div>
 </div>

@@ -7,8 +7,8 @@
           <img *ngIf="pageHeader.coverPhoto"
                [src]="pageHeader.coverPhoto.url || ''">
           <app-button background="#fff"
-                      *ngIf="pageHeader.id == principalId"
-                      (click)="showUpdateProfilePic('cover')"
+                      *ngIf="pageHeader.id == principalProfileId"
+                      (click)="updateHeaderPicture('COVER')"
                       class="change-cover">
             <div button="">
               <i class='bx bxs-camera'></i>
@@ -29,8 +29,8 @@
                       height="35px"
                       [isRounded]="true"
                       background="#eee"
-                      *ngIf="pageHeader.id == principalId"
-                      (click)="showUpdateProfilePic('avatar')"
+                      *ngIf="pageHeader.id == principalProfileId"
+                      (click)="updateHeaderPicture('AVATAR')"
                       class="change-avatar">
             <div button="">
               <i class='bx bxs-camera'></i>
@@ -106,4 +106,3 @@
     </div>
   </div>
 </div>
-<app-pick-avatar></app-pick-avatar>

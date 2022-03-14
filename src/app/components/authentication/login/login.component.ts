@@ -112,7 +112,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
     // Prevent ExpressionChangedAfterItHasBeenCheckedError
     setTimeout(() => {
       this.disableAnimation = false;

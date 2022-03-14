@@ -15,6 +15,17 @@
       max-width: 940px;
       width: 100%;
 
+      .cover {
+        position: relative;
+
+        .update-cover {
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+        }
+
+      }
+
       .cover-container {
         @extend %fc;
         height: 350px;

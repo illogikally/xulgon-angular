@@ -38,7 +38,16 @@ export class PostService {
     return this.groupShareSelector$.asObservable();
   }
 
-  getPostsByPageId(
+  getPostsByProfile(
+    pageId: number,
+    size  : number,
+    before: number
+  ): Observable<OffsetResponse<Post>> {
+    let url = `${this.baseApiUrl}/pages/${pageId}/posts?size=${size}${before ? '&before=' + before : ''}`;
+    return this.http.get<OffsetResponse<Post>>(url);
+  }
+
+  getPostsByGroup(
     pageId: number,
     size  : number,
     offset: number

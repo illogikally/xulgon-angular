@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { fromEvent, ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageService } from '../message.service';
@@ -16,6 +16,7 @@ export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() margin = 5;
   @Input() padding = '5px';
   @Input() position: 'ABOVE' | 'BELOW' = 'BELOW';
+  @Output() close = new EventEmitter();
 
   @ViewChild('self', {static: true}) self!: ElementRef;
   @ViewChild('triangleElement', {static: true}) triangleElement!: ElementRef;

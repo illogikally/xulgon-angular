@@ -12,45 +12,7 @@
            [onAttach$]="onAttach$"
            [onDetach$]="onDetach$"
            class="sidebar__inner">
-        <div class="intro">
-          <h3>Giới thiệu</h3>
-          <div *ngIf="userPage?.workplace">
-            <i class='bx bxs-building-house'></i>
-            <span>Làm việc tại {{ userPage?.workplace }}</span>
-          </div>
-
-          <div *ngIf="userPage?.school">
-            <i class='bx bxs-graduation'></i>
-            <span>Học tại {{ userPage?.school }}</span>
-          </div>
-          <div *ngIf="userPage?.hometown">
-            <i class='bx bx-current-location'></i>
-            <span>Đang sống tại {{ userPage?.hometown }}</span>
-          </div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-          <div>aldsjflakjdfasl</div>
-        </div>
+        <app-profile-about [isTimeline]="true"></app-profile-about>
         <div class="photo-intro">
           <div class="intro-title">
             <h3>Ảnh</h3>
