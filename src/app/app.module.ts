@@ -8,6 +8,7 @@ import { NavigationEnd, NavigationStart, Router, RouteReuseStrategy } from '@ang
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { InjectableRxStompRpcConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
 import { ClickOutsideModule } from 'ng-click-outside';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,8 +28,11 @@ import { FriendRequestComponent } from './components/friend-request/friend-reque
 import { GroupAboutComponent } from './components/group/group-about/group-about.component';
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
 import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
+import { CreateNewGroupComponent } from './components/group/group-general/create-new-group/create-new-group.component';
+import { GroupGeneralGroupItemComponent } from './components/group/group-general/group-general-group-item/group-general-group-item.component';
 import { GroupGeneralComponent } from './components/group/group-general/group-general.component';
 import { GroupMediaComponent } from './components/group/group-media/group-media.component';
+import { GroupMemberItemComponent } from './components/group/group-member/group-member-item/group-member-item.component';
 import { GroupMemberComponent } from './components/group/group-member/group-member.component';
 import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
 import { GroupCreatePostComponent } from './components/group/group-timeline/group-create-post/group-create-post.component';
@@ -42,10 +46,14 @@ import { NotificationItemComponent } from './components/notification/notif-item/
 import { NotificationComponent } from './components/notification/notification/notification.component';
 import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer.component';
 import { PhotoViewerPlaceholderComponent } from './components/photo/photo-viewer/photo-viewer-placeholder/photo-viewer-placeholder.component';
+import { CreatePostModalComponent } from './components/post/create-post-modal/create-post-modal.component';
 import { CreatePostComponent } from './components/post/create-post/create-post.component';
+import { GroupShareItemComponent } from './components/post/group-share-selector/group-share-item/group-share-item.component';
+import { GroupShareSelectorComponent } from './components/post/group-share-selector/group-share-selector.component';
 import { MediaLayoutComponent } from './components/post/media-layout/media-layout.component';
 import { PostHeaderComponent } from './components/post/post-header/post-header.component';
 import { PostListComponent } from './components/post/post-list/post-list.component';
+import { PostNotFoundComponent } from './components/post/post-not-found/post-not-found.component';
 import { PostSkeletonComponent } from './components/post/post-skeleton/post-skeleton.component';
 import { PostViewComponent } from './components/post/post-view/post-view.component';
 import { PostComponent } from './components/post/post.component';
@@ -56,6 +64,7 @@ import { FriendshipButtonComponent } from './components/profile/friendship-butto
 import { PhotoListItemComponent } from './components/profile/photo-list/photo-list-item/photo-list-item.component';
 import { PhotoListComponent } from './components/profile/photo-list/photo-list.component';
 import { PickAvatarComponent } from './components/profile/pick-avatar/pick-avatar.component';
+import { ProfileAboutItemComponent } from './components/profile/profile-about/profile-about-item/profile-about-item.component';
 import { ProfileAboutComponent } from './components/profile/profile-about/profile-about.component';
 import { ProfileTimelineComponent } from './components/profile/profile-timeline/profile-timeline.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -69,10 +78,14 @@ import { ResultComponent } from './components/search/by-people/result/result.com
 import { ByPostsComponent } from './components/search/by-posts/by-posts.component';
 import { SearchComponent } from './components/search/search.component';
 import { ButtonComponent } from './components/share/button/button.component';
+import { CardHeaderComponent } from './components/share/card-header/card-header.component';
 import { ConfirmDialogComponent } from './components/share/confirm-dialog/confirm-dialog.component';
+import { LoadOnScrollDirective } from './components/share/load-on-scroll.directive';
 import { LoggedInComponent } from './components/share/logged-in/logged-in.component';
 import { MessageService } from './components/share/message.service';
 import { ModalComponent } from './components/share/modal/modal.component';
+import { NotImplementedComponent } from './components/share/not-implemented/not-implemented.component';
+import { NotImplementedDirective } from './components/share/not-implemented/not-implemented.directive';
 import { PhotoComponent } from './components/share/photo/photo.component';
 import { PopUpComponent } from './components/share/pop-up/pop-up.component';
 import { SpinnerComponent } from './components/share/spinner/spinner.component';
@@ -84,17 +97,8 @@ import { UserRefPopupComponent } from './components/share/user-ref/user-ref-popu
 import { UserRefComponent } from './components/share/user-ref/user-ref.component';
 import { MyReuseStrategy } from './my-reuse-trategy';
 import { MyRxStompConfig } from './my-rx-stomp.config';
-import { LoadOnScrollDirective } from './components/share/load-on-scroll.directive';
-import { GroupMemberItemComponent } from './components/group/group-member/group-member-item/group-member-item.component';
-import { GroupShareSelectorComponent } from './components/post/group-share-selector/group-share-selector.component';
-import { CreatePostModalComponent } from './components/post/create-post-modal/create-post-modal.component';
-import { GroupShareItemComponent } from './components/post/group-share-selector/group-share-item/group-share-item.component';
-import { CardHeaderComponent } from './components/share/card-header/card-header.component';
-import { CreateNewGroupComponent } from './components/group/group-general/create-new-group/create-new-group.component';
-import { GroupGeneralGroupItemComponent } from './components/group/group-general/group-general-group-item/group-general-group-item.component';
-import { ImageCropperModule } from 'ngx-image-cropper';
-import { PostNotFoundComponent } from './components/post/post-not-found/post-not-found.component';
-import { ProfileAboutItemComponent } from './components/profile/profile-about/profile-about-item/profile-about-item.component';
+import { GroupDiscoverComponent } from './components/group/group-discover/group-discover.component';
+import { GroupDiscoverItemComponent } from './components/group/group-discover/group-discover-item/group-discover-item.component';
 
 @NgModule({
   declarations: [
@@ -177,6 +181,10 @@ import { ProfileAboutItemComponent } from './components/profile/profile-about/pr
     GroupGeneralGroupItemComponent,
     PostNotFoundComponent,
     ProfileAboutItemComponent,
+    NotImplementedDirective,
+    NotImplementedComponent,
+    GroupDiscoverComponent,
+    GroupDiscoverItemComponent,
   ],
   imports: [
     ImageCropperModule,

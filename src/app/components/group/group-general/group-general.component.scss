@@ -60,6 +60,9 @@
 
             &.selected.selected{
               background-color:  rgba(#1877f2, .1);
+              .icon-cont {
+                background-color: $btn-blue;
+              }
             }
 
             .icon-cont {

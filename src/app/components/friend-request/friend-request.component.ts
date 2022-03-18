@@ -1,13 +1,10 @@
-import {LocationStrategy} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
-import {Title} from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { RxStompService } from '@stomp/ng2-stompjs';
-import {AuthenticationService} from '../authentication/authentication.service';
-import {MessageService} from '../share/message.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 import { TitleService } from '../share/title.service';
 import { UserService } from '../share/user.service';
-import {FriendRequestDto} from './friend-request-dto';
+import { FriendRequestDto } from './friend-request-dto';
 
 @Component({
   selector: 'app-friend-request',
@@ -39,6 +36,10 @@ export class FriendRequestComponent implements OnInit {
     this.listenToWebSocket();
   }
 
+  onAttach() {
+    this.titleService.setTitle('Friends')
+  }
+
 
   preventDefault(event: any): void {
     event.preventDefault();
@@ -46,7 +47,11 @@ export class FriendRequestComponent implements OnInit {
 
   listenToWebSocket() {
     this.rxStompService.watch('/user/queue/friend-request').subscribe(message => {
-      this.friendRequests.push(JSON.parse(message.body));
+      const request = JSON.parse(message.body);
+      this.friendRequests = this.friendRequests.filter(r => {
+        request.requesterId != r.requesterId;
+      });
+      this.friendRequests.push(request);
     });
   }
 

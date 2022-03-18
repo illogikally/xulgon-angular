@@ -25,29 +25,20 @@
   .comment-options-container {
     display: flex;
     align-items: center;
+    padding-left: 5px;
 
-    flex-grow: 1;
-    color: #fff;
-
-    &:hover {
-      color: grey;
+    [button] {
+      visibility: hidden;
     }
+    [options] {
+      visibility: visible;
+    }
+  }
 
-    .comment-options {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-left: 10px;
-
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      box-sizing: border-box;
-      border-radius: 50%;
-      color: inherit;
-
-      &:hover {
-        background-color: #eeeeee;
+  &:hover {
+    .comment-options-container {
+      [button] {
+        visibility: visible;
       }
     }
   }

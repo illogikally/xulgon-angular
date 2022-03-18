@@ -1,11 +1,10 @@
-import { LowerCasePipe } from '@angular/common';
-import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { fromEvent, merge, timer } from 'rxjs';
-import { filter, last, map, switchMap, tap, throttleTime } from 'rxjs/operators';
-import {MessageService} from '../../message.service';
-import {UserDto} from '../../user-dto';
-import {UserService} from '../../user.service';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { MessageService } from '../../message.service';
+import { UserDto } from '../../user-dto';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-user-ref-popup',
@@ -18,6 +17,7 @@ export class UserRefPopupComponent implements OnInit {
   friendOptsVisible = false;
   currentTarget: HTMLElement | null = null;
   userDto: UserDto | undefined;
+  userInfos: any[] = [];
 
   @ViewChild('self', {static: true}) self!: ElementRef;
 
@@ -138,6 +138,8 @@ export class UserRefPopupComponent implements OnInit {
   }
 
   openChatBox(): void {
+    console.log(this.userDto);
+    
     this.messageService.openChatBox$.next({
       id: this.userDto!.id,
       profileId: this.userDto!.profileId,

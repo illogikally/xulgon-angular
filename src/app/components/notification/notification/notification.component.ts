@@ -1,22 +1,25 @@
-import {Component, EventEmitter, HostListener, OnDestroy, OnInit} from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import {RxStompService} from '@stomp/ng2-stompjs';
-import { ClickOutsideDirective } from 'ng-click-outside';
-import {NotificationService} from '../notification.service';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { RxStompService } from '@stomp/ng2-stompjs';
+import { fromEvent } from 'rxjs';
 import { TitleService } from '../../share/title.service';
-import {Notification} from './notification';
+import { NotificationService } from '../notification.service';
+import { Notification } from './notification';
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss']
 })
-export class NotificationComponent implements OnInit {
+export class NotificationComponent implements OnInit, AfterViewInit {
 
-  notifications!: Notification[];
+  notifications: Notification[] = [];
   isPopupVisible = false;
   unreadCount = 0;
 
+  isLoading = false;
+  hasNext = true;
+  isInit = false;
+  @ViewChild('notificationContainer') notificationContainer!: ElementRef;
   constructor(
     private notificationService: NotificationService,
     private rxStompService: RxStompService,
@@ -25,24 +28,85 @@ export class NotificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.notificationService.modifyUnread$.subscribe(quantity => {
-      this.unreadCount += quantity;
-      this.titleService.modifyNotificationCount(quantity);
-    });
+    this.getUnreadCount();
+    this.listenOnReadNotification();
+    this.listenOnWebSocketNewNotification();
+  }
 
-    this.notificationService.getNotifications().subscribe(notifications => {
-      this.notifications = notifications;
-      console.log(this.notifications);
-      
-      this.unreadCount = notifications.filter(n => !n.isRead).length;
-      this.titleService.modifyNotificationCount(this.unreadCount);
-    });
+  ngAfterViewInit(): void {
+    this.configureLoadPhotoOnScroll();
+  }
 
+  getUnreadCount() {
+    this.notificationService.getUnreadCount()
+      .subscribe(unread => {
+        this.titleService.modifyNotificationCount(unread)
+        this.unreadCount = unread;
+      });
+  }
+
+  listenOnWebSocketNewNotification() {
     this.rxStompService.watch("/user/queue/notification").subscribe(message => {
       let notification = JSON.parse(message.body);
       this.notifications = this.notifications.filter(n => n.id != notification.id);
       this.notificationService.modifyUnread$.next(1);
       this.notifications.unshift(notification);
     });
+  }
+
+  listenOnReadNotification() {
+    this.notificationService.modifyUnread$.subscribe(quantity => {
+      this.unreadCount += quantity;
+      this.titleService.modifyNotificationCount(quantity);
+      this.hoistUnread();
+    });
+  }
+
+  async getInitNotifications() {
+    for (let i = 0; i < 2; ++i) {
+      await this.getNotifications();
+    }
+  }
+
+  async getNotifications() {
+    if (!this.hasNext) return;
+
+    const size = 5;
+    this.isLoading = true;
+    const offset = this.notifications.length;
+    const response = await this.notificationService.getNotifications(size, offset).toPromise();
+    this.notifications = this.notifications.concat(response.data);
+    this.hasNext = response.hasNext;
+    this.isLoading = false;
+    this.hoistUnread();
+  }
+
+  hoistUnread() {
+    const unreads = this.notifications.filter(not => !not.isRead);
+    const reads = this.notifications.filter(not => not.isRead);
+    this.notifications = unreads.concat(reads);
+  }
+
+  showNotifications() {
+    if (!this.isInit) {
+      this.getInitNotifications();
+    }
+    this.isInit = true;
+    this.isPopupVisible = !this.isPopupVisible;
+  }
+
+  configureLoadPhotoOnScroll() {
+    fromEvent(this.notificationContainer.nativeElement, 'scroll').subscribe(() => {
+      
+      const photoContainer 
+        = this.notificationContainer.nativeElement;
+      if (
+        photoContainer.scrollTop >= photoContainer.offsetHeight - photoContainer.offsetHeight
+        && !this.isLoading
+        && this.hasNext
+      ) {
+        this.getNotifications();
+      }
+    })
   }
 }

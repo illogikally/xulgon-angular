@@ -40,10 +40,14 @@
         grid-template-columns: repeat(4, 1fr);
         gap: 8px;
         @include scrollbar(15px);
-        // flex-grow: 1;
         margin-right: -15px;
         overflow-y: scroll;
-        // column-gap: 8px;
+
+        .skeleton {
+          background-color: #ddd;
+          aspect-ratio: 1;
+          border-radius: 10px;
+        }
       }
 
       @for $i from 1 through 3 {

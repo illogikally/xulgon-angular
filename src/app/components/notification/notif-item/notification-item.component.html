@@ -8,7 +8,7 @@
         <img [src]="notification.actor.avatarUrl || 'assets/avatar.jpg'" alt="avatar"/>
       </div>
     </div>
-    <div [ngStyle]="{ 'color': notification.isRead ? 'var(--secondary-text)' : '#fff'}"
+    <div [ngStyle]="{ 'color': notification.isRead ? 'var(--secondary-text)' : '#050505'}"
         class="body">
       <div class="notif-text">
         <span *ngIf="notification.type == NotificationType.COMMENT">
@@ -18,6 +18,7 @@
           </span>
 
           <span *ngIf="notification.targetContent.type == 'POST'"> đã bình luận trong một bài viết </span>
+          <span *ngIf="notification.targetContent.type == 'PHOTO'"> đã bình luận trong một hình ảnh </span>
           <span *ngIf="notification.targetContent.type == 'COMMENT'"> đã trả lời một bình luận </span>
 
           <span *ngIf="notification.targetContent.user.id == principalId"> của bạn</span>
@@ -27,7 +28,7 @@
         </span>
 
         <span *ngIf="notification.type == NotificationType.REACTION">
-          <strong>{{ notification.actorContent.user.username }}</strong>
+          <strong>{{ notification.actor.username }}</strong>
           đã thích 
           <span *ngIf="notification.targetContent.type == 'POST'">một bài viết của bạn.</span>
           <span *ngIf="notification.targetContent.type == 'COMMENT'">một bình luận của bạn.</span>
@@ -45,6 +46,25 @@
           <strong>{{ notification.actor.username }}</strong>
           <span> đã yêu cầu gia nhập nhóm </span>
           <span *ngIf="notification.pageType == 'GROUP'"> <strong>{{ notification.pageName }}</strong></span>
+          <span>.</span>
+        </span>
+
+        <span *ngIf="notification.type == NotificationType.FRIEND_REQUEST">
+          <strong>{{ notification.actor.username }}</strong>
+          <span> đã gửi cho bạn yêu cầu kết bạn</span>
+          <span>.</span>
+        </span>
+
+        <span *ngIf="notification.type == NotificationType.FRIEND_REQUEST_ACCEPT">
+          <strong>{{ notification.actor.username }}</strong>
+          <span> đã chấp nhận yêu cầu kết bạn của bạn</span>
+          <span>.</span>
+        </span>
+
+        <span *ngIf="notification.type == NotificationType.GROUP_JOIN_REQUEST_ACCEPT">
+          <span>Yêu cầu gia nhập nhóm </span>
+          <strong>{{ notification.pageName }}</strong> 
+          <span> của bạn đã được chấp nhận</span>
           <span>.</span>
         </span>
 

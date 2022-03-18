@@ -8,6 +8,7 @@ import { FriendRequestComponent } from './components/friend-request/friend-reque
 import { GroupAboutComponent } from './components/group/group-about/group-about.component';
 import { GroupAdminGuard } from './components/group/group-admin.guard';
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
+import { GroupDiscoverComponent } from './components/group/group-discover/group-discover.component';
 import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
 import { GroupGeneralComponent } from './components/group/group-general/group-general.component';
 import { GroupMediaComponent } from './components/group/group-media/group-media.component';
@@ -91,6 +92,7 @@ const routes: Routes = [
           { path: 'feed', component: GroupGeneralComponent,
             children: [
               { path: '', component: GroupFeedComponent, pathMatch: 'full'},
+              { path: 'discover', component: GroupDiscoverComponent},
               {
                 path: ':id',
                 component: GroupComponent,

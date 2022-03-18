@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AuthenticationService } from '../../authentication/authentication.service';
@@ -9,12 +9,14 @@ import { ProfileService } from '../profile.service';
   templateUrl: './profile-about.component.html',
   styleUrls: ['./profile-about.component.scss']
 })
-export class ProfileAboutComponent implements OnInit {
+export class ProfileAboutComponent implements OnInit, OnChanges {
 
   @Input() isTimeline = false;
-  infos: any;
+  @Input() isUserRefPopup = false;
+  @Input() infos: any;
   fields: any[] = [];
   update = new Subject<any>();
+
 
   profileId!: number;
   isLoading = false;
@@ -27,9 +29,17 @@ export class ProfileAboutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getInfos();
-    this.onUpdateListen();
+    if (!this.isUserRefPopup) {
+      this.getInfos();
+      this.onUpdateListen();
+    }
     this.isProfileOwner = this.profileId == this.authenticationService.getProfileId(); 
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.infos) {
+      this.generateFields();
+    }      
   }
 
   onUpdateListen() {
@@ -56,7 +66,7 @@ export class ProfileAboutComponent implements OnInit {
       {
         title: 'Thêm nơi sinh',
         value: this.infos?.hometown,
-        text: `Sinh ra tại ${this.infos?.hometown}`,
+        text: `Đến từ ${this.infos?.hometown}`,
         icon: 'bx-home',
         label: 'Nơi sinh',
         field: 'hometown'
@@ -86,6 +96,10 @@ export class ProfileAboutComponent implements OnInit {
         field: 'relationship'
       }
     ]
+
+    if (this.isUserRefPopup) {
+      this.fields = this.fields.filter(f => f.value).slice(0, 2);
+    }
   }
 
   getInfos() {

@@ -74,7 +74,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       return;
     }
 
-
     this.pageHeader = header;
     console.log(this.pageHeader.id, this.principalId);
     this.pageAvatarUrl = header.avatar?.thumbnails.s200x200.url;
@@ -98,13 +97,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.destroyed$.next(true);
     this.destroyed$.complete();
     this.renderer.setStyle(document.body, 'position', '');
   }
 
-  onAttach(): void {
+  onAttach() {
     this.titleService.setTitle(this.pageHeader.name);
     this.profileService.onAttach$.next(this.pageHeader.id);
   }
@@ -129,11 +128,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       id: this.pageHeader.userId,
       username: this.pageHeader.name,
       profileId: this.pageHeader.id,
-      avatarUrl: this.pageHeader?.avatar?.thumbnails.s40x40
+      avatarUrl: this.pageHeader?.avatar?.thumbnails.s40x40.url
     });
   }
 
-  block(): void {
+  block() {
     this.confirmService.confirm({
       title: 'Chặn người dùng',
       body: `Bạn có chắc muốn chăn người dùng này?`
@@ -146,7 +145,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     })
   }
 
-  unblock(): void {
+  unblock() {
     this.userService.unblock(this.pageHeader.userId).subscribe(() => {
       this.pageHeader.blocked = false;
     });

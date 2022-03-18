@@ -4,7 +4,6 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { Observable, throwError } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { PhotoResponse } from '../share/photo/photo-response';
 import { LoginRequest } from './login/login-request';
 import { LoginResponse } from './login/login-response';
 

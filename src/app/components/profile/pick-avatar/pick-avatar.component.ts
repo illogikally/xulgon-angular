@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { MessageService } from '../../share/message.service';
 import { PhotoResponse } from '../../share/photo/photo-response';
 import { PhotoService } from '../../share/photo/photo.service';
@@ -16,7 +16,7 @@ import { ProfileService } from '../profile.service';
 export class PickAvatarComponent implements OnInit {
 
   updateType: 'AVATAR' | 'COVER' = 'AVATAR';
-  photos!: PhotoResponse[];
+  photos: PhotoResponse[] = [];
   pickedPhoto!: PhotoResponse | undefined;
   uploadFileForm!: FormGroup;
   photoBlob: Blob | undefined;
@@ -24,10 +24,15 @@ export class PickAvatarComponent implements OnInit {
 
   aspectRatio = 1;
   imageChangedEvent: any = '';
-  toggleModal = new Subject<any>();
-
   pageSourceId = NaN;
+  toggleModal = new Subject<any>();
   pageToUpdateId = NaN;
+  isLoading = false;
+  hasNext = true;
+
+  @ViewChild('body') body!: ElementRef;
+  @ViewChild('photoContainer') photoContainer!: ElementRef;
+
   constructor(
     private profileService: ProfileService,
     private photoService: PhotoService,
@@ -39,6 +44,7 @@ export class PickAvatarComponent implements OnInit {
     this.uploadFileForm = new FormGroup({
       fileInput: new FormControl('')
     });
+
 
     this.messageService.updateAvatarOrCover.subscribe(data => {
       this.toggleModal.next();
@@ -55,11 +61,26 @@ export class PickAvatarComponent implements OnInit {
         this.aspectRatio = 940 / 350.0;
       }
 
-      this.photoService.getPagePhotos(this.pageSourceId).subscribe(photos => {
-        this.photos = photos;
-      });
+      this.configureInitGetPhotos();
+      this.configureLoadPhotoOnScroll();
     });
+  }
 
+  async configureInitGetPhotos() {
+    for (let i = 0; i < 4; ++i) {
+      await this.getPhotos();
+    }
+  }
+
+  async getPhotos() {
+    const size = 5;
+    const offset = this.photos.length;
+    if (!this.hasNext) return;
+    this.isLoading = true;
+    const response = await this.photoService.getPagePhotos(this.pageSourceId, size, offset).toPromise();
+    this.photos = this.photos.concat(response.data);
+    this.hasNext = response.hasNext;
+    this.isLoading = false;
   }
 
   photoPicked(photo: PhotoResponse): void {
@@ -75,11 +96,24 @@ export class PickAvatarComponent implements OnInit {
   }
 
   reset() {
-    this.pickedPhoto = undefined;
-    this.photoBlob = undefined;
     this.photos = [];
-    this.imageChangedEvent = null;
-    this.uploadFileForm.reset();
+    this.abort();
+    this.hasNext = true;
+  }
+
+  configureLoadPhotoOnScroll() {
+    fromEvent(this.photoContainer.nativeElement, 'scroll').subscribe(() => {
+      const photoContainer 
+        = this.photoContainer.nativeElement;
+      const body = this.body.nativeElement;
+      if (
+        photoContainer.scrollTop >= photoContainer.offsetHeight - photoContainer.offsetHeight
+        && !this.isLoading
+        && this.hasNext
+      ) {
+        this.getPhotos();
+      }
+    })
   }
 
   abort(): void {
@@ -87,6 +121,8 @@ export class PickAvatarComponent implements OnInit {
     setTimeout(() => {
       this.pickedPhoto = undefined;
       this.imageChangedEvent = null;
+      this.photoBlob = undefined;
+      this.uploadFileForm.reset();
     }, 0);
   }
 
@@ -105,14 +141,21 @@ export class PickAvatarComponent implements OnInit {
     formData.append('photo', this.photoBlob == undefined ? new Blob() : this.photoBlob);
 
     if (this.updateType == 'AVATAR') {
-      this.profileService.uploadAvatar(formData, this.pageToUpdateId).subscribe(photo => {
+      this.profileService.uploadAvatar(
+        formData, 
+        this.pageToUpdateId
+      ).subscribe(photo => {
         this.messageService.updateAvatar.next({
           photo: photo,
           pageId: this.pageToUpdateId
         });
       });
+
     } else {
-      this.profileService.uploadCoverPhoto(formData, this.pageToUpdateId).subscribe(photo => {
+      this.profileService.uploadCoverPhoto(
+        formData, 
+        this.pageToUpdateId
+      ).subscribe(photo => {
         this.messageService.updateCoverPhoto.next({
           photo: photo,
           pageId: this.pageToUpdateId
@@ -136,7 +179,7 @@ export class PickAvatarComponent implements OnInit {
       ia[i] = byteString.charCodeAt(i);
     }
 
-    return new Blob([ab], { type: 'image/jpeg' });
+    return new Blob([ab], {type: 'image/jpeg'});
   }
 
 }

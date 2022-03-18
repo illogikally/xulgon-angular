@@ -13,8 +13,10 @@
   align-items: center;
 
   &__inner {
+    margin-top: -100px;
     ::ng-deep {
       > * {
+        transform: translateY(-100px);
         position: absolute;
         transform: translate(-50%, -50%);
       }

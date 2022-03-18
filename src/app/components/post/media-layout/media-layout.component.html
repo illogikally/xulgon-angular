@@ -17,11 +17,12 @@
         <app-photo [url]="photos.length == 3 ? photo.thumbnails.s600x600.url : photo.thumbnails.s400x400.url"
                    [id]="photo.id"
                    [setId]="photoSetId"
-                   [style]="'width'"></app-photo>
-        <div
-          (click)="morePhotoClick($event)"
-          class="photos-left"
-          *ngIf="index == 1 && photoCount - 4 > 0">
+                   [style]="'width'">
+        </app-photo>
+        <div (click)="morePhotoClick($event)"
+             #morePhotos
+             class="photos-left"
+             *ngIf="index == 1 && photoCount - 4 > 0">
           <span>+{{ photoCount - 4 }}</span>
         </div>
       </div>

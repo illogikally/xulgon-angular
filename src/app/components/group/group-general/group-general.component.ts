@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { TitleService } from '../../share/title.service';
 import { UserService } from '../../share/user.service';
@@ -21,6 +21,7 @@ export class GroupGeneralComponent implements OnInit {
   constructor(
     public groupService: GroupService,
     private userService: UserService,
+    public route: ActivatedRoute,
     private titleService: TitleService,
   ) {
   }
@@ -31,6 +32,10 @@ export class GroupGeneralComponent implements OnInit {
       this.managedGroups = groups.filter(group => group.role == 'ADMIN');
       this.groups = groups.filter(group => group.role == 'MEMBER');
     });
+  }
+
+  onAttach() {
+    this.titleService.setTitle('Groups');
   }
 
   onDetach() {

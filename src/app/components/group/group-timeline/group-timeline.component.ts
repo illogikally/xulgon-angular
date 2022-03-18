@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RxStompService } from '@stomp/ng2-stompjs';
 import { fromEvent, merge, of } from 'rxjs';
 import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 import { Post } from '../../post/post';
+import { PostViewComponent } from '../../post/post-view/post-view.component';
 import { ProfileService } from '../../profile/profile.service';
 import { GroupResponse } from '../group-response';
 import { GroupService } from '../group.service';
@@ -27,6 +29,7 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
   @ViewChild('wrapper') wrapper!: ElementRef;
   @ViewChild('timeline') timeline!: ElementRef;
   @ViewChild('postsContainer') postsContainer!: ElementRef;
+  @ViewChild(PostViewComponent) postViewComp!: PostViewComponent;
 
   onAttach$ = this.profileService.onAttach$.pipe(
     filter(id => id == this.groupId)
@@ -41,7 +44,8 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
     private ngZone: NgZone,
     private route: ActivatedRoute,
     private profileService: ProfileService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private rxStompService: RxStompService
   ) {
   }
 
@@ -50,10 +54,19 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
     this.getPosts();
     this.configureLoadPostOnScroll();
     this.getPostResponseFromParent();
+    this.listenToWebSocketNewPost();
   }
 
   ngAfterViewInit(): void {
     this.configureOnResize();
+  }
+
+  onAttach() {
+    this.postViewComp && this.postViewComp.onAttach();
+  }
+
+  onDetach() {
+    this.postViewComp && this.postViewComp.onDetach();
   }
 
   getPosts() {
@@ -133,4 +146,14 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
       });
     }).observe(wrapper);
   }
+
+  listenToWebSocketNewPost() {
+    this.rxStompService.watch('/topic/post').subscribe(message => {
+      const dto = JSON.parse(message.body);
+      if (dto.type == 'POST' && dto.parentId == this.groupId) {
+        this.posts.unshift(dto.content);
+      }
+    });
+  }
+
 }

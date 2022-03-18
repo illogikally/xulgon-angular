@@ -1,9 +1,8 @@
-import { Location, LocationStrategy } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import { merge, Observable, of } from 'rxjs';
-import { catchError, filter, timeout } from 'rxjs/operators';
-import { ErrorPageService } from '../error-page/error-page.service';
+import { Location } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { PhotoViewResponse } from '../share/photo/photo-view-response';
 import { PhotoService } from '../share/photo/photo.service';
 
@@ -32,13 +31,13 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
     private location: Location,
     private router: Router,
+    private route: ActivatedRoute,
     private self: ElementRef,
     private photoService: PhotoService
   ) {
   }
 
   ngOnInit(): void {
-
     if (this.photoId) {
       this.getPhoto();
     }
@@ -54,9 +53,14 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   }
 
   configureHideOnRouteChange() {
-    this.router.events.subscribe(() => {
-      this.isHidden = true;
-      this.resumeBodyScroll();
+    this.router.events.subscribe(e => {
+      if (e instanceof NavigationStart) {
+        if (this.router.url.replace(/\?.*$/g, '') == e.url.replace(/\?.*$/g, '')) {
+        } else {
+          this.isHidden = true;
+          this.resumeBodyScroll();
+        }
+      }
     });
   }
 

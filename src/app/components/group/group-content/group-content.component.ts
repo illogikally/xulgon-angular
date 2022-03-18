@@ -65,7 +65,6 @@ export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onAttach() {
-    this.groupService.attach$.next(this.group.id);
   }
 
   onDetach() {
@@ -85,17 +84,21 @@ export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   leaveGroup(): void {
-    this.groupService.leaveGroup(this.group.id).subscribe(_ => {
+    this.groupService.leaveGroup(this.group.id).subscribe(() => {
       window.location.reload();
     });
   }
 
   follow() {
-    this.followService.followPage(this.group.id).subscribe();
+    this.followService.followPage(this.group.id).subscribe(() => {
+      this.group.isFollow = true;
+    });
   }
 
   unfollow() {
-    this.followService.followPage(this.group.id).subscribe();
+    this.followService.unfollowPage(this.group.id).subscribe(() => {
+      this.group.isFollow = false;
+    });
   }
 
   updateCover(source: 'GROUP' | 'PROFILE') {
@@ -108,9 +111,8 @@ export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
     this.messageService.updateCoverPhoto.pipe(
       filter(data => data.pageId == this.group.id),
       take(1),
-      map(data => data.photo)
-    ).subscribe(photo => {
-      this.group.coverPhotoUrl = photo.url;
+    ).subscribe(data => {
+      this.group.coverPhotoUrl = data.photo.url;
     });
   }
 

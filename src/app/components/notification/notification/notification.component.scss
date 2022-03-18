@@ -65,7 +65,36 @@
 
       .notif-items {
         font-size: 15px;
-        margin-bottom: 10px;
+
+        .skeleton {
+          display: flex;
+          column-gap: 10px;
+          align-items: center;
+          margin-bottom: 10px;
+
+          .avatar {
+            width: 56px;
+            height: 56px;
+            background-color: #ddd;
+            border-radius: 50%;
+          }
+
+          .body {
+            flex-grow: 1;
+
+            .text {
+              height: 20px;
+              background-color: #ddd;
+              margin-bottom: 5px;
+            }
+
+            .date {
+              background-color: #ddd;
+              width: 30%;
+              height: 15px;
+            }
+          }
+        }
       }
     }
   }

@@ -2,7 +2,8 @@
   <div>
     <div class="comment-avatar">
       <app-user-ref [userDto]="comment.user"
-                    borderRadius="50%"></app-user-ref>
+                    borderRadius="50%">
+      </app-user-ref>
     </div>
   </div>
   <div class="comment-right">
@@ -23,10 +24,24 @@
         </div>
       </div>
       <div class="comment-options-container">
-        <div class="comment-options">
-          <i class='bx bx-dots-horizontal-rounded'></i>
-        </div>
+        <app-button [isRounded]="true"
+                    *ngIf="comment.user.id == principalId"
+                    width="27px"
+                    height="27px"
+                    iconSize="17px"
+                    [hasOptions]="true"
+                    backgroundHover="#f0f2f5"
+                    background="transparent">
+          <div button="">
+            <i class='bx bx-dots-horizontal-rounded'></i>
+          </div>
+          <div (click)="delete()"
+               options="">
+            <div>Xoá bình luận</div>
+          </div>
+        </app-button>
       </div>
+
 
     </div>
     <div *ngIf="comment.photo"

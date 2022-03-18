@@ -1,0 +1,24 @@
+<div class="group">
+  <div class="group__cover">
+    <img [src]="group?.coverPhotoUrl || defaultCoverUrl" alt="" srcset="">
+  </div>
+  <div class="group__body">
+
+    <div class="info">
+      <a routerLink="/groups/{{ group?.id }}" class="info__name">
+        <span>{{ group?.name }}</span>
+      </a>
+      <div class="info__meta">
+        <span>{{ group?.memberCount }} thành viên</span>
+      </div>
+    </div>
+
+    <div class="join">
+      <app-button>
+        <div (click)="sendJoinRequest()" button="">
+          {{ group.isRequestSent ? 'Đã gửi yêu cầu' : 'Tham gia nhóm' }}
+        </div>
+      </app-button>
+    </div>
+  </div>
+</div>

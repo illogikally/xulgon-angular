@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ObjectUnsubscribedError, pipe } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+import { AuthenticationService } from '../../authentication/authentication.service';
 import { ConfirmDialogService } from '../../share/confirm-dialog/confirm-dialog.service';
 import { MessageService } from '../../share/message.service';
 import { UserService } from '../../share/user.service';
@@ -18,24 +19,40 @@ export class FriendshipButtonComponent implements OnInit {
 
 
   isWaitingConfirmation = false;
+  principalId = this.authenticationService.getPrincipalId();
+
   constructor(
     private userService: UserService,
-    private confirmService: ConfirmDialogService
+    private confirmService: ConfirmDialogService,
+    private authenticationService: AuthenticationService
 
   ) { }
 
   ngOnInit(): void {
+    this.userService.updateFriendshipStatus$.pipe(
+      filter(data => data.userId == this.userId)
+    ).subscribe(data => {
+      this.friendshipStatus = data.status
+    });
   }
 
   sendFriendRequest() {
     this.userService.sendFriendRequest(this.userId).subscribe(() => {
       this.friendshipStatus = 'SENT';
+      this.userService.updateFriendshipStatus$.next({
+        userId: this.userId,
+        status: 'SENT'
+      });
     });
   }
 
   deleteFriendRequest() {
     this.userService.deleteFriendRequest(this.userId).subscribe(() => {
       this.friendshipStatus = 'NULL';
+      this.userService.updateFriendshipStatus$.next({
+        userId: this.userId,
+        status: 'NULL'
+      });
     });
   }
 
@@ -50,6 +67,10 @@ export class FriendshipButtonComponent implements OnInit {
     if (isConfirmed) {
       this.userService.unfriend(this.userId).subscribe(() => {
         this.friendshipStatus = 'NULL';
+        this.userService.updateFriendshipStatus$.next({
+          userId: this.userId,
+          status: 'NULL'
+        });
       });
     }
   }
@@ -57,6 +78,10 @@ export class FriendshipButtonComponent implements OnInit {
   acceptFriendRequest() {
     this.userService.acceptFriendRequest(this.userId) .subscribe(() => {
       this.friendshipStatus = 'FRIEND';
+      this.userService.updateFriendshipStatus$.next({
+        userId: this.userId,
+        status: 'FRIEND'
+      });
     });
   }
 

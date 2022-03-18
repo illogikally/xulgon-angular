@@ -3,9 +3,10 @@
   <div [ngStyle]="{'width': isGroup ? '100%' : '680px'}"
        class="post-view__inner">
     <app-post-not-found *ngIf="notFound"></app-post-not-found>
-    <div *ngIf="post"
+    <div *ngIf="!notFound && post"
          class="post">
       <app-post *ngIf="post"
+                (remove)="onDelete()"
                 [isCommentVisible]="true"
                 [post]="post">
       </app-post>
@@ -13,4 +14,3 @@
     <app-post-skeleton *ngIf="!post && !notFound"></app-post-skeleton>
   </div>
 </div>
-

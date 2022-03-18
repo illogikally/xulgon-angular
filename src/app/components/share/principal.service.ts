@@ -16,13 +16,16 @@ export class PrincipalService {
     private http: HttpClient,
     private authenticationService: AuthenticationService
   ) { 
-    const url = `${this.baseApiUrl}/users/${this.authenticationService.getProfileId()}/avatar`;
+    const url = `${this.baseApiUrl}/users/${this.authenticationService.getPrincipalId()}/avatar`;
     this.http.get<PhotoResponse>(url).subscribe(avatar => {
       this.avatar = avatar;
     });
   }
 
-  getAvatarUrl(): string {
-    return this.avatar?.thumbnails.s40x40.url || this.defaultAvatarUrl;
+  async getAvatarUrl(size: string): Promise<any> {
+    while (this.avatar === undefined) {
+      await new Promise(r => setTimeout(r, 50));
+    }
+    return this.avatar?.thumbnails[size].url || this.defaultAvatarUrl;
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from '../post/post';
 import { OffsetResponse } from '../share/offset-response';
@@ -14,6 +14,7 @@ export class GroupService {
   private baseApiUrl = environment.baseApiUrl;
   public attach$ = new ReplaySubject<number>(1);
   public detach$ = new ReplaySubject<number>(1);
+  public groupMemberAccepted$ = new Subject<number>();
   private groupResponse$ = new ReplaySubject<GroupResponse>(1);
 
   constructor(private http: HttpClient) {}
@@ -109,6 +110,15 @@ export class GroupService {
   }
 
   getDefaultCoverPhotoUrl(): string {
+    return 'assets/cover.png';
+  }
+
+  getGroups(size: number, offset: number): Observable<OffsetResponse<GroupResponse>> {
+    const url = `${this.baseApiUrl}/groups?size=${size}&offset=${offset}`;
+    return this.http.get<OffsetResponse<GroupResponse>>(url);
+  } 
+
+  getDefaultCoverUrl() {
     return 'assets/cover.png';
   }
 }

@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ErrorPageComponent } from '../error-page/error-page.component';
+import { filter } from 'rxjs/operators';
 import { ErrorPageService } from '../error-page/error-page.service';
-import { MessageService } from '../share/message.service';
 import { TitleService } from '../share/title.service';
 import { GroupResponse } from './group-response';
 import { GroupService } from './group.service';
@@ -37,6 +36,11 @@ export class GroupComponent implements OnInit {
       const id = +(params.get('id') as string);
       this.getGroupProfile(id);
     });
+    this.listenOnMemberAccepted();
+  }
+
+  onAttach() {
+      this.titleService.setTitle(this.group.name);
   }
 
   toggleSidebar() {
@@ -53,6 +57,12 @@ export class GroupComponent implements OnInit {
       this.renderer.setStyle(sidebar, 'margin-left', '0px');
       this.renderer.setStyle(toggleButton, 'right', '20px');
     }
+  }
+
+  listenOnMemberAccepted() {
+    this.groupService.groupMemberAccepted$.pipe(
+      filter(id => id == this.group.id)
+    ).subscribe(() => this.group.isMember = true);
   }
 
   getGroupProfile(id: number): void {

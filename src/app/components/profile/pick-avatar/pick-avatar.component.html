@@ -23,12 +23,15 @@
                     iconSize="30px"></app-button>
       </div>
     </div>
-    <div class="body">
-      <div class="photos">
+    <div #body class="body">
+      <div #photoContainer class="photos">
         <app-square-image [photo]="photo"
                           (photoPicked)="photoPicked($event)"
                           *ngFor="let photo of photos">
         </app-square-image>
+        <ng-container *ngIf="isLoading">
+          <div *ngFor="let item of [].constructor(6)" class="skeleton"></div>
+        </ng-container>
       </div>
       <div *ngIf="pickedPhoto != undefined || imageChangedEvent"
            class="confirmation">

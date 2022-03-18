@@ -11,6 +11,7 @@ export class StickySidebarDirective implements OnInit {
   @Input() parent!: HTMLElement;
   @Input() onAttach$!: Observable<any>;
   @Input() onDetach$!: Observable<any>;
+  @Input() disabled = false;
 
   constructor(
     private renderer: Renderer2
@@ -46,6 +47,7 @@ export class StickySidebarDirective implements OnInit {
       const PARENT_RECT = PARENT.getBoundingClientRect();
       const SIDEBAR_WIDTH = PARENT.offsetWidth;
 
+      if (this.disabled) return;
       const SPEED = (window.scrollY - oldY)
       if (SPEED < 0) { // Scroll up
 

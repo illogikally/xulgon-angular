@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { OffsetResponse } from '../share/offset-response';
 import { Notification } from './notification/notification';
 
 @Injectable({
@@ -17,12 +18,18 @@ export class NotificationService {
   ) {
   }
 
-  getNotifications(): Observable<Notification[]> {
-    return this.http.get<Notification[]>(this.baseApiUrl + '/notifications');
+  getNotifications(size: number, offset: number): Observable<OffsetResponse<Notification>> {
+    const url = this.baseApiUrl + `/notifications?size=${size}&offset=${offset}`
+    return this.http.get<OffsetResponse<Notification>>(url);
   }
 
   read(id: number): Observable<void> {
     return this.http.put<void>(this.baseApiUrl + `/notifications/${id}/read`, {});
+  }
+
+  getUnreadCount(): Observable<number> {
+    const url = `${this.baseApiUrl}/notifications/unread`;
+    return this.http.get<number>(url);
   }
 
 }

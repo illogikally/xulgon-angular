@@ -30,25 +30,35 @@ export class FriendRequestItemComponent implements OnInit {
   }
 
   accept(event: any): void {
+    event.stopImmediatePropagation();
     event.preventDefault();
     this.userService.acceptFriendRequest(this.request.requesterId).subscribe(() => {
       this.onDeleteRequest.emit(this.request);
+      this.userService.updateFriendshipStatus$.next({
+        userId: this.request.requesterId,
+        status: 'FRIEND'
+      })
     });
   }
 
   decline(event: any): void {
+    event.stopImmediatePropagation();
     event.preventDefault();
     this.userService.deleteFriendRequest(this.request.requesterId).subscribe(() => {
       this.onDeleteRequest.emit(this.request);
+      this.userService.updateFriendshipStatus$.next({
+        userId: this.request.requesterId,
+        status: 'NULL'
+      })
     });
   }
 
   route(event: any) {
     event.preventDefault();
-    this.router.navigate([this.request.requesterId], {
+    this.router.navigate([this.request.requesterProfileId], {
       skipLocationChange: true,
       relativeTo: this.activatedRoute
     });
-    this.location.replaceState(`/${this.request.requesterId}`);
+    this.location.replaceState(`/${this.request.requesterProfileId}`);
   }
 }

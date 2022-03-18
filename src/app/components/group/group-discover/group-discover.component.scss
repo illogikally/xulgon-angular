@@ -1,0 +1,18 @@
+$width: calc(1560px * .2);
+
+.discover {
+  padding: 17px 10px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(1, 1fr);
+
+  @for $i from 1 through 5 {
+    @media screen 
+      and (max-width: calc(360px + #{$width} * #{$i})) 
+      and (min-width: calc(360px + #{$width} * #{$i - 1})){
+        & {
+          grid-template-columns: repeat(#{$i - 1}, 1fr);
+        }
+    }
+  }
+}

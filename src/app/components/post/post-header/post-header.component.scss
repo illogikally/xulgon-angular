@@ -6,9 +6,11 @@
   .avatar-name {
     width: 100%;
     display: flex;
+    position: relative;
 
     .name--page {
-      display: flex;
+      margin-right: 40px;
+      flex
 
       i {
         font-size: 11px;
@@ -17,6 +19,7 @@
       }
 
       .group-name {
+
         &:hover {
           text-decoration: underline;
         }
@@ -25,6 +28,7 @@
 
     .post-avatar {
       width: 45px;
+      flex-shrink: 0;
       position: relative;
       height: 45px;
       margin-right: 10px;
@@ -37,8 +41,14 @@
 
     .name-date {
       font-weight: 500;
+      flex-direction: column;
+      display: flex;
+      box-sizing: border-box;
+      margin-right: 30px;
+      justify-content: center;
 
       .date--privacy {
+        margin-top: 5px;
         font-size: 13px;
         color: grey;
         display: flex;

@@ -14,7 +14,7 @@
                class="input-group">
             <div class="icon-wrapper">
               <span class="icon">
-                <i class='bx bx-search'></i>
+                <i data-visualcompletion="css-img" class="hu5pjgll lzf7d6o1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/y2/r/9ZjkTnUGFaz.png&quot;); background-position: -17px -109px; background-size: auto; width: 16px; height: 16px; background-repeat: no-repeat; display: inline-block;"></i>
               </span>
             </div>
             <input #searchInput
@@ -78,7 +78,7 @@
              [routerLinkActiveOptions]="{exact: true}"
              class="pill">
             <span class="avatar">
-              <img [src]="principalAvatar ">
+              <img [src]="principalAvatarUrl || 'assets/avatar.jpg'">
             </span>
             <span class="username">
               <span>{{ principalName }}</span>
@@ -90,7 +90,8 @@
         <li>
           <div class="wrapper">
             <div (click)="showCreatePost()">
-              <i class='bx bx-plus'></i>
+              <!-- <i class='bx bx-plus'></i> -->
+              <i data-visualcompletion="css-img" class="hu5pjgll lzf7d6o1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/CyIf5CnpsZd.png&quot;); background-position: 0px -505px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
             </div>
           </div>
         </li>
@@ -109,15 +110,25 @@
                  class="more-opts">
               <i class='bx bx-chevron-down'></i>
             </div>
-
             <div (clickOutside)="moreOptsVisible = false"
                  [delayClickOutsideInit]="true"
                  *ngIf="moreOptsVisible"
                  class="more-opts__items">
+              <a routerLink="/{{ principalProfileId }}" class="to-profile">
+                <div class="avatar">
+                  <img [src]="principalAvatarUrl200x200 || 'assets/avatar.jpg'" alt="">
+                </div>
+                <div class="body">
+                  <div class="username">{{ principalFullName }}</div>
+                  <div class="text">Xem trang cá nhân của bạn</div>
+                </div>
+              </a>
+              <hr>
               <div (click)="logout()"
-                   class="logout">
+                   class="item logout">
                 <div class="icon">
-                  <i class='bx bx-log-out'></i>
+                  <!-- <i class='bx bx-log-out'></i> -->
+                  <i data-visualcompletion="css-img" class="hu5pjgll lzf7d6o1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yi/r/QnBF2xVFFiX.png&quot;); background-position: 0px -46px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
                 </div>
                 <span>Đăng xuất</span>
               </div>

@@ -1,39 +1,44 @@
 <div class="post-header">
   <div class="avatar-name">
-    <div 
-    *ngIf="isAvatarVisible"
-    class="post-avatar">
-      <app-user-ref
-      borderRadius="50%"
-      [userDto]="content.user"
-      ></app-user-ref>
+    <div *ngIf="isAvatarVisible"
+         class="post-avatar">
+      <app-user-ref borderRadius="50%"
+                    [userDto]="content.user"></app-user-ref>
     </div>
-    <div class="name-date" style="position: relative;">
+    <div class="name-date"
+         style="position: relative;">
       <div class="name--page">
         <div class="name">
-          <app-user-ref
-            [userDto]="content.user">
+          <app-user-ref *ngIf="!isPageNameVisible"
+                        [userDto]="content.user">
           </app-user-ref>
         </div>
-        <span
-        class="group-name"
-        *ngIf="isPageNameVisible && content.pageType == 'GROUP'">
-          <span><i class='bx bxs-right-arrow'></i></span>
+        <div class="group-name"
+             *ngIf="isPageNameVisible && content.pageType == 'GROUP'">
           <a routerLink="/groups/{{ content.pageId }}">
             <span>{{ content.pageName }}</span>
           </a>
 
-        </span>
+        </div>
       </div>
       <div class="date--privacy">
+        <app-user-ref *ngIf="isPageNameVisible"
+                      [userDto]="content.user">
+        </app-user-ref>
+
+        <span *ngIf="isPageNameVisible">&nbsp;·&nbsp;</span>
         <a [routerLink]="contentUrl">
           {{ content.createdAt }}
         </a>
         <span class="privacy">
-          <i *ngIf="content.privacy == 'FRIEND'" class='bx bxs-group'></i>
-          <i *ngIf="content.privacy == 'PUBLIC'" class='bx bx-globe' ></i>
-          <i *ngIf="content.privacy == 'ME'" class='bx bxs-lock-alt'></i>
-          <i *ngIf="content.privacy == 'GROUP'" class='bx bxs-network-chart'></i>
+          <i *ngIf="content.privacy == 'FRIEND'"
+             class='bx bxs-group'></i>
+          <i *ngIf="content.privacy == 'PUBLIC'"
+             class='bx bx-globe'></i>
+          <i *ngIf="content.privacy == 'ME'"
+             class='bx bxs-lock-alt'></i>
+          <i *ngIf="content.privacy == 'GROUP'"
+             class='bx bxs-network-chart'></i>
         </span>
       </div>
     </div>

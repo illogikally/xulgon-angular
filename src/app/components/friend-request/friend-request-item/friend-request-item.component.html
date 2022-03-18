@@ -1,4 +1,5 @@
-<a (click)="route($event)" href="http://locahost:8080/{{request?.requesterId}}">
+<a (click)="route($event)"
+   href="/{{ request?.requesterProfileId }}">
   <li class="request">
     <div class="avatar">
       <img [src]="request?.requesterAvatarUrl || 'assets/avatar.jpg'">
@@ -8,20 +9,23 @@
         <span class="username"> {{ request?.requesterName }}</span>
         <span>{{ request?.createdAgo }}</span>
       </div>
-      <div
-        *ngIf="request.commonFriendCount > 0"
-        class="common-friends-count">
+      <div *ngIf="request.commonFriendCount > 0"
+           class="common-friends-count">
         {{ request?.commonFriendCount }} bạn chung
       </div>
-      <div class="request-actions">
-        <app-button background="#1877f2">
-          <div (click)="accept($event) "button="">
+      <div #actions
+           class="request-actions">
+        <app-button background="#1877f2"
+                    color="#fff">
+          <div (click)="accept($event) "
+               button="">
             <div>Xác nhận</div>
           </div>
         </app-button>
 
-        <app-button >
-          <div (click)="decline($event) "button="">
+        <app-button>
+          <div (click)="decline($event) "
+               button="">
             <div>Xoá</div>
           </div>
         </app-button>

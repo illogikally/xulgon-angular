@@ -1,4 +1,4 @@
-<app-modal [toggle]="toggleModalNgIf">
+<app-modal [toggle]="toggleModalNgIf" (closed)="clear()">
   <app-create-post (close)="toggleModalNgIf.next()"
                    [groupName]="data?.groupName || ''"
                    [sharedContent]="data?.sharedContent"

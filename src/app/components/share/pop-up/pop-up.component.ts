@@ -18,8 +18,8 @@ export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() position: 'ABOVE' | 'BELOW' = 'BELOW';
   @Output() close = new EventEmitter();
 
-  @ViewChild('self', {static: true}) self!: ElementRef;
-  @ViewChild('triangleElement', {static: true}) triangleElement!: ElementRef;
+  @ViewChild('self', { static: true }) self!: ElementRef;
+  @ViewChild('triangleElement', { static: true }) triangleElement!: ElementRef;
 
   onDestroy$ = new ReplaySubject<any>(1);
 
@@ -50,13 +50,13 @@ export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
     ).subscribe(() => {
       const selfRect = self.getBoundingClientRect();
       const parentRect = this.parent.getBoundingClientRect();
-      
+
       const currentTranlateX = selfRect.left - parentRect.left;
       const offset = selfRect.right - window.innerWidth + this.SCROLLBAR_WIDTH + this.HOR_MARGIN;
 
       if (offset > 0 || currentTranlateX < this.INITIAL_X) {
         let translateX = currentTranlateX - offset;
-        translateX =  translateX > this.INITIAL_X ? this.INITIAL_X : translateX;
+        translateX = translateX > this.INITIAL_X ? this.INITIAL_X : translateX;
         this.setSelfStyle('transform', `translateX(${translateX}px)`)
       }
     });
@@ -69,7 +69,8 @@ export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
     const selfRect = self.getBoundingClientRect();
     let left = this.calculateLeftPositionToParent();
 
-    if (selfRect.left + left < 0) {
+    const isOverflowLeft = selfRect.left + left < 0;
+    if (isOverflowLeft) {
       left -= selfRect.left + left;
     }
 
@@ -82,22 +83,26 @@ export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
     let top = this.parent.offsetHeight + VER_MARGIN + TRIANGLE_HEIGHT;
     this.setSelfStyle('transform', `translateX(${left}px)`);
     const position = this.position == 'BELOW' ? 'top' : 'bottom';
-    this.setSelfStyle(position, top + 'px' );
+    this.setSelfStyle(position, top + 'px');
 
-    this.renderer.setStyle(this.triangleElement.nativeElement, 'transform', `translate(-50%, ${VER_MARGIN}px)`);
+    this.renderer.setStyle(
+      this.triangleElement.nativeElement,
+      'transform',
+      `translate(-50%, ${VER_MARGIN}px)`
+    );
   }
 
   calculateLeftPositionToParent(): number {
     let left = this.parent.offsetWidth / 2;
     switch (this.aligment) {
-      case 'LEFT': 
-        left = 0; 
+      case 'LEFT':
+        left = 0;
         break;
-      case 'CENTER': 
-        left = this.parent.offsetWidth/2 - this.self.nativeElement.offsetWidth/2; 
+      case 'CENTER':
+        left = this.parent.offsetWidth / 2 - this.self.nativeElement.offsetWidth / 2;
         break;
-      case 'RIGHT': 
-        left = this.parent.offsetWidth; 
+      case 'RIGHT':
+        left = this.parent.offsetWidth;
         break;
     }
     this.INITIAL_X = left;
@@ -107,5 +112,4 @@ export class PopUpComponent implements OnInit, OnDestroy, AfterViewInit {
   private setSelfStyle(style: string, value: string) {
     this.renderer.setStyle(this.self.nativeElement, style, value);
   }
-
 }

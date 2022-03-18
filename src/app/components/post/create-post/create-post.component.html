@@ -15,7 +15,7 @@
     </app-spinner>
     <div class="post-info">
       <div class="avatar">
-        <img [src]="authenticationService.getAvatarUrl()">
+        <img [src]="principalAvatarUrl">
       </div>
       <div class="name--privacy">
         <div class="name">{{ authenticationService.getUserFullName() }}</div>
@@ -28,7 +28,9 @@
             <span *ngIf=" groupPrivacy == 'PUBLIC' ">
               <i class='bx bx-globe'></i>
             </span>
-            {{ groupName }}
+            <span class="group-name">
+              {{ groupName }}
+            </span>
           </span>
           <span *ngIf="!groupName"
                 (click)="showPrivacyOpts()"
@@ -111,10 +113,19 @@
             </div>
           </div>
         </div>
-        <div (click)="abort()"
-             class="x-btn">
-          <i class='bx bx-x'></i>
-        </div>
+        <app-button [isRounded]="true"
+                    width="35px"
+                    iconSize="27px"
+                    color="#fff"
+                    class="x-btn"
+                    background="rgba(0,0,0,.1)"
+                    backgroundHover="rgba(0,0,0,.2)"
+                    height="35px">
+          <div (click)="abort()"
+               button="">
+            <i class='x-icon'></i>
+          </div>
+        </app-button>
       </div>
       <app-shared-content [isCreatePostChild]="true"
                           [isDisabled]="true"

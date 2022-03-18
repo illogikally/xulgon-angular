@@ -16,6 +16,7 @@ export class PostService {
   private baseApiUrl = environment.baseApiUrl;
   private groupShareSelector$ = new Subject<SharedContent>();
   private createPost$ = new Subject<any>();
+  postDeleted$ = new Subject<number>();
 
   constructor(
     private http: HttpClient, 

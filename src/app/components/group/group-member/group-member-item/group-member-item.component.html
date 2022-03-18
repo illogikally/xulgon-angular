@@ -7,14 +7,14 @@
     </div>
   </div>
   <app-user-ref [userDto]="member.user"></app-user-ref>
-  <app-button *ngIf="member.user.id != principalId" 
+  <app-button *ngIf="member.user.id != principalId && role == 'ADMIN'" 
               [hasOptions]="true" 
               class="options">
     <div button="">
       <div><i class='bx bx-dots-horizontal-rounded'></i></div>
     </div>
-    <div options="">
-      <div *ngIf="role == 'ADMIN' && member.role == 'MEMBER'" 
+    <div  options="">
+      <div *ngIf="member.role == 'MEMBER'" 
            (click)="promote()">
         Cho thành viên làm quản trị viên
       </div>
@@ -22,7 +22,7 @@
            (click)="kick()">
            Xoá thành viên
       </div>
-      <div *ngIf="role == 'ADMIN' && member.role == 'ADMIN'"
+      <div *ngIf="member.role == 'ADMIN'"
            (click)="demote()">
            Giáng xuống thành viên
       </div>

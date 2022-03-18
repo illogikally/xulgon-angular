@@ -1,5 +1,3 @@
-$width: calc(892px * .2);
-
 .photo-list {
   padding: 10px 15px;
   border-radius: 10px;
@@ -10,15 +8,11 @@ $width: calc(892px * .2);
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 7px;
-  }
 
-  @for $i from 1 through 4 {
-    @media screen 
-      and (max-width: calc(#{$width} * #{$i} * 1.2)) 
-      and (min-width: calc(#{$width} * #{$i - 1} * 1.2)){
-      .content {
-        grid-template-columns: repeat($i, 1fr);
-      }
+    .skeleton {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      background-color: #ddd;
     }
   }
 }

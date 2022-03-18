@@ -1,8 +1,13 @@
-<div class="profile-about">
-  <div class="content">
-    <div class="title">
+<div class="profile-about"
+[ngStyle]="isUserRefPopup ? {
+  'box-shadow': 'none',
+  'padding': '0px'
+} : {}"
+>
+  <div 
+  class="content">
+    <div *ngIf="!isUserRefPopup" class="title">
       <h2>Giới thiệu</h2>
-
     </div>
     <div class="infos">
       <ng-container *ngFor="let i of [].constructor(5)">
@@ -17,7 +22,7 @@
                                 [label]="field.label"
                                 [icon]="field.icon"
                                 [update]="update"
-                                [isEditHidden]="isTimeline"
+                                [isEditHidden]="isTimeline || isUserRefPopup"
                                 [info]="field.value">
         </app-profile-about-item>
       </ng-container>

@@ -1,9 +1,9 @@
-import { ThisReceiver } from '@angular/compiler';
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { LocalStorageService } from 'ngx-webstorage';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { ProfileService } from '../../profile/profile.service';
+import { PrincipalService } from '../../share/principal.service';
 import { ToasterMessageType } from '../../share/toaster/toaster-message-type';
 import { ToasterService } from '../../share/toaster/toaster.service';
 import { Post } from '../post';
@@ -37,7 +37,8 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
   isEmojiPickerHidden = true;
 
   isPosting = false;
-  privacy = 'FRIEND';
+  privacy = this.storageService.retrieve('postPrivacy') || 'FRIEND';
+  principalAvatarUrl = '';
 
   constructor(
     private self: ElementRef,
@@ -46,12 +47,16 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
     private profileService: ProfileService,
     private renderer: Renderer2,
     private fb: FormBuilder,
-    public authenticationService: AuthenticationService
+    public authenticationService: AuthenticationService,
+    private principalService: PrincipalService,
+    private storageService: LocalStorageService
+
   ) {
     this.postForm = this.fb.group({
       textarea: [''],
       fileInput: ['']
     });
+    this.principalService.getAvatarUrl('s40x40').then(url => this.principalAvatarUrl = url);
   }
 
   ngOnInit(): void {
@@ -101,7 +106,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
   }
 
   onCreatePostSuccess(post: Post) {
-      this.profileService.newPostCreated$.next(post);
+      // this.profileService.newPostCreated$.next(post);
       this.isPosting = false;
       this.toasterService.message$.next({
         type: ToasterMessageType.SUCCESS,
@@ -176,6 +181,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
 
   setPrivacy(privacy: string) {
     this.privacy = privacy;
+    this.storageService.store('postPrivacy', privacy);
     this.isPrivacyOptsVisible = false;
   }
 

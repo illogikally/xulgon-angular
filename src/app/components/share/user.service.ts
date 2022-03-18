@@ -1,16 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { Observable, ReplaySubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AuthenticationService } from '../authentication/authentication.service';
 import { FriendRequestDto } from '../friend-request/friend-request-dto';
 import { GroupResponse } from '../group/group-response';
 import { Post } from '../post/post';
-import { PhotoResponse } from './photo/photo-response';
 import { UserBasic } from './user-basic';
-import { UserDto } from './user-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +14,7 @@ export class UserService {
 
   private baseApiUrl = environment.baseApiUrl;
   private principalAvatarUrl = '';
+  updateFriendshipStatus$ = new Subject<{userId: number, status: string}>();
 
   constructor(
     private http: HttpClient,
@@ -28,6 +24,7 @@ export class UserService {
   getFriendRequests(userId: number): Observable<FriendRequestDto[]> {
     return this.http.get<FriendRequestDto[]>(`${this.baseApiUrl}/users/${userId}/friend-requests`);
   }
+
   block(userId: number): Observable<any> {
     const url = `${this.baseApiUrl}/users/${userId}/block`;
     return this.http.post(url, {});

@@ -13,6 +13,7 @@ export class MediaLayoutComponent implements OnInit, AfterViewInit {
   @Input() photoCount!: number;
 
   @ViewChild('self') self!: ElementRef;
+  @ViewChild('morePhotos') morePhotos!: ElementRef;
   constructor(
     private renderer: Renderer2
   ) { }
@@ -24,7 +25,7 @@ export class MediaLayoutComponent implements OnInit, AfterViewInit {
   }
 
   morePhotoClick(event: any) {
-    event.target.parentElement.children[0].children[0].click();
+    this.morePhotos.nativeElement.parentElement.children[0].children[0].click();
   }
 
 }

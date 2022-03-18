@@ -4,6 +4,8 @@ import { AuthenticationService } from '../../authentication/authentication.servi
 import { NotificationService } from '../notification.service';
 import { Notification } from '../notification/notification';
 import { NotificationType } from '../notification/notification-type';
+import { UserService } from '../../share/user.service';
+import { GroupService } from '../../group/group.service';
 
 @Component({
   selector: 'app-notification-item',
@@ -23,9 +25,13 @@ export class NotificationItemComponent implements OnInit {
   principalId = this.authenticationService.getPrincipalId();
 
   constructor(
+    private groupService: GroupService,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private userService: UserService
+
+  ) {
   }
 
   ngOnInit(): void {
@@ -36,7 +42,12 @@ export class NotificationItemComponent implements OnInit {
     let pageId = this.notification.pageId;
     let rootContentId = this.notification.rootContent?.id;
     let pageType = this.notification.pageType;
-    this.path = `${pageType == 'GROUP' ? '/groups' : ''}/${pageId}/posts/${rootContentId}`;
+    if (this.notification?.rootContent?.type == 'PHOTO') {
+      this.path = `/photo/${rootContentId}`;
+    }
+    else {
+      this.path = `${pageType == 'GROUP' ? '/groups' : ''}/${pageId}/posts/${rootContentId}`;
+    }
 
     switch (this.notification.type) {
       case NotificationType.COMMENT:
@@ -55,13 +66,34 @@ export class NotificationItemComponent implements OnInit {
         this.constructPathForGroupJoinRequestNotification();
         break;
 
+      case NotificationType.FRIEND_REQUEST:
+        this.constructPathForFriendRequestNotification();
+        break;
+
+      case NotificationType.FRIEND_REQUEST_ACCEPT:
+        this.constructPathForFriendAcceptanceNotification();
+        this.userService.updateFriendshipStatus$.next({
+          userId: this.notification.actor.id,
+          status: 'FRIEND'
+        });
+        break;
+
+      case NotificationType.GROUP_JOIN_REQUEST_ACCEPT:
+        this.constructPathForGroupAcceptanceNotification();
+        this.groupService.groupMemberAccepted$.next(this.notification.pageId);
+        break;
+
       default:
         break;
     }
   }
+  
+  constructPathForFriendRequestNotification() {
+    this.path = `/friends`
+  }
 
   constructPathForGroupJoinRequestNotification() {
-    this.path = `groups/${this.notification.pageId}/member_request`;
+    this.path = `/groups/${this.notification.pageId}/member_request`;
   }
 
   constructPathForNewPostNotification() {
@@ -80,6 +112,14 @@ export class NotificationItemComponent implements OnInit {
     }
   }
 
+  constructPathForGroupAcceptanceNotification() {
+    this.path = `/groups/${this.notification.pageId}`
+  }
+
+  constructPathForFriendAcceptanceNotification() {
+    this.path = `/${this.notification.pageId}`
+  }
+
   constructPathForReactNotification() {
     if (this.notification.targetContetParent?.type == 'COMMENT') {
       this.queryParams.set('comment', this.notification.targetContetParent?.id);
@@ -89,7 +129,7 @@ export class NotificationItemComponent implements OnInit {
       this.queryParams.set('comment', this.notification.targetContent?.id);
     }
     if (this.queryParams.size == 0) {
-      this.routeReuseScrollToTop = true;
+      // this.routeReuseScrollToTop = true;
     }
     this.queryParams.set('type', 'reaction');
   }
@@ -97,8 +137,8 @@ export class NotificationItemComponent implements OnInit {
   read() {
     if (!this.notification.isRead) {
       this.notificationService.read(this.notification.id).subscribe(() => {
-        this.notificationService.modifyUnread$.next(-1);
         this.notification.isRead = true;
+        this.notificationService.modifyUnread$.next(-1);
       });
     }
   }

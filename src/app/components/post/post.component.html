@@ -2,8 +2,8 @@
   <div class="opts-container">
     <app-button optionsAlignment="RIGHT"
                 [hasOptions]="true"
-                width="40px"
-                height="40px"
+                width="36px"
+                height="36px"
                 [isRounded]="true"
                 background="transparent"
                 backgroundHover="#f0f2f5">
@@ -18,25 +18,35 @@
 
         <div (click)="unfollowPage()"
              *ngIf="post.isFollowPage">
-          <i class='bx bx-user-minus'></i>
-          <span>Bỏ theo dõi {{ post.user.username }}</span>
+          <img class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover"
+               src="https://static.xx.fbcdn.net/rsrc.php/v3/yI/r/bnvx9uLOEsq.png"
+               alt=""
+               height="20"
+               width="20">
+          <span>Bỏ theo dõi {{ post.pageName }}</span>
         </div>
 
         <div (click)="unfollow()"
              *ngIf="post.isFollow">
-          <i class='bx bx-bell-off'></i>
+          <i data-visualcompletion="css-img"
+             class="hu5pjgll lzf7d6o1"
+             style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yb/r/IdnFteCuiox.png&quot;); background-position: 0px -257px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
           <span>Tắt thông báo với bài viết này</span>
         </div>
 
         <div (click)="follow()"
              *ngIf="!post.isFollow">
-          <i class='bx bx-bell'></i>
+          <i data-visualcompletion="css-img"
+             class="hu5pjgll lzf7d6o1"
+             style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yb/r/IdnFteCuiox.png&quot;); background-position: 0px -299px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
           <span>Bật thông báo với bài viết này</span>
         </div>
 
         <div (click)="delete()"
              *ngIf="post.user.id == principalId || groupReponse?.role == 'ADMIN'">
-          <i class='bx bx-trash'></i>
+          <i data-visualcompletion="css-img"
+             class="hu5pjgll lzf7d6o1"
+             style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yb/r/IdnFteCuiox.png&quot;); background-position: 0px -992px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
           <span>Xoá bài viết</span>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RxStompRPCService, RxStompService } from '@stomp/ng2-stompjs';
 import { fromEvent } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from '../../authentication/authentication.service';
@@ -22,13 +23,14 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   @ViewChild('self') self!: ElementRef;
 
   principleId = this.authenticationService.getAuthentication()!.userId;
-  pageId     : number;
+  pageId: number;
 
   timeline: Post[] = [];
-  isLoadingPosts   = false;
+  isLoadingPosts = false;
   isInitLoaded = false;
-  isLoadedAll      = false;
+  isLoadedAll = false;
   pagePhotoSetId!: number;
+  isStickySidebarDisabled = false;
 
   isComponentAttached = true;
   isComponentDetached = false;
@@ -43,12 +45,13 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
 
   constructor(
     private profileService: ProfileService,
-    private route   : ActivatedRoute,
+    private route: ActivatedRoute,
     private ngZone: NgZone,
     private renderer: Renderer2,
-    private postService   : PostService,
+    private rxStompService: RxStompService,
+    private postService: PostService,
     private profile$: ProfileService,
-    private authenticationService   : AuthenticationService,
+    private authenticationService: AuthenticationService,
     private photoService: PhotoService
   ) {
     const id = this.route.parent?.snapshot.paramMap.get('id');
@@ -75,7 +78,7 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
         })
     }
   }
-  
+
   ngAfterViewInit(): void {
     this.configureLoadPostOnScroll();
     this.configureOnResize();
@@ -92,7 +95,7 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
       this.postService.getPostsByProfile(this.pageId, size, before)
         .subscribe(response => {
           console.log(response);
-          
+
           this.timeline = this.timeline.concat(response.data);
           this.isLoadingPosts = false;
           this.isInitLoaded = true;
@@ -109,10 +112,10 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
         .pipe(takeUntil(this.onDetach$))
       )
     ).subscribe(() => {
-      const postContainerRect = 
+      const postContainerRect =
         this.postsContainer.nativeElement.getBoundingClientRect();
       if (
-        window.scrollY >= postContainerRect.bottom - 1.2*window.innerHeight
+        window.scrollY >= postContainerRect.bottom - 1.2 * window.innerHeight
         && !this.isLoadingPosts
         && !this.isLoadedAll
       ) {
@@ -134,13 +137,25 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
           this.renderer.setStyle(self, 'display', 'flex');
           this.renderer.setStyle(self, 'flex-direction', 'column');
           isStyleSet = true;
+          this.isStickySidebarDisabled = true;
         }
         else if (parent.offsetWidth >= defaultWidth) {
           this.renderer.setStyle(self, 'display', 'grid');
           this.renderer.setStyle(self, 'max-width', '892px');
           isStyleSet = false;
+          this.isStickySidebarDisabled = false;
         }
       });
     }).observe(parent);
   }
+
+  listenToWebSocketNewPost() {
+    this.rxStompService.watch('/topic/post').subscribe(message => {
+      const dto = JSON.parse(message.body);
+      if (dto.type == 'POST' && dto.parentId == this.pageId) {
+        this.timeline.unshift(dto.content);
+      }
+    });
+  }
+
 }

@@ -1,12 +1,8 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {PostService} from '../post.service'
-import {Post} from '../post'
-import {AuthenticationService} from '../../authentication/authentication.service';
-import {ActivatedRoute} from '@angular/router';
-import {MessageService} from '../../share/message.service';
-import {ReplaySubject} from 'rxjs';
-import {UserService} from '../../share/user.service';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 import { ProfileService } from '../../profile/profile.service';
+import { Post } from '../post';
+import { PostService } from '../post.service';
 
 @Component({
   selector: 'app-post-list',
@@ -15,7 +11,7 @@ import { ProfileService } from '../../profile/profile.service';
 })
 export class PostListComponent implements OnInit, OnDestroy {
 
-  @Input() pageId: number | undefined;
+  @Input() pageId?: number;
   @Input() posts: Post[] = [];
   @Input() isLoading = false;
   @Input() isGroupNameVisible = false;
@@ -25,7 +21,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   constructor(
     private profileService: ProfileService,
-    private messageService: MessageService,
+    private postService: PostService
   ) {
   }
 
@@ -43,6 +39,10 @@ export class PostListComponent implements OnInit, OnDestroy {
       if (post.pageId == this.pageId) {
         this.posts?.unshift(post);
       }
+    })
+
+    this.postService.postDeleted$.subscribe(postId => {
+      this.posts = this.posts.filter(post => post.id != postId);
     })
   }
 }

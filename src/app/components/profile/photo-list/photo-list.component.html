@@ -2,11 +2,16 @@
   <div class="title">
     <h2>Ảnh</h2>
   </div>
-  <div class="content">
+  <div #self class="content">
     <app-photo-list-item
       *ngFor="let photo of photos"
       (photoDeleted)="photoDeleted($event)"
       [setId]="photoSetId"
-      [photo]="photo"></app-photo-list-item>
+      [photo]="photo">
+    </app-photo-list-item>
+    <ng-container *ngIf="isLoading">
+      <div class="skeleton" *ngFor="let item of [].constructor(6)"></div>
+    </ng-container>
   </div>
+
 </div>

@@ -1,12 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, Route} from '@angular/router';
-import {MessageService} from '../../share/message.service';
-import {Post} from '../post';
-import {PostService} from '../post.service';
-import { filter, throttle, throttleTime } from 'rxjs/operators';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { PostViewService } from './post-view.service';
+import { filter, throttleTime } from 'rxjs/operators';
 import { GroupService } from '../../group/group.service';
+import { MessageService } from '../../share/message.service';
+import { TitleService } from '../../share/title.service';
+import { Post } from '../post';
+import { PostService } from '../post.service';
+import { PostViewService } from './post-view.service';
 
 @Component({
   selector: 'app-post-view',
@@ -26,10 +27,13 @@ export class PostViewComponent implements OnInit {
     private messageService: MessageService,
     private postViewService: PostViewService,
     private postService: PostService,
+    private titleService: TitleService,
+    private self: ElementRef,
     private groupService: GroupService,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.titleService.setTitle('Xulgon');
     let postId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.getPost(postId);
     this.highlightComment(this.activatedRoute.snapshot);
@@ -49,14 +53,25 @@ export class PostViewComponent implements OnInit {
     const queryParams = route.queryParamMap;
     const commentId = Number(queryParams.get('comment'));
     const childCommentId = Number(queryParams.get('child_comment'));
+    const type = queryParams.get('type');
 
-    const data = {
-      postId: postId,
-      commentId: commentId,
-      childCommentId: childCommentId
+    if (!commentId && type == 'reaction') {
+      this.scrollToView();
+    } else {
+      const data = {
+        postId: postId,
+        commentId: commentId,
+        childCommentId: childCommentId
+      }
+
+      this.postViewService.highlight$.next(data);
     }
+  }
 
-    this.postViewService.highlight$.next(data);
+  scrollToView() {
+    setTimeout(() => {
+      this.self.nativeElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }, 500);
   }
 
   onRouteReuse(): Observable<any> {
@@ -102,5 +117,8 @@ export class PostViewComponent implements OnInit {
     this.postViewService.highlight$.next(null);
   }
 
+  onDelete() {
+    this.notFound = true;
+  }
 }
 

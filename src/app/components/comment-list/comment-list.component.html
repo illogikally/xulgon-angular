@@ -2,6 +2,7 @@
   <div #commentContainer
        class="comments">
     <app-comment *ngFor="let comment of comments"
+                 (deleted)="onCommentDeleted($event)"
                  [comment]="comment">
     </app-comment>
   </div>
@@ -11,7 +12,8 @@
        (click)="loadComments()">
     <span>Xem thêm {{ totalCommentCount - comments.length }} bình luận</span>
   </div>
-  <form [formGroup]="commentForm" (keydown.enter)="submit($event)">
+  <form [formGroup]="commentForm"
+        (keydown.enter)="submit($event)">
     <div class="input-container">
       <div class="input-avatar">
         <div class="avatar-container">
@@ -36,13 +38,15 @@
       </div>
 
     </div>
-    <div *ngIf="image" class="upload-image-container">
+    <div *ngIf="image"
+         class="upload-image-container">
       <div class="upload-image-thumb">
         <img [ngClass]="imageSizeRatio < 1 ? 'full-width' : 'full-height'"
              [src]="imgUrl">
 
       </div>
-      <div (click)="clearInput()" class="reset">
+      <div (click)="clearInput()"
+           class="reset">
         <i class='bx bx-x'></i>
       </div>
     </div>
@@ -51,6 +55,6 @@
            accept="image/*"
            #uploadImage
            formControlName="fileInput"
-           (change)="onSelectImage($event)"/>
+           (change)="onSelectImage($event)" />
   </form>
 </div>

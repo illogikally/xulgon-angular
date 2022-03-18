@@ -300,7 +300,7 @@ a {
     transform: translateX(-50%);
   }
 
-  > div {
+  > div, a {
     display: flex;
     align-items: center;
     padding: 7px 7px;
@@ -356,6 +356,36 @@ input {
   left: 0;
 }
 
+.x-icon {
+  filter: invert(100%); 
+  background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png'); 
+  background-position: -105px -67px; 
+  background-size: auto; 
+  width: 20px; 
+  height: 20px; 
+  background-repeat: no-repeat; 
+  display: inline-block;
+}
+
+.right-arrow {
+  background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png'); 
+  background-position: -83px -13px; 
+  background-size: auto; 
+  width: 24px; 
+  height: 24px; 
+  background-repeat: no-repeat; 
+  display: inline-block;
+}
+
+.left-arrow {
+  background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/y6/r/lwBekknsaqF.png'); 
+  background-position: -37px -122px; 
+  background-size: auto; 
+  width: 24px; 
+  height: 24px; 
+  background-repeat: no-repeat; 
+  display: inline-block;
+}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

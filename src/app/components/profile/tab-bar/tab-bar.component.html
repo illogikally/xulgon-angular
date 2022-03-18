@@ -10,7 +10,7 @@
           <div class="content">
             <div class="avatar-container">
               <div class="avatar">
-                <img [src]="avatar || pageType == 'PROFILE' ? 'assets/avatar.jpg' : 'assets/cover.png'">
+                <img [src]="avatar || (pageType == 'PROFILE' ? 'assets/avatar.jpg' : 'assets/cover.png')">
               </div>
             </div>
 
@@ -31,6 +31,8 @@
              [routerLink]="tab.disabled ? null : './' + tab.path"
              [skipLocationChange]="true"
              routerLinkActive="tab-active"
+             NotImplemented
+             [disabled]="!tab.disabled"
              class="visible-tab"
              [routerLinkActiveOptions]="{exact: true}">
             <div>
@@ -61,6 +63,8 @@
                    (click)="(isMoreTabsVisible = false) && (tab.disabled ? null : locationGo(tab.path))"
                    [routerLink]="tab.disabled ? null : './' + tab.path"
                    [skipLocationChange]="true"
+                   NotImplemented
+                   [disabled]="!tab.disabled"
                    routerLinkActive="tab-active"
                    [routerLinkActiveOptions]="{exact: true}"
                    class="tab">

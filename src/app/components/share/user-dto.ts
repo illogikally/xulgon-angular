@@ -6,6 +6,7 @@ export interface UserDto {
   avatarUrl: string;
   workplace: string;
   hometown: string;
+  userInfo: any;
   school: string;
   username: string;
   commonFriendCount: number;

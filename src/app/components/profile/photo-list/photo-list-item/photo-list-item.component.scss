@@ -8,12 +8,6 @@
   background-clip: content-box;
   border-radius: 10px;
 
-  &:hover {
-    color: #050505;
-    background-color: rgba(#cdcdcd, .5);
-  }
-
-
   .photo-container {
     border-radius: 10px;
     border: 1px solid rgba(#777, .2);
@@ -23,27 +17,30 @@
   }
 
   .options {
-    @extend %fc;
-    cursor: pointer;
-    background-color: inherit;
     position: absolute;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    color: inherit;
-    // background-color: rgba(#ddd, .5);
     right: 10px;
     top: 10px;
 
-    i {
-      font-size: 20px;
+    [button] {
+      visibility: hidden;
+      background-color: rgba(#000, .1);
+      border-radius: 50%;
+      &:hover {
+        background-color: rgba(#111, .2);
+      }
     }
 
-    .option-list {
-      @extend %opts;
-      white-space: nowrap;
-      right: -20px;
+    [options] {
+      color: #050505;
     }
+
   }
 
+  &:hover {
+    .options {
+      [button] {
+        visibility: visible;
+      }
+    }
+  }
 }

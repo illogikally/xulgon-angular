@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { SharedContent } from '../../post/shared-content';
+import { OffsetResponse } from '../offset-response';
 import { OpenPhotoViewData } from './open-photo-view-data';
 import { PhotoResponse } from './photo-response';
 import { PhotoViewResponse } from './photo-view-response';
@@ -65,9 +66,13 @@ export class PhotoService {
     return this.http.get<number>(url);
   }
 
-  getPagePhotos(pageId: number): Observable<PhotoResponse[]> {
-    const url = `${this.baseApiUrl}/pages/${pageId}/photos`;
-    return this.http.get<PhotoResponse[]>(url);
+  getPagePhotos(
+    pageId: number,
+    size: number,
+    offset: number
+  ): Observable<OffsetResponse<PhotoResponse>> {
+    const url = `${this.baseApiUrl}/pages/${pageId}/photos?size=${size}&offset=${offset}`;
+    return this.http.get<OffsetResponse<PhotoResponse>>(url);
 
   }
 }

@@ -23,18 +23,16 @@ export class FriendListItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.pageId);
-    
   }
 
   unfriend(): void {
-    this.userService.unfriend(this.userDto.id).subscribe(_ => {
+    this.userService.unfriend(this.userDto.id).subscribe(() => {
       this.removeItem.emit(this.userDto);
     });
   }
 
   unfollow(): void {
-    this.followService.unfollowPage(this.userDto.id).subscribe(_ => {
+    this.followService.unfollowPage(this.userDto.id).subscribe(() => {
       this.userDto.isFollow = false;
     });
   }

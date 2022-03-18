@@ -16,10 +16,14 @@
       </div>
       <div (click)="close()"
            class="x-btn">
-        <i class='bx bx-x'></i>
+        <i class='x-icon'
+           style="filter: invert(0%);"></i>
       </div>
     </div>
     <div class="msg">
+      <div *ngIf="messages.length == 0" class="no-msgs">
+        <div >Chưa có tin nhắn, hãy nhắn gì đó cho {{ user?.username }}.</div>
+      </div>
       <app-chat-msg *ngFor="let message of messages; let i = index"
                     [avatarUrl]="user?.avatarUrl"
                     [thisMsg]="messages[i]"
@@ -27,11 +31,15 @@
                     [prevMsg]="messages[i+1]">
       </app-chat-msg>
     </div>
-    <form [formGroup]="msgForm" (keyup.enter)="sendMessage()" class="input-bar">
-      <input type="text" class="input" formControlName="input" placeholder="Aa">
-      <i
-        (click)="sendMessage()"
-        class='bx bxs-send'></i>
+    <form [formGroup]="msgForm"
+          (keyup.enter)="sendMessage()"
+          class="input-bar">
+      <input type="text"
+             class="input"
+             formControlName="input"
+             placeholder="Aa">
+      <i (click)="sendMessage()"
+         class='bx bxs-send'></i>
     </form>
   </div>
 </div>

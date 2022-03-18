@@ -44,9 +44,11 @@
         class="home">
         <a routerLink="/groups/{{ group?.id }}"
            routerLinkActive="active-sidebar-tab"
+           #home="routerLinkActive"
            [routerLinkActiveOptions]="{exact: true}">
           <div class="icon">
-            <i class='bx bxs-home'></i>
+            <i *ngIf="!home.isActive" data-visualcompletion="css-img" class="hu5pjgll lzf7d6o1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yR/r/8y_kNv751iG.png&quot;); background-position: 0px -150px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
+            <i *ngIf="home.isActive" data-visualcompletion="css-img" class="hu5pjgll lzf7d6o1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yR/r/8y_kNv751iG.png&quot;); background-position: 0px -125px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
           </div>
           <span>Trang chủ</span>
         </a>
@@ -56,9 +58,11 @@
         <a routerLink="/groups/{{ group?.id }}/member_request"
            routerLinkActive="active-sidebar-tab"
            [routerLinkActiveOptions]="{exact: true}"
+           #requests="routerLinkActive"
            class="tool">
           <div class="icon">
-            <i class='bx bxs-user-plus'></i>
+            <img *ngIf="!requests.isActive" class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover" src="https://static.xx.fbcdn.net/rsrc.php/v3/yv/r/YmMDhCokywW.png" alt="" height="20" width="20">
+            <img *ngIf="requests.isActive" class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover" src="https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/kvTZDbwpLhe.png" alt="" height="20" width="20">
           </div>
           <div class="text">
             <div>Yêu cầu tham gia</div>
@@ -67,10 +71,12 @@
         <a routerLink="/groups/{{ group?.id }}/settings"
            routerLinkActive="active-sidebar-tab"
            [routerLinkActiveOptions]="{exact: true}"
+           #settings="routerLinkActive"
            class="tool">
           <div class="icon-container">
             <div class="icon">
-              <i class='bx bxs-cog'></i>
+              <img *ngIf="!settings.isActive" class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover" src="https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/U_m10mzKpjD.png" alt="" height="20" width="20">
+              <img *ngIf="settings.isActive" class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover" src="https://static.xx.fbcdn.net/rsrc.php/v3/yA/r/Mljg0NlmO_q.png" alt="" height="20" width="20">
             </div>
           </div>
           <div class="text">

@@ -1,13 +1,15 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { merge, of } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { AuthenticationService } from '../../authentication/authentication.service';
 import { PostViewService } from '../../post/post-view/post-view.service';
-import { MessageService } from '../../share/message.service';
+import { ConfirmDialogService } from '../../share/confirm-dialog/confirm-dialog.service';
 import { ReactionType } from '../../share/reaction-type';
 import { ReactionPayload } from '../../share/reaction.payload';
 import { ReactionService } from '../../share/reaction.service';
+import { CommentListComponent } from '../comment-list.component';
 import { CommentResponse } from './comment-response';
+import { CommentService } from './comment.service';
 
 @Component({
   selector: 'app-comment',
@@ -19,7 +21,12 @@ export class CommentComponent implements OnInit, AfterViewInit {
   @Input() comment!: CommentResponse;
   @Input() replyVisible = false;
   @Output() onCommentAdded: EventEmitter<boolean> = new EventEmitter();
+  @Output() deleted = new EventEmitter<number>();
+
   @ViewChild('commentBody') commentBodyElement!: ElementRef;
+  @ViewChild(CommentListComponent) commentListComponent!: CommentListComponent;
+
+  principalId = this.authenticationService.getPrincipalId();
 
   onAttach$ = this.postViewService.attach$.pipe(
     filter(postId => postId == this.comment.rootContentId)
@@ -30,10 +37,13 @@ export class CommentComponent implements OnInit, AfterViewInit {
   );
 
   constructor(
+    private confirmService: ConfirmDialogService,
     private renderer: Renderer2,
     private reactionService: ReactionService,
     private postViewService: PostViewService,
     private changeDetector: ChangeDetectorRef,
+    private authenticationService: AuthenticationService,
+    private commentService: CommentService
   ) {
   }
 
@@ -91,6 +101,9 @@ export class CommentComponent implements OnInit, AfterViewInit {
 
   showReplies(): void {
     this.replyVisible = true;
+    setTimeout(() => {
+      this.commentListComponent.focusInput();
+    }, 100);
   }
 
   like(): void {
@@ -114,4 +127,16 @@ export class CommentComponent implements OnInit, AfterViewInit {
     this.onCommentAdded.emit(true);
   }
 
+  async delete() {
+    const isConfirmed = await this.confirmService.confirm({
+      title: 'Xoá bình luận',
+      body: 'Bạn có chắc muốn xoá bình luận này?'
+    });
+
+    if (isConfirmed) {
+      this.commentService.delete(this.comment.id).subscribe(() => {
+        this.deleted.next(this.comment.id);
+      })
+    }
+  }
 }

@@ -4,36 +4,37 @@
        'z-index': isPlaceHolderChild ? 30 : 997
      }"
      class="photo-viewer">
-  <div class="viewer-content">
+  <div (click)="!isPlaceHolderChild && $event.target == photoContainer && hide()"
+       #photoContainer
+       class="viewer-content">
     <div [ngStyle]="{'display': isPlaceHolderChild ? 'none' : 'flex'}"
          (click)="hide()"
          class="x-btn">
-      <!-- <i class='bx bx-x'></i> -->
       <i data-visualcompletion="css-img"
-         style="filter: invert(100%); background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png'); background-position: -105px -67px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
+         class="x-icon">
+      </i>
     </div>
     <img [src]="photo?.photos && photo.photos[0].url">
 
-    <div *ngFor="let has of getHasPreviousHasNext(); index as index">
-      <app-button [background]="'transparent'"
+    <div class="navigate-bar"
+         [ngClass]="index == 0 ? 'prev-button' : 'next-button'"
+         (click)="index == 0 ? navigateBackward() : navigateForward()"
+         *ngFor="let has of getHasPreviousHasNext(); index as index">
+      <app-button [background]="'rgba(255, 255, 255, .5)'"
                   width="50px"
                   height="50px"
                   [isRounded]="true"
-                  color="rgba(255, 255, 255, .8)"
-                  backgroundHover="rgba(255, 255, 255, .1)"
-                  *ngIf="has"
-                  [ngClass]="index == 0 ? 'prev-button' : 'next-button'"
-                  (click)="index == 0 ? navigateBackward() : navigateForward()">
+                  *ngIf="has">
         <div *ngIf="has"
              button="">
           <i *ngIf="index == 1"
              data-visualcompletion="css-img"
-             style="filter: invert(100%); background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png&quot;); background-position: -83px -13px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
+             class="right-arrow">
+          </i>
           <i *ngIf="index == 0"
              data-visualcompletion="css-img"
-             style="filter: invert(100%); background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/y6/r/lwBekknsaqF.png&quot;); background-position: -37px -122px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
-          <!-- <i class='bx bx-chevron-left'></i>
-          <i  class='bx bx-chevron-right'></i> -->
+             class="left-arrow">
+          </i>
         </div>
       </app-button>
     </div>

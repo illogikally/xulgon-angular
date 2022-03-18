@@ -14,7 +14,7 @@ import { ChatService } from '../chat.service';
 })
 export class ChatBoxComponent implements OnInit {
 
-  messages!: ChatMessage[];
+  messages: ChatMessage[] = [];
   msgForm: FormGroup;
   visible = false;
   user!: any;
@@ -39,22 +39,29 @@ export class ChatBoxComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.openChatBox$.subscribe(user => {
-      if (user.id != this.user?.id) {
-        this.user = user;
-        this.loadMessages();
-      }
-      this.show();
-    });
+    this.listenOpenCalled();
+    this.listenSocketNewMessage();
+  }
 
-    this.markAsRead
+  listenSocketNewMessage() {
     this.rxStomp.watch('/user/queue/chat').subscribe(msg => {
       let chatMsg: ChatMessage = JSON.parse(msg.body);
       if (this.messages) {
         this.messages.unshift(chatMsg);
       }
     });
+  }
 
+  listenOpenCalled() {
+    this.messageService.openChatBox$.subscribe(user => {
+      if (user.id != this.user?.id) {
+        console.log(user);
+        
+        this.user = user;
+        this.loadMessages();
+      }
+      this.show();
+    });
   }
 
   close(): void {

@@ -1,12 +1,10 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { RxStompService } from '@stomp/ng2-stompjs';
 import { merge, of } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { AuthenticationService } from '../authentication/authentication.service';
 import { PostViewService } from '../post/post-view/post-view.service';
-import { PostService } from '../post/post.service';
 import { PrincipalService } from '../share/principal.service';
-import { UserService } from '../share/user.service';
 import { CommentResponse } from './comment/comment-response';
 import { CommentService } from './comment/comment.service';
 
@@ -44,7 +42,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
   imageSizeRatio!: number;
   imgUrl!: string;
 
-  principalAvatarUrl = this.principalService.getAvatarUrl();
+  principalAvatarUrl = '';
 
   onAttach$ = this.postViewService.attach$.pipe(filter(id => id == this.rootContentId));
   onDetach$ = this.postViewService.detach$.pipe(filter(id => id == this.rootContentId));
@@ -57,14 +55,17 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
     private postViewService: PostViewService,
     private commentService: CommentService,
     private principalService: PrincipalService,
+    private rxStompService: RxStompService,
     private fb: FormBuilder,
 
   ) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.configureOnHighlightComment();
     this.loadComments();
+    this.listenToWebSocketNewComment();
+    this.principalAvatarUrl = await this.principalService.getAvatarUrl('s40x40');
   }
 
   ngAfterViewInit(): void {
@@ -159,7 +160,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
 
 
     this.commentService.createComment(formData).subscribe(comment => {
-      this.comments.push(comment);
+      // this.comments.push(comment);
       this.commentService.commentAdded$.next({
         parentId: this.parentId
       });
@@ -200,6 +201,26 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
   textAreaAutoGrow(event: any) {
     event.target.style.height = 'auto';
     event.target.style.height = event.target.scrollHeight + "px";
+  }
+
+  onCommentDeleted(id: number) {
+    this.comments = this.comments.filter(comment => comment.id != id);
+  }
+
+  focusInput() {
+    this.textArea.nativeElement.focus();
+  }
+
+  listenToWebSocketNewComment() {
+    this.rxStompService.watch('/topic/comment').subscribe(message => {
+      const dto = JSON.parse(message.body);
+      if (dto.type == 'COMMENT' && dto.parentId == this.parentId) {
+        if (!this.commentIdSet.has(dto.content.id)) {
+          this.comments.push(dto.content);
+          this.commentIdSet.add(dto.content.id)
+        }
+      }
+    });
   }
 }
 

@@ -1,26 +1,26 @@
 <div class="photo-item">
-  <div
-    #optionsBtn
-    (click)="showOptions()"
-    class="options">
-    <i class='bx bx-dots-vertical-rounded'></i>
-    <div
-      (clickOutside)="hideOptions($event)"
-      *ngIf="isOptionsVisible"
-      class="option-list">
-      <div 
-      (click)="deletePhoto()"
-        class="item">
-        <i class='bx bx-trash'> </i>Xoá ảnh
+  <div *ngIf="photo.userId == principalId" class="options">
+    <app-button [isRounded]="true"
+                width="30px"
+                [hasOptions]="true"
+                background="transparent"
+                color="#fff"
+                height="30px">
+      <div button="">
+        <i class='bx bx-dots-vertical-rounded'></i>
       </div>
-    </div>
+      <div options="">
+        <div (click)="deletePhoto()">
+          <i class='bx bx-trash'> </i>
+          <span>Xoá ảnh</span>
+        </div>
+      </div>
+    </app-button>
   </div>
   <div class="photo-container">
-    <app-photo 
-    [url]="photo.thumbnails.s400x400.url"
-    [setId]="setId"
-    [isPhotoViewNavigationReverse]="true"
-    [id]="photo.id"
-    ></app-photo>
+    <app-photo [url]="photo.thumbnails.s400x400.url"
+               [setId]="setId"
+               [isPhotoViewNavigationReverse]="true"
+               [id]="photo.id"></app-photo>
   </div>
 </div>

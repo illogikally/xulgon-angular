@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { CommentListComponent } from '../comment-list/comment-list.component';
 import { CommentService } from '../comment-list/comment/comment.service';
 import { GroupResponse } from '../group/group-response';
 import { ProfileService } from '../profile/profile.service';
@@ -28,6 +29,7 @@ export class PostComponent implements OnInit {
   @Input() isGroupNameVisible = false;
   @Input() initCommentCount = 2;
 
+  @ViewChild(CommentListComponent) commentListComponent!: CommentListComponent;
   openCreatePostToShare$ = new Subject<any>();
 
   principalId = this.authService.getPrincipalId();
@@ -39,7 +41,6 @@ export class PostComponent implements OnInit {
     private followService: FollowService,
     private reactionService: ReactionService,
     private confirmService: ConfirmDialogService,
-    private profileService: ProfileService,
     private authService: AuthenticationService,
     private postService: PostService,
   ) {
@@ -69,6 +70,7 @@ export class PostComponent implements OnInit {
 
   comment(): void {
     this.isCommentVisible = true;
+    this.commentListComponent.focusInput();
   }
 
   unfollow() {
@@ -94,6 +96,7 @@ export class PostComponent implements OnInit {
       if (isConfirmed) {
         this.postService.delete(this.post.id).subscribe(() => {
           this.remove.next(this.post.id)
+          this.postService.postDeleted$.next(this.post.id);
         });
       }
     })

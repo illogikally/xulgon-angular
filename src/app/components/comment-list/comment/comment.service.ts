@@ -33,4 +33,9 @@ export class CommentService {
     const url = `${this.baseApiUrl}/comments/${id}`
     return this.http.get<CommentResponse>(url);
   }
+
+  delete(commentId: number): Observable<any> {
+    const url = `${this.baseApiUrl}/comments/${commentId}`;
+    return this.http.delete(url);
+  }
 }
