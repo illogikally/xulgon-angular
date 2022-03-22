@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { RxStompService } from '@stomp/ng2-stompjs';
 import { merge, of } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from '../../authentication/authentication.service';
@@ -40,6 +41,7 @@ export class CommentComponent implements OnInit, AfterViewInit {
     private confirmService: ConfirmDialogService,
     private renderer: Renderer2,
     private reactionService: ReactionService,
+    private rxStompService: RxStompService,
     private postViewService: PostViewService,
     private changeDetector: ChangeDetectorRef,
     private authenticationService: AuthenticationService,
@@ -48,6 +50,7 @@ export class CommentComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.listenToWebSocketNewComment();
   }
 
   ngAfterViewInit(): void {
@@ -138,5 +141,14 @@ export class CommentComponent implements OnInit, AfterViewInit {
         this.deleted.next(this.comment.id);
       })
     }
+  }
+
+  listenToWebSocketNewComment() {
+    this.rxStompService.watch('/topic/comment').subscribe(message => {
+      const dto = JSON.parse(message.body);
+      if (dto.type == 'COMMENT' && dto.parentId == this.comment.id) {
+        this.comment.replyCount += 1;
+      }
+    });
   }
 }

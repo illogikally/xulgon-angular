@@ -73,9 +73,9 @@
           margin-bottom: 10px;
 
           .avatar {
+            @extend %loading-animation;
             width: 56px;
             height: 56px;
-            background-color: #ddd;
             border-radius: 50%;
           }
 
@@ -83,13 +83,15 @@
             flex-grow: 1;
 
             .text {
-              height: 20px;
-              background-color: #ddd;
+              border-radius: 10px;
+              height: 17px;
+              @extend %loading-animation;
               margin-bottom: 5px;
             }
 
             .date {
-              background-color: #ddd;
+              border-radius: 10px;
+              @extend %loading-animation;
               width: 30%;
               height: 15px;
             }

@@ -135,7 +135,16 @@
             <div class="flex-center">
               <button class="submit-btn register-btn"
                       id="submit-button"
-                      type="submit">ĐĂNG KÝ</button>
+                      type="submit">
+                <span *ngIf="!isPosting"
+                      class="text">ĐĂNG KÝ</span>
+                <app-spinner [displayText]="false"
+                             size="25px"
+                             ringWidth="3px"
+                             *ngIf="isPosting"
+                             backgroundColor="transparent">
+                </app-spinner>
+              </button>
             </div>
 
             <div class="result"
@@ -204,9 +213,19 @@
               <i class='bx bx-error'></i>
               <span>Mật khẩu không được bỏ trống</span>
             </div>
-            <div class="flex-center">
+            <div class="flex-center"
+                 style="position: relative;">
               <button class="submit-btn login-btn"
-                      type="submit">ĐĂNG NHẬP</button>
+                      type="submit">
+                <span *ngIf="!isPosting"
+                      class="text">ĐĂNG NHẬP</span>
+                <app-spinner [displayText]="false"
+                             size="25px"
+                             ringWidth="3px"
+                             *ngIf="isPosting"
+                             backgroundColor="transparent">
+                </app-spinner>
+              </button>
             </div>
 
             <div class="result"

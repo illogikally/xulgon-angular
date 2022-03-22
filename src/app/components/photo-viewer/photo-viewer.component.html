@@ -4,47 +4,49 @@
        'z-index': isPlaceHolderChild ? 30 : 997
      }"
      class="photo-viewer">
-  <div (click)="!isPlaceHolderChild && $event.target == photoContainer && hide()"
-       #photoContainer
-       class="viewer-content">
-    <div [ngStyle]="{'display': isPlaceHolderChild ? 'none' : 'flex'}"
-         (click)="hide()"
-         class="x-btn">
-      <i data-visualcompletion="css-img"
-         class="x-icon">
-      </i>
-    </div>
-    <img [src]="photo?.photos && photo.photos[0].url">
+   <div (click)="!isPlaceHolderChild && $event.target == photoContainer && hide()"
+        #photoContainer
+        class="viewer-content">
+      <div [ngStyle]="{'display': isPlaceHolderChild ? 'none' : 'flex'}"
+           (click)="hide()"
+           class="x-btn">
+         <i data-visualcompletion="css-img"
+            class="x-icon">
+         </i>
+      </div>
+      <img [src]="photo?.photos && photo.photos[0].url">
 
-    <div class="navigate-bar"
-         [ngClass]="index == 0 ? 'prev-button' : 'next-button'"
-         (click)="index == 0 ? navigateBackward() : navigateForward()"
-         *ngFor="let has of getHasPreviousHasNext(); index as index">
-      <app-button [background]="'rgba(255, 255, 255, .5)'"
-                  width="50px"
-                  height="50px"
-                  [isRounded]="true"
-                  *ngIf="has">
-        <div *ngIf="has"
-             button="">
-          <i *ngIf="index == 1"
-             data-visualcompletion="css-img"
-             class="right-arrow">
-          </i>
-          <i *ngIf="index == 0"
-             data-visualcompletion="css-img"
-             class="left-arrow">
-          </i>
-        </div>
-      </app-button>
-    </div>
+      <ng-container *ngFor="let has of getHasPreviousHasNext(); index as index">
+         <div class="navigate-bar"
+              *ngIf="has"
+              [ngClass]="index == 0 ? 'prev-button' : 'next-button'"
+              (click)="index == 0 ? navigateBackward() : navigateForward()">
+            <app-button [background]="'rgba(255, 255, 255, .3)'"
+                        width="42px"
+                        height="42px"
+                        [isRounded]="true">
+               <div *ngIf="has"
+                    button="">
+                  <i *ngIf="index == 1"
+                     data-visualcompletion="css-img"
+                     class="right-arrow">
+                  </i>
+                  <i *ngIf="index == 0"
+                     data-visualcompletion="css-img"
+                     class="left-arrow">
+                  </i>
+               </div>
+            </app-button>
+         </div>
+      </ng-container>
 
-  </div>
-  <div class="viewer-sidebar">
-    <app-post [isCommentVisible]="true"
-              [initCommentCount]="20"
-              (remove)="hide()"
-              [post]="photo"></app-post>
-  </div>
+
+   </div>
+   <div class="viewer-sidebar">
+      <app-post [isCommentVisible]="true"
+                [initCommentCount]="20"
+                (remove)="hide()"
+                [post]="photo"></app-post>
+   </div>
 </div>
 <app-post-not-found *ngIf="nullPhoto"></app-post-not-found>

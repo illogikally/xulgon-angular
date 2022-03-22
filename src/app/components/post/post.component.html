@@ -60,7 +60,15 @@
   </div>
 
   <div class="post-body">
-    <div class="post-body__text">{{ post.text }}</div>
+    <div class="body-text__wrapper">
+      <div #postBodyText
+           class="post-body__text">{{ post.text }}
+      </div>
+      <span *ngIf="isTextClamped"
+            class="unclamp"
+            (click)="unclampText()">Xem thêm
+      </span>
+    </div>
 
     <div class="media">
       <app-media-layout [photos]="post.type == 'POST' ? post.photos : []"
@@ -114,7 +122,10 @@
     </div>
     <div (click)="isShareOptionsHidden = !isShareOptionsHidden"
          #shareButton
-         *ngIf="(post.privacy == 'PUBLIC' && (post?.text?.trim() || post?.photos?.length))|| post.sharedContent?.privacy == 'PUBLIC'"
+         *ngIf="
+          (post.hasShare && post.sharedContent?.privacy == 'PUBLIC') 
+          || (!post.hasShare && post.privacy == 'PUBLIC' && (post?.text?.trim() 
+            || post?.photos?.length))"
          class="share-action">
       <span>
         <i class='bx bx-share'></i>

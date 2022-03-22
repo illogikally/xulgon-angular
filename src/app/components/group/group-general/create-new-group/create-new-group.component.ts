@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GroupResponse } from '../../group-response';
 import { GroupService } from '../../group.service';
 
 @Component({
@@ -10,6 +11,7 @@ import { GroupService } from '../../group.service';
 })
 export class CreateNewGroupComponent implements OnInit {
 
+  @Output() created = new EventEmitter<GroupResponse>();
   createGroupVisible = false;
   createGroupForm = this.fb.group({
     groupName: ['']
@@ -31,14 +33,17 @@ export class CreateNewGroupComponent implements OnInit {
     this.createGroupForm.get('groupName')?.setValue('');
   }
 
-  submit(): void {
+  submit() {
     if (!this.submitable()) return;
     let createGroupRequest = {
       isPrivate: this.privacy,
       name: this.createGroupForm.get('groupName')?.value
     }
 
-    this.groupService.createGroup(createGroupRequest).subscribe(groupId => {
+    this.groupService.createGroup(createGroupRequest).subscribe(async groupId => {
+      const group = await this.groupService.getGroupHeader(groupId).toPromise(); 
+      this.created.emit(group);
+      this.abort();
       this.router.navigateByUrl(`/groups/${groupId}`);
     });
   }

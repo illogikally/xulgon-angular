@@ -3,10 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "heroku-postbuild": "ng build --prod && npm install -g http-server-spa",
+    "start": "http-server-spa dist/xulgon index.html $PORT"
+
   },
   "private": true,
   "dependencies": {
@@ -23,14 +25,12 @@
     "@stomp/ng2-stompjs": "^8.0.0",
     "@stomp/rx-stomp": "^1.1.2",
     "@types/color": "^3.0.3",
-    "@types/textarea-caret": "^3.0.1",
     "color": "^4.2.1",
     "css-element-queries": "^1.2.3",
     "ng-click-outside": "^8.0.0",
     "ngx-image-cropper": "^6.1.0",
     "ngx-webstorage": "^8.0.0",
     "rxjs": "~6.6.0",
-    "textarea-caret": "^3.1.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"
   },
@@ -47,5 +47,9 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "typescript": "~4.5.5"
+  },
+  "engines": {
+    "node": "16.14.2",
+    "npm":  "8.5.0"
   }
 }

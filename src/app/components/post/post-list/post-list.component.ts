@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { ProfileService } from '../../profile/profile.service';
 import { Post } from '../post';
@@ -13,6 +13,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   @Input() pageId?: number;
   @Input() posts: Post[] = [];
+  @Output() postsChange = new EventEmitter<Post[]>();
   @Input() isLoading = false;
   @Input() isGroupNameVisible = false;
   @Input() isCommentVisible = false;
@@ -32,6 +33,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   onPostDelete(postId: number) {
     this.posts = this.posts?.filter(post => post.id != postId);
+    this.postsChange.emit(this.posts);
   }
 
   ngOnInit(): void {

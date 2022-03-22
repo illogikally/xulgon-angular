@@ -58,8 +58,6 @@ export class ProfileService {
   }
 
   uploadAvatar(data: FormData, profileId: number): Observable<PhotoResponse> {
-    console.log(profileId);
-    
     const url = `${this.baseApiUrl}/profiles/${profileId}/upload-avatar`;
     return this.http.put<PhotoResponse>(url, data);
   }

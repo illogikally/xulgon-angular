@@ -18,6 +18,7 @@ export class FriendListComponent implements OnInit {
   friendsCopy!: UserDto[];
   searchForm!: FormGroup;
   pageId!: number;
+  isLoading = false;
 
   constructor(
     private profileSevice: ProfileService,
@@ -37,9 +38,11 @@ export class FriendListComponent implements OnInit {
   getFriends() {
     let id = Number(this.activatedRoute.parent?.snapshot.paramMap.get('id'));
     if (id !== NaN) {
+      this.isLoading = true;
       this.pageId = id;
       this.profileSevice.getProfileFriends(id) .subscribe(resp => {
         this.friends = resp;
+        this.isLoading = false;
         this.friendsCopy = this.friends;
       });
     }

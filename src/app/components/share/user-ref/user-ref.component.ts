@@ -1,6 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { filter } from 'rxjs/operators';
 import { MessageService } from '../message.service';
 import { UserDto } from '../user-dto';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-user-ref',
@@ -20,6 +22,7 @@ export class UserRefComponent implements OnInit {
   avatarUrl!: string;
 
   constructor(
+    private userService: UserService,
     private renderer: Renderer2,
     private self: ElementRef,
     private messageService: MessageService
@@ -36,6 +39,7 @@ export class UserRefComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.listenOnFriendshipStatusChange();
     this.avatarUrl = this.userDto?.avatarUrl || 'assets/avatar.jpg';
   }
 
@@ -51,6 +55,14 @@ export class UserRefComponent implements OnInit {
   onMouseLeave(): void {
     this.messageService.userRef$.next({
       visible: false
+    })
+  }
+
+  listenOnFriendshipStatusChange() {
+    this.userService.updateFriendshipStatus$.pipe(
+      filter(data => data.userId == this.userDto.id)
+    ).subscribe(data => {
+      this.userDto.friendshipStatus = data.status;
     })
   }
 }

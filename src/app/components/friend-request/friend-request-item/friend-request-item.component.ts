@@ -22,7 +22,7 @@ export class FriendRequestItemComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private location: Location,
-    private activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute
   ) {
   }
 

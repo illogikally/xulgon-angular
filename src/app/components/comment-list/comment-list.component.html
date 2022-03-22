@@ -1,4 +1,11 @@
 <div class="comment-list">
+  <app-spinner *ngIf="!isInitLoaded"
+               backgroundColor="transparent"
+               style="display: block; margin: 15px 0px"
+               size="20px"
+               color="#bbb"
+               position="relative">
+  </app-spinner>
   <div #commentContainer
        class="comments">
     <app-comment *ngFor="let comment of comments"
@@ -8,9 +15,19 @@
   </div>
 
   <div class="load-comments"
-       *ngIf="!isAllLoaded"
+       *ngIf="!isAllLoaded && isInitLoaded"
        (click)="loadComments()">
     <span>Xem thêm {{ totalCommentCount - comments.length }} bình luận</span>
+    <span *ngIf="isLoading"
+          style="position: relative; margin-left: 12px"
+          class="spinner">
+      <app-spinner backgroundColor="transparent"
+                   size="13px"
+                   color="#333"
+                   ringWidth="2px"
+                   [displayText]="false">
+      </app-spinner>
+    </span>
   </div>
   <form [formGroup]="commentForm"
         (keydown.enter)="submit($event)">

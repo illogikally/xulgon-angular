@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   loginError = false;
   isLogin = false;
   disableAnimation = true;
+  isPosting = false;
 
   constructor(
     private renderer: Renderer2,
@@ -132,6 +133,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     if (!this.registerForm.valid) {
       return;
     }
+    this.isPosting = true;
 
     const registerDto = {
       username: this.registerForm.get('username')?.value,
@@ -144,8 +146,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.authService.register(registerDto)
       .subscribe(() => {
         this.registerError = false;
+        this.isPosting = false;
       }, () => {
         this.registerError = true;
+        this.isPosting = false;
       })
     this.registerForm.reset();
   }
@@ -158,6 +162,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    this.isPosting = true;
     const loginRequest: LoginRequest = {
       username: this.loginForm.get('username')?.value,
       password: this.loginForm.get('password')?.value
@@ -167,9 +172,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.loginError = false;
         location.href = '';
+        this.isPosting = false;
       }, (e) => {
         console.log(e);
         this.loginError = true;
+        this.isPosting = false;
       });
   }
 

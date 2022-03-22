@@ -1,10 +1,11 @@
 <div class="container">
-  <div #self id="main-content" 
+  <div #self
+       id="main-content"
        class="content">
-    <div id="sidebar" 
+    <div id="sidebar"
          #sidebar
          class="sidebar">
-      <div id="{{ pageId }}" 
+      <div id="{{ pageId }}"
            #sidebar__inner
            StickySidebar
            [sidebarInner]="sidebar__inner"
@@ -15,45 +16,63 @@
            class="sidebar__inner">
         <app-profile-about [isTimeline]="true"></app-profile-about>
         <div class="photo-intro">
+
           <div class="intro-title">
             <h3>Ảnh</h3>
+            <app-button color="#1877f2"
+                        class="to-photos"
+                        background="transparent"
+                        backgroundHover="rgba(24, 119, 242, .1)">
+              <div routerLink="photos"
+                   [relativeTo]="route"
+                   button="">
+                Xem tất cả ảnh
+              </div>
+            </app-button>
           </div>
           <div class="photo-container">
             <div class="photo">
               <div *ngIf="!userPage?.photos"
                    class="photo-skeletons-container">
-                <div
-                style="background-color: #dfdfdf;"
-                *ngFor="let i of [].constructor(9)">
+                <div style="background-color: #dfdfdf;"
+                     *ngFor="let i of [].constructor(9)">
                 </div>
               </div>
 
-              <div 
-              *ngIf="userPage?.photos"
-              class="photo-container">
+              <div *ngIf="userPage?.photos"
+                   class="photo-container">
                 <div *ngFor="let photo of userPage?.photos">
                   <app-photo [url]="photo.thumbnails?.s160x160?.url"
                              [id]="photo.id"
-                             [setId]="this.pagePhotoSetId"
-                  ></app-photo>
+                             [setId]="this.pagePhotoSetId"></app-photo>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <div class="friend-intro">
-          <div>
+          <div class="friend-intro__title">
             <h3>Bạn bè</h3>
+            <app-button color="#1877f2"
+                        class="to-photos"
+                        background="transparent"
+                        backgroundHover="rgba(24, 119, 242, .1)">
+              <div routerLink="friends"
+                   [relativeTo]="route"
+                   button="">
+                Xem tất cả bạn bè
+              </div>
+            </app-button>
           </div>
           <div class="friend">
             <div *ngFor="let friend of userPage?.friends">
               <div class="img-container">
                 <app-user-ref [userDto]="friend"
-                              borderRadius="10px"
-                ></app-user-ref>
+                              borderRadius="10px"></app-user-ref>
               </div>
               <app-user-ref [userDto]="friend"></app-user-ref>
-              <div *ngIf="friend.commonFriendCount > 0 && friend.id != principleId" 
+              <div *ngIf="friend.commonFriendCount > 0 && friend.id != principleId"
                    class="common-friend-count">
                 {{ friend.commonFriendCount }}
                 <span> bạn chung</span>
@@ -64,16 +83,19 @@
       </div>
     </div>
 
-    <div id="content" class="timeline">
-      <div *ngIf="isInitLoaded && timeline.length == 0" class="no-posts">
+    <div id="content"
+         class="timeline">
+      <div *ngIf="isInitLoaded && timeline.length == 0"
+           class="no-posts">
         <h3>Không có bài viết</h3>
       </div>
 
-      <div #postsContainer class="post-container">
+      <div #postsContainer
+           class="post-container">
         <app-post-list [pageId]="pageId"
                        [isLoading]="isLoadingPosts"
                        [isCommentVisible]="true"
-                       [posts]="timeline">
+                       [(posts)]="timeline">
         </app-post-list>
       </div>
     </div>

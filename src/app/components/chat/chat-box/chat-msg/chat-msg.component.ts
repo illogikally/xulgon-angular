@@ -25,11 +25,11 @@ export class ChatMsgComponent implements OnInit {
   isFirstMsg(): boolean {
     return !this.prevMsg 
       || this.thisMsg.createdAt - this.prevMsg.createdAt > 36e6
-      || this.thisMsg!.userId != this.prevMsg?.userId
+      || this.thisMsg!.user.id != this.prevMsg?.user.id
   }
 
   isLastMsg(): boolean {
-    return this.thisMsg?.userId != this.nextMsg?.userId || this.displayTimeCheck()
+    return this.thisMsg?.user.id != this.nextMsg?.user.id || this.displayTimeCheck()
   }
 
   getCreatedDate(): string {

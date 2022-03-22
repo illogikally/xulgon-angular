@@ -15,11 +15,17 @@
       <div class="body__inner">
         <div class="name--timestamp">
           <app-post-header [isAvatarVisible]="true"
-                           [isPageNameVisible]="true"
+                           [isPageNameVisible]="false"
                            [content]="content">
           </app-post-header>
         </div>
-        <div class="text">{{ content.text }}</div>
+        <div class="text__wrapper">
+          <div #postBodyText class="text">{{ content.text }}</div>
+          <span *ngIf="isTextClamped"
+                class="unclamp"
+                (click)="unclampText()">Xem thêm
+          </span>
+        </div>
       </div>
     </div>
   </div>

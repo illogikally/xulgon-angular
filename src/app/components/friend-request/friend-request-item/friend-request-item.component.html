@@ -1,4 +1,7 @@
 <a (click)="route($event)"
+   routerLink="{{ request?.requesterProfileId }}"
+   routerLinkActive="active"
+   [relativeTo]="activatedRoute"
    href="/{{ request?.requesterProfileId }}">
   <li class="request">
     <div class="avatar">

@@ -30,6 +30,7 @@
   .sidebar {
     font-weight: 500;
   }
+
   .sidebar__inner {
     display: flex;
     flex-direction: column;
@@ -65,6 +66,29 @@
 
     .photo-intro {
       max-height: 600px;
+
+      h3 {
+        all: unset;
+        display: flex;
+        font-size: 1.3rem;
+        font-weight: 600;
+        align-items: center;
+      }
+
+      .intro-title {
+        padding: 20px 0px;
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .to-photos {
+          position: absolute;
+          max-width: 50%;
+          width: 100%;
+          right: 0;
+        }
+      }
+
       .photo > div {
         display: grid;
         grid-gap: 3px;
@@ -84,6 +108,19 @@
 
     .friend-intro {
       max-height: 600px;
+
+      &__title {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .to-photos {
+          position: absolute;
+          max-width: 50%;
+          width: 100%;
+          right: 0;
+        }
+      }
 
       .friend {
         display: grid;

@@ -44,7 +44,7 @@
         overflow-y: scroll;
 
         .skeleton {
-          background-color: #ddd;
+          @extend %loading-animation;
           aspect-ratio: 1;
           border-radius: 10px;
         }

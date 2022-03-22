@@ -11,9 +11,11 @@ export class SpinnerComponent implements OnInit, AfterViewInit {
   @Input() size = '30px';
   @Input() backgroundColor = 'rgba(0, 0, 0, .3)'
   @Input() color = '#fff';
+  @Input() position: 'fixed' | 'absolute' | 'relative' = 'absolute';
   @Input() text = 'Loading';
   @Input() displayText = false;
   @Input() isFullScreen = false;
+  @Input() ringWidth = '3px';
 
   @ViewChild('spinner') spinnerElement!: ElementRef;
 
@@ -29,13 +31,15 @@ export class SpinnerComponent implements OnInit, AfterViewInit {
   }
 
   configureSpinnerStyle() {
+    const position = this.isFullScreen ? 'fixed' : this.position;
     const style = {
       '--size': this.size,
       '--color': this.color,
+      '--ring-width': this.ringWidth,
       '--text-size': this.text,
       '--background-color': this.backgroundColor,
       '--text-display': this.displayText ? 'block' : 'none',
-      '--position': this.isFullScreen ? 'fixed' : 'absolute'
+      '--position': position
     }
 
     for (const [variable, value] of Object.entries(style)) {
@@ -47,6 +51,5 @@ export class SpinnerComponent implements OnInit, AfterViewInit {
       );
     }
   }
-
 }
 

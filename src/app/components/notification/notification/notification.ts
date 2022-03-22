@@ -7,6 +7,7 @@ export interface Notification {
   createdAgo: string;
   type: NotificationType;
   isRead: boolean;
+  isPreviousRead: boolean;
   actorCount: number;
 
   pageId: number;

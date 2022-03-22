@@ -75,7 +75,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     this.pageHeader = header;
-    console.log(this.pageHeader.id, this.principalId);
     this.pageAvatarUrl = header.avatar?.thumbnails.s200x200.url;
     this.profileService.nextCurrentProfile(this.pageHeader);
     this.titleService.setTitle(this.pageHeader.name);

@@ -1,9 +1,8 @@
 import { Component, ElementRef, EventEmitter, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { AuthenticationService } from '../../authentication/authentication.service';
-import { NotificationService } from '../../notification/notification.service';
 import { TitleService } from '../../share/title.service';
+import { UserService } from '../../share/user.service';
 import { ChatMessage } from '../chat-msg';
 import { ChatService } from '../chat.service';
 import { ConversationNotif } from '../conversation-notif';
@@ -25,10 +24,9 @@ export class ChatNotificationComponent implements OnInit {
   @ViewChild('popup', {static: true}) popup!: ElementRef;
 
   constructor(
+    private userService: UserService,
     private chatService: ChatService,
-    private title: Title,
     private authenticationService: AuthenticationService,
-    private notificationService: NotificationService,
     private rxStompService: RxStompService,
     private titleService: TitleService,
     private renderer: Renderer2) {
@@ -52,13 +50,22 @@ export class ChatNotificationComponent implements OnInit {
       let chatMsg: ChatMessage = JSON.parse(msg.body);
       let conversation = this.latestConversations.find(conv => conv.id == chatMsg.conversationId)
       if (conversation) {
-        if (chatMsg.userId !== this.authenticationService.getPrincipalId()
-          && (conversation.latestMessage.userId !== chatMsg.userId
+        if (chatMsg.user.id !== this.authenticationService.getPrincipalId()
+          && (conversation.latestMessage.user.id !== chatMsg.user.id
             || conversation.latestMessage.isRead === true)) {
           this.unreadCount++;
           this.titleService.modifyNotificationCount(1);
         }
         conversation.latestMessage = chatMsg;
+      }
+      else {
+        this.latestConversations.unshift({
+          id: chatMsg.conversationId,
+          user: chatMsg.user,
+          latestMessage: chatMsg
+        });
+        this.unreadCount++;
+        this.titleService.modifyNotificationCount(1);
       }
     });
   }
@@ -85,6 +92,4 @@ export class ChatNotificationComponent implements OnInit {
       }
     });
   }
-
-
 }

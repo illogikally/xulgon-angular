@@ -29,8 +29,6 @@ export class ByPeopleComponent implements OnInit {
       if (!name) return;
       this.location.go(`/search/people?q=${name}`);
       this.search$.byPeople(name).subscribe(results => {
-        console.log(results);
-
         this.results = results;
       });
     })

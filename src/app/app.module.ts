@@ -90,8 +90,6 @@ import { PhotoComponent } from './components/share/photo/photo.component';
 import { PopUpComponent } from './components/share/pop-up/pop-up.component';
 import { SpinnerComponent } from './components/share/spinner/spinner.component';
 import { SquareImageComponent } from './components/share/square-image/square-image.component';
-import { SuggestTagUserComponent } from './components/share/suggest-tag-user/suggest-tag-user.component';
-import { TestingComponent } from './components/share/testing/testing.component';
 import { ToasterComponent } from './components/share/toaster/toaster.component';
 import { UserRefPopupComponent } from './components/share/user-ref/user-ref-popup/user-ref-popup.component';
 import { UserRefComponent } from './components/share/user-ref/user-ref.component';
@@ -158,7 +156,6 @@ import { GroupDiscoverItemComponent } from './components/group/group-discover/gr
     ByGroupResultComponent,
     Oauth2CallbackComponent,
     ButtonComponent,
-    TestingComponent,
     FriendshipButtonComponent,
     ConfirmDialogComponent,
     PopUpComponent,
@@ -171,7 +168,6 @@ import { GroupDiscoverItemComponent } from './components/group/group-discover/gr
     SharedContentComponent,
     PostHeaderComponent,
     ModalComponent,
-    SuggestTagUserComponent,
     LoadOnScrollDirective,
     GroupMemberItemComponent,
     GroupShareSelectorComponent,

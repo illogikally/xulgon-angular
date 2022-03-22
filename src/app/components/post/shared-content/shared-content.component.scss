@@ -9,8 +9,25 @@
           margin-bottom: 7px;
         }
 
-        .text {
-          font-weight: 400;
+        .text__wrapper {
+          .text {
+            font-weight: 400;
+            white-space: pre-line;
+            -webkit-line-clamp: 10;
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+          }
+
+          .unclamp {
+            font-weight: 500;
+            cursor: pointer;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
         }
       }
     }

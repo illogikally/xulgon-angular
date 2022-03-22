@@ -1,3 +1,5 @@
+@import 'src/styles';
+
 .friend-list {
   background-color: #fff;
   padding: 0 20px 20px 20px;
@@ -43,8 +45,50 @@
     display: grid;
     gap: 5px;
     grid-template-columns: repeat(2, 1fr);
+
     @media screen and (max-width: 666px) {
       grid-template-columns: repeat(1, 1fr);
+    }
+
+    .skeleton {
+      display: flex;
+      padding: 16px;
+      align-items: center;
+      border-radius: 10px;
+      border: 1px solid rgba(#999, .2);
+      box-shadow: 0 1px 1px rgba(#333, .1);
+      position: relative;
+      column-gap: 10px;
+
+      .avatar {
+        height: 80px;
+        width: 80px;
+        border-radius: 10px;
+        @extend %loading-animation;
+        overflow: hidden;
+      }
+
+      .text {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 5px;
+
+        div {
+          @extend %loading-animation;
+          height: 15px;
+          border-radius: 10px;
+        }
+
+        div:nth-child(1) {
+          width: 60%;
+        }
+
+        div:nth-child(2) {
+          width: 40%;
+        }
+      }
     }
   }
 }

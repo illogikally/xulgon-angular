@@ -68,4 +68,42 @@
   .create-post {
     width: 100%;
   }
+
+  .skeleton {
+    display: flex;
+    column-gap: 10px;
+    padding: 7px;
+    border-radius: 10px;
+    user-select: none;
+    cursor: pointer;
+    .avatar {
+      @extend %loading-animation;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      row-gap: 5px;
+
+      div {
+        @extend %loading-animation;
+        height: 15px;
+        border-radius: 10px;
+      }
+
+      div:nth-child(1) {
+        width: 60%;
+      }
+
+      div:nth-child(2) {
+        width: 40%;
+      }
+    }
+  }
 }

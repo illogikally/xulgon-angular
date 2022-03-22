@@ -31,12 +31,10 @@ import { ByPeopleComponent } from './components/search/by-people/by-people.compo
 import { ByPostsComponent } from './components/search/by-posts/by-posts.component';
 import { SearchComponent } from './components/search/search.component';
 import { LoggedInComponent } from './components/share/logged-in/logged-in.component';
-import { TestingComponent } from './components/share/testing/testing.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: LoginComponent },
-  { path: 'testing', component: TestingComponent},
   { 
     path: 'oauth2', 
     children: [

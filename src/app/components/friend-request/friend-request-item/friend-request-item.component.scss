@@ -4,6 +4,15 @@ a {
   display: block;
 }
 
+.active {
+  .request {
+    background-color: rgba(#1877f2, .1);
+    &:hover {
+      background-color: rgba(#1877f2, .1);
+    }
+  }
+}
+
 .request {
   display: flex;
   padding: 10px;

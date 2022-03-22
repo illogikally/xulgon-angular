@@ -29,14 +29,19 @@
 
         <span *ngIf="notification.type == NotificationType.REACTION">
           <strong>{{ notification.actor.username }}</strong>
+          <span *ngIf="notification.actorCount > 1">
+            và {{ notification.actorCount-1 }} người khác
+          </span>
           đã thích 
-          <span *ngIf="notification.targetContent.type == 'POST'">một bài viết của bạn.</span>
-          <span *ngIf="notification.targetContent.type == 'COMMENT'">một bình luận của bạn.</span>
+          <span *ngIf="notification.targetContent.type == 'POST'">một bài viết của bạn</span>
+          <span *ngIf="notification.targetContent.type == 'COMMENT'">một bình luận của bạn</span>
+          <span>: "{{ notification.targetContent.text }}"</span>
+          <span>.</span>
         </span>
 
         <span *ngIf="notification.type == NotificationType.NEW_POST">
           <strong>{{ notification.actorContent.user.username }}</strong>
-          <span> đã đăng một bài viết mới </span>
+          <span> đã đăng một bài viết mới</span>
           <span *ngIf="notification.pageType == 'GROUP'"> trong <strong>{{ notification.pageName }}</strong></span>
           <span *ngIf="notification.targetContent.text">: "{{ notification.targetContent.text }}"</span>
           <span>.</span>

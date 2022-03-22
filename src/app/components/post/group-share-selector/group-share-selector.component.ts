@@ -20,12 +20,13 @@ export class GroupShareSelectorComponent implements OnInit {
   @ViewChild('self') self!: ElementRef;
   toggleModalNgIf = new Subject<any>();
 
-  groups!: GroupResponse[];
+  groups: GroupResponse[] = [];
   groupsClone!: GroupResponse[];
 
   selectedGroup!: GroupResponse;
   sharedContent!: SharedContent;
   isTransitioned = false;
+  isLoading = false;
   search = new FormControl('');
   constructor(
     private userService: UserService,
@@ -41,7 +42,9 @@ export class GroupShareSelectorComponent implements OnInit {
 
 
   getGroups() {
+    this.isLoading = true;
     this.userService.getJoinedGroups().subscribe(groups => {
+      this.isLoading = false;
       this.groups = groups;
       this.groupsClone = groups;
     });
@@ -49,7 +52,9 @@ export class GroupShareSelectorComponent implements OnInit {
 
   onOpenCalled() {
     this.postService.onOpenGroupShareSelectorCalled().subscribe(content => {
-      this.getGroups();
+      if (this.groups.length == 0) {
+        this.getGroups();
+      }
       this.sharedContent = content;
       this.toggleModalNgIf.next();
     });
@@ -82,13 +87,12 @@ export class GroupShareSelectorComponent implements OnInit {
 
   itemClicked(group: GroupResponse) {
     this.selectedGroup = group;
-    console.log(group);
     this.transition();
   }
 
   onSearch() {
     this.search.valueChanges.subscribe(value => {
-      this.groups = this.groupsClone.filter(group => group.name.indexOf(value) != -1);
+      this.groups = this.groupsClone.filter(group => group.name.toLowerCase().indexOf(value) != -1);
     })
   }
 

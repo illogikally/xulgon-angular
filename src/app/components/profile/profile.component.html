@@ -5,7 +5,7 @@
       <div class="cover-avatar">
         <div class="cover">
           <img *ngIf="pageHeader.coverPhoto"
-               [src]="pageHeader.coverPhoto.url || ''">
+               [src]="pageHeader.coverPhoto.url|| ''">
           <app-button background="#fff"
                       *ngIf="pageHeader.id == principalProfileId"
                       (click)="updateHeaderPicture('COVER')"

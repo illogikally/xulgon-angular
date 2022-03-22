@@ -11,7 +11,7 @@
       <div class="msg--ago">
 				<span [ngStyle]="{'color': isConversationRead() ? 'inherit' : '#1877f2' }"
               class="msg">
-					<span *ngIf="conversation.latestMessage.userId == principalId">Bạn: </span>
+					<span *ngIf="conversation.latestMessage.user.id == principalId">Bạn: </span>
           {{ conversation.latestMessage.message }}
 				</span>
         <span>&nbsp;·&nbsp;</span>

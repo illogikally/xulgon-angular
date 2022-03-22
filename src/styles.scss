@@ -155,7 +155,9 @@ div {
   position: relative;
   border: none;
   outline: none;
-  transition: 200ms cubic-bezier(.08,.52,.52,1) background-color, 200ms cubic-bezier(.08,.52,.52,1) box-shadow, 200ms cubic-bezier(.08,.52,.52,1) transform; 
+  transition: 200ms cubic-bezier(.08,.52,.52,1) background-color, 
+              200ms cubic-bezier(.08,.52,.52,1) box-shadow, 
+              200ms cubic-bezier(.08,.52,.52,1) transform; 
 
   &:hover {
     background-color: darken($bg, 5%);
@@ -358,7 +360,7 @@ input {
 
 .x-icon {
   filter: invert(100%); 
-  background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png'); 
+  background-image: url('assets/icons.png'); 
   background-position: -105px -67px; 
   background-size: auto; 
   width: 20px; 
@@ -367,8 +369,18 @@ input {
   display: inline-block;
 }
 
+.x-icon-small {
+  background-image: url('assets/icons.png'); 
+  background-position: -167px -109px; 
+  background-size: auto; 
+  width: 11px; 
+  height: 11px; 
+  background-repeat: no-repeat; 
+  display: inline-block;
+}
+
 .right-arrow {
-  background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png'); 
+  background-image: url('assets/icons.png'); 
   background-position: -83px -13px; 
   background-size: auto; 
   width: 24px; 
@@ -386,6 +398,25 @@ input {
   background-repeat: no-repeat; 
   display: inline-block;
 }
+
+@keyframes loading-animation {
+  0% {
+    background-color: #ddd;
+  }
+
+  50% {
+    background-color: #eee;
+  }
+
+  100% {
+    background-color: #ddd;
+  }
+}
+
+%loading-animation {
+  animation: loading-animation 2.5s infinite;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

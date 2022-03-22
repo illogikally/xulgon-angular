@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CommentListComponent } from '../comment-list/comment-list.component';
 import { CommentService } from '../comment-list/comment/comment.service';
 import { GroupResponse } from '../group/group-response';
-import { ProfileService } from '../profile/profile.service';
 import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
 import { FollowService } from '../share/follow.service';
 import { PhotoViewResponse } from '../share/photo/photo-view-response';
@@ -21,7 +20,7 @@ import { PostService } from './post.service';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, AfterViewInit {
 
   @Output() remove = new EventEmitter();
   @Input() post!: Post | PhotoViewResponse;
@@ -30,11 +29,13 @@ export class PostComponent implements OnInit {
   @Input() initCommentCount = 2;
 
   @ViewChild(CommentListComponent) commentListComponent!: CommentListComponent;
+  @ViewChild('postBodyText') postBodyText!: ElementRef;
   openCreatePostToShare$ = new Subject<any>();
 
   principalId = this.authService.getPrincipalId();
   groupReponse!: GroupResponse;
   isShareOptionsHidden = true;
+  isTextClamped = false;
 
   constructor(
     private commentService: CommentService,
@@ -42,6 +43,7 @@ export class PostComponent implements OnInit {
     private reactionService: ReactionService,
     private confirmService: ConfirmDialogService,
     private authService: AuthenticationService,
+    private changeDetector: ChangeDetectorRef,
     private postService: PostService,
   ) {
   }
@@ -50,6 +52,11 @@ export class PostComponent implements OnInit {
     this.commentService.commentAdded$.pipe(
       filter(msg => msg.parentId == this.post.id)
     ).subscribe(() => this.post.commentCount += 1);
+  }
+
+  ngAfterViewInit(): void {
+    this.isTextClamped = this.isPostBodyClamped(); 
+    this.changeDetector.detectChanges();
   }
 
   toggleComment(): void {
@@ -70,7 +77,9 @@ export class PostComponent implements OnInit {
 
   comment(): void {
     this.isCommentVisible = true;
-    this.commentListComponent.focusInput();
+    setTimeout(() => {
+      this.commentListComponent.focusInput();
+    }, 200);
   }
 
   unfollow() {
@@ -117,5 +126,15 @@ export class PostComponent implements OnInit {
     this.followService.unfollowPage(this.post.pageId).subscribe(() => {
       this.post.isFollowPage = false;
     });
+  }
+
+  isPostBodyClamped() {
+    const body = this.postBodyText.nativeElement;
+    return body.scrollHeight > body.clientHeight;
+  }
+
+  unclampText() {
+    this.postBodyText.nativeElement.style.display = 'block';
+    this.isTextClamped = false;
   }
 }

@@ -34,6 +34,8 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
 
   isComponentAttached = true;
   isComponentDetached = false;
+  lastPostId = 0;
+  
 
   onDetach$ = this.profileService.onDetach$.pipe(
     filter(id => id == this.pageId)
@@ -45,12 +47,11 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
 
   constructor(
     private profileService: ProfileService,
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private ngZone: NgZone,
     private renderer: Renderer2,
     private rxStompService: RxStompService,
     private postService: PostService,
-    private profile$: ProfileService,
     private authenticationService: AuthenticationService,
     private photoService: PhotoService
   ) {
@@ -67,15 +68,19 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.getPosts();
+    this.getPhotosAndStuffs();
+    this.listenToWebSocketNewPost();
+  }
+
+  getPhotosAndStuffs() {
     if (!isNaN(this.pageId)) {
-      this.getPosts();
-      this.profile$.getUserProfile(this.pageId)
-        .subscribe(profile => {
+      this.profileService.getUserProfile(this.pageId) .subscribe(profile => {
           this.userPage = profile;
-          this.photoService.getPagePhotoSetId(this.userPage.id).subscribe(id => {
-            this.pagePhotoSetId = id;
-          });
-        })
+      })
+      this.photoService.getPagePhotoSetId(this.pageId).subscribe(id => {
+        this.pagePhotoSetId = id;
+      });
     }
   }
 
@@ -88,17 +93,16 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   getPosts(): void {
     this.isLoadingPosts = true;
     const size = this.timeline.length ? 5 : 2;
-    const [lastPost] = this.timeline.slice(-1);
-    const before = lastPost?.id;
+    const before = this.lastPostId || Number.MAX_SAFE_INTEGER;
 
     if (this.pageId !== NaN) {
       this.postService.getPostsByProfile(this.pageId, size, before)
         .subscribe(response => {
-          console.log(response);
-
           this.timeline = this.timeline.concat(response.data);
           this.isLoadingPosts = false;
           this.isInitLoaded = true;
+          const [lastPost] = this.timeline.slice(-1);
+          this.lastPostId = lastPost?.id;
           if (!response.hasNext) {
             this.isLoadedAll = true;
           }

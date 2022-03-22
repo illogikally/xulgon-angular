@@ -63,6 +63,7 @@ export class ButtonComponent implements OnInit, AfterViewInit {
       this.radius = '50%';
       this.padding = '0px';
     }
+
     const style = {
       '--bg': this.background,
       '--fg': this.color,

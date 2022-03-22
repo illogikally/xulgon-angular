@@ -1,5 +1,19 @@
 @import "src/styles";
 
+@keyframes slide {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+    visibility: visible;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 .toaster {
   position: fixed;
   border-radius: 10px;
@@ -7,6 +21,8 @@
   z-index: z('toaster');
   left: 30px;
   bottom: 20px;
+  animation-duration: .2s;
+  visibility: hidden;
   padding: 15px;
   background-color: #fff;
   box-shadow: $box-shadow-wide;

@@ -22,7 +22,8 @@
          (@slideInOutLeft.done)="discardHeight($event)"
          class="selector__inner">
       <app-card-header (click)="toggleModalNgIf.next()"
-                       title="Chọn một nhóm để chia sẻ"></app-card-header>
+                       title="Chọn một nhóm để chia sẻ">
+      </app-card-header>
       <div class="inner__body">
 
         <div class="input">
@@ -37,7 +38,17 @@
         <div class="group-list">
           <app-group-share-item *ngFor="let group of groups"
                                 [group]="group"
-                                (clicked)="itemClicked($event)"></app-group-share-item>
+                                (clicked)="itemClicked($event)">
+          </app-group-share-item>
+          <ng-container *ngIf="isLoading">
+            <div *ngFor="let item of [].constructor(3)" class="skeleton">
+              <div class="avatar"></div>
+              <div class="text">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>

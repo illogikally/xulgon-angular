@@ -37,7 +37,8 @@
               <span>Khám phá</span>
             </a>
           </div>
-          <app-create-new-group></app-create-new-group>
+          <app-create-new-group (created)="newGroupCreated($event)">
+          </app-create-new-group>
         </div>
         <div class="admin-groups">
           <div class="admin-groups__title">

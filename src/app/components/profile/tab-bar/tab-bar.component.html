@@ -2,7 +2,7 @@
      class="actions-menu-container flex-center">
   <div class="wrapper">
     <div class="actions-menu">
-      <div *ngIf="isTabBarSticky"
+      <div [hidden]="!isTabBarSticky"
            class="to-top">
         <a href="pagePath"
            (click)="scrollToTop($event)"

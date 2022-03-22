@@ -5,7 +5,7 @@
   box-sizing: border-box;
   display: none;
   max-width: 328px;
-  width: 95%;
+  width: 100%;
   position: fixed;
   bottom: 0px;
   z-index: $modal-z-index - 1;
@@ -16,6 +16,10 @@
   overflow: hidden;
   cursor: auto;
   box-shadow: 0 12px 28px 0 rgba(#000, .2), 0 2px 4px 0 rgba(#000, .1);
+
+  @media screen and (max-width: 344px) {
+    right: 0px;
+  }
 
   .content {
     height: 100%;

@@ -9,20 +9,28 @@
           <i class='bx bx-search'></i>
         </span>
         <form [formGroup]="searchForm">
-          <input
-            type="text"
-            formControlName="searchInput"
-            placeholder="Tìm kiếm"
-            autocomplete="off"/>
+          <input type="text"
+                 formControlName="searchInput"
+                 placeholder="Tìm kiếm"
+                 autocomplete="off" />
         </form>
       </div>
     </div>
   </div>
   <div class="items">
-    <app-friend-list-item
-      (removeItem)="removeItem($event)"
-      [pageId]="pageId"
-      *ngFor="let friend of friends"
-      [userDto]="friend"></app-friend-list-item>
+    <app-friend-list-item (removeItem)="removeItem($event)"
+                          [pageId]="pageId"
+                          *ngFor="let friend of friends"
+                          [userDto]="friend">
+    </app-friend-list-item>
+    <ng-container *ngIf="isLoading">
+      <div *ngFor="let item of [].constructor(3)" class="skeleton">
+        <div class="avatar"></div>
+        <div class="text">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>

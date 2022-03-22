@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -55,6 +55,7 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   configureHideOnRouteChange() {
     this.router.events.subscribe(e => {
       if (e instanceof NavigationStart) {
+
         if (this.router.url.replace(/\?.*$/g, '') == e.url.replace(/\?.*$/g, '')) {
         } else {
           this.isHidden = true;
@@ -102,6 +103,14 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
       this.photo = photo;
       this.show();
     });
+  }
+
+  @HostListener('window:popstate')
+  onPopState() {
+    if (!this.isPlaceHolderChild && !this.isHidden) {
+      this.isHidden = true;
+      this.hide();
+    }
   }
 
   hide(): void {

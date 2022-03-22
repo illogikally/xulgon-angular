@@ -25,6 +25,8 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
   @ViewChild('textArea') textArea!: ElementRef;
 
   isAllLoaded = false;
+  isInitLoaded = false;
+  isLoading = false;
   comments: CommentResponse[] = [];
   commentIdSet = new Set();
 
@@ -124,8 +126,9 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   loadComments() {
-    const limit = this.comments.length >= this.initCommentCount ? 5 : this.initCommentCount;
+    const limit = this.isInitLoaded ? 5 : this.initCommentCount;
     const offset = this.comments.length;
+    this.isLoading = true;
 
     this.commentService
       .getCommentsByContent(this.parentId, offset, limit)
@@ -139,6 +142,8 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
         });
 
         this.isAllLoaded = !response.hasNext;
+        this.isInitLoaded = true;
+        this.isLoading = false;
         this.comments = this.comments.concat(resp);
         this.loadHighlightedCommentIfHavent();
       });

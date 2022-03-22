@@ -126,6 +126,7 @@ export class UserRefPopupComponent implements OnInit {
   hide(): void {
     this.setSelfStyle('visibility', 'hidden');
     this.setSelfStyle('opacity', '0');
+    this.userDto = undefined;
     document.body.click();
   }
 
@@ -138,8 +139,6 @@ export class UserRefPopupComponent implements OnInit {
   }
 
   openChatBox(): void {
-    console.log(this.userDto);
-    
     this.messageService.openChatBox$.next({
       id: this.userDto!.id,
       profileId: this.userDto!.profileId,

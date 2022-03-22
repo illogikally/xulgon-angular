@@ -37,7 +37,7 @@ export class ChatNotificationItemComponent implements OnInit {
   }
 
   isConversationRead(): boolean {
-    let isMe = this.conversation.latestMessage.userId == this.principalId;
+    let isMe = this.conversation.latestMessage.user.id == this.principalId;
     return isMe || this.conversation.latestMessage.isRead;
   }
 

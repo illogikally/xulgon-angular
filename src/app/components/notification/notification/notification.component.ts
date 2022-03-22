@@ -48,8 +48,14 @@ export class NotificationComponent implements OnInit, AfterViewInit {
   listenOnWebSocketNewNotification() {
     this.rxStompService.watch("/user/queue/notification").subscribe(message => {
       let notification = JSON.parse(message.body);
+
+      const existed = this.notifications.find(n => n.id == notification.id);
+
+      if ((!existed && notification.isPreviousRead) || existed?.isRead) {
+        this.notificationService.modifyUnread$.next(1);
+      }
+
       this.notifications = this.notifications.filter(n => n.id != notification.id);
-      this.notificationService.modifyUnread$.next(1);
       this.notifications.unshift(notification);
     });
   }
@@ -71,7 +77,7 @@ export class NotificationComponent implements OnInit, AfterViewInit {
   async getNotifications() {
     if (!this.hasNext) return;
 
-    const size = 5;
+    const size = 6;
     this.isLoading = true;
     const offset = this.notifications.length;
     const response = await this.notificationService.getNotifications(size, offset).toPromise();

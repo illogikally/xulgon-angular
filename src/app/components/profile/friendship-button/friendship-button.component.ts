@@ -1,9 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ObjectUnsubscribedError, pipe } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { filter } from 'rxjs/operators';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { ConfirmDialogService } from '../../share/confirm-dialog/confirm-dialog.service';
-import { MessageService } from '../../share/message.service';
 import { UserService } from '../../share/user.service';
 
 @Component({
@@ -16,10 +14,12 @@ export class FriendshipButtonComponent implements OnInit {
   @Input() userId!: number;
   @Input() friendshipStatus!: string;
   @Input() userName!: string;
+  @Output() friendshipStatusChanged = new EventEmitter<string>();
 
 
   isWaitingConfirmation = false;
   principalId = this.authenticationService.getPrincipalId();
+  isUpdating = false;
 
   constructor(
     private userService: UserService,
@@ -32,13 +32,17 @@ export class FriendshipButtonComponent implements OnInit {
     this.userService.updateFriendshipStatus$.pipe(
       filter(data => data.userId == this.userId)
     ).subscribe(data => {
-      this.friendshipStatus = data.status
+      
+      this.friendshipStatus = data.status;
     });
   }
 
   sendFriendRequest() {
+    this.isUpdating = true;
     this.userService.sendFriendRequest(this.userId).subscribe(() => {
       this.friendshipStatus = 'SENT';
+      this.isUpdating = false;
+
       this.userService.updateFriendshipStatus$.next({
         userId: this.userId,
         status: 'SENT'
@@ -47,8 +51,10 @@ export class FriendshipButtonComponent implements OnInit {
   }
 
   deleteFriendRequest() {
+    this.isUpdating = true;
     this.userService.deleteFriendRequest(this.userId).subscribe(() => {
       this.friendshipStatus = 'NULL';
+      this.isUpdating = false;
       this.userService.updateFriendshipStatus$.next({
         userId: this.userId,
         status: 'NULL'
@@ -65,8 +71,10 @@ export class FriendshipButtonComponent implements OnInit {
     });
 
     if (isConfirmed) {
+      this.isUpdating = true;
       this.userService.unfriend(this.userId).subscribe(() => {
         this.friendshipStatus = 'NULL';
+        this.isUpdating = false;
         this.userService.updateFriendshipStatus$.next({
           userId: this.userId,
           status: 'NULL'
@@ -76,8 +84,10 @@ export class FriendshipButtonComponent implements OnInit {
   }
 
   acceptFriendRequest() {
+    this.isUpdating = true;
     this.userService.acceptFriendRequest(this.userId) .subscribe(() => {
       this.friendshipStatus = 'FRIEND';
+      this.isUpdating = false;
       this.userService.updateFriendshipStatus$.next({
         userId: this.userId,
         status: 'FRIEND'

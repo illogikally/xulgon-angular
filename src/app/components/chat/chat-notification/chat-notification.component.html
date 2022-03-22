@@ -3,7 +3,6 @@
        id="chatNotifButton"
        [ngClass]="{'active': isPopupVisible}"
        class="button">
-    <!-- <i class='bx bxs-message-square-dots'></i> -->
     <svg [ngStyle]="isPopupVisible ? {'filter': 'invert(26%) sepia(100%) saturate(1903%) hue-rotate(207deg) brightness(107%) contrast(90%)'} : {}"
          viewBox="0 0 28 28"
          alt=""
@@ -27,7 +26,8 @@
       <div class="title">
         <h2>Nhắn tin</h2>
       </div>
-      <div class="search">
+      <div NotImplemented
+           class="search">
         <div class="input-group">
           <i class='bx bx-search'></i>
           <input type="text"

@@ -13,7 +13,6 @@
     margin-right: 10px;
     width: 35px;
     height: 35px;
-
   }
 
   .comment-username {
@@ -35,10 +34,13 @@
     }
   }
 
-  &:hover {
-    .comment-options-container {
-      [button] {
-        visibility: visible;
+  .comment-body-container {
+    display: flex;
+    &:hover {
+      .comment-options-container {
+        [button] {
+          visibility: visible;
+        }
       }
     }
   }

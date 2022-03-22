@@ -66,7 +66,6 @@ export class UserService {
   }
 
   isUserExisted(username: string): Observable<boolean> {
-    console.log("Trigger API call");
     const url = `${this.baseApiUrl}/authentication/username-existed/${username}`;
     return this.http.get<boolean>(url);
   }

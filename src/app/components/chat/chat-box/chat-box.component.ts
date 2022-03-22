@@ -55,8 +55,6 @@ export class ChatBoxComponent implements OnInit {
   listenOpenCalled() {
     this.messageService.openChatBox$.subscribe(user => {
       if (user.id != this.user?.id) {
-        console.log(user);
-        
         this.user = user;
         this.loadMessages();
       }
@@ -96,7 +94,7 @@ export class ChatBoxComponent implements OnInit {
     if (
       !this.messages[0]
       || this.messages[0].isRead == true
-      || this.messages[0].userId == this.authService.getPrincipalId()
+      || this.messages[0].user.id == this.authService.getPrincipalId()
     ) {
       return;
     }

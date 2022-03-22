@@ -25,8 +25,6 @@ export class GroupCreatePostComponent implements OnInit {
   }
 
   show() {
-    console.log('show');
-    
     this.postService.openCreatePost({
       groupName: this.groupResponse?.name || '',
       groupId: this.groupResponse?.id || NaN,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToasterMessageType } from './toaster-message-type';
 import { ToasterService } from './toaster.service';
 
@@ -9,14 +9,17 @@ import { ToasterService } from './toaster.service';
 })
 export class ToasterComponent implements OnInit {
 
-  constructor(
-    private toasterService: ToasterService
-  ) { }
-
   MessageType = ToasterMessageType;
   isToasterHidden = true;
   messageType!: ToasterMessageType;
   message = '';
+
+  style = {};
+  @ViewChild('self') self!: ElementRef;
+  constructor(
+    private toasterService: ToasterService
+  ) { }
+
 
   ngOnInit(): void {
     this.configureOnNewMessage();
@@ -34,10 +37,18 @@ export class ToasterComponent implements OnInit {
   }
 
   displayToaster() {
-    this.isToasterHidden = false;
+    this.style = {
+      'animation-direction': 'normal',
+      'animation-name': 'slide',
+      'visibility': 'visible'
+    }
   }
 
   hideToaster() {
-    this.isToasterHidden = true;
+    this.self.nativeElement.offsetWidth;
+    this.style = {
+      'animation-direction': 'reverse',
+      'animation-name': 'slide',
+    }
   }
 }

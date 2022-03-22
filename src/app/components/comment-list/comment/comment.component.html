@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="comment-right">
-    <div style="display: flex;">
+    <div class="comment-body-container">
       <div #commentBody
            (clickOutside)="commentBody.classList.remove('highlight')"
            class="comment-body">
@@ -47,7 +47,7 @@
     <div *ngIf="comment.photo"
          class="comment-media">
       <app-photo [isComment]="true"
-                 [url]="comment.photo.thumbnails.s400x400.url"
+                 [url]="comment.photo.url"
                  [id]="comment.photo.id"
                  [style]="'height'">
       </app-photo>

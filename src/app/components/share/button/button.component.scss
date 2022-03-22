@@ -75,13 +75,17 @@ $triangle-height: 8px;
         align-items: center;
         padding: 5px;
         border-radius: 5px;
+        column-gap: 10px;
+        overflow: hidden;
 
         &:hover {
           background-color: rgba(#eee, .8);
         }
 
-        > *:not(:last-child) {
-          margin-right: 10px;
+        > *:nth-child(2) {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         i {

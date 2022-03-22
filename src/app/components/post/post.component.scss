@@ -49,6 +49,20 @@
 
     &__text {
       white-space: pre-line;
+      -webkit-line-clamp: 10;
+      display: -webkit-box;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+    }
+
+    .unclamp {
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     .media {
@@ -58,7 +72,7 @@
   }
 
   .post-meta {
-    display: flex;
+    display: flex ;
     justify-content: space-between;
     margin-top: 10px;
     user-select: none;
