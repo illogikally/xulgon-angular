@@ -17,6 +17,7 @@ export class GroupGeneralComponent implements OnInit {
   managedGroups!: GroupResponse[];
   groups!: GroupResponse[];
   selectedGroup = new Subject<number>();
+  isLoadingGroups = false;
 
   constructor(
     public groupService: GroupService,
@@ -33,9 +34,11 @@ export class GroupGeneralComponent implements OnInit {
   }
 
   getGroups() {
+    this.isLoadingGroups = true;
     this.userService.getJoinedGroups().subscribe(groups => {
       this.managedGroups = groups.filter(group => group.role == 'ADMIN');
       this.groups = groups.filter(group => group.role == 'MEMBER');
+      this.isLoadingGroups = false;
     });
   }
 

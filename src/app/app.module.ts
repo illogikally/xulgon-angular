@@ -97,6 +97,7 @@ import { MyReuseStrategy } from './my-reuse-trategy';
 import { MyRxStompConfig } from './my-rx-stomp.config';
 import { GroupDiscoverComponent } from './components/group/group-discover/group-discover.component';
 import { GroupDiscoverItemComponent } from './components/group/group-discover/group-discover-item/group-discover-item.component';
+import { SirvPipe } from './components/share/sirv.pipe';
 
 @NgModule({
   declarations: [
@@ -181,6 +182,7 @@ import { GroupDiscoverItemComponent } from './components/group/group-discover/gr
     NotImplementedComponent,
     GroupDiscoverComponent,
     GroupDiscoverItemComponent,
+    SirvPipe,
   ],
   imports: [
     ImageCropperModule,

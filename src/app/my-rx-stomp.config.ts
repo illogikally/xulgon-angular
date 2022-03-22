@@ -10,7 +10,7 @@ export class MyRxStompConfig extends InjectableRxStompConfig {
     private authenticationService: AuthenticationService
   ) {
     super();
-    this.webSocketFactory = () => new WebSocket(`ws://${environment.hostname}/ws/websocket`);
+    this.webSocketFactory = () => new WebSocket(`wss://${environment.hostname}/ws/websocket`);
     this.beforeConnect = async (rxStomp: RxStomp) => {
       rxStomp.configure({
         connectHeaders: {
@@ -22,8 +22,5 @@ export class MyRxStompConfig extends InjectableRxStompConfig {
     this.heartbeatIncoming = 0;
     this.heartbeatOutgoing = 20000;
     this.reconnectDelay = 500;
-    // this.debug = (msg: string) => {
-    //   console.log(new Date(), msg);
-    // }
   }
 }

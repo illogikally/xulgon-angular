@@ -56,7 +56,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
       textarea: [''],
       fileInput: ['']
     });
-    this.principalService.getAvatarUrl('s40x40').then(url => this.principalAvatarUrl = url);
+    this.principalService.getAvatarUrl(40).then(url => this.principalAvatarUrl = url);
   }
 
   ngOnInit(): void {
@@ -74,16 +74,19 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
   onSelectImage(event: any): void {
     if (event.target?.files && event.target.files[0]) {
       this.files.push(event.target.files[0]);
+      console.log(event);
+      
       var reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]);
 
       reader.onload = (event) => {
         let img = new Image();
-        img.src = event.target?.result as string;
+        const url = event.target?.result as string;
+        img.src = url;
 
         this.photos.push({
-          url: event.target?.result as string,
+          url: url
         });
       }
     }
@@ -97,8 +100,8 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
   submit(): void {
     this.isPosting = true;
     let data = new FormData();
-    data = this.constructAndAddPhotoRequests(data);
-    data = this.constructAndAddPostRequst(data);
+    data = this.constructPhotoRequest(data);
+    data = this.constructPostRequest(data);
     this.postService.createPost(data).subscribe(
       this.onCreatePostSuccess.bind(this),
       this.onCreatePostError.bind(this)
@@ -126,7 +129,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
     this.hide();
   }
 
-  constructAndAddPostRequst(data: FormData): FormData {
+  constructPostRequest(data: FormData): FormData {
     this.privacy = this.groupPrivacy || this.privacy;
     const pageId = this.groupId || this.authenticationService.getProfileId();
 
@@ -144,10 +147,11 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
     return data;
   }
 
-  constructAndAddPhotoRequests(data: FormData): FormData {
+  constructPhotoRequest(data: FormData): FormData {
     this.privacy = this.groupPrivacy || this.privacy;
     let photoRequests: any[] = []
-
+    this.photos.forEach(photo => {
+    });
     this.files.forEach(file => {
       photoRequests.push({
         privacy: this.privacy, 

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { PhotoResponse } from './photo/photo-response';
+import { SirvPipe } from './sirv.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +23,10 @@ export class PrincipalService {
     });
   }
 
-  async getAvatarUrl(size: string): Promise<any> {
+  async getAvatarUrl(size: 40 | 100 | 200 | 400 | 600 | 900): Promise<any> {
     while (this.avatar === undefined) {
       await new Promise(r => setTimeout(r, 50));
     }
-    return this.avatar?.thumbnails[size].url || this.defaultAvatarUrl;
+    return new SirvPipe().transform(this.avatar.url, size) || this.defaultAvatarUrl;
   }
 }

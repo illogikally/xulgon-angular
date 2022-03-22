@@ -67,7 +67,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
     this.configureOnHighlightComment();
     this.loadComments();
     this.listenToWebSocketNewComment();
-    this.principalAvatarUrl = await this.principalService.getAvatarUrl('s40x40');
+    this.principalAvatarUrl = await this.principalService.getAvatarUrl(40);
   }
 
   ngAfterViewInit(): void {

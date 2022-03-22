@@ -42,7 +42,7 @@
               <div *ngIf="userPage?.photos"
                    class="photo-container">
                 <div *ngFor="let photo of userPage?.photos">
-                  <app-photo [url]="photo.thumbnails?.s160x160?.url"
+                  <app-photo [url]="photo.url | sirv: 200"
                              [id]="photo.id"
                              [setId]="this.pagePhotoSetId"></app-photo>
                 </div>

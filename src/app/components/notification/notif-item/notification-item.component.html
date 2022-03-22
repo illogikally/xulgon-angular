@@ -5,7 +5,7 @@
   class="content">
     <div class="avatar">
       <div class="img-container">
-        <img [src]="notification.actor.avatarUrl || 'assets/avatar.jpg'" alt="avatar"/>
+        <img [src]="notification.actor.avatarUrl | sirv: 100 || 'assets/avatar.jpg'" alt="avatar"/>
       </div>
     </div>
     <div [ngStyle]="{ 'color': notification.isRead ? 'var(--secondary-text)' : '#050505'}"

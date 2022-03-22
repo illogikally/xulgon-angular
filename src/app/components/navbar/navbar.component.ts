@@ -9,6 +9,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { PostService } from '../post/post.service';
 import { MessageService } from '../share/message.service';
 import { PrincipalService } from '../share/principal.service';
+import { SirvPipe } from '../share/sirv.pipe';
 import { TitleService } from '../share/title.service';
 
 @Component({
@@ -43,8 +44,8 @@ export class NavbarComponent implements OnInit {
     private principalService: PrincipalService,
     private authenticationService: AuthenticationService
   ) {
-    this.principalService.getAvatarUrl('s40x40').then(url => this.principalAvatarUrl = url);
-    this.principalService.getAvatarUrl('s200x200').then(url => this.principalAvatarUrl200x200 = url);
+    this.principalService.getAvatarUrl(100).then(url => this.principalAvatarUrl = url);
+    this.principalService.getAvatarUrl(200).then(url => this.principalAvatarUrl200x200 = url);
   }
 
   async ngOnInit() {
@@ -60,7 +61,7 @@ export class NavbarComponent implements OnInit {
     this.messageService.updateAvatar.pipe(
       pluck('photo')
     ).subscribe(photo => {
-      this.principalAvatarUrl = photo.thumbnails.s40x40.url;
+      this.principalAvatarUrl = new SirvPipe().transform(photo.url, 40);
     });
   }
 

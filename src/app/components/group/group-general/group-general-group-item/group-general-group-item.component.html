@@ -5,7 +5,7 @@
    class="group-item">
   <div class="group-item__inner">
     <div class="avatar">
-      <img [src]="group?.coverPhotoUrl || groupService.getDefaultCoverPhotoUrl()" />
+      <img [src]="group.coverPhotoUrl | sirv: 100 || groupService.getDefaultCoverPhotoUrl()" />
     </div>
     <div class="name">
       <span>{{ group.name }}</span>

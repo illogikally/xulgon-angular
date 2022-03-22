@@ -5,7 +5,7 @@
       <div class="cover-avatar">
         <div class="cover">
           <img *ngIf="pageHeader.coverPhoto"
-               [src]="pageHeader.coverPhoto.url|| ''">
+               [src]="pageHeader.coverPhoto.url | sirv: 900 || ''">
           <app-button background="#fff"
                       *ngIf="pageHeader.id == principalProfileId"
                       (click)="updateHeaderPicture('COVER')"
@@ -18,7 +18,7 @@
         </div>
         <div class="avatar-container flex-center">
           <div class="avatar">
-            <app-photo [url]="pageHeader.avatar?.thumbnails?.s200x200.url"
+            <app-photo [url]="pageHeader.avatar.url | sirv: 200"
                        [isPhotoViewNavigationReverse]="true"
                        [setId]="pageHeader.avatarPhotoSetId"
                        [id]="pageHeader.avatar?.id">
@@ -52,12 +52,13 @@
                [pageName]="pageHeader.name"
                [pagePath]="'/' + pageHeader.id"
                [blocked]="pageHeader.blocked"
-               [avatar]="pageHeader.avatar?.thumbnails?.s200x200.url">
+               [avatar]="pageHeader.avatar.url | sirv: 100">
     <div actions="">
       <app-friendship-button [userId]="pageHeader.userId"
                              *ngIf="!pageHeader.blocked"
                              [friendshipStatus]="pageHeader.friendshipStatus"
-                             [userName]="pageHeader.name"></app-friendship-button>
+                             [userName]="pageHeader.name">
+      </app-friendship-button>
 
       <app-button *ngIf="pageHeader.friendshipStatus != undefined && !pageHeader.blocked"
                   (click)="openChatBox()">

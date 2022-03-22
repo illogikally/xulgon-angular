@@ -101,4 +101,26 @@
       }
     }
   }
+
+  .skeleton {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      margin-right: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+      @extend %loading-animation;
+    }
+
+    .text {
+      width: 70%;
+      height: 15px;
+      border-radius: 10px;
+      @extend %loading-animation;
+    }
+  }
 }

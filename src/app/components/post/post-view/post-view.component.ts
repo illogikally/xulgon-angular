@@ -75,6 +75,7 @@ export class PostViewComponent implements OnInit {
   }
 
   onRouteReuse(): Observable<any> {
+      console.log('route reuse');
     return this.messageService.routeReuse$.pipe(
       filter(route => this.compareRoute(route, this.activatedRoute.snapshot)),
       throttleTime(1e3)
@@ -93,6 +94,7 @@ export class PostViewComponent implements OnInit {
       this.notFound = true;
       return;
     }
+
     this.postService.getPost(postId).subscribe(post => {
       if (!post) {
         this.notFound = true;

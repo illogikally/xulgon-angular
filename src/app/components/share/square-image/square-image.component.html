@@ -1,5 +1,5 @@
 <div
   (click)="photoClicked()"
   class="square-img">
-  <img [src]="photo.thumbnails.s200x200.url"/>
+  <img [src]="photo.url | sirv: 200"/>
 </div>

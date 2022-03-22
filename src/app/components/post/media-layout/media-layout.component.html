@@ -4,7 +4,7 @@
   <div>
     <div *ngFor="let photo of photos.slice(0, 2)">
       <div>
-        <app-photo [url]="photos.length == 1 ? photo.thumbnails.s900x900.url : photo.thumbnails.s400x400.url "
+        <app-photo [url]="photo.url | sirv: photos.length == 1 ? 600 : 400"
                    [setId]="photoSetId"
                    [id]="photo.id"
                    [style]="'width'"></app-photo>
@@ -14,7 +14,7 @@
   <div *ngIf="photos.length > 2">
     <div *ngFor="let photo of photos.slice(2, 4); index as index;">
       <div [ngClass]="photos.length == 3 ? 'three': ''">
-        <app-photo [url]="photos.length == 3 ? photo.thumbnails.s600x600.url : photo.thumbnails.s400x400.url"
+        <app-photo [url]="photo.url | sirv: photos.length == 3 ? 600 : 400"
                    [id]="photo.id"
                    [setId]="photoSetId"
                    [style]="'width'">

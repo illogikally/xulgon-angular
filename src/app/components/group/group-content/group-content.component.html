@@ -3,7 +3,7 @@
     <div class="content">
       <div class="cover">
         <div class="cover-container">
-          <img [src]="group?.coverPhotoUrl || defaultCoverPhotoUrl" />
+          <img [src]="group.coverPhotoUrl | sirv: 900 || defaultCoverPhotoUrl" />
         </div>
         <div class="update-cover">
           <app-button background="#fff"

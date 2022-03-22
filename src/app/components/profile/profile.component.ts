@@ -7,6 +7,7 @@ import { ErrorPageService } from '../error-page/error-page.service';
 import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
 import { FollowService } from '../share/follow.service';
 import { MessageService } from '../share/message.service';
+import { SirvPipe } from '../share/sirv.pipe';
 import { TitleService } from '../share/title.service';
 import { ToasterService } from '../share/toaster/toaster.service';
 import { UserService } from '../share/user.service';
@@ -75,7 +76,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     this.pageHeader = header;
-    this.pageAvatarUrl = header.avatar?.thumbnails.s200x200.url;
+    this.pageAvatarUrl = new SirvPipe().transform(header.avatar.url, 200);
     this.profileService.nextCurrentProfile(this.pageHeader);
     this.titleService.setTitle(this.pageHeader.name);
   }
@@ -127,7 +128,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       id: this.pageHeader.userId,
       username: this.pageHeader.name,
       profileId: this.pageHeader.id,
-      avatarUrl: this.pageHeader?.avatar?.thumbnails.s40x40.url
+      avatarUrl: new SirvPipe().transform(this.pageHeader.avatar.url, 200)
     });
   }
 

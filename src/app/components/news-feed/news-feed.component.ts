@@ -15,27 +15,24 @@ import { TitleService } from '../share/title.service';
 })
 export class NewsFeedComponent implements OnInit, OnDestroy {
 
-  pageId: number;
   posts: Post[] = [];
   isLoadingPosts = false;
   isAllPostsLoaded = false;
+  pageId = this.authService.getProfileId();
   isAttached = true;
 
   constructor(
     private authService: AuthenticationService,
     private userService: UserService,
-    private title: Title,
     private titleService: TitleService,
-    private router: Router,
-    private http: HttpClient) {
-      this.pageId = authService.getProfileId();
+  ) {
   }
 
   ngOnDestroy() {
   }
 
   ngOnInit(): void {
-    this.getPosts();
+    this.loadInitPosts();
     this.setTitle();
   }
 
@@ -65,10 +62,16 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
     this.isAttached = false;
   }
 
-  getPosts(): void {
+  async loadInitPosts() {
+    for (let i = 0; i < 2; ++ i) {
+      await this.getPosts();
+    }
+  }
+
+  async getPosts() {
     this.isLoadingPosts = true;
-    const size = 5;
     const offset = this.posts.length;
+    const size = offset >= 4 ? 5 : 2;
 
     this.userService.getNewsFeed(size, offset)
       .subscribe(posts => {
