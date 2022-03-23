@@ -16,6 +16,7 @@ export class FriendRequestComponent implements OnInit {
   friendRequests: FriendRequestDto[] = [];
   profileId!: number;
   isProfilePicked: boolean = false;
+  isLoadingRequests = false;
 
   constructor(
     private auth: AuthenticationService,
@@ -28,18 +29,22 @@ export class FriendRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle('Friends')
+    this.getRequests();
+    this.listenToWebSocket();
+  }
 
+  getRequests() {
     let userId: number = this.auth.getPrincipalId();
+    this.isLoadingRequests = true;
     this.userService.getFriendRequests(userId).subscribe(resp => {
       this.friendRequests = resp;
+      this.isLoadingRequests = false;
     });
-    this.listenToWebSocket();
   }
 
   onAttach() {
     this.titleService.setTitle('Friends')
   }
-
 
   preventDefault(event: any): void {
     event.preventDefault();

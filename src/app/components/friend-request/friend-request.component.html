@@ -8,6 +8,18 @@
                                  *ngFor="let request of friendRequests"
                                  [request]="request">
         </app-friend-request-item>
+        <ng-container *ngIf="isLoadingRequests">
+          <div *ngFor="let item of [].constructor(3)" class="skeleton">
+            <div class="avatar"></div>
+            <div class="body">
+              <div class="text"></div>
+              <div class="buttons">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </ul>
     </div>
   </div>
@@ -15,4 +27,3 @@
     <router-outlet></router-outlet>
   </div>
 </div>
-

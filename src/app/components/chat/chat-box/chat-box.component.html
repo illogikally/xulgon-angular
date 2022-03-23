@@ -21,8 +21,13 @@
       </div>
     </div>
     <div class="msg">
-      <div *ngIf="messages.length == 0" class="no-msgs">
-        <div >Chưa có tin nhắn, hãy nhắn gì đó cho {{ user?.username }}.</div>
+      <app-spinner size="25px"
+                   color="#ccc"
+                   *ngIf="isLoadingMessages"
+                   backgroundColor="transparent"></app-spinner>
+      <div *ngIf="messages.length == 0 && isMessagesLoaded"
+           class="no-msgs">
+        <div>Chưa có tin nhắn, hãy nhắn gì đó cho {{ user?.username }}.</div>
       </div>
       <app-chat-msg *ngFor="let message of messages; let i = index"
                     [avatarUrl]="user?.avatarUrl"

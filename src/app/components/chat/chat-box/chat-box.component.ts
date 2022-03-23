@@ -18,6 +18,8 @@ export class ChatBoxComponent implements OnInit {
   msgForm: FormGroup;
   visible = false;
   user!: any;
+  isMessagesLoaded = false;
+  isLoadingMessages = false;
   @Input() markAsRead!: EventEmitter<number>;
   @ViewChild('self') self!: ElementRef;
 
@@ -56,6 +58,7 @@ export class ChatBoxComponent implements OnInit {
     this.messageService.openChatBox$.subscribe(user => {
       if (user.id != this.user?.id) {
         this.user = user;
+        this.isMessagesLoaded = false;
         this.loadMessages();
       }
       this.show();
@@ -80,8 +83,11 @@ export class ChatBoxComponent implements OnInit {
 
   loadMessages(): void {
     this.messages = [];
+    this.isLoadingMessages = true;
     this.chatService.getMesssages(this.user.id).subscribe(resp => {
       this.messages = resp;
+      this.isMessagesLoaded = true;
+      this.isLoadingMessages = false;
       this.markConversationAsRead();
     });
   }

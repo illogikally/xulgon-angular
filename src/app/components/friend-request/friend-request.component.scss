@@ -34,6 +34,47 @@
           display: block;
         }
 
+        .skeleton {
+          display: flex;
+          column-gap: 10px;
+          padding: 10px;
+
+          .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            @extend %loading-animation;
+          }
+
+          .body {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            row-gap: 5px;
+
+            .text {
+              @extend %loading-animation;
+              width: 60%;
+              border-radius: 10px;
+              height: 15px;
+            }
+
+            .buttons {
+              display: flex;
+              justify-content: space-between;
+              width: 100%;
+
+              div {
+                @extend %loading-animation;
+                flex: 0 0 48%;
+                border-radius: 5px;
+                height: 37px;
+              }
+            }
+          }
+        }
+
         .request {
           display: flex;
           padding: 10px;

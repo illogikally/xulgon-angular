@@ -134,7 +134,6 @@ $mediumView: 1250px;
     }
   }
 
-
   .menu {
     height: 100%;
     width: 400px;
@@ -154,7 +153,16 @@ $mediumView: 1250px;
       &:hover {
         background-color: #f0f2f5;
       }
+    }
 
+    .menu-active-div {
+      color: $active-tab;
+      background-color: #fff;
+      box-shadow: 0 -3px 0 0 $active-tab inset;
+
+      a:hover {
+        background-color: #fff;
+      }
     }
 
     li {
@@ -200,6 +208,14 @@ $mediumView: 1250px;
           transform: scale(.95);
         }
 
+        &.route-active.route-active {
+          color: $active-tab;
+          background-color: rgba($active-tab, .15);
+
+          &:hover {
+            background-color: rgba($active-tab, .15)
+          }
+        }
 
         .avatar {
           @extend %fc;
@@ -351,14 +367,4 @@ $mediumView: 1250px;
       }
     }
   }
-}
-
-.menu-active-div {
-  color: $active-tab;
-  background-color: #fff;
-  box-shadow: 0 -3px 0 0 $active-tab inset;
-}
-
-.menu-routerLink-active {
-  background-color: #fff !important;
 }

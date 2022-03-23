@@ -137,11 +137,13 @@ export class AuthenticationService {
   logout(): void {
     const url = `${this.baseApiUrl}/authentication/token/delete`;
     this.http.post(url, this.getAuthentication()!.refreshToken, { responseType: 'text' })
-      .subscribe(_ => {
+      .subscribe(() => {
         this.storage$.clear('authentication');
         location.href = '/login';
       }, error => {
         throwError(error);
+        this.storage$.clear('authentication');
+        location.href = '/login';
       });
   }
 
