@@ -47,7 +47,7 @@ export class StickySidebarDirective implements OnInit {
       const PARENT_RECT = PARENT.getBoundingClientRect();
       const SIDEBAR_WIDTH = PARENT.offsetWidth;
 
-      if (this.disabled) return;
+      if (this.disabled || SIDEBAR_WIDTH == 0) return;
       const SPEED = (window.scrollY - oldY)
       if (SPEED < 0) { // Scroll up
 
