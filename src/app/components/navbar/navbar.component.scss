@@ -235,8 +235,6 @@ $mediumView: 1250px;
     .notis {
       display: flex;
       flex: 0 0 200px;
-      // column-gap: 10px;
-      // justify-content: space-between;
 
       li {
         width: 100%;
@@ -363,11 +361,4 @@ $mediumView: 1250px;
 
 .menu-routerLink-active {
   background-color: #fff !important;
-}
-
-.route-active {
-  &:visited, &:link, & {
-    color: $active-tab;
-    background-color: rgba($active-tab, .15) !important;
-  }
 }
