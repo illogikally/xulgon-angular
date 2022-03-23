@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
     private authService: AuthenticationService,
     private location: Location,
-    private changeDetector: ChangeDetectorRef,
     private router: Router,
     private userService: UserService,
     private fb: FormBuilder
@@ -172,7 +171,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.loginError = false;
         location.href = '';
-        this.isPosting = false;
       }, (e) => {
         console.log(e);
         this.loginError = true;
