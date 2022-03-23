@@ -15,6 +15,7 @@ export class GroupFeedComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
 
   isLoading = false;
+  isPostsLoaded = false;
   initPostsSize = 6;
   isAllPostsLoaded = false;
   @ViewChild('postsContainer') postsContainer!: ElementRef;
@@ -52,6 +53,7 @@ export class GroupFeedComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.posts = this.posts.concat(response.data);
         this.isLoading = false;
+        this.isPostsLoaded = true;
         if (!response.hasNext) {
           this.isAllPostsLoaded = true;
         }

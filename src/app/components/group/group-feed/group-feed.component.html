@@ -1,4 +1,7 @@
 <div class="group-feed">
+  <div *ngIf="isPostsLoaded && posts.length == 0" class="no-posts">
+    Không có bài viết. Hãy tham gia và theo dõi nhóm để xem bài viết.
+  </div>
   <div #postsContainer class="group-feed__inner">
     <app-post-list
       [isGroupNameVisible]="true"

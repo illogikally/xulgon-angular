@@ -1,4 +1,17 @@
 .group-feed {
+  position: relative;
+  top: 0;
+  bottom: 0;
+
+  .no-posts {
+    position: absolute;
+    font-size: 16px;
+    top: 60px;
+    text-align: center;
+    width: 100%;
+    color: #555;
+  }
+
   display: flex;
   justify-content: center;
   position: relative;

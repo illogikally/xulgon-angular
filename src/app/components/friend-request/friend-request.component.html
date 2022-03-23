@@ -9,7 +9,8 @@
                                  [request]="request">
         </app-friend-request-item>
         <ng-container *ngIf="isLoadingRequests">
-          <div *ngFor="let item of [].constructor(3)" class="skeleton">
+          <div *ngFor="let item of [].constructor(3)"
+               class="skeleton">
             <div class="avatar"></div>
             <div class="body">
               <div class="text"></div>
@@ -24,6 +25,11 @@
     </div>
   </div>
   <div class="user-profile">
+    <div style="display: flex; left: 0; top: 0; position: absolute; height: 100%; width: 100%; justify-content: center;">
+      <div style="position: absolute; text-align: center; top: 70px; color: #555; font-size: 16px">
+        Hãy chọn một lời mời để xem trang cá nhân của người đó.
+      </div>
+    </div>
     <router-outlet></router-outlet>
   </div>
 </div>

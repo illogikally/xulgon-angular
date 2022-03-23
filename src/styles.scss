@@ -401,15 +401,15 @@ input {
 
 @keyframes loading-animation {
   0% {
-    background-color: #ddd;
+    background-color: #e3e3e3;
   }
 
   50% {
-    background-color: #eee;
+    background-color: #f0f0f0;
   }
 
   100% {
-    background-color: #ddd;
+    background-color: #e3e3e3;
   }
 }
 
@@ -417,7 +417,6 @@ input {
   animation: loading-animation 2.5s infinite;
 }
 
-html, body { height: 100%; }
 body { margin: 0; font-family:  'Segoe UI', Roboto, "Helvetica Neue", sans-serif; }
 
 input::-ms-reveal,

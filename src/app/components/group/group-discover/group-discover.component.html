@@ -2,4 +2,14 @@
   <app-group-discover-item *ngFor="let group of groups"
                            [group]="group">
   </app-group-discover-item>
+  <ng-container *ngIf="isLoadingGroups">
+    <div class="skeleton" *ngFor="let item of [].constructor(5)">
+      <div class="cover"></div>
+      <div class="body">
+        <div class="text"></div>
+        <div class="text"></div>
+      </div>
+      <div class="button"></div>
+    </div>
+  </ng-container>
 </div>
