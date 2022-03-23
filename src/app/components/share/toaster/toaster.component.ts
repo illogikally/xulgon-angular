@@ -37,18 +37,23 @@ export class ToasterComponent implements OnInit {
   }
 
   displayToaster() {
-    this.style = {
-      'animation-direction': 'normal',
-      'animation-name': 'slide',
-      'visibility': 'visible'
-    }
+    const self = this.self.nativeElement;
+    self.offsetWidth;
+    self.classList.add('slide');
+    // this.style = {
+    //   'animation-direction': 'normal',
+    //   'animation-name': 'slide',
+    //   'visibility': 'visible'
+    // }
   }
 
   hideToaster() {
-    this.self.nativeElement.offsetWidth;
-    this.style = {
-      'animation-direction': 'reverse',
-      'animation-name': 'slide',
-    }
+    const self = this.self.nativeElement;
+    self.classList.remove('slide');
+    // this.self.nativeElement.offsetWidth;
+    // this.style = {
+    //   'animation-direction': 'reverse',
+    //   'animation-name': 'slide',
+    // }
   }
 }
