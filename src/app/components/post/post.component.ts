@@ -11,6 +11,8 @@ import { PhotoViewResponse } from '../share/photo/photo-view-response';
 import { ReactionType } from '../share/reaction-type';
 import { ReactionPayload } from '../share/reaction.payload';
 import { ReactionService } from '../share/reaction.service';
+import { ToasterMessageType } from '../share/toaster/toaster-message-type';
+import { ToasterService } from '../share/toaster/toaster.service';
 import { Post } from './post';
 import { PostService } from './post.service';
 
@@ -38,6 +40,7 @@ export class PostComponent implements OnInit, AfterViewInit {
   isTextClamped = false;
 
   constructor(
+    private toaster: ToasterService,
     private commentService: CommentService,
     private followService: FollowService,
     private reactionService: ReactionService,
@@ -55,7 +58,7 @@ export class PostComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.isTextClamped = this.isPostBodyClamped(); 
+    this.isTextClamped = this.isPostBodyClamped();
     this.changeDetector.detectChanges();
   }
 
@@ -94,21 +97,26 @@ export class PostComponent implements OnInit, AfterViewInit {
     );
   }
 
-  delete(): void {
+  async delete() {
     const data = {
       title: `Xoá bài viết`,
       body: `Bạn có chắc muốn xoá bài viết này?`
     };
 
-    this.confirmService.confirm(data)
-    .then(isConfirmed => {
-      if (isConfirmed) {
-        this.postService.delete(this.post.id).subscribe(() => {
-          this.remove.next(this.post.id)
-          this.postService.postDeleted$.next(this.post.id);
-        });
-      }
-    })
+    const isConfirmed = await this.confirmService.confirm(data);
+    if (isConfirmed) {
+      this.postService.delete(this.post.id).subscribe(() => {
+        this.remove.next(this.post.id);
+        this.postService.postDeleted$.next(this.post.id);
+        this.toaster.message$.next({
+          type: ToasterMessageType.SUCCESS,
+          message: 'Xoá bài viết thành công'
+        })
+      }, () => this.toaster.message$.next({ 
+        type: ToasterMessageType.ERROR, 
+        message: 'Đã có lỗi, xoá bài viết không thành công' 
+      }));
+    }
   }
 
   shareOnTimeline() {

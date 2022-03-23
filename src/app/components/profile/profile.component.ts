@@ -76,7 +76,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     this.pageHeader = header;
-    this.pageAvatarUrl = new SirvPipe().transform(header.avatar.url, 200);
+    this.pageAvatarUrl = new SirvPipe().transform(header.avatar?.url, 200);
     this.profileService.nextCurrentProfile(this.pageHeader);
     this.titleService.setTitle(this.pageHeader.name);
   }
@@ -128,7 +128,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       id: this.pageHeader.userId,
       username: this.pageHeader.name,
       profileId: this.pageHeader.id,
-      avatarUrl: new SirvPipe().transform(this.pageHeader.avatar.url, 200)
+      avatarUrl: new SirvPipe().transform(this.pageHeader.avatar?.url, 200)
     });
   }
 

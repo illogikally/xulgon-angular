@@ -23,10 +23,10 @@ export class PrincipalService {
     });
   }
 
-  async getAvatarUrl(size: 40 | 100 | 200 | 400 | 600 | 900): Promise<any> {
+  async getAvatarUrl(): Promise<string> {
     while (this.avatar === undefined) {
       await new Promise(r => setTimeout(r, 50));
     }
-    return new SirvPipe().transform(this.avatar.url, size) || this.defaultAvatarUrl;
+    return this.avatar?.url || '';
   }
 }

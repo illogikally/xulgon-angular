@@ -42,7 +42,7 @@
               <div *ngIf="userPage?.photos"
                    class="photo-container">
                 <div *ngFor="let photo of userPage?.photos">
-                  <app-photo [url]="photo.url | sirv: 200"
+                  <app-photo [url]="photo.url | sirv: 100"
                              [id]="photo.id"
                              [setId]="this.pagePhotoSetId"></app-photo>
                 </div>
@@ -69,7 +69,9 @@
             <div *ngFor="let friend of userPage?.friends">
               <div class="img-container">
                 <app-user-ref [userDto]="friend"
-                              borderRadius="10px"></app-user-ref>
+                              [size]="100"
+                              borderRadius="10px">
+                </app-user-ref>
               </div>
               <app-user-ref [userDto]="friend"></app-user-ref>
               <div *ngIf="friend.commonFriendCount > 0 && friend.id != principleId"

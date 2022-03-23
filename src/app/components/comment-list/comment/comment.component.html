@@ -2,6 +2,7 @@
   <div>
     <div class="comment-avatar">
       <app-user-ref [userDto]="comment.user"
+                    [size]="40"
                     borderRadius="50%">
       </app-user-ref>
     </div>
@@ -47,7 +48,7 @@
     <div *ngIf="comment.photo"
          class="comment-media">
       <app-photo [isComment]="true"
-                 [url]="comment.photo.url"
+                 [url]="comment.photo.url | sirv: 400"
                  [id]="comment.photo.id"
                  [style]="'height'">
       </app-photo>

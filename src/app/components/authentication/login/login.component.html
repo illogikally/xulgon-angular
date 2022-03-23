@@ -239,6 +239,18 @@
                 Đăng ký tại đây
               </a>
             </div>
+            <div style="position: relative; display: inline-block;" #parent class="sample-accounts">
+              <span (click)="showSampleAccounts = !showSampleAccounts">Tài khoản mẫu</span>
+              <app-pop-up *ngIf="showSampleAccounts"
+                          (clickOutside)="showSampleAccounts = false"
+                          aligment="LEFT"
+                          [delayClickOutsideInit]="true"
+                          [parent]="parent"
+                          class="popup">
+                <div><strong>Tên đăng nhập</strong>: <br> username1, username2, ..., username10</div>
+                <div><strong>Mật khẩu</strong>: password</div>
+              </app-pop-up>
+            </div>
           </form>
         </div>
       </div>

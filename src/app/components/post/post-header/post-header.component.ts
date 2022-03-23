@@ -1,8 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PhotoResponse } from '../../share/photo/photo-response';
-import { PhotoViewResponse } from '../../share/photo/photo-view-response';
-import { UserDto } from '../../share/user-dto';
-import { Post } from '../post';
 
 @Component({
   selector: 'app-post-header',

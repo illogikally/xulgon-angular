@@ -15,7 +15,7 @@
     </app-spinner>
     <div class="post-info">
       <div class="avatar">
-        <img [src]="principalAvatarUrl">
+        <img [src]="(principalAvatarUrl | sirv: 40) || 'assets/avatar.jpg'">
       </div>
       <div class="name--privacy">
         <div class="name">{{ authenticationService.getUserFullName() }}</div>

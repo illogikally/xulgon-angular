@@ -2,7 +2,7 @@
      class="group-list__item">
   <div class="avatar">
     <div class="avatar__inner">
-      <img [src]="group.coverPhotoUrl | sirv: 100 || 'assets/cover.png'"
+      <img [src]="(group.coverPhotoUrl | sirv: 100) || 'assets/cover.png'"
            alt=""
            srcset="">
     </div>

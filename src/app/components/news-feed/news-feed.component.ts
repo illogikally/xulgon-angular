@@ -73,15 +73,12 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
     const offset = this.posts.length;
     const size = offset >= 4 ? 5 : 2;
 
-    this.userService.getNewsFeed(size, offset)
-      .subscribe(posts => {
-        if (posts.length == 0) {
-          this.isAllPostsLoaded = true;
-        }
+    const posts = await this.userService.getNewsFeed(size, offset).toPromise();
+    if (posts.length == 0) {
+      this.isAllPostsLoaded = true;
+    }
 
-        this.posts = this.posts.concat(posts);
-        this.isLoadingPosts = false;
-      }, error => {
-      });
+    this.posts = this.posts.concat(posts);
+    this.isLoadingPosts = false;
   }
 }

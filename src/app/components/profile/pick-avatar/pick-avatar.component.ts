@@ -5,6 +5,8 @@ import { fromEvent, Subject } from 'rxjs';
 import { MessageService } from '../../share/message.service';
 import { PhotoResponse } from '../../share/photo/photo-response';
 import { PhotoService } from '../../share/photo/photo.service';
+import { ToasterMessageType } from '../../share/toaster/toaster-message-type';
+import { ToasterService } from '../../share/toaster/toaster.service';
 import { PageHeader } from '../page-header';
 import { ProfileService } from '../profile.service';
 
@@ -28,6 +30,7 @@ export class PickAvatarComponent implements OnInit {
   toggleModal = new Subject<any>();
   pageToUpdateId = NaN;
   isLoading = false;
+  isPosting = false;
   hasNext = true;
 
   @ViewChild('body') body!: ElementRef;
@@ -36,6 +39,7 @@ export class PickAvatarComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private photoService: PhotoService,
+    private toaster: ToasterService,
     private messageService: MessageService
   ) {
   }
@@ -127,8 +131,8 @@ export class PickAvatarComponent implements OnInit {
   }
 
   confirm(): void {
+    this.isPosting = true;
     let formData = new FormData();
-
     let photoRequest = new Blob(
       [JSON.stringify({
         privacy: 'PUBLIC',
@@ -149,6 +153,17 @@ export class PickAvatarComponent implements OnInit {
           photo: photo,
           pageId: this.pageToUpdateId
         });
+        this.isPosting = false;
+        this.toaster.message$.next({
+          type: ToasterMessageType.SUCCESS,
+          message: 'Thay ảnh đại diện thành công'
+        })
+        this.close();
+      }, error => {
+        this.toaster.message$.next({
+          type: ToasterMessageType.ERROR,
+          message: 'Đã có lỗi trong quá trình thay đổi ảnh đại diện'
+        })
       });
 
     } else {
@@ -160,13 +175,25 @@ export class PickAvatarComponent implements OnInit {
           photo: photo,
           pageId: this.pageToUpdateId
         });
+        this.isPosting = false;
+        this.toaster.message$.next({
+          type: ToasterMessageType.SUCCESS,
+          message: 'Thay ảnh bìa thành công'
+        })
+        this.close();
+      }, error => {
+        this.toaster.message$.next({
+          type: ToasterMessageType.ERROR,
+          message: 'Đã có lỗi trong quá trình thay đổi ảnh bìa'
+        })
       });
     }
-    this.close();
   }
-
+  
   imageCropped(event: ImageCroppedEvent) {
     if (!event.base64) return;
+    console.log(event);
+    
     this.photoBlob = this.base64toBlob(event.base64);
   }
 

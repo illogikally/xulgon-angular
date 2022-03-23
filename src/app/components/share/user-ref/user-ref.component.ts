@@ -15,11 +15,11 @@ export class UserRefComponent implements OnInit {
   @Input() userDto!: UserDto;
   @Input() borderRadius!: string;
   @Input() isPhotoView: boolean = false;
+  @Input() size: 40 | 100 | 200 | 400 | 600 | 900 = 40;
   @ViewChild('avatarContainer') avatarContainer!: ElementRef;
 
   popupVisibility = new EventEmitter<any>();
   isUserRefVisible = false;
-  avatarUrl!: string;
 
   constructor(
     private userService: UserService,
@@ -40,11 +40,9 @@ export class UserRefComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenOnFriendshipStatusChange();
-    this.avatarUrl = this.userDto?.avatarUrl || 'assets/avatar.jpg';
   }
 
   onMouseEnter(): void {
-    this.userDto.avatarUrl = this.avatarUrl;
     this.messageService.userRef$.next({
       visible: true,
       target: this.self.nativeElement,

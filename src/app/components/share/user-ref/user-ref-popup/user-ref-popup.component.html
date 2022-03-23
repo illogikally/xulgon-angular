@@ -5,7 +5,7 @@
   <div class="avatar--info">
     <div routerLink="/{{ userDto?.profileId }}"
          class="avatar">
-      <img [src]="userDto?.avatarUrl" />
+      <img [src]="(userDto?.avatarUrl | sirv: 100) || 'assets/avatar.jpg'" />
     </div>
     <div class="info--name">
       <div routerLink="/{{ userDto?.profileId }}"
@@ -40,7 +40,8 @@
       <app-friendship-button id="friendship-button"
                              [userId]="userDto?.id || -1"
                              [friendshipStatus]="userDto?.friendshipStatus || ''"
-                             [userName]="userDto?.username || ''"></app-friendship-button>
+                             [userName]="userDto?.username || ''">
+      </app-friendship-button>
 
       <app-button id="more-actions-button"
                   [hasOptions]="true">

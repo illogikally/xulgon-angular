@@ -56,7 +56,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
       textarea: [''],
       fileInput: ['']
     });
-    this.principalService.getAvatarUrl(40).then(url => this.principalAvatarUrl = url);
+    this.principalService.getAvatarUrl().then(url => this.principalAvatarUrl = url);
   }
 
   ngOnInit(): void {

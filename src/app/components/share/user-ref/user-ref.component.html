@@ -7,7 +7,7 @@
     <div *ngIf="borderRadius"
          class="avatar-container"
          #avatarContainer>
-      <img [src]="avatarUrl">
+      <img [src]="(userDto?.avatarUrl | sirv: size) || 'assets/avatar.jpg'">
     </div>
     <div class="username"
          *ngIf="!borderRadius">

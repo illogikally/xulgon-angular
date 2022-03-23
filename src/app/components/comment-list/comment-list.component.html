@@ -34,7 +34,7 @@
     <div class="input-container">
       <div class="input-avatar">
         <div class="avatar-container">
-          <img [src]="principalAvatarUrl">
+          <img [src]="(principalAvatarUrl | sirv: 40) || 'assets/avatar.jpg'">
         </div>
       </div>
 

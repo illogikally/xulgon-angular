@@ -22,7 +22,7 @@
       </div>
       <div class="group-meta">
         <div class="cover-img">
-          <img [src]="group?.coverPhotoUrl || defaultCoverPhotoUrl">
+          <img [src]="(group?.coverPhotoUrl | sirv: 40) || defaultCoverPhotoUrl">
         </div>
         <div class="name--privacy">
           <div class="name">

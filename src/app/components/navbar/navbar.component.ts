@@ -26,7 +26,6 @@ export class NavbarComponent implements OnInit {
   principalName = this.authenticationService.getFirstName();
   principalId = this.authenticationService.getPrincipalId();
   principalAvatarUrl = '';
-  principalAvatarUrl200x200 = '';
   principalProfileId = this.authenticationService.getProfileId();
   principalFullName = this.authenticationService.getUserFullName();
   chatNotifVisible = false;
@@ -44,8 +43,7 @@ export class NavbarComponent implements OnInit {
     private principalService: PrincipalService,
     private authenticationService: AuthenticationService
   ) {
-    this.principalService.getAvatarUrl(100).then(url => this.principalAvatarUrl = url);
-    this.principalService.getAvatarUrl(200).then(url => this.principalAvatarUrl200x200 = url);
+    this.principalService.getAvatarUrl().then(url => this.principalAvatarUrl = url);
   }
 
   async ngOnInit() {
@@ -61,7 +59,7 @@ export class NavbarComponent implements OnInit {
     this.messageService.updateAvatar.pipe(
       pluck('photo')
     ).subscribe(photo => {
-      this.principalAvatarUrl = new SirvPipe().transform(photo.url, 40);
+      this.principalAvatarUrl = photo.url;
     });
   }
 

@@ -23,14 +23,17 @@
                     iconSize="30px"></app-button>
       </div>
     </div>
-    <div #body class="body">
-      <div #photoContainer class="photos">
+    <div #body
+         class="body">
+      <div #photoContainer
+           class="photos">
         <app-square-image [photo]="photo"
                           (photoPicked)="photoPicked($event)"
                           *ngFor="let photo of photos">
         </app-square-image>
         <ng-container *ngIf="isLoading">
-          <div *ngFor="let item of [].constructor(6)" class="skeleton"></div>
+          <div *ngFor="let item of [].constructor(6)"
+               class="skeleton"></div>
         </ng-container>
       </div>
       <div *ngIf="pickedPhoto != undefined || imageChangedEvent"
@@ -49,7 +52,13 @@
                class="abort">Huỷ
           </div>
           <div (click)="confirm()"
-               class="confirm">Xác nhận
+               class="confirm">
+            <span [ngStyle]="{'visibility': isPosting ? 'hidden' : 'visible'}">Xác nhận</span>
+            <app-spinner size="20px"
+                         backgroundColor="transparent"
+                         ringWidth="2px"
+                         *ngIf="isPosting">
+            </app-spinner>
           </div>
         </div>
       </div>

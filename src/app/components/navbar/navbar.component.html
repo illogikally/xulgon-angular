@@ -80,7 +80,7 @@
              [routerLinkActiveOptions]="{exact: true}"
              class="pill">
             <span class="avatar">
-              <img [src]="principalAvatarUrl || 'assets/avatar.jpg'">
+              <img [src]="(principalAvatarUrl | sirv: 40) || 'assets/avatar.jpg'">
             </span>
             <span class="username">
               <span>{{ principalName }}</span>
@@ -122,7 +122,7 @@
               <a routerLink="/{{ principalProfileId }}"
                  class="to-profile">
                 <div class="avatar">
-                  <img [src]="principalAvatarUrl200x200 || 'assets/avatar.jpg'"
+                  <img [src]="(principalAvatarUrl | sirv: 100) || 'assets/avatar.jpg'"
                        alt="">
                 </div>
                 <div class="body">

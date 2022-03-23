@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   disableAnimation = true;
   isPosting = false;
 
+  showSampleAccounts = false;
   constructor(
     private renderer: Renderer2,
     private authService: AuthenticationService,
@@ -189,6 +190,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       this.loginForm.reset()
       this.isLogin = false;
       this.location.go('/register');
+      this.showSampleAccounts = false;
     } else {
       this.registerError = undefined;
       this.registerForm.reset()

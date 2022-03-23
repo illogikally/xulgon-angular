@@ -5,7 +5,7 @@
       <div class="cover-avatar">
         <div class="cover">
           <img *ngIf="pageHeader.coverPhoto"
-               [src]="pageHeader.coverPhoto.url | sirv: 900 || ''">
+               [src]="pageHeader.coverPhoto?.url | sirv: 400 || ''">
           <app-button background="#fff"
                       *ngIf="pageHeader.id == principalProfileId"
                       (click)="updateHeaderPicture('COVER')"
@@ -18,7 +18,7 @@
         </div>
         <div class="avatar-container flex-center">
           <div class="avatar">
-            <app-photo [url]="pageHeader.avatar.url | sirv: 200"
+            <app-photo [url]="(pageHeader.avatar?.url | sirv: 200) || 'assets/avatar.jpg'"
                        [isPhotoViewNavigationReverse]="true"
                        [setId]="pageHeader.avatarPhotoSetId"
                        [id]="pageHeader.avatar?.id">
@@ -52,7 +52,7 @@
                [pageName]="pageHeader.name"
                [pagePath]="'/' + pageHeader.id"
                [blocked]="pageHeader.blocked"
-               [avatar]="pageHeader.avatar.url | sirv: 100">
+               [avatar]="pageHeader.avatar?.url | sirv: 100">
     <div actions="">
       <app-friendship-button [userId]="pageHeader.userId"
                              *ngIf="!pageHeader.blocked"

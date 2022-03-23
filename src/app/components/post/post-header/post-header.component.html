@@ -3,7 +3,9 @@
     <div *ngIf="isAvatarVisible"
          class="post-avatar">
       <app-user-ref borderRadius="50%"
-                    [userDto]="content.user"></app-user-ref>
+                    [size]="40"
+                    [userDto]="content.user">
+      </app-user-ref>
     </div>
     <div class="name-date"
          style="position: relative;">

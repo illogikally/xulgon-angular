@@ -10,7 +10,7 @@
   background-size: cover;
 }
 
-$trans-time: .3s;
+$trans-time: .15s;
 
 .content {
   border: 1px solid #00000022;
@@ -83,6 +83,30 @@ $trans-time: .3s;
       }
     }
   }
+
+  .sample-accounts {
+    .popup {
+      strong {
+        font-weight: 500;
+      }
+    }
+    span {
+      text-decoration: none;
+      color: $btn-blue;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-block;
+      border-radius: 2px;
+      padding: 2px;
+      margin: -2px;
+
+      &:hover {
+        background-color: lighten(rgba($btn-blue, .2), 20);
+      }
+    } 
+  }
+
 
   .hr {
     margin-top: 10px;
