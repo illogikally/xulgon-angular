@@ -7,7 +7,7 @@
   <div 
   class="content">
     <div *ngIf="!isUserRefPopup" class="title">
-      <h2>Giới thiệu</h2>
+      <h2 [ngStyle]="isTimeline ? {'font-size': '21px', 'font-weight': 700} : {}">Giới thiệu</h2>
     </div>
     <div class="infos">
       <ng-container *ngFor="let i of [].constructor(5)">
