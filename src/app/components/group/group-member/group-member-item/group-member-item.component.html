@@ -2,29 +2,30 @@
   <div class="avatar">
     <div class="avatar-cont">
       <app-user-ref [borderRadius]="'50%'"
+                    [size]="100"
                     [userDto]="member.user">
       </app-user-ref>
     </div>
   </div>
   <app-user-ref [userDto]="member.user"></app-user-ref>
-  <app-button *ngIf="member.user.id != principalId && role == 'ADMIN'" 
-              [hasOptions]="true" 
+  <app-button *ngIf="member.user.id != principalId && role == 'ADMIN'"
+              [hasOptions]="true"
               class="options">
     <div button="">
       <div><i class='bx bx-dots-horizontal-rounded'></i></div>
     </div>
-    <div  options="">
-      <div *ngIf="member.role == 'MEMBER'" 
+    <div options="">
+      <div *ngIf="member.role == 'MEMBER'"
            (click)="promote()">
         Cho thành viên làm quản trị viên
       </div>
       <div *ngIf="role == 'ADMIN'"
            (click)="kick()">
-           Xoá thành viên
+        Xoá thành viên
       </div>
       <div *ngIf="member.role == 'ADMIN'"
            (click)="demote()">
-           Giáng xuống thành viên
+        Giáng xuống thành viên
       </div>
     </div>
   </app-button>

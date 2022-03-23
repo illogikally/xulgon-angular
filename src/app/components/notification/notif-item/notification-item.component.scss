@@ -6,6 +6,10 @@
   border-radius: 10px;
   cursor: pointer;
 
+  strong {
+    font-weight: 500;
+  }
+
   &:hover {
     background-color: #eee;
   }
@@ -19,6 +23,7 @@
     display: flex;
     position: relative;
     padding: 7px 5px;
+    column-gap: 10px;
     align-items: center;
 
     .mark-as-read {
@@ -33,7 +38,13 @@
 
 
     .avatar {
-      margin-right: 10px;
+      position: relative;
+      .avatar-icon {
+        position: absolute;
+        display: flex;
+        bottom: -20%;
+        right: -10%;
+      }
 
       .img-container {
         width: 56px;

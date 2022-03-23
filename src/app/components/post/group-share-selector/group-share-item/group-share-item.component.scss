@@ -12,6 +12,10 @@
     background-color: #f0f2f5;
   }
 
+  .avatar {
+    display: flex;
+    align-items: center;
+  }
   .avatar__inner {
     width: 40px;
     height: 40px;

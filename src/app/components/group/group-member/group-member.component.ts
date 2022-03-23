@@ -21,6 +21,7 @@ export class GroupMemberComponent implements OnInit, OnDestroy {
 
   @ViewChild('opts') opts!: ElementRef;
   memberOptsVisible = false;
+  isLoadingMembers = false;
 
   constructor(
     private groupService: GroupService,
@@ -48,10 +49,12 @@ export class GroupMemberComponent implements OnInit, OnDestroy {
   getMembers() {
     const groupId = Number(this.activatedRoute.snapshot.parent?.paramMap.get('id'));
     if(!isNaN(groupId)) {
+      this.isLoadingMembers = true;
       this.groupService.getMembers(groupId).subscribe(members => {
         this.members = members;
         this.admins = members.filter(m => m.role == 'ADMIN');
         this.members = members.filter(m => m.role == 'MEMBER');
+        this.isLoadingMembers = false;
       });
     }
   }

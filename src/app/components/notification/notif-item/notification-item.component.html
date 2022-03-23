@@ -1,87 +1,103 @@
 <div class="notif-item">
   <div class="container">
-  <div
-  (click)="click()"
-  class="content">
-    <div class="avatar">
-      <div class="img-container">
-        <img [src]="(notification.actor.avatarUrl | sirv: 100) || 'assets/avatar.jpg'" alt="avatar"/>
+    <div (click)="click()"
+         class="content">
+      <div class="avatar">
+        <div class="img-container">
+          <img [src]="(notification.actor.avatarUrl | sirv: 100) || 'assets/avatar.jpg'"
+               alt="avatar" />
+        </div>
+        <div class="avatar-icon">
+          <img src="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 16 16'%3e%3cdefs%3e%3clinearGradient id='a' x1='50%25' x2='50%25' y1='0%25' y2='100%25'%3e%3cstop offset='0%25' stop-color='%2318AFFF'/%3e%3cstop offset='100%25' stop-color='%230062DF'/%3e%3c/linearGradient%3e%3cfilter id='c' width='118.8%25' height='118.8%25' x='-9.4%25' y='-9.4%25' filterUnits='objectBoundingBox'%3e%3cfeGaussianBlur in='SourceAlpha' result='shadowBlurInner1' stdDeviation='1'/%3e%3cfeOffset dy='-1' in='shadowBlurInner1' result='shadowOffsetInner1'/%3e%3cfeComposite in='shadowOffsetInner1' in2='SourceAlpha' k2='-1' k3='1' operator='arithmetic' result='shadowInnerInner1'/%3e%3cfeColorMatrix in='shadowInnerInner1' values='0 0 0 0 0 0 0 0 0 0.299356041 0 0 0 0 0.681187726 0 0 0 0.3495684 0'/%3e%3c/filter%3e%3cpath id='b' d='M8 0a8 8 0 00-8 8 8 8 0 1016 0 8 8 0 00-8-8z'/%3e%3c/defs%3e%3cg fill='none'%3e%3cuse fill='url(%23a)' xlink:href='%23b'/%3e%3cuse fill='black' filter='url(%23c)' xlink:href='%23b'/%3e%3cpath fill='white' d='M12.162 7.338c.176.123.338.245.338.674 0 .43-.229.604-.474.725a.73.73 0 01.089.546c-.077.344-.392.611-.672.69.121.194.159.385.015.62-.185.295-.346.407-1.058.407H7.5c-.988 0-1.5-.546-1.5-1V7.665c0-1.23 1.467-2.275 1.467-3.13L7.361 3.47c-.005-.065.008-.224.058-.27.08-.079.301-.2.635-.2.218 0 .363.041.534.123.581.277.732.978.732 1.542 0 .271-.414 1.083-.47 1.364 0 0 .867-.192 1.879-.199 1.061-.006 1.749.19 1.749.842 0 .261-.219.523-.316.666zM3.6 7h.8a.6.6 0 01.6.6v3.8a.6.6 0 01-.6.6h-.8a.6.6 0 01-.6-.6V7.6a.6.6 0 01.6-.6z'/%3e%3c/g%3e%3c/svg%3e"
+               alt=""
+               *ngIf="avatarIcon == 'reaction'"
+               style="height: 28px; width: 28px;">
+          <i *ngIf="avatarIcon == 'group'"
+             style="height: 28px; width: 28px; background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yL/r/h2iqxBqDts0.png&quot;); background-position: 0px -870px; background-size: auto; background-repeat: no-repeat; display: inline-block;"></i>
+          <i *ngIf="avatarIcon == 'friend'"
+             style="height: 28px; width: 28px; background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yL/r/h2iqxBqDts0.png&quot;); background-position: 0px -783px; background-size: auto; background-repeat: no-repeat; display: inline-block;"></i>
+          <i *ngIf="avatarIcon == 'post'"
+             style="height: 28px; width: 28px; background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yL/r/h2iqxBqDts0.png&quot;); background-position: 0px -1363px; background-size: auto; background-repeat: no-repeat; display: inline-block;"></i>
+          <i *ngIf="avatarIcon == 'bell'"
+             style="height: 28px; width: 28px; background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yL/r/h2iqxBqDts0.png&quot;); background-position: 0px -377px; background-size: auto; background-repeat: no-repeat; display: inline-block;"></i>
+          <i *ngIf="avatarIcon == 'comment'"
+             style="height: 28px; width: 28px; background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yL/r/h2iqxBqDts0.png&quot;); background-position: 0px -696px; background-size: auto; background-repeat: no-repeat; display: inline-block;"></i>
+        </div>
       </div>
-    </div>
-    <div [ngStyle]="{ 'color': notification.isRead ? 'var(--secondary-text)' : '#050505'}"
-        class="body">
-      <div class="notif-text">
-        <span *ngIf="notification.type == NotificationType.COMMENT">
-          <strong>{{ notification.actorContent.user.username }}</strong>
-          <span *ngIf="notification.actorCount > 1">
-            và {{ notification.actorCount-1 }} người khác
+      <div [ngStyle]="{ 'color': notification.isRead ? 'var(--secondary-text)' : '#050505'}"
+           class="body">
+        <div class="notif-text">
+          <span *ngIf="notification.type == NotificationType.COMMENT">
+            <strong>{{ notification.actorContent.user.username }}</strong>
+            <span *ngIf="notification.actorCount > 1">
+              và {{ notification.actorCount-1 }} người khác
+            </span>
+
+            <span *ngIf="notification.targetContent.type == 'POST'"> đã bình luận trong một bài viết </span>
+            <span *ngIf="notification.targetContent.type == 'PHOTO'"> đã bình luận trong một hình ảnh </span>
+            <span *ngIf="notification.targetContent.type == 'COMMENT'"> đã trả lời một bình luận </span>
+
+            <span *ngIf="notification.targetContent.user.id == principalId"> của bạn</span>
+            <span *ngIf="notification.targetContent.user.id != principalId"> mà bạn theo dõi</span>
+            <span *ngIf="notification.targetContent.text">: "{{ notification.targetContent.text }}"</span>
+            <span>.</span>
           </span>
 
-          <span *ngIf="notification.targetContent.type == 'POST'"> đã bình luận trong một bài viết </span>
-          <span *ngIf="notification.targetContent.type == 'PHOTO'"> đã bình luận trong một hình ảnh </span>
-          <span *ngIf="notification.targetContent.type == 'COMMENT'"> đã trả lời một bình luận </span>
-
-          <span *ngIf="notification.targetContent.user.id == principalId"> của bạn</span>
-          <span *ngIf="notification.targetContent.user.id != principalId"> mà bạn theo dõi</span>
-          <span *ngIf="notification.targetContent.text">: "{{ notification.targetContent.text }}"</span>
-          <span>.</span>
-        </span>
-
-        <span *ngIf="notification.type == NotificationType.REACTION">
-          <strong>{{ notification.actor.username }}</strong>
-          <span *ngIf="notification.actorCount > 1">
-            và {{ notification.actorCount-1 }} người khác
+          <span *ngIf="notification.type == NotificationType.REACTION">
+            <strong>{{ notification.actor.username }}</strong>
+            <span *ngIf="notification.actorCount > 1">
+              và {{ notification.actorCount-1 }} người khác
+            </span>
+            đã thích
+            <span *ngIf="notification.targetContent.type == 'POST'">một bài viết của bạn</span>
+            <span *ngIf="notification.targetContent.type == 'COMMENT'">một bình luận của bạn</span>
+            <span>: "{{ notification.targetContent.text }}"</span>
+            <span>.</span>
           </span>
-          đã thích 
-          <span *ngIf="notification.targetContent.type == 'POST'">một bài viết của bạn</span>
-          <span *ngIf="notification.targetContent.type == 'COMMENT'">một bình luận của bạn</span>
-          <span>: "{{ notification.targetContent.text }}"</span>
-          <span>.</span>
-        </span>
 
-        <span *ngIf="notification.type == NotificationType.NEW_POST">
-          <strong>{{ notification.actorContent.user.username }}</strong>
-          <span> đã đăng một bài viết mới</span>
-          <span *ngIf="notification.pageType == 'GROUP'"> trong <strong>{{ notification.pageName }}</strong></span>
-          <span *ngIf="notification.targetContent.text">: "{{ notification.targetContent.text }}"</span>
-          <span>.</span>
-        </span>
+          <span *ngIf="notification.type == NotificationType.NEW_POST">
+            <strong>{{ notification.actorContent.user.username }}</strong>
+            <span> đã đăng một bài viết mới</span>
+            <span *ngIf="notification.pageType == 'GROUP'"> trong <strong>{{ notification.pageName }}</strong></span>
+            <span *ngIf="notification.targetContent.text">: "{{ notification.targetContent.text }}"</span>
+            <span>.</span>
+          </span>
 
-        <span *ngIf="notification.type == NotificationType.GROUP_JOIN_REQUEST">
-          <strong>{{ notification.actor.username }}</strong>
-          <span> đã yêu cầu gia nhập nhóm </span>
-          <span *ngIf="notification.pageType == 'GROUP'"> <strong>{{ notification.pageName }}</strong></span>
-          <span>.</span>
-        </span>
+          <span *ngIf="notification.type == NotificationType.GROUP_JOIN_REQUEST">
+            <strong>{{ notification.actor.username }}</strong>
+            <span> đã yêu cầu gia nhập nhóm </span>
+            <span *ngIf="notification.pageType == 'GROUP'"> <strong>{{ notification.pageName }}</strong></span>
+            <span>.</span>
+          </span>
 
-        <span *ngIf="notification.type == NotificationType.FRIEND_REQUEST">
-          <strong>{{ notification.actor.username }}</strong>
-          <span> đã gửi cho bạn yêu cầu kết bạn</span>
-          <span>.</span>
-        </span>
+          <span *ngIf="notification.type == NotificationType.FRIEND_REQUEST">
+            <strong>{{ notification.actor.username }}</strong>
+            <span> đã gửi cho bạn yêu cầu kết bạn</span>
+            <span>.</span>
+          </span>
 
-        <span *ngIf="notification.type == NotificationType.FRIEND_REQUEST_ACCEPT">
-          <strong>{{ notification.actor.username }}</strong>
-          <span> đã chấp nhận yêu cầu kết bạn của bạn</span>
-          <span>.</span>
-        </span>
+          <span *ngIf="notification.type == NotificationType.FRIEND_REQUEST_ACCEPT">
+            <strong>{{ notification.actor.username }}</strong>
+            <span> đã chấp nhận yêu cầu kết bạn của bạn</span>
+            <span>.</span>
+          </span>
 
-        <span *ngIf="notification.type == NotificationType.GROUP_JOIN_REQUEST_ACCEPT">
-          <span>Yêu cầu gia nhập nhóm </span>
-          <strong>{{ notification.pageName }}</strong> 
-          <span> của bạn đã được chấp nhận</span>
-          <span>.</span>
-        </span>
+          <span *ngIf="notification.type == NotificationType.GROUP_JOIN_REQUEST_ACCEPT">
+            <span>Yêu cầu gia nhập nhóm </span>
+            <strong>{{ notification.pageName }}</strong>
+            <span> của bạn đã được chấp nhận</span>
+            <span>.</span>
+          </span>
 
-      </div>
-      <div class="ago">
-        <span>{{ notification.createdAgo }}</span>
+        </div>
+        <div class="ago">
+          <span>{{ notification.createdAgo }}</span>
+        </div>
       </div>
     </div>
-  </div>
     <div (click)="read()"
-        [ngClass]="notification.isRead ? 'hidden' : 'visible'"
-        class="mark-as-read">
+         [ngClass]="notification.isRead ? 'hidden' : 'visible'"
+         class="mark-as-read">
     </div>
   </div>
 </div>

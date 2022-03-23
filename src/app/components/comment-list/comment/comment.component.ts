@@ -8,6 +8,8 @@ import { ConfirmDialogService } from '../../share/confirm-dialog/confirm-dialog.
 import { ReactionType } from '../../share/reaction-type';
 import { ReactionPayload } from '../../share/reaction.payload';
 import { ReactionService } from '../../share/reaction.service';
+import { ToasterMessageType } from '../../share/toaster/toaster-message-type';
+import { ToasterService } from '../../share/toaster/toaster.service';
 import { CommentListComponent } from '../comment-list.component';
 import { CommentResponse } from './comment-response';
 import { CommentService } from './comment.service';
@@ -41,6 +43,7 @@ export class CommentComponent implements OnInit, AfterViewInit {
     private confirmService: ConfirmDialogService,
     private renderer: Renderer2,
     private reactionService: ReactionService,
+    private toasterService: ToasterService,
     private rxStompService: RxStompService,
     private postViewService: PostViewService,
     private changeDetector: ChangeDetectorRef,
@@ -139,6 +142,15 @@ export class CommentComponent implements OnInit, AfterViewInit {
     if (isConfirmed) {
       this.commentService.delete(this.comment.id).subscribe(() => {
         this.deleted.next(this.comment.id);
+        this.toasterService.message$.next({
+          type: ToasterMessageType.SUCCESS,
+          message: 'Xoá bình luận thành công.'
+        })
+      }, () => {
+        this.toasterService.message$.next({
+          type: ToasterMessageType.ERROR,
+          message: 'Đã có lỗi, xoá bình luận thất bại.'
+        })
       })
     }
   }

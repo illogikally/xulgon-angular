@@ -4,7 +4,7 @@
       <div class="title">
         <span>Thành viên · <span style="color: #666"> {{ admins.length + members.length}}</span></span>
       </div>
-      <div class="search">
+      <div NotImplemented class="search">
         <i class='bx bx-search'></i>
         <input type="text"
                placeholder="Tìm thành viên"
@@ -24,6 +24,12 @@
                                [role]="group.role"
                                [member]="admin">
         </app-group-member-item>
+        <ng-container *ngIf="isLoadingMembers" >
+          <div class="skeleton" *ngFor="let item of [].constructor(3)">
+            <div class="avatar"></div>
+            <div class="text"></div>
+          </div>
+        </ng-container>
       <div class="members">
         <div class="title">
           Thành viên nhóm · <span style="color: #666"> {{ members.length }} </span>
@@ -36,6 +42,12 @@
                                [groupId]="group.id"
                                [member]="member">
         </app-group-member-item>
+        <ng-container *ngIf="isLoadingMembers" >
+          <div class="skeleton" *ngFor="let item of [].constructor(3)">
+            <div class="avatar"></div>
+            <div class="text"></div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

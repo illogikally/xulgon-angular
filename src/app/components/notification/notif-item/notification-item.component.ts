@@ -23,6 +23,7 @@ export class NotificationItemComponent implements OnInit {
 
   routeReuseScrollToTop = false;
   principalId = this.authenticationService.getPrincipalId();
+  avatarIcon: 'bell' | 'friend' | 'post' | 'comment' | 'reaction' | 'group' = 'bell';
 
   constructor(
     private groupService: GroupService,
@@ -52,26 +53,32 @@ export class NotificationItemComponent implements OnInit {
     switch (this.notification.type) {
       case NotificationType.COMMENT:
         this.constructPathForCommentNotification();
+        this.avatarIcon = 'comment';
         break;
 
       case NotificationType.REACTION:
         this.constructPathForReactNotification();
+        this.avatarIcon = 'reaction';
         break;
 
       case NotificationType.NEW_POST:
         this.constructPathForNewPostNotification();
+        this.avatarIcon = 'post';
         break;
 
       case NotificationType.GROUP_JOIN_REQUEST:
         this.constructPathForGroupJoinRequestNotification();
+        this.avatarIcon = 'group';
         break;
 
       case NotificationType.FRIEND_REQUEST:
         this.constructPathForFriendRequestNotification();
+        this.avatarIcon = 'friend';
         break;
 
       case NotificationType.FRIEND_REQUEST_ACCEPT:
         this.constructPathForFriendAcceptanceNotification();
+        this.avatarIcon = 'friend';
         this.userService.updateFriendshipStatus$.next({
           userId: this.notification.actor.id,
           status: 'FRIEND'
@@ -80,6 +87,7 @@ export class NotificationItemComponent implements OnInit {
 
       case NotificationType.GROUP_JOIN_REQUEST_ACCEPT:
         this.constructPathForGroupAcceptanceNotification();
+        this.avatarIcon = 'group';
         this.groupService.groupMemberAccepted$.next(this.notification.pageId);
         break;
 

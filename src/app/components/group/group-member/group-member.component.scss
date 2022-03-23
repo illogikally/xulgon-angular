@@ -37,4 +37,25 @@
 
     }
   }
+
+  .skeleton {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    column-gap: 10px;
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      @extend %loading-animation;
+    }
+
+    .text {
+      @extend %loading-animation;
+      width: 40%;
+      height: 15px;
+      border-radius: 10px;
+    }
+  }
 }
