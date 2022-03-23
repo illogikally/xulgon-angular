@@ -75,9 +75,9 @@ export class PostViewComponent implements OnInit {
   }
 
   onRouteReuse(): Observable<any> {
-      console.log('route reuse');
     return this.messageService.routeReuse$.pipe(
       filter(route => this.compareRoute(route, this.activatedRoute.snapshot)),
+      // Get called twice?
       throttleTime(1e3)
     );
   }
@@ -86,7 +86,7 @@ export class PostViewComponent implements OnInit {
     left: ActivatedRouteSnapshot,
     right: ActivatedRouteSnapshot
   ): boolean {
-    return left.routeConfig?.component?.name == right.routeConfig?.component?.name;
+    return left.routeConfig?.path == right.routeConfig?.path;
   }
 
   getPost(postId: number) {
