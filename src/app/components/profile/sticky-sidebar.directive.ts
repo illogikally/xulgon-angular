@@ -12,6 +12,7 @@ export class StickySidebarDirective implements OnInit {
   @Input() onAttach$!: Observable<any>;
   @Input() onDetach$!: Observable<any>;
   @Input() disabled = false;
+  @Input() toggle?: Observable<boolean>;
 
   constructor(
     private renderer: Renderer2
@@ -21,6 +22,24 @@ export class StickySidebarDirective implements OnInit {
   ngOnInit(): void {
     this.configureOnWindowResize();
     this.configureStickySidebar();
+    if (this.toggle) {
+      this.listenOnDisableSidebar();
+    }
+  }
+
+  listenOnDisableSidebar() {
+    this.toggle!.subscribe(disable => {
+      this.disabled = disable;
+      if (disable) {
+        this.sidebarCss('width', 'auto');
+        this.sidebarCss('position', 'static');
+      }
+      else {
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('scroll'));
+        }, 100);
+      }
+    });
   }
 
   configureStickySidebar() {
@@ -133,29 +152,17 @@ export class StickySidebarDirective implements OnInit {
   }
 
   configureOnWindowResize() {
-    let previousWidth = window.innerWidth;
     const onWindowResize$ = fromEvent(window, 'resize').pipe(takeUntil(this.onDetach$));
     merge(this.onAttach$, of(null)).pipe(
       switchMap(() => onWindowResize$)
-    ).subscribe((event: any) => {
-      const currentWidth = window.innerWidth;
-      if (currentWidth < 900 && previousWidth >= 900) {
-        this.sidebarCss('width', 'auto');
-        this.sidebarCss('position', 'static');
+    ).subscribe(() => {
+      if (!this.disabled) {
+        const parentLeft = this.parent.getBoundingClientRect().left;
+        const sidebarPosition = this.sidebarInner.style.position;
+        if (sidebarPosition == 'fixed') {
+          this.sidebarCss('left', parentLeft + 'px');
+        }
       }
-
-      if (currentWidth >= 900 && previousWidth < 900) {
-        setTimeout(() => {
-          window.dispatchEvent(new CustomEvent('scroll'));
-        }, 100);
-      }
-
-      const parentLeft = this.parent.getBoundingClientRect().left;
-      const sidebarPosition = this.sidebarInner.style.position;
-      if (sidebarPosition == 'fixed') {
-        this.sidebarCss('left', parentLeft + 'px');
-      }
-      previousWidth = currentWidth;
     });
   }
 

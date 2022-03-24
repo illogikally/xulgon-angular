@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {RxStompService} from '@stomp/ng2-stompjs';
-import {fromEvent} from 'rxjs';
+import {fromEvent, Subject} from 'rxjs';
 import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {Post} from '../../post/post';
@@ -30,11 +30,11 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   isInitLoaded = false;
   isLoadedAll = false;
   pagePhotoSetId!: number;
-  isStickySidebarDisabled = false;
 
   isComponentAttached = true;
   isComponentDetached = false;
   lastPostId = 0;
+  toggleStickySidebar = new Subject<any>();
 
 
   onDetach$ = this.profileService.onDetach$.pipe(
@@ -133,6 +133,7 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
     const parent = self.parentElement;
     const defaultWidth = 892;
     let isStyleSet = false;
+    const disableStickySidebar = new Subject<any>();
     new ResizeObserver(entries => {
       if (!entries[0].contentRect.width) return;
       this.ngZone.run(() => {
@@ -141,13 +142,13 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
           this.renderer.setStyle(self, 'display', 'flex');
           this.renderer.setStyle(self, 'flex-direction', 'column');
           isStyleSet = true;
-          this.isStickySidebarDisabled = true;
+          this.toggleStickySidebar.next(true);
         }
         else if (parent.offsetWidth >= defaultWidth) {
           this.renderer.setStyle(self, 'display', 'grid');
           this.renderer.setStyle(self, 'max-width', '892px');
+          this.toggleStickySidebar.next(false);
           isStyleSet = false;
-          this.isStickySidebarDisabled = false;
         }
       });
     }).observe(parent);
