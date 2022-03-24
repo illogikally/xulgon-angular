@@ -76,15 +76,13 @@
       }
 
       .intro-title {
-        padding: 20px 0px;
+        padding-bottom: 10px;
         position: relative;
         display: flex;
         align-items: center;
 
         .to-photos {
           position: absolute;
-          max-width: 50%;
-          width: 100%;
           right: 0;
         }
       }
@@ -107,17 +105,19 @@
     }
 
     .friend-intro {
-      max-height: 600px;
-
       &__title {
         position: relative;
         display: flex;
         align-items: center;
+        padding-bottom: 10px;
+
+        h3 {
+          margin: 0;
+        }
+
 
         .to-photos {
           position: absolute;
-          max-width: 50%;
-          width: 100%;
           right: 0;
         }
       }

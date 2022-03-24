@@ -21,9 +21,12 @@
             <h3 style="font-size: 21px; font-weight: 700;">Ảnh</h3>
             <app-button color="#1877f2"
                         class="to-photos"
+                        padding="7px"
+                        height=""
                         background="transparent"
                         backgroundHover="rgba(24, 119, 242, .1)">
               <div routerLink="photos"
+                   style="font-weight: 400;"
                    [relativeTo]="route"
                    button="">
                 Xem tất cả ảnh
@@ -57,10 +60,13 @@
             <h3>Bạn bè</h3>
             <app-button color="#1877f2"
                         class="to-photos"
+                        height=""
                         background="transparent"
+                        padding="7px"
                         backgroundHover="rgba(24, 119, 242, .1)">
               <div routerLink="friends"
                    [relativeTo]="route"
+                   style="font-weight: 400;"
                    button="">
                 Xem tất cả bạn bè
               </div>

@@ -5,9 +5,16 @@
           type="button"
           class="button__inner">
     <ng-content select="[button]"></ng-content>
+    <app-spinner size="20px"
+                 [color]="color"
+                 *ngIf="isLoadingSpinnerVisible"
+                 ringWidth="2px"
+                 backgroundColor="transparent">
+    </app-spinner>
     <div *ngIf="isX"
          button="">
-      <i style="filter: invert(0%)" class='x-icon'></i>
+      <i style="filter: invert(0%)"
+         class='x-icon'></i>
     </div>
   </button>
   <div *ngIf="isOptionsVisible"

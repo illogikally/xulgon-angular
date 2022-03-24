@@ -132,18 +132,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  block() {
-    this.confirmService.confirm({
+  async  block() {
+    const isConfirmed = await this.confirmService.confirm({
       title: 'Chặn người dùng',
       body: `Bạn có chắc muốn chặn ${this.pageHeader.name}?`
-    }).then(isConfirmed => {
-      if (isConfirmed) {
-        this.userService.block(this.pageHeader.userId).subscribe(() => {
-          this.pageHeader.blocked = true;
-          window.location.reload();
-        });
-      }
-    })
+    });
+
+    if (isConfirmed) {
+      this.userService.block(this.pageHeader.userId).subscribe(() => {
+        this.pageHeader.blocked = true;
+        window.location.reload();
+      });
+    }
   }
 
   unblock() {

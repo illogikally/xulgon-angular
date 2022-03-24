@@ -25,11 +25,12 @@ export class ButtonComponent implements OnInit, AfterViewInit {
   @Input() backgroundHover = '';
   @Input() radius = '5px';
   @Input() isX = false;
-  @Input() padding = '0 15px';
+  @Input() padding = '0px 15px';
   @Input() hasOptions = false;
   @Input() optionsAlignment = 'CENTER'
   @Input() iconSize = '23px';
   @Input() isRounded = false;
+  @Input() isLoadingSpinnerVisible = false;
 
   @ViewChild('inner', {static: true}) inner!: ElementRef;
   @ViewChild('options', {static: false}) options!: ElementRef;

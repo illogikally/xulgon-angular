@@ -2,9 +2,11 @@
      class="friendship-button">
   <app-button background="#1877f2"
               [hasOptions]="true"
+              [isLoadingSpinnerVisible]="isUpdating"
               color="#fff"
               *ngIf="friendshipStatus == 'FRIEND'">
-    <div [ngStyle]="{'visibility': isUpdating ? 'hidden' : 'visible'}"
+    <!-- Use opacity to prevent conflict with parent visibility -->
+    <div [ngStyle]="{'opacity': isUpdating ? '0' : '1'}"
          button>
       <img class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover"
            src="https://static.xx.fbcdn.net/rsrc.php/v3/yF/r/5nzjDogBZbf.png"
@@ -26,8 +28,10 @@
     <!-- *ngIf="isUpdating" -->
   </app-button>
 
-  <app-button *ngIf="friendshipStatus == 'NULL'">
-    <div [ngStyle]="{'visibility': isUpdating ? 'hidden' : 'visible'}"
+  <app-button [isLoadingSpinnerVisible]="isUpdating"
+              *ngIf="friendshipStatus == 'NULL'">
+
+    <div [ngStyle]="{'opacity': isUpdating ? '0' : '1'}"
          button
          (click)="sendFriendRequest()">
       <img class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover"
@@ -39,8 +43,9 @@
     </div>
   </app-button>
 
-  <app-button *ngIf="friendshipStatus == 'SENT'">
-    <div [ngStyle]="{'visibility': isUpdating ? 'hidden' : 'visible'}"
+  <app-button [isLoadingSpinnerVisible]="isUpdating"
+              *ngIf="friendshipStatus == 'SENT'">
+    <div [ngStyle]="{'opacity': isUpdating ? '0' : '1'}"
          button
          (click)="deleteFriendRequest()"
          id="delete-friend-request">
@@ -55,8 +60,9 @@
 
 
   <app-button [hasOptions]="true"
+              [isLoadingSpinnerVisible]="isUpdating"
               *ngIf="friendshipStatus == 'RECEIVED'">
-    <div [ngStyle]="{'visibility': isUpdating ? 'hidden' : 'visible'}"
+    <div [ngStyle]="{'opacity': isUpdating ? '0' : '1'}"
          button>
       <i class='bx bxs-user-check'></i>
       <span>Trả lời</span>
@@ -73,11 +79,4 @@
       </div>
     </div>
   </app-button>
-
-  <app-spinner [displayText]="false"
-               size="20px"
-               ringWidth="2px"
-               *ngIf="isUpdating"
-               backgroundColor="transparent">
-  </app-spinner>
 </div>
