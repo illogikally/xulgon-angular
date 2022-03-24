@@ -1,18 +1,22 @@
-<div *ngIf="group" class="group">
+<div *ngIf="group"
+     class="group">
   <div class="sidebar-below"
        #sidebarBelow
        *ngIf="group?.role == 'ADMIN'">
-    <div #sidebar class="group-sidebar">
+    <div #sidebar
+         class="group-sidebar">
       <div class="title">
         <span>Quản lý nhóm</span>
-        <div #toggleButton class="toggle-sidebar">
+        <div #toggleButton
+             class="toggle-sidebar">
           <app-button [hasOptions]="false"
                       background="#fff"
                       width="40px"
                       height="40px"
                       iconSize="30px"
                       [isRounded]="true">
-            <div (click)="toggleSidebar()" button="">
+            <div (click)="toggleSidebar()"
+                 button="">
               <div>
                 <i class='bx bx-sidebar'></i>
               </div>
@@ -40,15 +44,20 @@
           </div>
         </div>
       </div>
-      <div
-        class="home">
+      <div class="home">
         <a routerLink="/groups/{{ group?.id }}"
            routerLinkActive="active-sidebar-tab"
            #home="routerLinkActive"
            [routerLinkActiveOptions]="{exact: true}">
           <div class="icon">
-            <i *ngIf="!home.isActive" data-visualcompletion="css-img" class="hu5pjgll lzf7d6o1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yR/r/8y_kNv751iG.png&quot;); background-position: 0px -150px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
-            <i *ngIf="home.isActive" data-visualcompletion="css-img" class="hu5pjgll lzf7d6o1" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yR/r/8y_kNv751iG.png&quot;); background-position: 0px -125px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
+            <i *ngIf="!home.isActive"
+               data-visualcompletion="css-img"
+               class="hu5pjgll lzf7d6o1"
+               style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yR/r/8y_kNv751iG.png&quot;); background-position: 0px -150px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
+            <i *ngIf="home.isActive"
+               data-visualcompletion="css-img"
+               class="hu5pjgll lzf7d6o1"
+               style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yR/r/8y_kNv751iG.png&quot;); background-position: 0px -125px; background-size: auto; width: 24px; height: 24px; background-repeat: no-repeat; display: inline-block;"></i>
           </div>
           <span>Trang chủ</span>
         </a>
@@ -61,8 +70,18 @@
            #requests="routerLinkActive"
            class="tool">
           <div class="icon">
-            <img *ngIf="!requests.isActive" class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover" src="https://static.xx.fbcdn.net/rsrc.php/v3/yv/r/YmMDhCokywW.png" alt="" height="20" width="20">
-            <img *ngIf="requests.isActive" class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover" src="https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/kvTZDbwpLhe.png" alt="" height="20" width="20">
+            <img *ngIf="!requests.isActive"
+                 class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover"
+                 src="https://static.xx.fbcdn.net/rsrc.php/v3/yv/r/YmMDhCokywW.png"
+                 alt=""
+                 height="20"
+                 width="20">
+            <img *ngIf="requests.isActive"
+                 class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover"
+                 src="https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/kvTZDbwpLhe.png"
+                 alt=""
+                 height="20"
+                 width="20">
           </div>
           <div class="text">
             <div>Yêu cầu tham gia</div>
@@ -75,8 +94,18 @@
            class="tool">
           <div class="icon-container">
             <div class="icon">
-              <img *ngIf="!settings.isActive" class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover" src="https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/U_m10mzKpjD.png" alt="" height="20" width="20">
-              <img *ngIf="settings.isActive" class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover" src="https://static.xx.fbcdn.net/rsrc.php/v3/yA/r/Mljg0NlmO_q.png" alt="" height="20" width="20">
+              <img *ngIf="!settings.isActive"
+                   class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover"
+                   src="https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/U_m10mzKpjD.png"
+                   alt=""
+                   height="20"
+                   width="20">
+              <img *ngIf="settings.isActive"
+                   class="hu5pjgll lzf7d6o1 hoverZoom3 hoverZoomMouseover"
+                   src="https://static.xx.fbcdn.net/rsrc.php/v3/yA/r/Mljg0NlmO_q.png"
+                   alt=""
+                   height="20"
+                   width="20">
             </div>
           </div>
           <div class="text">
@@ -90,4 +119,3 @@
     <router-outlet></router-outlet>
   </div>
 </div>
-

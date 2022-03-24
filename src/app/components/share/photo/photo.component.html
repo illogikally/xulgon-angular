@@ -1,7 +1,5 @@
-<a
-  (click)="openPhotoView($event)"
-  href="/photo/{{ id }}">
-  <img
-    [ngClass]="isComment ? 'isComment' : 'notComment'"
-    [src]="url || 'assets/avatar.jpg'">
+<a (click)="openPhotoView($event)"
+   href="/photo/{{ id }}">
+  <img [ngClass]="isComment ? 'isComment' : 'notComment'"
+       [src]="url || 'assets/avatar.jpg'">
 </a>

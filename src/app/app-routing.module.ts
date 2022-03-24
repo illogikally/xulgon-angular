@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthenticationGuard } from './components/authentication/authentication.guard';
+import { LoginGuard } from './components/authentication/login.guard';
 import { LoginComponent } from './components/authentication/login/login.component';
 import { Oauth2CallbackComponent } from './components/authentication/login/oauth2-callback/oauth2-callback.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
@@ -33,7 +34,7 @@ import { SearchComponent } from './components/search/search.component';
 import { LoggedInComponent } from './components/share/logged-in/logged-in.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
   { path: 'register', component: LoginComponent },
   { 
     path: 'oauth2', 

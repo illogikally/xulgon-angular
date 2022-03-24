@@ -106,9 +106,6 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
           if (!response.hasNext) {
             this.isLoadedAll = true;
           }
-          setTimeout(() => {
-            console.log(document.documentElement.clientHeight, document.body.offsetHeight) 
-          }, 1000);
         });
     }
   }

@@ -1,10 +1,11 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
-import {fromEvent, merge, timer} from 'rxjs';
-import {filter, map, switchMap, tap} from 'rxjs/operators';
-import {MessageService} from '../../message.service';
-import {UserDto} from '../../user-dto';
-import {UserService} from '../../user.service';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { fromEvent, merge, timer } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { ConfirmDialogService } from '../../confirm-dialog/confirm-dialog.service';
+import { MessageService } from '../../message.service';
+import { UserDto } from '../../user-dto';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-user-ref-popup',
@@ -23,12 +24,20 @@ export class UserRefPopupComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private confirmService: ConfirmDialogService,
     private messageService: MessageService,
-    private userService: UserService,
-    private renderer: Renderer2) {
+    private renderer: Renderer2,
+    private userService: UserService
+  ) {
   }
 
   ngOnInit(): void {
+    this.listenOnMouseOverMouseLeave();
+    this.configureHideOnRouteChange();
+    this.configureHideOnScroll();
+  }
+
+  listenOnMouseOverMouseLeave() {
     this.messageService.userRef$.pipe(
       filter(data => data.visible),
       filter(data => data.target != this.currentTarget),
@@ -44,19 +53,9 @@ export class UserRefPopupComponent implements OnInit {
         this.show()
       }
     });
+  }
 
-    merge(
-      this.messageService.userRef$.pipe(
-        switchMap(data => timer(50).pipe(map(() => data.visible))),
-        filter(visible => !visible)
-      ),
-      this.router.events
-    ).subscribe(() => {
-      this.hide();
-      this.setSelfStyle('top', '0px');
-      this.currentTarget = null;
-    });
-
+  configureHideOnScroll() {
     let lastMousePosition = {
       x: -1,
       y: -1,
@@ -76,6 +75,20 @@ export class UserRefPopupComponent implements OnInit {
           this.currentTarget = null;
         }
       }
+    });
+  }
+
+  configureHideOnRouteChange() {
+    merge(
+      this.messageService.userRef$.pipe(
+        switchMap(data => timer(50).pipe(map(() => data.visible))),
+        filter(visible => !visible)
+      ),
+      this.router.events
+    ).subscribe(() => {
+      this.hide();
+      this.setSelfStyle('top', '0px');
+      this.currentTarget = null;
     });
   }
 
@@ -146,5 +159,15 @@ export class UserRefPopupComponent implements OnInit {
       avatarUrl: this.userDto!.avatarUrl,
       username: this.userDto!.username
     });
+  }
+
+  async block() {
+    const isConfirmed = await this.confirmService.confirm({
+      title: 'Chặn người dùng',
+      body: `Bạn có chắc muốn chặn ${this.userDto?.username}?`
+    });
+    if (isConfirmed) {
+      this.userService.block(this.userDto!.id).subscribe(() => window.location.reload());
+    }
   }
 }

@@ -103,10 +103,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) {
-      this.router.navigateByUrl("/");
-    }
-
     if (/login$/g.test(window.location.href)) {
       this.isLogin = true;
     }
