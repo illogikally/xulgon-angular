@@ -1,9 +1,19 @@
 <div class="by-group">
-  <app-by-group-result
-    *ngFor="let result of results"
-    [result]="result"
-  ></app-by-group-result>
-  <div class="no-posts" *ngIf="isLoaded && results.length == 0" >
-    Không tìm thấy nhóm nào.
+  <div class="wrapper">
+
+    <app-by-group-result *ngFor="let result of results"
+                         [result]="result">
+    </app-by-group-result>
+    <ng-container *ngIf="isSearching">
+      <div class="skeleton"
+           *ngFor="let item of [].constructor(4)">
+        <div class="avatar"></div>
+        <div class="text"></div>
+      </div>
+    </ng-container>
+    <div class="no-posts"
+         *ngIf="isLoaded && results.length == 0">
+      Không tìm thấy nhóm nào.
+    </div>
   </div>
 </div>

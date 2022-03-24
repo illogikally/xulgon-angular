@@ -14,6 +14,7 @@ export class ByPeopleComponent implements OnInit {
 
   results: UserDto[] = [];
   isLoaded = false;
+  isSearching = false;
 
   constructor(
     private searchService: SearchService,
@@ -28,10 +29,12 @@ export class ByPeopleComponent implements OnInit {
   getResults(): void {
     this.searchService.search$.subscribe(name => {
       if (!name) return;
+      this.isSearching = true;
       this.location.go(`/search/people?q=${name}`);
       this.searchService.byPeople(name).subscribe(results => {
         this.results = results;
         this.isLoaded = true;
+        this.isSearching = false;
       });
     })
   }

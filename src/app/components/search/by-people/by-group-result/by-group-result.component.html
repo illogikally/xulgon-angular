@@ -3,7 +3,7 @@
     <a
       routerLink="/groups/{{result.id}}"
       class="avatar">
-      <img [src]="result?.coverPhotoUrl"/>
+      <img [src]="(result?.coverPhotoUrl | sirv: 100) || 'assets/cover.png'"/>
     </a>
   </div>
   <div class="infos">

@@ -1,11 +1,19 @@
 <div class="by-people">
-  <div class="by-people__inner">
-    <app-by-people-result
-      *ngFor="let result of results"
-      [result]="result"
-    ></app-by-people-result>
-  </div>
-  <div class="no-posts" *ngIf="isLoaded && results.length == 0">
-    Không tìm thấy kết quả.
+  <div class="wrapper">
+    <div class="by-people__inner">
+      <app-by-people-result *ngFor="let result of results"
+                            [result]="result">
+      </app-by-people-result>
+      <ng-container *ngIf="isSearching">
+        <div class="skeleton" *ngFor="let item of [].constructor(4)">
+          <div class="avatar"></div>
+          <div class="text"></div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="no-posts"
+         *ngIf="isLoaded && results.length == 0">
+      Không tìm thấy kết quả.
+    </div>
   </div>
 </div>

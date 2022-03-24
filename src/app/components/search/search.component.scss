@@ -79,8 +79,7 @@
     }
 
     .content {
-      flex-grow: 1;
-      @extend %fc;
+      @extend %fz;
     }
   }
 }

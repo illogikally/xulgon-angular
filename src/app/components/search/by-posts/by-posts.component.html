@@ -1,10 +1,13 @@
 <div #postContainer
      class="by-posts">
-  <div class="no-posts" *ngIf="isLoadedPosts && posts.length == 0">
-    Không tìm thấy bài viết nào.
+  <div class="wrapper">
+    <div class="no-posts"
+         *ngIf="isLoadedPosts && posts.length == 0">
+      Không tìm thấy bài viết nào.
+    </div>
+    <app-post-list [isGroupNameVisible]="true"
+                   [isLoading]="isLoadingPosts"
+                   [posts]="posts">
+    </app-post-list>
   </div>
-  <app-post-list [isGroupNameVisible]="true"
-                 [isLoading]="isLoadingPosts"
-                 [posts]="posts">
-  </app-post-list>
 </div>
