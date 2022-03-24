@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild} from '@angular/core';
 import {filter} from 'rxjs/operators';
 import {MessageService} from '../message.service';
 import {UserDto} from '../user-dto';
@@ -13,10 +13,12 @@ import {UserService} from '../user.service';
 export class UserRefComponent implements OnInit {
 
   @Input() userDto!: UserDto;
-  @Input() borderRadius!: string;
-  @Input() isPhotoView: boolean = false;
+  @Input() borderRadius = '';
+  @Input() isPhotoView = false;
   @Input() size: 40 | 100 | 200 | 400 | 600 | 900 = 40;
-  @ViewChild('avatarContainer') avatarContainer!: ElementRef;
+  @Input() fontSize = '15px';
+  @Input() fontWeight = '500';
+  @ViewChild('self') container!: ElementRef;
 
   popupVisibility = new EventEmitter<any>();
   isUserRefVisible = false;
@@ -29,12 +31,14 @@ export class UserRefComponent implements OnInit {
   ) { }
 
   ngAfterViewInit() {
-    if (this.borderRadius) {
-      this.renderer.setStyle(
-        this.avatarContainer.nativeElement,
-        'border-radius',
-        this.borderRadius
-      );
+    const style = {
+      '--avatar-border-radius': this.borderRadius,
+      '--font-weight': this.fontWeight,
+      '--font-size': this.fontSize
+    }
+
+    for (const [variable, value] of Object.entries(style)) {
+      this.renderer.setStyle(this.container.nativeElement, variable, value, RendererStyleFlags2.DashCase);
     }
   }
 

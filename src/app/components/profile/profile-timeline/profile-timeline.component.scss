@@ -43,7 +43,7 @@
     }
 
     h3 {
-      font-size: 21px;
+      font-size: 20px;
       margin-block-start: .7em;
       margin-block-start: .7em;
     }
@@ -115,7 +115,6 @@
           margin: 0;
         }
 
-
         .to-photos {
           position: absolute;
           right: 0;
@@ -129,11 +128,13 @@
 
         .img-container {
           width: 100%;
+          margin-bottom: 3px;
           aspect-ratio: 1;
         }
 
         .common-friend-count {
           font-size: 14px;
+          font-size: 13px;
           font-weight: 400;
         }
       }

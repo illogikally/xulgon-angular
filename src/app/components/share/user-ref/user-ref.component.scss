@@ -5,6 +5,9 @@
 }
 
 .user-ref-container {
+  --font-size: 15px;
+  --font-weight: 500;
+  --avatar-border-radius: 10px;
   position: relative;
   user-select: none;
   cursor: pointer;
@@ -23,8 +26,9 @@
 
   }
 
-
   .username {
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
     position: relative;
     left: 0;
   }
@@ -34,6 +38,7 @@
     width: 100%;
     aspect-ratio: 1;
     overflow: hidden;
+    border-radius: var(--avatar-border-radius);
 
     img {
       object-fit: cover;

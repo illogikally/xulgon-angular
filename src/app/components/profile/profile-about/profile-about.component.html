@@ -1,17 +1,17 @@
 <div class="profile-about"
-[ngStyle]="isUserRefPopup ? {
-  'box-shadow': 'none',
-  'padding': '0px'
-} : {}"
->
-  <div 
-  class="content">
-    <div *ngIf="!isUserRefPopup" class="title">
-      <h2 [ngStyle]="isTimeline ? {'font-size': '21px', 'font-weight': 700} : {}">Giới thiệu</h2>
+     [ngStyle]="isUserRefPopup ? {
+        'box-shadow': 'none',
+        'padding': '0px'
+      } : {}">
+  <div class="content">
+    <div *ngIf="!isUserRefPopup"
+         class="title">
+      <h2 [ngStyle]="isTimeline ? {'font-size': '20px', 'font-weight': 700, 'margin': '0 0 10px 0'} : {}">Giới thiệu</h2>
     </div>
     <div class="infos">
       <ng-container *ngFor="let i of [].constructor(5)">
-        <div class="skeleton" *ngIf="isLoading"></div>
+        <div class="skeleton"
+             *ngIf="isLoading"></div>
       </ng-container>
       <ng-container *ngFor="let field of fields">
         <app-profile-about-item [field]="field.field"

@@ -18,7 +18,7 @@
         <div class="photo-intro">
 
           <div class="intro-title">
-            <h3 style="font-size: 21px; font-weight: 700;">Ảnh</h3>
+            <h3 style="font-size: 20px; font-weight: 700;">Ảnh</h3>
             <app-button color="#1877f2"
                         class="to-photos"
                         padding="7px"
@@ -80,7 +80,7 @@
                               borderRadius="10px">
                 </app-user-ref>
               </div>
-              <app-user-ref [userDto]="friend"></app-user-ref>
+              <app-user-ref fontSize="13px" [userDto]="friend"></app-user-ref>
               <div *ngIf="friend.commonFriendCount > 0 && friend.id != principleId"
                    class="common-friend-count">
                 {{ friend.commonFriendCount }}
