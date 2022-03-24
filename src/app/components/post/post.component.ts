@@ -1,20 +1,30 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { CommentListComponent } from '../comment-list/comment-list.component';
-import { CommentService } from '../comment-list/comment/comment.service';
-import { GroupResponse } from '../group/group-response';
-import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
-import { FollowService } from '../share/follow.service';
-import { PhotoViewResponse } from '../share/photo/photo-view-response';
-import { ReactionType } from '../share/reaction-type';
-import { ReactionPayload } from '../share/reaction.payload';
-import { ReactionService } from '../share/reaction.service';
-import { ToasterMessageType } from '../share/toaster/toaster-message-type';
-import { ToasterService } from '../share/toaster/toaster.service';
-import { Post } from './post';
-import { PostService } from './post.service';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
+import {Subject} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {CommentListComponent} from '../comment-list/comment-list.component';
+import {CommentService} from '../comment-list/comment/comment.service';
+import {GroupResponse} from '../group/group-response';
+import {ConfirmDialogService} from '../share/confirm-dialog/confirm-dialog.service';
+import {FollowService} from '../share/follow.service';
+import {PhotoViewResponse} from '../share/photo/photo-view-response';
+import {ReactionType} from '../share/reaction-type';
+import {ReactionPayload} from '../share/reaction.payload';
+import {ReactionService} from '../share/reaction.service';
+import {ToasterMessageType} from '../share/toaster/toaster-message-type';
+import {ToasterService} from '../share/toaster/toaster.service';
+import {Post} from './post';
+import {PostService} from './post.service';
 
 
 @Component({
@@ -112,9 +122,9 @@ export class PostComponent implements OnInit, AfterViewInit {
           type: ToasterMessageType.SUCCESS,
           message: 'Xoá bài viết thành công'
         })
-      }, () => this.toaster.message$.next({ 
-        type: ToasterMessageType.ERROR, 
-        message: 'Đã có lỗi, xoá bài viết không thành công' 
+      }, () => this.toaster.message$.next({
+        type: ToasterMessageType.ERROR,
+        message: 'Đã có lỗi, xoá bài viết không thành công'
       }));
     }
   }

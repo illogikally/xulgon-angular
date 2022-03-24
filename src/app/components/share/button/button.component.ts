@@ -1,6 +1,15 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Renderer2,
+  RendererStyleFlags2,
+  ViewChild
+} from '@angular/core';
 import * as Color from 'color';
-import { Subject } from 'rxjs';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-button',

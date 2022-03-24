@@ -1,14 +1,24 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { LocalStorageService } from 'ngx-webstorage';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { ProfileService } from '../../profile/profile.service';
-import { PrincipalService } from '../../share/principal.service';
-import { ToasterMessageType } from '../../share/toaster/toaster-message-type';
-import { ToasterService } from '../../share/toaster/toaster.service';
-import { Post } from '../post';
-import { PostService } from '../post.service';
-import { SharedContent } from '../shared-content';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {LocalStorageService} from 'ngx-webstorage';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {ProfileService} from '../../profile/profile.service';
+import {PrincipalService} from '../../share/principal.service';
+import {ToasterMessageType} from '../../share/toaster/toaster-message-type';
+import {ToasterService} from '../../share/toaster/toaster.service';
+import {Post} from '../post';
+import {PostService} from '../post.service';
+import {SharedContent} from '../shared-content';
 
 @Component({
   selector: 'app-create-post',
@@ -75,7 +85,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
     if (event.target?.files && event.target.files[0]) {
       this.files.push(event.target.files[0]);
       console.log(event);
-      
+
       var reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]);
@@ -139,7 +149,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
         privacy: this.privacy,
         sharedContentId: this.sharedContent?.id,
         body: this.postForm.get('textarea')?.value
-      })], 
+      })],
       {type: 'application/json'}
     );
 
@@ -154,7 +164,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
     });
     this.files.forEach(file => {
       photoRequests.push({
-        privacy: this.privacy, 
+        privacy: this.privacy,
       });
       data.append('photos', file);
     });
@@ -201,7 +211,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
     this.files = [];
     this.photos = [];
   }
-  
+
   hide() {
     this.close.emit();
     this.clear();

@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { Post } from '../post/post';
-import { OffsetResponse } from '../share/offset-response';
-import { GroupResponse } from './group-response';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, ReplaySubject, Subject} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {Post} from '../post/post';
+import {OffsetResponse} from '../share/offset-response';
+import {GroupResponse} from './group-response';
 
 @Injectable({
   providedIn: 'root'
@@ -116,7 +116,7 @@ export class GroupService {
   getGroups(size: number, offset: number): Observable<OffsetResponse<GroupResponse>> {
     const url = `${this.baseApiUrl}/groups?size=${size}&offset=${offset}`;
     return this.http.get<OffsetResponse<GroupResponse>>(url);
-  } 
+  }
 
   getDefaultCoverUrl() {
     return 'assets/cover.png';

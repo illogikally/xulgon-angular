@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-profile-about-item',

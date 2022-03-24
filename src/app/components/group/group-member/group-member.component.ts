@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ReplaySubject } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
-import { GroupResponse } from '../group-response';
-import { GroupService } from '../group.service';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ReplaySubject} from 'rxjs';
+import {filter, take} from 'rxjs/operators';
+import {GroupResponse} from '../group-response';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-member',

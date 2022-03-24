@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { TitleService } from '../../share/title.service';
-import { UserService } from '../../share/user.service';
-import { GroupResponse } from '../group-response';
-import { GroupService } from '../group.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subject} from 'rxjs';
+import {TitleService} from '../../share/title.service';
+import {UserService} from '../../share/user.service';
+import {GroupResponse} from '../group-response';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-general',
@@ -55,7 +55,7 @@ export class GroupGeneralComponent implements OnInit {
       this.groupService.getGroupHeader(groupId).subscribe(group => this.groups.push(group));
     });
   }
-  
+
   newGroupCreated(group: GroupResponse) {
     this.managedGroups.push(group);
   }

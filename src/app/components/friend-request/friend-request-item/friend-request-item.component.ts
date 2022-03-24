@@ -1,8 +1,8 @@
-import { Location } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../share/user.service';
-import { FriendRequestDto } from '../friend-request-dto';
+import {Location} from '@angular/common';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UserService} from '../../share/user.service';
+import {FriendRequestDto} from '../friend-request-dto';
 
 @Component({
   selector: 'app-friend-request-item',

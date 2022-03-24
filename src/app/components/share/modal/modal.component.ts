@@ -1,5 +1,15 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-modal',
@@ -8,7 +18,7 @@ import { Observable } from 'rxjs';
 })
 export class ModalComponent implements OnInit {
 
-  @Input() toggle!:  Observable<any>; 
+  @Input() toggle!:  Observable<any>;
   @Input() background = 'rgba(0, 0, 0, .7)';
   @Output() closed = new EventEmitter();
 

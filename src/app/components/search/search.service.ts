@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { GroupResponse } from '../group/group-response';
-import { Post } from '../post/post';
-import { OffsetResponse } from '../share/offset-response';
-import { UserDto } from '../share/user-dto';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, ReplaySubject} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {GroupResponse} from '../group/group-response';
+import {Post} from '../post/post';
+import {OffsetResponse} from '../share/offset-response';
+import {UserDto} from '../share/user-dto';
 
 @Injectable({
   providedIn: 'root'

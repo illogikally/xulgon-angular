@@ -1,5 +1,5 @@
-import { Directive, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
-import { NotImplementedService } from './not-implemented.service';
+import {Directive, ElementRef, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {NotImplementedService} from './not-implemented.service';
 
 @Directive({
   selector: '[NotImplemented]'

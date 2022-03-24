@@ -1,10 +1,10 @@
-import { Location } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { PhotoViewResponse } from '../share/photo/photo-view-response';
-import { PhotoService } from '../share/photo/photo.service';
+import {Location} from '@angular/common';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2} from '@angular/core';
+import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
+import {Observable, of} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {PhotoViewResponse} from '../share/photo/photo-view-response';
+import {PhotoService} from '../share/photo/photo.service';
 
 @Component({
   selector: 'app-photo-viewer',
@@ -94,7 +94,7 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   }
 
   getPhoto() {
-    const observer = this.setId 
+    const observer = this.setId
         ? this.photoService.getPhotoBySetIdAndPhotoId(this.setId, this.photoId)
         : this.photoService.getPhoto(this.photoId);
 

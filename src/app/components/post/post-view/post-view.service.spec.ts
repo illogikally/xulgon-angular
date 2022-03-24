@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { PostViewService } from './post-view.service';
+import {PostViewService} from './post-view.service';
 
 describe('PostViewService', () => {
   let service: PostViewService;

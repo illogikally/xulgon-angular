@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { PhotoService } from 'src/app/components/share/photo/photo.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subject} from 'rxjs';
+import {PhotoService} from 'src/app/components/share/photo/photo.service';
 
 @Component({
   selector: 'app-photo-viewer-placeholder',
@@ -17,7 +17,7 @@ export class PhotoViewerPlaceholderComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private photoService: PhotoService
-  ) { 
+  ) {
   }
 
   ngOnInit(): void {
@@ -34,7 +34,7 @@ export class PhotoViewerPlaceholderComponent implements OnInit {
 
     const photoId = Number(paramMap.get('id'));
     const photoSetId = queryParamMap.get('set');
-    
+
     this.id = photoId;
     this.setId = Number(photoSetId) || undefined;
   }

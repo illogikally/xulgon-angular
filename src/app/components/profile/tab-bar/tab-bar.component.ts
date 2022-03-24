@@ -1,6 +1,6 @@
-import { Location } from '@angular/common';
-import { AfterViewInit, Component, DoCheck, ElementRef, Input, NgZone, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { Tab } from './tab';
+import {Location} from '@angular/common';
+import {AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Tab} from './tab';
 
 @Component({
   selector: 'app-tab-bar',
@@ -49,20 +49,20 @@ export class TabBarComponent implements OnInit, AfterViewInit {
     let isRunning = false;
 
     const isLastTabOverflowed = (tab: any): boolean => {
-      return wrapperElement.offsetWidth - tabsButtonsMargin 
+      return wrapperElement.offsetWidth - tabsButtonsMargin
           < tab.distance + moreTabsElementWidth
     }
 
     const isThereSpaceToFitHiddenTab = (tab: any): boolean => {
-      return wrapperElement.offsetWidth - tabsButtonsMargin 
+      return wrapperElement.offsetWidth - tabsButtonsMargin
           > tab.distance + moreTabsElementWidth
     }
     new ResizeObserver(entries => {
       if (
-        isRunning || 
+        isRunning ||
         !entries[0].contentRect.width ||
-        !this.tabsWrapperElement || 
-        !this.tabsElement 
+        !this.tabsWrapperElement ||
+        !this.tabsElement
       ) return;
       isRunning = true;
 

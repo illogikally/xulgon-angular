@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FriendshipButtonComponent } from './friendship-button.component';
+import {FriendshipButtonComponent} from './friendship-button.component';
 
 describe('FriendshipButtonComponent', () => {
   let component: FriendshipButtonComponent;

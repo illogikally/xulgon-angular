@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { NotificationService } from '../notification.service';
-import { Notification } from '../notification/notification';
-import { NotificationType } from '../notification/notification-type';
-import { UserService } from '../../share/user.service';
-import { GroupService } from '../../group/group.service';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {NotificationService} from '../notification.service';
+import {Notification} from '../notification/notification';
+import {NotificationType} from '../notification/notification-type';
+import {UserService} from '../../share/user.service';
+import {GroupService} from '../../group/group.service';
 
 @Component({
   selector: 'app-notification-item',
@@ -95,7 +95,7 @@ export class NotificationItemComponent implements OnInit {
         break;
     }
   }
-  
+
   constructPathForFriendRequestNotification() {
     this.path = `/friends`
   }

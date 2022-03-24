@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { GroupMediaComponent } from './group-media.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {GroupMediaComponent} from './group-media.component';
 
 
 describe('GroupMediaComponent', () => {

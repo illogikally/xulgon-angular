@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ProfileHeaderResolver } from './profile-header.resolver';
+import {ProfileHeaderResolver} from './profile-header.resolver';
 
 describe('ProfileHeaderResolver', () => {
   let resolver: ProfileHeaderResolver;

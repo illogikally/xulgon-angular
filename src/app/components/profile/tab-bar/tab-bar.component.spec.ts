@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TabBarComponent } from './tab-bar.component';
+import {TabBarComponent} from './tab-bar.component';
 
 describe('TabBarComponent', () => {
   let component: TabBarComponent;

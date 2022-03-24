@@ -1,18 +1,29 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { merge, of } from 'rxjs';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { PostViewService } from '../../post/post-view/post-view.service';
-import { ConfirmDialogService } from '../../share/confirm-dialog/confirm-dialog.service';
-import { ReactionType } from '../../share/reaction-type';
-import { ReactionPayload } from '../../share/reaction.payload';
-import { ReactionService } from '../../share/reaction.service';
-import { ToasterMessageType } from '../../share/toaster/toaster-message-type';
-import { ToasterService } from '../../share/toaster/toaster.service';
-import { CommentListComponent } from '../comment-list.component';
-import { CommentResponse } from './comment-response';
-import { CommentService } from './comment.service';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
+import {RxStompService} from '@stomp/ng2-stompjs';
+import {merge, of} from 'rxjs';
+import {filter, switchMap, takeUntil} from 'rxjs/operators';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {PostViewService} from '../../post/post-view/post-view.service';
+import {ConfirmDialogService} from '../../share/confirm-dialog/confirm-dialog.service';
+import {ReactionType} from '../../share/reaction-type';
+import {ReactionPayload} from '../../share/reaction.payload';
+import {ReactionService} from '../../share/reaction.service';
+import {ToasterMessageType} from '../../share/toaster/toaster-message-type';
+import {ToasterService} from '../../share/toaster/toaster.service';
+import {CommentListComponent} from '../comment-list.component';
+import {CommentResponse} from './comment-response';
+import {CommentService} from './comment.service';
 
 @Component({
   selector: 'app-comment',

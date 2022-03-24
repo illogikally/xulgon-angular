@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { GroupAdminGuard } from './group-admin.guard';
+import {GroupAdminGuard} from './group-admin.guard';
 
 describe('GroupAdminGuard', () => {
   let guard: GroupAdminGuard;

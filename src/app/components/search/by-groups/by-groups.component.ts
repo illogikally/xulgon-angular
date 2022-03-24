@@ -1,7 +1,6 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { GroupResponse } from '../../group/group-response';
-import { SearchService } from '../search.service';
+import {Component, OnInit} from '@angular/core';
+import {GroupResponse} from '../../group/group-response';
+import {SearchService} from '../search.service';
 
 @Component({
   selector: 'app-by-groups',
@@ -17,14 +16,15 @@ export class ByGroupsComponent implements OnInit {
 
   constructor(
     private searchService: SearchService,
-    private location: Location) {
+  ) {
   }
 
   ngOnInit(): void {
     this.searchService.search$.subscribe(name => {
       if (!name) return;
+      this.isLoaded = false;
       this.isSearching = true;
-      this.location.go("/search/groups?q=" + name)
+      this.results = [];
       this.searchService.byGroup(name).subscribe(results => {
         this.results = results;
         this.isSearching = false;

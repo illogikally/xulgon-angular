@@ -1,11 +1,11 @@
-import { Component, ElementRef, EventEmitter, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { TitleService } from '../../share/title.service';
-import { UserService } from '../../share/user.service';
-import { ChatMessage } from '../chat-msg';
-import { ChatService } from '../chat.service';
-import { ConversationNotif } from '../conversation-notif';
+import {Component, ElementRef, EventEmitter, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {RxStompService} from '@stomp/ng2-stompjs';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {TitleService} from '../../share/title.service';
+import {UserService} from '../../share/user.service';
+import {ChatMessage} from '../chat-msg';
+import {ChatService} from '../chat.service';
+import {ConversationNotif} from '../conversation-notif';
 
 @Component({
   selector: 'app-chat-notification',

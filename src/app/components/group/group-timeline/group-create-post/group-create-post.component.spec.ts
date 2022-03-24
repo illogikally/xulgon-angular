@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { GroupCreatePostComponent } from './group-create-post.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {GroupCreatePostComponent} from './group-create-post.component';
 
 
 describe('GroupCreatePostComponent', () => {

@@ -1,4 +1,4 @@
-import { SirvPipe } from './sirv.pipe';
+import {SirvPipe} from './sirv.pipe';
 
 describe('SirvPipe', () => {
   it('create an instance', () => {

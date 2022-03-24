@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ToasterMessageType } from './toaster-message-type';
-import { ToasterService } from './toaster.service';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ToasterMessageType} from './toaster-message-type';
+import {ToasterService} from './toaster.service';
 
 @Component({
   selector: 'app-toaster',
@@ -31,7 +31,7 @@ export class ToasterComponent implements OnInit {
       this.message = message.message;
       this.displayToaster();
       setTimeout(() => {
-        this.hideToaster(); 
+        this.hideToaster();
       }, 5000);
     });
   }

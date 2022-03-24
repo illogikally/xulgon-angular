@@ -1,7 +1,5 @@
 import {Location} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {MessageService} from '../../share/message.service';
 import {UserDto} from '../../share/user-dto';
 import {SearchService} from '../search.service';
 
@@ -30,11 +28,12 @@ export class ByPeopleComponent implements OnInit {
     this.searchService.search$.subscribe(name => {
       if (!name) return;
       this.isSearching = true;
-      this.location.go(`/search/people?q=${name}`);
+      this.isLoaded = false;
+      this.results = [];
       this.searchService.byPeople(name).subscribe(results => {
         this.results = results;
-        this.isLoaded = true;
         this.isSearching = false;
+        this.isLoaded = true;
       });
     })
   }

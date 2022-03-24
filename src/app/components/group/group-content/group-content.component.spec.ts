@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { GroupContentComponent } from './group-content.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {GroupContentComponent} from './group-content.component';
 
 
 describe('GroupContentComponent', () => {

@@ -1,5 +1,13 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit , 
-  Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Renderer2,
+  RendererStyleFlags2,
+  ViewChild
+} from '@angular/core';
 
 @Component({
   selector: 'app-spinner',
@@ -44,9 +52,9 @@ export class SpinnerComponent implements OnInit, AfterViewInit {
 
     for (const [variable, value] of Object.entries(style)) {
       this.renderer.setStyle(
-        this.spinnerElement.nativeElement, 
-        variable, 
-        value, 
+        this.spinnerElement.nativeElement,
+        variable,
+        value,
         RendererStyleFlags2.DashCase
       );
     }

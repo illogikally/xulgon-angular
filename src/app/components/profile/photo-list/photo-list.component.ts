@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { fromEvent, merge, of, ReplaySubject, Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
-import { PhotoService } from '../../share/photo/photo.service';
+import {AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {fromEvent, merge, of, ReplaySubject, Subject} from 'rxjs';
+import {switchMap, takeUntil} from 'rxjs/operators';
+import {PhotoService} from '../../share/photo/photo.service';
 
 @Component({
   selector: 'app-photo-list',
@@ -110,8 +110,8 @@ export class PhotoListComponent implements OnInit, OnDestroy, AfterViewInit {
         const currentColumns = Math.floor(self.offsetWidth / columnWidth);
         if (currentColumns != prevColumns) {
           this.renderer.setStyle(
-            self, 
-            'grid-template-columns', 
+            self,
+            'grid-template-columns',
             `repeat(${currentColumns}, 1fr)`
           );
         }

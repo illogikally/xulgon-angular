@@ -1,13 +1,13 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
-import { filter, throttleTime } from 'rxjs/operators';
-import { GroupService } from '../../group/group.service';
-import { MessageService } from '../../share/message.service';
-import { TitleService } from '../../share/title.service';
-import { Post } from '../post';
-import { PostService } from '../post.service';
-import { PostViewService } from './post-view.service';
+import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
+import {Observable} from 'rxjs';
+import {filter, throttleTime} from 'rxjs/operators';
+import {GroupService} from '../../group/group.service';
+import {MessageService} from '../../share/message.service';
+import {TitleService} from '../../share/title.service';
+import {Post} from '../post';
+import {PostService} from '../post.service';
+import {PostViewService} from './post-view.service';
 
 @Component({
   selector: 'app-post-view',

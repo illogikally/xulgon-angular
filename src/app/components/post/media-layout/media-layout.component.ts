@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
-import { PhotoResponse } from '../../share/photo/photo-response';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {PhotoResponse} from '../../share/photo/photo-response';
 
 @Component({
   selector: 'app-media-layout',

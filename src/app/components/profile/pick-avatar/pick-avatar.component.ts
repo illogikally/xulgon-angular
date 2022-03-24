@@ -1,14 +1,14 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { fromEvent, Subject } from 'rxjs';
-import { MessageService } from '../../share/message.service';
-import { PhotoResponse } from '../../share/photo/photo-response';
-import { PhotoService } from '../../share/photo/photo.service';
-import { ToasterMessageType } from '../../share/toaster/toaster-message-type';
-import { ToasterService } from '../../share/toaster/toaster.service';
-import { PageHeader } from '../page-header';
-import { ProfileService } from '../profile.service';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {ImageCroppedEvent} from 'ngx-image-cropper';
+import {fromEvent, Subject} from 'rxjs';
+import {MessageService} from '../../share/message.service';
+import {PhotoResponse} from '../../share/photo/photo-response';
+import {PhotoService} from '../../share/photo/photo.service';
+import {ToasterMessageType} from '../../share/toaster/toaster-message-type';
+import {ToasterService} from '../../share/toaster/toaster.service';
+import {PageHeader} from '../page-header';
+import {ProfileService} from '../profile.service';
 
 @Component({
   selector: 'app-pick-avatar',
@@ -107,7 +107,7 @@ export class PickAvatarComponent implements OnInit {
 
   configureLoadPhotoOnScroll() {
     fromEvent(this.photoContainer.nativeElement, 'scroll').subscribe(() => {
-      const photoContainer 
+      const photoContainer
         = this.photoContainer.nativeElement;
       const body = this.body.nativeElement;
       if (
@@ -146,7 +146,7 @@ export class PickAvatarComponent implements OnInit {
 
     if (this.updateType == 'AVATAR') {
       this.profileService.uploadAvatar(
-        formData, 
+        formData,
         this.pageToUpdateId
       ).subscribe(photo => {
         this.messageService.updateAvatar.next({
@@ -168,7 +168,7 @@ export class PickAvatarComponent implements OnInit {
 
     } else {
       this.profileService.uploadCoverPhoto(
-        formData, 
+        formData,
         this.pageToUpdateId
       ).subscribe(photo => {
         this.messageService.updateCoverPhoto.next({
@@ -189,11 +189,11 @@ export class PickAvatarComponent implements OnInit {
       });
     }
   }
-  
+
   imageCropped(event: ImageCroppedEvent) {
     if (!event.base64) return;
     console.log(event);
-    
+
     this.photoBlob = this.base64toBlob(event.base64);
   }
 

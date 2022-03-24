@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '../../authentication.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthenticationService} from '../../authentication.service';
 
 @Component({
   selector: 'app-oauth2-callback',
@@ -19,7 +19,7 @@ export class Oauth2CallbackComponent implements OnInit {
     const code = params.get('code');
     const state = params.get('state');
     const provider = params.get('provider');
-    
+
     if (code && state && provider) {
       this.auth$.oauth2Login(code, state, provider)
         .subscribe(_ => {

@@ -1,6 +1,6 @@
-import { UserBasic } from "../../share/user-basic";
-import { NotificationContent } from "./notification-content";
-import { NotificationType } from "./notification-type";
+import {UserBasic} from "../../share/user-basic";
+import {NotificationContent} from "./notification-content";
+import {NotificationType} from "./notification-type";
 
 export interface Notification {
   id: number;

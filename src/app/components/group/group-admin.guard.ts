@@ -1,9 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable, of} from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { GroupService } from './group.service';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Observable, of} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {GroupService} from './group.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +27,5 @@ export class GroupAdminGuard implements CanActivate {
       })
     );
   }
-  
+
 }

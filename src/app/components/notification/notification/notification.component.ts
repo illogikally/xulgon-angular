@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { fromEvent } from 'rxjs';
-import { TitleService } from '../../share/title.service';
-import { NotificationService } from '../notification.service';
-import { Notification } from './notification';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {RxStompService} from '@stomp/ng2-stompjs';
+import {fromEvent} from 'rxjs';
+import {TitleService} from '../../share/title.service';
+import {NotificationService} from '../notification.service';
+import {Notification} from './notification';
 
 @Component({
   selector: 'app-notification',
@@ -103,8 +103,8 @@ export class NotificationComponent implements OnInit, AfterViewInit {
 
   configureLoadPhotoOnScroll() {
     fromEvent(this.notificationContainer.nativeElement, 'scroll').subscribe(() => {
-      
-      const photoContainer 
+
+      const photoContainer
         = this.notificationContainer.nativeElement;
       if (
         photoContainer.scrollTop >= photoContainer.offsetHeight - photoContainer.offsetHeight

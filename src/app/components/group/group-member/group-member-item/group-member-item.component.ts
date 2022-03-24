@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
-import { ConfirmDialogService } from 'src/app/components/share/confirm-dialog/confirm-dialog.service';
-import { GroupService } from '../../group.service';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
+import {ConfirmDialogService} from 'src/app/components/share/confirm-dialog/confirm-dialog.service';
+import {GroupService} from '../../group.service';
 
 @Component({
   selector: 'app-group-member-item',
@@ -24,7 +24,7 @@ export class GroupMemberItemComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private confirmService: ConfirmDialogService,
     private groupService: GroupService
-  ) { 
+  ) {
 
   }
 

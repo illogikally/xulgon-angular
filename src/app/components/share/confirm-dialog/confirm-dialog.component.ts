@@ -1,8 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MessageService } from '../message.service';
-import { ConfirmDialogService } from './confirm-dialog.service';
+import {Component, OnInit} from '@angular/core';
+import {Subject} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {ConfirmDialogService} from './confirm-dialog.service';
 
 @Component({
   selector: 'app-confirm-dialog',

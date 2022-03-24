@@ -1,5 +1,5 @@
-import { PhotoResponse } from "../share/photo/photo-response";
-import { UserDto } from "../share/user-dto";
+import {PhotoResponse} from "../share/photo/photo-response";
+import {UserDto} from "../share/user-dto";
 
 export interface SharedContent {
   id: number;

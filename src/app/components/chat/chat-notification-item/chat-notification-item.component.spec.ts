@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChatNotificationItemComponent } from './chat-notification-item.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ChatNotificationItemComponent} from './chat-notification-item.component';
 
 
 describe('ChatNotificationItemComponent', () => {

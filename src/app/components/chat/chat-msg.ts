@@ -1,4 +1,4 @@
-import { UserBasic } from "../share/user-basic";
+import {UserBasic} from "../share/user-basic";
 
 export interface ChatMessage {
   id: number;

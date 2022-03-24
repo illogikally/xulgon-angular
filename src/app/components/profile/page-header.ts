@@ -1,4 +1,4 @@
-import { PhotoResponse } from "../share/photo/photo-response";
+import {PhotoResponse} from "../share/photo/photo-response";
 
 export interface PageHeader {
   id: number;

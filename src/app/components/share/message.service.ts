@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core';
-import { ActivatedRouteSnapshot } from '@angular/router';
-import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
-import {GroupResponse} from '../group/group-response';
-import {Post} from '../post/post';
-import { OpenAvatarPickerData } from '../profile/pick-avatar/open-avatar-picker-data';
-import {UserPage} from '../profile/user-profile';
-import { PhotoResponse } from './photo/photo-response';
+import {ActivatedRouteSnapshot} from '@angular/router';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {OpenAvatarPickerData} from '../profile/pick-avatar/open-avatar-picker-data';
+import {PhotoResponse} from './photo/photo-response';
 import {UserBasic} from './user-basic';
 
 @Injectable({

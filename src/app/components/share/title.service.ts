@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Title} from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +23,7 @@ export class TitleService {
   }
 
   private updateTitle() {
-    const notif = this.notificationCount > 0 
+    const notif = this.notificationCount > 0
       ? `(${this.notificationCount})`
       : '';
     const title = `${notif} ${this.title}`;

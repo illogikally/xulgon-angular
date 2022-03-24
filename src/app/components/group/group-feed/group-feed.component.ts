@@ -1,9 +1,8 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { fromEvent, merge, of, Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
-import { Post } from '../../post/post';
-import { UserService } from '../../share/user.service';
-import { GroupService } from '../group.service';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {fromEvent, merge, of, Subject} from 'rxjs';
+import {switchMap, takeUntil} from 'rxjs/operators';
+import {Post} from '../../post/post';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-feed',
@@ -67,7 +66,7 @@ export class GroupFeedComponent implements OnInit, OnDestroy {
       )
     ).subscribe(() => {
       const postContainerRect = this.postsContainer.nativeElement.getBoundingClientRect();
-      
+
       if (
         window.scrollY >= postContainerRect.bottom - 1.2 * window.innerHeight
         && !this.isLoading

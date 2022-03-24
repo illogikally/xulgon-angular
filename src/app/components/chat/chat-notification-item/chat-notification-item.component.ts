@@ -1,7 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { MessageService } from '../../share/message.service';
-import { ConversationNotif } from '../conversation-notif';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {MessageService} from '../../share/message.service';
+import {ConversationNotif} from '../conversation-notif';
 
 @Component({
   selector: 'app-chat-notification-item',

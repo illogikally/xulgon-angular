@@ -1,12 +1,8 @@
-import {HttpClient} from '@angular/common/http';
-import { getSafePropertyAccessString } from '@angular/compiler';
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
-import {Title} from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {UserService} from '../share/user.service';
 import {Post} from '../post/post';
-import { TitleService } from '../share/title.service';
+import {TitleService} from '../share/title.service';
 
 @Component({
   selector: 'app-news-feed',

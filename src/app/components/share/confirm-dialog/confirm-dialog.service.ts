@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
-import { ConfirmData } from './confirm-data';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+import {filter, take} from 'rxjs/operators';
+import {ConfirmData} from './confirm-data';
 
 @Injectable({
   providedIn: 'root'

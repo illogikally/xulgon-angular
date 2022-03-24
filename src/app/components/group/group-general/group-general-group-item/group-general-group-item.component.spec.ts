@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroupGeneralGroupItemComponent } from './group-general-group-item.component';
+import {GroupGeneralGroupItemComponent} from './group-general-group-item.component';
 
 describe('GroupGeneralGroupItemComponent', () => {
   let component: GroupGeneralGroupItemComponent;

@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { LocalStorageService } from 'ngx-webstorage';
-import { Observable, throwError } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { LoginRequest } from './login/login-request';
-import { LoginResponse } from './login/login-response';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {LocalStorageService} from 'ngx-webstorage';
+import {Observable, throwError} from 'rxjs';
+import {map, switchMap, tap} from 'rxjs/operators';
+import {environment} from 'src/environments/environment';
+import {LoginRequest} from './login/login-request';
+import {LoginResponse} from './login/login-response';
 
 @Injectable({
   providedIn: 'root'

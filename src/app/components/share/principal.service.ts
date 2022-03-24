@@ -1,9 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { PhotoResponse } from './photo/photo-response';
-import { SirvPipe } from './sirv.pipe';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {environment} from 'src/environments/environment';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {PhotoResponse} from './photo/photo-response';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,7 @@ export class PrincipalService {
   constructor(
     private http: HttpClient,
     private authenticationService: AuthenticationService
-  ) { 
+  ) {
     const url = `${this.baseApiUrl}/users/${this.authenticationService.getPrincipalId()}/avatar`;
     this.http.get<PhotoResponse>(url).subscribe(avatar => {
       this.avatar = avatar;

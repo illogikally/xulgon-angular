@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
-import { PostService } from 'src/app/components/post/post.service';
-import { GroupResponse } from '../../group-response';
+import {Component, Input, OnInit} from '@angular/core';
+import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
+import {PostService} from 'src/app/components/post/post.service';
+import {GroupResponse} from '../../group-response';
 
 @Component({
   selector: 'app-group-create-post',

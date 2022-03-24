@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { SharedContent } from '../shared-content';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {SharedContent} from '../shared-content';
 
 @Component({
   selector: 'app-shared-content',
@@ -13,7 +13,7 @@ export class SharedContentComponent implements OnInit, AfterViewInit {
   @Input() isCreatePostChild = false;
   @Input() isDisabled = false;
   @ViewChild('postBodyText') postBodyText!: ElementRef;
-  
+
   isTextClamped = false;
   constructor() { }
 

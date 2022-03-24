@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CreatePostModalComponent } from './create-post-modal.component';
+import {CreatePostModalComponent} from './create-post-modal.component';
 
 describe('CreatePostModalComponent', () => {
   let component: CreatePostModalComponent;

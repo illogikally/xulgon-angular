@@ -1,7 +1,6 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '../share/message.service';
-import { ErrorPageService } from './error-page.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ErrorPageService} from './error-page.service';
 
 @Component({
   selector: 'app-error-page',
@@ -20,7 +19,7 @@ export class ErrorPageComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.data.displayErrorPage) {
-      this.isHidden = false; 
+      this.isHidden = false;
     }
     else {
       this.errorPageService.onShowListen().subscribe(() => {

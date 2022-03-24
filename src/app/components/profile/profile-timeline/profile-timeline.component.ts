@@ -1,14 +1,14 @@
-import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { RxStompRPCService, RxStompService } from '@stomp/ng2-stompjs';
-import { fromEvent } from 'rxjs';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { Post } from '../../post/post';
-import { PostService } from '../../post/post.service';
-import { PhotoService } from '../../share/photo/photo.service';
-import { ProfileService } from '../profile.service';
-import { UserPage } from '../user-profile';
+import {AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {RxStompService} from '@stomp/ng2-stompjs';
+import {fromEvent} from 'rxjs';
+import {filter, switchMap, takeUntil} from 'rxjs/operators';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {Post} from '../../post/post';
+import {PostService} from '../../post/post.service';
+import {PhotoService} from '../../share/photo/photo.service';
+import {ProfileService} from '../profile.service';
+import {UserPage} from '../user-profile';
 
 @Component({
   selector: 'app-profile-timeline',
@@ -35,7 +35,7 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   isComponentAttached = true;
   isComponentDetached = false;
   lastPostId = 0;
-  
+
 
   onDetach$ = this.profileService.onDetach$.pipe(
     filter(id => id == this.pageId)

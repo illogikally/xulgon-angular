@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { TitleService } from '../share/title.service';
-import { UserService } from '../share/user.service';
-import { FriendRequestDto } from './friend-request-dto';
+import {HttpClient} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {RxStompService} from '@stomp/ng2-stompjs';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {TitleService} from '../share/title.service';
+import {UserService} from '../share/user.service';
+import {FriendRequestDto} from './friend-request-dto';
 
 @Component({
   selector: 'app-friend-request',

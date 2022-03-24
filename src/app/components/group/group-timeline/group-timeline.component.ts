@@ -1,13 +1,13 @@
-import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { fromEvent, merge, of } from 'rxjs';
-import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
-import { Post } from '../../post/post';
-import { PostViewComponent } from '../../post/post-view/post-view.component';
-import { ProfileService } from '../../profile/profile.service';
-import { GroupResponse } from '../group-response';
-import { GroupService } from '../group.service';
+import {AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {RxStompService} from '@stomp/ng2-stompjs';
+import {fromEvent, merge, of} from 'rxjs';
+import {filter, switchMap, take, takeUntil} from 'rxjs/operators';
+import {Post} from '../../post/post';
+import {PostViewComponent} from '../../post/post-view/post-view.component';
+import {ProfileService} from '../../profile/profile.service';
+import {GroupResponse} from '../group-response';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-timeline',
@@ -126,7 +126,7 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
     const wrapper = this.wrapper.nativeElement;
     const timeline = this.timeline.nativeElement;
     const defaultWidth = 892;
-    
+
     let isStyleSet = false;
     new ResizeObserver(entries => {
       if (!entries[0].contentRect.width) return;

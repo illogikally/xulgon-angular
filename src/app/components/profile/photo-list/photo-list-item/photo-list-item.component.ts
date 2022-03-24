@@ -1,9 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
-import { ConfirmDialogService } from 'src/app/components/share/confirm-dialog/confirm-dialog.service';
-import { PhotoResponse } from 'src/app/components/share/photo/photo-response';
-import { PhotoService } from 'src/app/components/share/photo/photo.service';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
+import {ConfirmDialogService} from 'src/app/components/share/confirm-dialog/confirm-dialog.service';
+import {PhotoResponse} from 'src/app/components/share/photo/photo-response';
+import {PhotoService} from 'src/app/components/share/photo/photo.service';
 
 @Component({
   selector: 'app-photo-list-item',

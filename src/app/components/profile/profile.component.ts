@@ -1,19 +1,19 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ReplaySubject } from 'rxjs';
-import { filter, pluck } from 'rxjs/operators';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { ErrorPageService } from '../error-page/error-page.service';
-import { ConfirmDialogService } from '../share/confirm-dialog/confirm-dialog.service';
-import { FollowService } from '../share/follow.service';
-import { MessageService } from '../share/message.service';
-import { SirvPipe } from '../share/sirv.pipe';
-import { TitleService } from '../share/title.service';
-import { ToasterService } from '../share/toaster/toaster.service';
-import { UserService } from '../share/user.service';
-import { PageHeader } from './page-header';
-import { ProfileService } from './profile.service';
-import { UserPage } from './user-profile';
+import {Component, EventEmitter, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ReplaySubject} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {ErrorPageService} from '../error-page/error-page.service';
+import {ConfirmDialogService} from '../share/confirm-dialog/confirm-dialog.service';
+import {FollowService} from '../share/follow.service';
+import {MessageService} from '../share/message.service';
+import {SirvPipe} from '../share/sirv.pipe';
+import {TitleService} from '../share/title.service';
+import {ToasterService} from '../share/toaster/toaster.service';
+import {UserService} from '../share/user.service';
+import {PageHeader} from './page-header';
+import {ProfileService} from './profile.service';
+import {UserPage} from './user-profile';
 
 @Component({
   selector: 'app-profile',

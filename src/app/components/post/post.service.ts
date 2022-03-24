@@ -1,12 +1,11 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import { environment } from 'src/environments/environment';
-import {AuthenticationService} from '../authentication/authentication.service';
-import { OffsetResponse } from '../share/offset-response';
-import { UserBasic } from '../share/user-basic';
+import {environment} from 'src/environments/environment';
+import {OffsetResponse} from '../share/offset-response';
+import {UserBasic} from '../share/user-basic';
 import {Post} from './post';
-import { SharedContent } from './shared-content';
+import {SharedContent} from './shared-content';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,7 @@ export class PostService {
   postDeleted$ = new Subject<number>();
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     ) {
   }
 

@@ -1,8 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { RxStompService } from '@stomp/ng2-stompjs';
+import {ActivatedRoute} from '@angular/router';
+import {RxStompService} from '@stomp/ng2-stompjs';
 import {ReplaySubject} from 'rxjs';
-import {filter, take, takeUntil} from 'rxjs/operators';
 import {MessageService} from '../../share/message.service';
 import {GroupService} from '../group.service';
 

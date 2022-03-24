@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { NotImplementedService } from './not-implemented.service';
+import {NotImplementedService} from './not-implemented.service';
 
 describe('NotImplementedService', () => {
   let service: NotImplementedService;

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-post-header',
@@ -22,7 +22,7 @@ export class PostHeaderComponent implements OnInit {
   createContentUrl(): string {
     const isGroupPost = this.content.pageType == 'GROUP';
     const isPost = this.content.type == 'POST';
-    return isPost 
+    return isPost
       ? `${isGroupPost ? '/groups' : ''}/${this.content.pageId}/posts/${this.content.id}`
       : `/photo/${this.content.id}`;
   }

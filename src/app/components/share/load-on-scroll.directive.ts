@@ -1,6 +1,5 @@
-import { Directive, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { fromEvent, Observable } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import {Directive, ElementRef, EventEmitter, OnInit, Output} from '@angular/core';
+import {fromEvent} from 'rxjs';
 
 @Directive({
   selector: '[LoadOnScroll]'

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { GroupResponse } from '../group-response';
-import { GroupService } from '../group.service';
+import {Component, OnInit} from '@angular/core';
+import {GroupResponse} from '../group-response';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-discover',

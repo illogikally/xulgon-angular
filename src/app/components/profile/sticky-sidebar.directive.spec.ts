@@ -1,4 +1,4 @@
-import { StickySidebarDirective } from './sticky-sidebar.directive';
+import {StickySidebarDirective} from './sticky-sidebar.directive';
 
 describe('StickySidebarDirective', () => {
   it('should create an instance', () => {

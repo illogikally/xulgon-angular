@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
-import { ProfileService } from '../../profile/profile.service';
-import { Post } from '../post';
-import { PostService } from '../post.service';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {ReplaySubject} from 'rxjs';
+import {ProfileService} from '../../profile/profile.service';
+import {Post} from '../post';
+import {PostService} from '../post.service';
 
 @Component({
   selector: 'app-post-list',

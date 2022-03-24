@@ -1,12 +1,22 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { RxStompService } from '@stomp/ng2-stompjs';
-import { merge, of } from 'rxjs';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { PostViewService } from '../post/post-view/post-view.service';
-import { PrincipalService } from '../share/principal.service';
-import { CommentResponse } from './comment/comment-response';
-import { CommentService } from './comment/comment.service';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
+import {RxStompService} from '@stomp/ng2-stompjs';
+import {merge, of} from 'rxjs';
+import {filter, switchMap, takeUntil} from 'rxjs/operators';
+import {PostViewService} from '../post/post-view/post-view.service';
+import {PrincipalService} from '../share/principal.service';
+import {CommentResponse} from './comment/comment-response';
+import {CommentService} from './comment/comment.service';
 
 @Component({
   selector: 'app-comment-list',

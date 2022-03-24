@@ -1,9 +1,9 @@
-import { Location } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { fromEvent, merge, of, Subject } from 'rxjs';
-import { filter, switchMap, takeUntil, throttleTime } from 'rxjs/operators';
-import { Post } from '../../post/post';
-import { SearchService } from '../search.service';
+import {Location} from '@angular/common';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {fromEvent, merge, of, Subject} from 'rxjs';
+import {filter, switchMap, takeUntil, throttleTime} from 'rxjs/operators';
+import {Post} from '../../post/post';
+import {SearchService} from '../search.service';
 
 @Component({
   selector: 'app-by-posts',
@@ -53,6 +53,7 @@ export class ByPostsComponent implements OnInit {
     ).subscribe(query => {
       if (!query) return;
       this.currentQuery = query;
+      this.posts = [];
       this.getPosts();
     });
   }

@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChatBoxComponent } from './chat-box.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ChatBoxComponent} from './chat-box.component';
 
 
 describe('ChatBoxComponent', () => {

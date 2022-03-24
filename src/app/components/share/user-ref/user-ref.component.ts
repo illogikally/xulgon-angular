@@ -1,8 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { filter } from 'rxjs/operators';
-import { MessageService } from '../message.service';
-import { UserDto } from '../user-dto';
-import { UserService } from '../user.service';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {filter} from 'rxjs/operators';
+import {MessageService} from '../message.service';
+import {UserDto} from '../user-dto';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-user-ref',

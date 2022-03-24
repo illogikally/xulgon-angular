@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PostHeaderComponent } from './post-header.component';
+import {PostHeaderComponent} from './post-header.component';
 
 describe('PostHeaderComponent', () => {
   let component: PostHeaderComponent;

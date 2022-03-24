@@ -1,13 +1,13 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
-import { slideInOutLeft } from '../../share/animations/slide-in-out-left.animation';
-import { slideInOutRight } from '../../share/animations/slide-in-out-right.animation';
-import { AnimationEvent } from '@angular/animations';
-import { PostService } from '../post.service';
-import { GroupResponse } from '../../group/group-response';
-import { UserService } from '../../share/user.service';
-import { FormControl } from '@angular/forms';
-import { SharedContent } from '../shared-content';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Subject} from 'rxjs';
+import {slideInOutLeft} from '../../share/animations/slide-in-out-left.animation';
+import {slideInOutRight} from '../../share/animations/slide-in-out-right.animation';
+import {AnimationEvent} from '@angular/animations';
+import {PostService} from '../post.service';
+import {GroupResponse} from '../../group/group-response';
+import {UserService} from '../../share/user.service';
+import {FormControl} from '@angular/forms';
+import {SharedContent} from '../shared-content';
 
 @Component({
   selector: 'app-group-share-selector',

@@ -1,6 +1,5 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { NotificationService } from '../../notification/notification.service';
-import { NotImplementedService } from './not-implemented.service';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {NotImplementedService} from './not-implemented.service';
 
 @Component({
   selector: 'app-not-implemented',
@@ -31,7 +30,7 @@ export class NotImplementedComponent implements OnInit {
     const MARGIN = 2;
     const targetRect = target.getBoundingClientRect();
     const self = this.self.nativeElement;
-    
+
     let left = targetRect.left + target.offsetWidth/2 - self.offsetWidth/2;
     left = left < 10 ? 10 : left;
 

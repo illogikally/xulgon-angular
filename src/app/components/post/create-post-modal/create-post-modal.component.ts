@@ -1,7 +1,7 @@
-import { Component, ComponentRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
-import { CreatePostComponent } from '../create-post/create-post.component';
-import { PostService } from '../post.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Subject} from 'rxjs';
+import {CreatePostComponent} from '../create-post/create-post.component';
+import {PostService} from '../post.service';
 
 @Component({
   selector: 'app-create-post-modal',
@@ -13,7 +13,7 @@ export class CreatePostModalComponent implements OnInit {
   toggleModalNgIf = new Subject<any>();
   data: any;
 
-  @ViewChild(CreatePostComponent) 
+  @ViewChild(CreatePostComponent)
   createPostComponent!: CreatePostComponent;
 
   constructor(

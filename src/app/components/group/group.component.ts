@@ -1,10 +1,10 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { ErrorPageService } from '../error-page/error-page.service';
-import { TitleService } from '../share/title.service';
-import { GroupResponse } from './group-response';
-import { GroupService } from './group.service';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {filter} from 'rxjs/operators';
+import {ErrorPageService} from '../error-page/error-page.service';
+import {TitleService} from '../share/title.service';
+import {GroupResponse} from './group-response';
+import {GroupService} from './group.service';
 
 @Component({
   selector: 'app-group',

@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/components/authentication/authentication.service';
-import { ChatMessage } from '../../chat-msg';
+import {Component, Input, OnInit} from '@angular/core';
+import {AuthenticationService} from 'src/app/components/authentication/authentication.service';
+import {ChatMessage} from '../../chat-msg';
 
 @Component({
   selector: 'app-chat-msg',
@@ -23,7 +23,7 @@ export class ChatMsgComponent implements OnInit {
   }
 
   isFirstMsg(): boolean {
-    return !this.prevMsg 
+    return !this.prevMsg
       || this.thisMsg.createdAt - this.prevMsg.createdAt > 36e6
       || this.thisMsg!.user.id != this.prevMsg?.user.id
   }
@@ -34,7 +34,7 @@ export class ChatMsgComponent implements OnInit {
 
   getCreatedDate(): string {
     const d = new Date(this.thisMsg.createdAt);
-    return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()%1000}, 
+    return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()%1000},
       ${d.toLocaleString('en-US', {hour: 'numeric', hour12: true, minute: '2-digit'})}`;
   }
 

@@ -1,9 +1,9 @@
-import { Location } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { GroupResponse } from '../../group-response';
-import { GroupService } from '../../group.service';
+import {Location} from '@angular/common';
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subject} from 'rxjs';
+import {GroupResponse} from '../../group-response';
+import {GroupService} from '../../group.service';
 
 @Component({
   selector: 'app-group-general-group-item',
@@ -37,7 +37,7 @@ export class GroupGeneralGroupItemComponent implements OnInit {
       this.selectedGroup.next(this.group.id);
       this.location.go(`/groups/${this.group.id}`);
       this.router.navigate([this.group.id], {
-        skipLocationChange: true, 
+        skipLocationChange: true,
         relativeTo: this.route
       });
     }

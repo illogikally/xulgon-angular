@@ -1,4 +1,4 @@
-import { LoadOnScrollDirective } from './load-on-scroll.directive';
+import {LoadOnScrollDirective} from './load-on-scroll.directive';
 
 describe('LoadOnScrollDirective', () => {
   it('should create an instance', () => {

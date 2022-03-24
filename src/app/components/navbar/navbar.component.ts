@@ -1,16 +1,13 @@
-import { Location } from '@angular/common';
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { pluck } from 'rxjs/operators';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { PostService } from '../post/post.service';
-import { MessageService } from '../share/message.service';
-import { PrincipalService } from '../share/principal.service';
-import { SirvPipe } from '../share/sirv.pipe';
-import { TitleService } from '../share/title.service';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
+import {Subject} from 'rxjs';
+import {pluck} from 'rxjs/operators';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {PostService} from '../post/post.service';
+import {MessageService} from '../share/message.service';
+import {PrincipalService} from '../share/principal.service';
+import {TitleService} from '../share/title.service';
 
 @Component({
   selector: 'app-navbar',
@@ -33,7 +30,7 @@ export class NavbarComponent implements OnInit {
 
   searchForm = new FormGroup({
     search: new FormControl('')
-  }); 
+  });
   constructor(
     private messageService: MessageService,
     private router: Router,

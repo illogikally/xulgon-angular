@@ -1,12 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { SharedContent } from '../../post/shared-content';
-import { OffsetResponse } from '../offset-response';
-import { OpenPhotoViewData } from './open-photo-view-data';
-import { PhotoResponse } from './photo-response';
-import { PhotoViewResponse } from './photo-view-response';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {OffsetResponse} from '../offset-response';
+import {OpenPhotoViewData} from './open-photo-view-data';
+import {PhotoResponse} from './photo-response';
+import {PhotoViewResponse} from './photo-view-response';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,7 @@ export class PhotoService {
   constructor(
     private http: HttpClient
   ) { }
-  
+
   openPhotoView(data: OpenPhotoViewData) {
     this.photoView$.next(data);
   }

@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { GroupFeedComponent } from './group-feed.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {GroupFeedComponent} from './group-feed.component';
 
 
 describe('GroupFeedComponent', () => {

@@ -1,8 +1,8 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { ProfileService } from '../profile.service';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subject} from 'rxjs';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {ProfileService} from '../profile.service';
 
 @Component({
   selector: 'app-profile-about',
@@ -33,13 +33,13 @@ export class ProfileAboutComponent implements OnInit, OnChanges {
       this.getInfos();
       this.onUpdateListen();
     }
-    this.isProfileOwner = this.profileId == this.authenticationService.getProfileId(); 
+    this.isProfileOwner = this.profileId == this.authenticationService.getProfileId();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.infos) {
       this.generateFields();
-    }      
+    }
   }
 
   onUpdateListen() {

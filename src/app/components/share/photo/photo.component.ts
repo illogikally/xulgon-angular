@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core';
-import { PhotoService } from './photo.service';
+import {Component, ElementRef, EventEmitter, Input, OnInit, ViewChild} from '@angular/core';
+import {PhotoService} from './photo.service';
 
 @Component({
   selector: 'app-photo',
@@ -28,7 +28,7 @@ export class PhotoComponent implements OnInit {
   openPhotoView(event: any): void {
     event.preventDefault();
     if (!this.id) return;
-    
+
     this.photoService.openPhotoView({
       id: this.id,
       setId: this.setId,

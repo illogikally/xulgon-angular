@@ -1,8 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { GroupResponse } from '../../group-response';
-import { GroupService } from '../../group.service';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
+import {Router} from '@angular/router';
+import {GroupResponse} from '../../group-response';
+import {GroupService} from '../../group.service';
 
 @Component({
   selector: 'app-create-new-group',
@@ -41,7 +41,7 @@ export class CreateNewGroupComponent implements OnInit {
     }
 
     this.groupService.createGroup(createGroupRequest).subscribe(async groupId => {
-      const group = await this.groupService.getGroupHeader(groupId).toPromise(); 
+      const group = await this.groupService.getGroupHeader(groupId).toPromise();
       this.created.emit(group);
       this.abort();
       this.router.navigateByUrl(`/groups/${groupId}`);

@@ -1,6 +1,6 @@
-import { Directive, ElementRef as HTMLElment, Input, OnInit, Renderer2 } from '@angular/core';
-import { fromEvent, merge, Observable, of, Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import {Directive, Input, OnInit, Renderer2} from '@angular/core';
+import {fromEvent, merge, Observable, of} from 'rxjs';
+import {switchMap, takeUntil} from 'rxjs/operators';
 
 @Directive({
   selector: '[StickySidebar]'
@@ -74,7 +74,7 @@ export class StickySidebarDirective implements OnInit {
         else if (
           SIDEBAR.style.position !== 'fixed'
           && SIDEBAR_RECT.top - SPEED  > FIXED_TOP + MARGIN
-          // Modal disables body scroll 
+          // Modal disables body scroll
           && document.body.style.position != 'fixed'
           && SIDEBAR_RECT.top > PARENT_RECT.top
         ) {
@@ -109,7 +109,7 @@ export class StickySidebarDirective implements OnInit {
           this.sidebarCss('top'     , top + 'px');
           this.sidebarCss('left'    , PARENT_RECT.left + 'px');
           this.sidebarCss('position', 'fixed');
-          
+
         }
 
         else if (
@@ -123,7 +123,7 @@ export class StickySidebarDirective implements OnInit {
           this.sidebarCss('position', 'fixed');
         }
       }
-      
+
       oldY = window.scrollY;
     });
   }

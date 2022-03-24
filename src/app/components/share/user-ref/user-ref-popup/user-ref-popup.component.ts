@@ -1,10 +1,10 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { fromEvent, merge, timer } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { MessageService } from '../../message.service';
-import { UserDto } from '../../user-dto';
-import { UserService } from '../../user.service';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
+import {fromEvent, merge, timer} from 'rxjs';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
+import {MessageService} from '../../message.service';
+import {UserDto} from '../../user-dto';
+import {UserService} from '../../user.service';
 
 @Component({
   selector: 'app-user-ref-popup',
@@ -66,7 +66,7 @@ export class UserRefPopupComponent implements OnInit {
       lastMousePosition.x = e.clientX;
       lastMousePosition.y = e.clientY;
     });
-    
+
     fromEvent(window, 'scroll').subscribe(() => {
       if (this.currentTarget) {
         const selfRect = this.self.nativeElement.getBoundingClientRect();
@@ -107,15 +107,15 @@ export class UserRefPopupComponent implements OnInit {
     const MARGIN = 2;
     const targetRect = target.getBoundingClientRect();
     const self = this.self.nativeElement;
-    
+
     let left = targetRect.left + target.offsetWidth/2 - self.offsetWidth/2;
     left = left < 10 ? 10 : left;
-    
+
 
     const isInTopHalf = targetRect.top < window.innerHeight / 2;
-    let top = 
-      isInTopHalf 
-      ? targetRect.bottom + MARGIN 
+    let top =
+      isInTopHalf
+      ? targetRect.bottom + MARGIN
       : targetRect.top - self.offsetHeight - MARGIN;
     top += window.scrollY;
     this.setSelfStyle('left', left + 'px')

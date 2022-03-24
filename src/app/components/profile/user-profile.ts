@@ -1,5 +1,4 @@
-import { PhotoResponse } from "../share/photo/photo-response";
-import {PhotoViewResponse} from "../share/photo/photo-view-response";
+import {PhotoResponse} from "../share/photo/photo-response";
 
 export interface UserPage {
   id: number;

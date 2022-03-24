@@ -1,15 +1,15 @@
-import { AnimationEvent } from '@angular/animations';
-import { Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, Renderer2 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable, of, timer } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { slideInOutLeft } from '../../share/animations/slide-in-out-left.animation';
-import { slideInOutRight } from '../../share/animations/slide-in-out-right.animation';
-import { UserService } from '../../share/user.service';
-import { AuthenticationService } from '../authentication.service';
-import { LoginRequest } from './login-request';
+import {AnimationEvent} from '@angular/animations';
+import {Location} from '@angular/common';
+import {AfterViewInit, Component, HostListener, OnInit, Renderer2} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {Observable, of, timer} from 'rxjs';
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {slideInOutLeft} from '../../share/animations/slide-in-out-left.animation';
+import {slideInOutRight} from '../../share/animations/slide-in-out-right.animation';
+import {UserService} from '../../share/user.service';
+import {AuthenticationService} from '../authentication.service';
+import {LoginRequest} from './login-request';
 
 @Component({
   selector: 'app-login',
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       password: [
         '',
         [
-          Validators.required, 
+          Validators.required,
           Validators.minLength(6),
         ]
       ],

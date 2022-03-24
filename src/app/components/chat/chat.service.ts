@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { AuthenticationService } from '../authentication/authentication.service';
-import { ChatMessage } from './chat-msg';
-import { ConversationNotif } from './conversation-notif';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {ChatMessage} from './chat-msg';
+import {ConversationNotif} from './conversation-notif';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class ChatService {
   markAsRead(messageId: number): Observable<void> {
     return this.http.put<void>(`${this.messagesApi}/${messageId}/read`, {});
   }
-  
+
   getMesssages(userId: number): Observable<ChatMessage[]> {
     return this.http.get<ChatMessage[]>(`${this.messagesApi}/with/${userId}`);
   }

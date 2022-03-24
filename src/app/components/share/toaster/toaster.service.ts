@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { ToasterMessageType } from './toaster-message-type';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+import {ToasterMessageType} from './toaster-message-type';
 
 @Injectable({
   providedIn: 'root'

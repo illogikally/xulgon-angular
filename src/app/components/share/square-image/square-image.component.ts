@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { PhotoResponse } from '../photo/photo-response';
-import {PhotoViewResponse} from '../photo/photo-view-response';
+import {PhotoResponse} from '../photo/photo-response';
 
 @Component({
   selector: 'app-square-image',

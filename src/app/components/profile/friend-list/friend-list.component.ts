@@ -1,11 +1,8 @@
-import {Location} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {MessageService} from '../../share/message.service';
 import {UserDto} from '../../share/user-dto';
-import { ProfileService } from '../profile.service';
+import {ProfileService} from '../profile.service';
 
 @Component({
   selector: 'app-friend-list',

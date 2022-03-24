@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { FriendRequestDto } from '../friend-request/friend-request-dto';
-import { GroupResponse } from '../group/group-response';
-import { Post } from '../post/post';
-import { UserBasic } from './user-basic';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {FriendRequestDto} from '../friend-request/friend-request-dto';
+import {GroupResponse} from '../group/group-response';
+import {Post} from '../post/post';
+import {UserBasic} from './user-basic';
 
 @Injectable({
   providedIn: 'root'

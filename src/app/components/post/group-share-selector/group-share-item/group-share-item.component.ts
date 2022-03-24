@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { GroupResponse } from 'src/app/components/group/group-response';
-import { GroupService } from 'src/app/components/group/group.service';
-import { UserService } from 'src/app/components/share/user.service';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {GroupResponse} from 'src/app/components/group/group-response';
 
 @Component({
   selector: 'app-group-share-item',

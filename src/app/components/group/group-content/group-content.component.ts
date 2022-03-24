@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
-import { filter, map, pluck, take } from 'rxjs/operators';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { FollowService } from '../../share/follow.service';
-import { MessageService } from '../../share/message.service';
-import { GroupResponse } from '../group-response';
-import { GroupService } from '../group.service';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ReplaySubject} from 'rxjs';
+import {filter, take} from 'rxjs/operators';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {FollowService} from '../../share/follow.service';
+import {MessageService} from '../../share/message.service';
+import {GroupResponse} from '../group-response';
+import {GroupService} from '../group.service';
 
 @Component({
   selector: 'app-group-content',

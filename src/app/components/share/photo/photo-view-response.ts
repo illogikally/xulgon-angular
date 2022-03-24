@@ -1,6 +1,6 @@
-import { SharedContent } from "../../post/shared-content";
-import { UserDto } from "../user-dto";
-import { PhotoResponse } from "./photo-response";
+import {SharedContent} from "../../post/shared-content";
+import {UserDto} from "../user-dto";
+import {PhotoResponse} from "./photo-response";
 
 export interface PhotoViewResponse {
   pageName: string;

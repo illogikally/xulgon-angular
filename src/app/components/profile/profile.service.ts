@@ -1,13 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { Post } from '../post/post';
-import { PhotoResponse } from '../share/photo/photo-response';
-import { UserDto } from '../share/user-dto';
-import { PageHeader } from './page-header';
-import { UserPage } from './user-profile';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, ReplaySubject, Subject} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {environment} from 'src/environments/environment';
+import {Post} from '../post/post';
+import {PhotoResponse} from '../share/photo/photo-response';
+import {UserDto} from '../share/user-dto';
+import {PageHeader} from './page-header';
+import {UserPage} from './user-profile';
 
 @Injectable({
   providedIn: 'root'

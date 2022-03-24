@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroupDiscoverItemComponent } from './group-discover-item.component';
+import {GroupDiscoverItemComponent} from './group-discover-item.component';
 
 describe('GroupDiscoverItemComponent', () => {
   let component: GroupDiscoverItemComponent;

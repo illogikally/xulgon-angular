@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { filter } from 'rxjs/operators';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { ConfirmDialogService } from '../../share/confirm-dialog/confirm-dialog.service';
-import { UserService } from '../../share/user.service';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {filter} from 'rxjs/operators';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {ConfirmDialogService} from '../../share/confirm-dialog/confirm-dialog.service';
+import {UserService} from '../../share/user.service';
 
 @Component({
   selector: 'app-friendship-button',
@@ -32,7 +32,7 @@ export class FriendshipButtonComponent implements OnInit {
     this.userService.updateFriendshipStatus$.pipe(
       filter(data => data.userId == this.userId)
     ).subscribe(data => {
-      
+
       this.friendshipStatus = data.status;
     });
   }

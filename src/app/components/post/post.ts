@@ -1,5 +1,5 @@
 import {UserDto} from "../share/user-dto";
-import { SharedContent } from "./shared-content";
+import {SharedContent} from "./shared-content";
 
 export interface Post {
   id: number;
