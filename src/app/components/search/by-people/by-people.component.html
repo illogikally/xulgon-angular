@@ -5,4 +5,7 @@
       [result]="result"
     ></app-by-people-result>
   </div>
+  <div class="no-posts" *ngIf="isLoaded && results.length == 0">
+    Không tìm thấy kết quả.
+  </div>
 </div>

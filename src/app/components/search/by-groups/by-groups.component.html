@@ -3,4 +3,7 @@
     *ngFor="let result of results"
     [result]="result"
   ></app-by-group-result>
+  <div class="no-posts" *ngIf="isLoaded && results.length == 0" >
+    Không tìm thấy nhóm nào.
+  </div>
 </div>

@@ -1,17 +1,19 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {UserDto} from '../share/user-dto';
-import {GroupResponse} from '../group/group-response';
-import {Post} from '../post/post';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { GroupResponse } from '../group/group-response';
+import { Post } from '../post/post';
+import { OffsetResponse } from '../share/offset-response';
+import { UserDto } from '../share/user-dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
 
-  baseApiUrl = environment.baseApiUrl;
+  private baseApiUrl = environment.baseApiUrl;
+  search$ = new ReplaySubject<string>(1);
 
   constructor(private http: HttpClient) {
   }
@@ -24,7 +26,8 @@ export class SearchService {
     return this.http.get<GroupResponse[]>(this.baseApiUrl + `/search/groups/${name}`);
   }
 
-  byPost(postBody: string): Observable<Post[]> {
-    return this.http.get<Post[]>(this.baseApiUrl + `/search/posts/${postBody}`);
+  byPost(postBody: string, size: number, offset: number): Observable<OffsetResponse<Post>> {
+    const url = this.baseApiUrl + `/search/posts/${postBody}?size=${size}&offset=${offset}`;
+    return this.http.get<OffsetResponse<Post>>(url);
   }
 }

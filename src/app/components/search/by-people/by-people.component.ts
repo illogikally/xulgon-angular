@@ -12,12 +12,13 @@ import {SearchService} from '../search.service';
 })
 export class ByPeopleComponent implements OnInit {
 
-  results!: UserDto[];
+  results: UserDto[] = [];
+  isLoaded = false;
 
-  constructor(private search$: SearchService,
-              private message$: MessageService,
-              private location: Location,
-              private activatedRoute: ActivatedRoute) {
+  constructor(
+    private searchService: SearchService,
+    private location: Location,
+  ) {
   }
 
   ngOnInit(): void {
@@ -25,11 +26,12 @@ export class ByPeopleComponent implements OnInit {
   }
 
   getResults(): void {
-    this.message$.generalSearch.subscribe(name => {
+    this.searchService.search$.subscribe(name => {
       if (!name) return;
       this.location.go(`/search/people?q=${name}`);
-      this.search$.byPeople(name).subscribe(results => {
+      this.searchService.byPeople(name).subscribe(results => {
         this.results = results;
+        this.isLoaded = true;
       });
     })
   }

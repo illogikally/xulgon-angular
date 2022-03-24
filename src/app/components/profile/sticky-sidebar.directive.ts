@@ -59,7 +59,6 @@ export class StickySidebarDirective implements OnInit {
           this.sidebarCss('left'    , '0px');
           this.sidebarCss('position', 'static');
           this.sidebarCss('width', 'auto');
-          console.log('A1');
         }
 
         else if (
@@ -70,7 +69,6 @@ export class StickySidebarDirective implements OnInit {
           this.sidebarCss('top'     , top + 'px');
           this.sidebarCss('left'    , '0px');
           this.sidebarCss('position', 'relative');
-          console.log('A2');
         }
 
         else if (
@@ -83,7 +81,6 @@ export class StickySidebarDirective implements OnInit {
           this.sidebarCss('position', 'fixed');
           this.sidebarCss('top'     , FIXED_TOP + MARGIN + 'px');
           this.sidebarCss('left'    , PARENT_RECT.left + 'px');
-          console.log('A3');
         }
       } else if (window.scrollY > PARENT_RECT.top) { // Prevent on page load
         // Scroll down
@@ -98,7 +95,6 @@ export class StickySidebarDirective implements OnInit {
           this.sidebarCss('top'     , top + 'px');
           this.sidebarCss('left'    , '');
           this.sidebarCss('width', SIDEBAR_WIDTH + 'px');
-          console.log('B1');
         }
 
         // Stick to bottom
@@ -114,7 +110,6 @@ export class StickySidebarDirective implements OnInit {
           this.sidebarCss('left'    , PARENT_RECT.left + 'px');
           this.sidebarCss('position', 'fixed');
           
-          console.log('B2');
         }
 
         else if (
@@ -126,7 +121,6 @@ export class StickySidebarDirective implements OnInit {
           this.sidebarCss('top'     , FIXED_TOP + MARGIN + 'px');
           this.sidebarCss('left'    , PARENT_RECT.left + 'px');
           this.sidebarCss('position', 'fixed');
-          console.log('B3');
         }
       }
       

@@ -11,7 +11,7 @@
          style="position: relative;">
       <div class="name--page">
         <div class="name">
-          <app-user-ref *ngIf="!isPageNameVisible"
+          <app-user-ref *ngIf="!isPageNameVisible || content.pageType != 'GROUP'"
                         [userDto]="content.user">
           </app-user-ref>
         </div>
@@ -24,11 +24,11 @@
         </div>
       </div>
       <div class="date--privacy">
-        <app-user-ref *ngIf="isPageNameVisible"
+        <app-user-ref *ngIf="isPageNameVisible && content.pageType == 'GROUP'"
                       [userDto]="content.user">
         </app-user-ref>
 
-        <span *ngIf="isPageNameVisible">&nbsp;·&nbsp;</span>
+        <span *ngIf="isPageNameVisible && content.pageType == 'GROUP'">&nbsp;·&nbsp;</span>
         <a [routerLink]="contentUrl">
           {{ content.createdAt }}
         </a>

@@ -12,20 +12,21 @@ import {SearchService} from '../search.service';
 export class ByGroupsComponent implements OnInit {
 
 
-  results!: GroupResponse[];
+  results: GroupResponse[] = [];
+  isLoaded = false;
 
-  constructor(private message$: MessageService,
-              private search$: SearchService,
-              private location: Location) {
+  constructor(
+    private searchService: SearchService,
+    private location: Location) {
   }
 
   ngOnInit(): void {
-    this.message$.generalSearch.subscribe(name => {
+    this.searchService.search$.subscribe(name => {
       if (!name) return;
       this.location.go("/search/groups?q=" + name)
-      this.search$.byGroup(name).subscribe(results => {
-
+      this.searchService.byGroup(name).subscribe(results => {
         this.results = results;
+        this.isLoaded = true;
       });
     })
   }
