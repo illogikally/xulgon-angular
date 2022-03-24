@@ -119,11 +119,16 @@ export class UserRefPopupComponent implements OnInit {
 
   move(target: HTMLElement) {
     const MARGIN = 2;
+    const HOR_MARGIN = 5;
     const targetRect = target.getBoundingClientRect();
     const self = this.self.nativeElement;
 
     let left = targetRect.left + target.offsetWidth/2 - self.offsetWidth/2;
-    left = left < 10 ? 10 : left;
+    const SCROLLBAR_WIDTH = window.innerWidth - document.documentElement.clientWidth;
+    const windowRightOffset 
+      = left + self.offsetWidth - (window.innerWidth - HOR_MARGIN - SCROLLBAR_WIDTH);
+    if (windowRightOffset >= 0) left -= windowRightOffset; 
+    left = left < HOR_MARGIN ? HOR_MARGIN : left;
 
 
     const isInTopHalf = targetRect.top < window.innerHeight / 2;
