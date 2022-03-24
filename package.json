@@ -6,8 +6,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "heroku-postbuild": "ng build && npm install -g http-server-spa",
-    "start": "http-server-spa dist/xulgon index.html $PORT"
+    "heroku-postbuild": "ng build && npm install -g angular-http-server",
+    "start": "angular-http-server --path dist/xulgon --rootFile index.html -p $PORT"
   },
   "private": true,
   "dependencies": {
