@@ -27,6 +27,8 @@ import { FriendRequestItemComponent } from './components/friend-request/friend-r
 import { FriendRequestComponent } from './components/friend-request/friend-request.component';
 import { GroupAboutComponent } from './components/group/group-about/group-about.component';
 import { GroupContentComponent } from './components/group/group-content/group-content.component';
+import { GroupDiscoverItemComponent } from './components/group/group-discover/group-discover-item/group-discover-item.component';
+import { GroupDiscoverComponent } from './components/group/group-discover/group-discover.component';
 import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
 import { CreateNewGroupComponent } from './components/group/group-general/create-new-group/create-new-group.component';
 import { GroupGeneralGroupItemComponent } from './components/group/group-general/group-general-group-item/group-general-group-item.component';
@@ -88,6 +90,7 @@ import { NotImplementedComponent } from './components/share/not-implemented/not-
 import { NotImplementedDirective } from './components/share/not-implemented/not-implemented.directive';
 import { PhotoComponent } from './components/share/photo/photo.component';
 import { PopUpComponent } from './components/share/pop-up/pop-up.component';
+import { SirvPipe } from './components/share/sirv.pipe';
 import { SpinnerComponent } from './components/share/spinner/spinner.component';
 import { SquareImageComponent } from './components/share/square-image/square-image.component';
 import { ToasterComponent } from './components/share/toaster/toaster.component';
@@ -95,9 +98,6 @@ import { UserRefPopupComponent } from './components/share/user-ref/user-ref-popu
 import { UserRefComponent } from './components/share/user-ref/user-ref.component';
 import { MyReuseStrategy } from './my-reuse-trategy';
 import { MyRxStompConfig } from './my-rx-stomp.config';
-import { GroupDiscoverComponent } from './components/group/group-discover/group-discover.component';
-import { GroupDiscoverItemComponent } from './components/group/group-discover/group-discover-item/group-discover-item.component';
-import { SirvPipe } from './components/share/sirv.pipe';
 
 @NgModule({
   declarations: [

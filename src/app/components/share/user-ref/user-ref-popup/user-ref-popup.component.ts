@@ -53,6 +53,7 @@ export class UserRefPopupComponent implements OnInit {
       this.router.events
     ).subscribe(() => {
       this.hide();
+      this.setSelfStyle('top', '0px');
       this.currentTarget = null;
     });
 

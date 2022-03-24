@@ -5,19 +5,16 @@
         <div class="icon">
           <i class='bx bx-search'></i>
         </div>
-        <!-- [(ngModel)]="searchInput"  -->
-        <input
-          (input)="inputChange($event)"
-          type="text"
-          placeholder="Tìm kiếm theo tên" name=""/>
+        <input (input)="inputChange($event)"
+               type="text"
+               placeholder="Tìm kiếm theo tên"
+               name="" />
       </div>
     </div>
     <div class="requests">
-      <app-join-request-item
-        (destroy)="deleteRequest($event)"
-        *ngFor="let request of joinRequests"
-        [request]="request"
-      ></app-join-request-item>
+      <app-join-request-item (destroy)="deleteRequest($event)"
+                             *ngFor="let request of joinRequests"
+                             [request]="request"></app-join-request-item>
     </div>
   </div>
 </div>
