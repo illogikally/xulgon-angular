@@ -47,6 +47,12 @@
                   (input)="textAreaAutoGrow($event)"
                   formControlName="comment">
         </textarea>
+        <app-spinner size="15px"
+                     ringWidth="2px"
+                     *ngIf="isPostingComment"
+                     backgroundColor="rgba(0, 0, 0, .1)"
+                     color="#fff">
+        </app-spinner>
       </div>
       <div *ngIf="!image"
            (click)="uploadImage.click()"

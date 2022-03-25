@@ -1,32 +1,24 @@
 @import "src/styles";
 
-@keyframes slide {
-  0% {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateY(0px);
-    opacity: 1;
-  }
-}
-
-
 .toaster {
   position: fixed;
   border-radius: 10px;
   max-width: 400px;
   z-index: z('toaster');
-  left: 40px;
-  bottom: 40px;
+  left: 60px;
+  bottom: 30px;
   visibility: hidden;
   padding: 15px;
+  opacity: 0;
   background-color: #fff;
   box-shadow: $box-shadow-wide;
+  transition: transform .2s, visibility .2s, opacity .2s;
+  transform: translateY(20px);
+
   &.slide.slide {
+    transform: translateY(0px);
     visibility: visible;
-    animation: slide .2s;
+    opacity: 1;
   }
 
 

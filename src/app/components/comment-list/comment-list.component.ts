@@ -42,6 +42,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
 
   isCommentsVisible = true;
   isSuggestTagUserHidden = true;
+  isPostingComment = false;
 
   commentForm = this.fb.group({
     comment: [''],
@@ -161,6 +162,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
 
   submit(enterPressedEvent: any) {
     enterPressedEvent.preventDefault();
+    this.isPostingComment = true;
     let formData = new FormData();
     let commentRequest = new Blob(
       [JSON.stringify({
@@ -179,6 +181,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
       this.commentService.commentAdded$.next({
         parentId: this.parentId
       });
+      this.isPostingComment = false;
     });
 
     this.commentForm.reset();

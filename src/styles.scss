@@ -12,6 +12,8 @@
   color: #050505;
 }
 
+$image-cdn-url: 'https://xulgon.sirv.com/';
+
 $modal-z-index: 1000;
 $z-indexes: (
   "toaster",
@@ -356,7 +358,7 @@ input {
 
 .x-icon {
   filter: invert(100%); 
-  background-image: url('assets/icons.png'); 
+  background-image: url($image-cdn-url + 'assets/icons.png'); 
   background-position: -105px -67px; 
   background-size: auto; 
   width: 20px; 
@@ -366,7 +368,7 @@ input {
 }
 
 .x-icon-small {
-  background-image: url('assets/icons.png'); 
+  background-image: url($image-cdn-url + 'assets/icons.png'); 
   background-position: -167px -109px; 
   background-size: auto; 
   width: 11px; 
@@ -376,7 +378,7 @@ input {
 }
 
 .right-arrow {
-  background-image: url('assets/icons.png'); 
+  background-image: url($image-cdn-url + 'assets/icons.png'); 
   background-position: -83px -13px; 
   background-size: auto; 
   width: 24px; 

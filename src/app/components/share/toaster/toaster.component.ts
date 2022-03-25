@@ -38,6 +38,7 @@ export class ToasterComponent implements OnInit {
 
   displayToaster() {
     const self = this.self.nativeElement;
+    this.hideToaster();
     self.offsetWidth;
     self.classList.add('slide');
   }

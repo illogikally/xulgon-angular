@@ -34,10 +34,10 @@ import { SearchComponent } from './components/search/search.component';
 import { LoggedInComponent } from './components/share/logged-in/logged-in.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'register', component: LoginComponent },
-  { 
-    path: 'oauth2', 
+  {
+    path: 'oauth2',
     children: [
       { path: 'callback', component: Oauth2CallbackComponent }
     ]
@@ -59,10 +59,10 @@ const routes: Routes = [
               header: ProfileHeaderResolver
             },
             children: [
-              { path: '', component: ProfileTimelineComponent},
-              { path: 'about', component: ProfileAboutComponent},
-              { path: 'friends', component: FriendListComponent},
-              { path: 'photos', component: PhotoListComponent}
+              { path: '', component: ProfileTimelineComponent },
+              { path: 'about', component: ProfileAboutComponent },
+              { path: 'friends', component: FriendListComponent },
+              { path: 'photos', component: PhotoListComponent }
             ]
           }
         ]
@@ -71,37 +71,38 @@ const routes: Routes = [
         path: 'search',
         component: SearchComponent,
         children: [
-          { path: '', redirectTo: 'people', pathMatch: 'full'},
-          { path: 'people', component: ByPeopleComponent},
-          { path: 'groups', component: ByGroupsComponent},
-          { path: 'posts', component: ByPostsComponent},
+          { path: '', redirectTo: 'people', pathMatch: 'full' },
+          { path: 'people', component: ByPeopleComponent },
+          { path: 'groups', component: ByGroupsComponent },
+          { path: 'posts', component: ByPostsComponent },
         ]
 
       },
       {
         path: 'photo',
         children: [
-          {path: ':id', component: PhotoViewerPlaceholderComponent},
+          { path: ':id', component: PhotoViewerPlaceholderComponent },
         ]
       },
       {
         path: 'groups',
         children: [
-          { path: '', redirectTo: 'feed', pathMatch: 'full'},
-          { path: 'feed', component: GroupGeneralComponent,
+          { path: '', redirectTo: 'feed', pathMatch: 'full' },
+          {
+            path: 'feed', component: GroupGeneralComponent,
             children: [
-              { path: '', component: GroupFeedComponent, pathMatch: 'full'},
-              { path: 'discover', component: GroupDiscoverComponent},
+              { path: '', component: GroupFeedComponent, pathMatch: 'full' },
+              { path: 'discover', component: GroupDiscoverComponent },
               {
                 path: ':id',
                 component: GroupComponent,
                 children: [
-                  { 
-                    path: '', 
-                    component: GroupContentComponent, 
+                  {
+                    path: '',
+                    component: GroupContentComponent,
                     children: [
-                      { path: '', component: GroupTimelineComponent, pathMatch: 'full', data: {isPostView: false} },
-                      { path: 'posts/:id', component: GroupTimelineComponent, data: {isPostView: true} },
+                      { path: '', component: GroupTimelineComponent, pathMatch: 'full', data: { isPostView: false } },
+                      { path: 'posts/:id', component: GroupTimelineComponent, data: { isPostView: true } },
                       { path: 'about', component: GroupAboutComponent },
                       { path: 'media', component: GroupMediaComponent },
                       { path: 'members', component: GroupMemberComponent },
@@ -115,19 +116,19 @@ const routes: Routes = [
             path: ':id',
             component: GroupComponent,
             children: [
-              { 
-                path: '', 
-                component: GroupContentComponent, 
+              {
+                path: '',
+                component: GroupContentComponent,
                 children: [
-                  { path: '', component: GroupTimelineComponent, pathMatch: 'full', data: {isPostView: false} },
-                  { path: 'posts/:id', component: GroupTimelineComponent, data: {isPostView: true} },
+                  { path: '', component: GroupTimelineComponent, pathMatch: 'full', data: { isPostView: false } },
+                  { path: 'posts/:id', component: GroupTimelineComponent, data: { isPostView: true } },
                   { path: 'about', component: GroupAboutComponent },
                   { path: 'media', component: GroupMediaComponent },
                   { path: 'members', component: GroupMemberComponent },
                 ]
               },
-              { path: 'member_request', component: JoinRequestListComponent, canActivate: [GroupAdminGuard]},
-              { path: 'settings', component: GroupSettingsComponent, canActivate: [GroupAdminGuard]}
+              { path: 'member_request', component: JoinRequestListComponent, canActivate: [GroupAdminGuard] },
+              { path: 'settings', component: GroupSettingsComponent, canActivate: [GroupAdminGuard] }
             ]
           }
         ]
@@ -143,13 +144,13 @@ const routes: Routes = [
           header: ProfileHeaderResolver
         },
         children: [
-          { path: '', component: ProfileTimelineComponent, pathMatch: 'full'},
-          { path: 'about', component: ProfileAboutComponent},
-          { path: 'friends', component:  FriendListComponent},
-          { path: 'photos', component: PhotoListComponent}
+          { path: '', component: ProfileTimelineComponent, pathMatch: 'full' },
+          { path: 'about', component: ProfileAboutComponent },
+          { path: 'friends', component: FriendListComponent },
+          { path: 'photos', component: PhotoListComponent }
         ]
       },
-      { path: '**', component: ErrorPageComponent, data: {displayErrorPage: true}}
+      { path: '**', component: ErrorPageComponent, data: { displayErrorPage: true } }
     ]
   },
 
@@ -158,9 +159,9 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(
-    routes, 
+    routes,
     {
-      onSameUrlNavigation: 'reload', 
+      onSameUrlNavigation: 'reload',
       scrollPositionRestoration: 'disabled'
     }
   )],
