@@ -36,19 +36,6 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
     this.titleService.setTitle('Xulgon');
   }
 
-  @HostListener('window:scroll', [])
-  loadOnScroll(): void {
-    if (
-      window.scrollY >= document.body.scrollHeight - 1.2*window.innerHeight
-      && !this.isLoadingPosts
-      && !this.isAllPostsLoaded
-      && this.isAttached
-      ) {
-        this.getPosts();
-
-    }
-  }
-
   onAttach(): void {
     this.setTitle();
     this.isAttached = true;
@@ -65,6 +52,12 @@ export class NewsFeedComponent implements OnInit, OnDestroy {
   }
 
   async getPosts() {
+    if (
+      this.isAllPostsLoaded
+      || this.isLoadingPosts
+      || !this.isAttached
+    ) return;
+
     this.isLoadingPosts = true;
     const offset = this.posts.length;
     const size = offset >= 4 ? 5 : 2;

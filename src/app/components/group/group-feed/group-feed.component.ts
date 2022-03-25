@@ -1,49 +1,37 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {fromEvent, merge, of, Subject} from 'rxjs';
-import {switchMap, takeUntil} from 'rxjs/operators';
-import {Post} from '../../post/post';
-import {GroupService} from '../group.service';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Post } from '../../post/post';
+import { GroupService } from '../group.service';
 
 @Component({
   selector: 'app-group-feed',
   templateUrl: './group-feed.component.html',
   styleUrls: ['./group-feed.component.scss']
 })
-export class GroupFeedComponent implements OnInit, OnDestroy {
+export class GroupFeedComponent implements OnInit {
 
   posts: Post[] = [];
 
   isLoading = false;
   isPostsLoaded = false;
-  initPostsSize = 6;
+  initPostsSize = 2;
   isAllPostsLoaded = false;
   @ViewChild('postsContainer') postsContainer!: ElementRef;
 
-  onAttach$ = new Subject<any>();
-  onDetach$ = new Subject<any>();
-
   constructor(
     private groupService: GroupService
-  ) {
-  }
-
-  ngOnDestroy(): void {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getPosts();
-    this.configureLoadPostOnScroll();
-  }
-
-  onAttach() {
-    this.onAttach$.next();
-  }
-
-  onDetach() {
-    this.onDetach$.next();
   }
 
   getPosts() {
+    if (
+      this.isAllPostsLoaded ||
+      this.isLoading
+    ) return;
+
     const size = this.posts.length ? 5 : this.initPostsSize;
     const offset = this.posts.length;
 
@@ -58,23 +46,4 @@ export class GroupFeedComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  configureLoadPostOnScroll() {
-    merge(this.onAttach$, of(null)).pipe(
-      switchMap(() => fromEvent(window, 'scroll')
-        .pipe(takeUntil(this.onDetach$))
-      )
-    ).subscribe(() => {
-      const postContainerRect = this.postsContainer.nativeElement.getBoundingClientRect();
-
-      if (
-        window.scrollY >= postContainerRect.bottom - 1.2 * window.innerHeight
-        && !this.isLoading
-        && !this.isAllPostsLoaded
-      ) {
-        this.getPosts();
-      }
-    })
-  }
-
 }

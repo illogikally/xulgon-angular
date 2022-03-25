@@ -1,10 +1,17 @@
-<div *ngFor="let post of posts"
-     class="post-container">
-  <app-post (remove)="onPostDelete($event)"
-            [isCommentVisible]="isCommentVisible"
-            [isGroupNameVisible]="isGroupNameVisible"
-            [post]="post">
-  </app-post>
+<div #self
+     class="post-list">
+  <div #post
+       *ngFor="let post of posts"
+       class="post">
+    <app-post (remove)="onPostDelete($event)"
+              [isCommentVisible]="isCommentVisible"
+              [isGroupNameVisible]="isGroupNameVisible"
+              [post]="post">
+    </app-post>
+  </div>
 </div>
-<app-post-skeleton *ngIf="isLoading"></app-post-skeleton>
-<app-post-skeleton *ngIf="isLoading"></app-post-skeleton>
+
+<div [ngStyle]="{'margin-top': posts.length ? '17px' : '0px'}" class="skeletons"
+     *ngIf="isLoading">
+  <app-post-skeleton *ngFor="let item of [].constructor(2)"></app-post-skeleton>
+</div>

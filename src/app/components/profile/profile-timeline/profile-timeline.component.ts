@@ -1,14 +1,14 @@
-import {AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {RxStompService} from '@stomp/ng2-stompjs';
-import {fromEvent, Subject} from 'rxjs';
-import {filter, switchMap, takeUntil} from 'rxjs/operators';
-import {AuthenticationService} from '../../authentication/authentication.service';
-import {Post} from '../../post/post';
-import {PostService} from '../../post/post.service';
-import {PhotoService} from '../../share/photo/photo.service';
-import {ProfileService} from '../profile.service';
-import {UserPage} from '../user-profile';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { RxStompService } from '@stomp/ng2-stompjs';
+import { Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { AuthenticationService } from '../../authentication/authentication.service';
+import { Post } from '../../post/post';
+import { PostService } from '../../post/post.service';
+import { PhotoService } from '../../share/photo/photo.service';
+import { ProfileService } from '../profile.service';
+import { UserPage } from '../user-profile';
 
 @Component({
   selector: 'app-profile-timeline',
@@ -85,12 +85,16 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.configureLoadPostOnScroll();
     this.configureOnResize();
     this.profileService.onAttach$.next(this.pageId);
   }
 
   getPosts(): void {
+    if (
+      this.isLoadingPosts || 
+      this.isLoadedAll 
+    ) return;
+
     this.isLoadingPosts = true;
     const size = this.timeline.length ? 5 : 2;
     const before = this.lastPostId || Number.MAX_SAFE_INTEGER;
@@ -108,24 +112,6 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
           }
         });
     }
-  }
-
-  configureLoadPostOnScroll() {
-    this.onAttach$.pipe(
-      switchMap(() => fromEvent(window, 'scroll')
-        .pipe(takeUntil(this.onDetach$))
-      )
-    ).subscribe(() => {
-      const postContainerRect =
-        this.postsContainer.nativeElement.getBoundingClientRect();
-      if (
-        window.scrollY >= postContainerRect.bottom - 1.2 * window.innerHeight
-        && !this.isLoadingPosts
-        && !this.isLoadedAll
-      ) {
-        this.getPosts();
-      }
-    })
   }
 
   configureOnResize() {

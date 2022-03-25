@@ -25,6 +25,7 @@
         <app-post-list *ngIf="!isPostView"
                        [pageId]="groupResponse?.id"
                        [isCommentVisible]="true"
+                       (lastPostIsInView)="getPosts()"
                        [isLoading]="isLoading"
                        [posts]="posts">
         </app-post-list>

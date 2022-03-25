@@ -1,13 +1,12 @@
-import {AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {RxStompService} from '@stomp/ng2-stompjs';
-import {fromEvent, merge, of} from 'rxjs';
-import {filter, switchMap, take, takeUntil} from 'rxjs/operators';
-import {Post} from '../../post/post';
-import {PostViewComponent} from '../../post/post-view/post-view.component';
-import {ProfileService} from '../../profile/profile.service';
-import {GroupResponse} from '../group-response';
-import {GroupService} from '../group.service';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { RxStompService } from '@stomp/ng2-stompjs';
+import { filter, take } from 'rxjs/operators';
+import { Post } from '../../post/post';
+import { PostViewComponent } from '../../post/post-view/post-view.component';
+import { ProfileService } from '../../profile/profile.service';
+import { GroupResponse } from '../group-response';
+import { GroupService } from '../group.service';
 
 @Component({
   selector: 'app-group-timeline',
@@ -52,7 +51,6 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getGroupIdFromRoute();
     this.getPosts();
-    this.configureLoadPostOnScroll();
     this.getPostResponseFromParent();
     this.listenToWebSocketNewPost();
   }
@@ -70,6 +68,11 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
   }
 
   getPosts() {
+    if (
+      this.isAllPostsLoaded ||
+      this.isLoading
+    ) return;
+
     const size = this.posts.length ? 5 : this.initPostsSize;
     const offset = this.posts.length;
 
@@ -84,26 +87,6 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
           }
         });
     }
-  }
-
-  configureLoadPostOnScroll() {
-    merge(
-      this.onAttach$,
-      of(null)
-    ).pipe(
-      switchMap(() => fromEvent(window, 'scroll')
-        .pipe(takeUntil(this.onDetach$))
-      )
-    ).subscribe(() => {
-      const postContainerRect = this.postsContainer.nativeElement.getBoundingClientRect();
-      if (
-        window.scrollY >= postContainerRect.bottom - 1.2 * window.innerHeight
-        && !this.isLoading
-        && !this.isAllPostsLoaded
-      ) {
-        this.getPosts();
-      }
-    })
   }
 
   getGroupIdFromRoute() {
@@ -132,13 +115,13 @@ export class GroupTimelineComponent implements OnInit, AfterViewInit {
       if (!entries[0].contentRect.width) return;
       this.ngZone.run(() => {
         if (wrapper.offsetWidth < defaultWidth && !isStyleSet) {
-          this.renderer.setStyle(this.sidebar.nativeElement, 'visibility', 'hidden');
+          this.renderer.setStyle(this.sidebar.nativeElement, 'display', 'none');
           this.renderer.setStyle(timeline, 'max-width', '515px');
           this.renderer.setStyle(timeline, 'display', 'block');
           isStyleSet = true;
         }
         else if (wrapper.offsetWidth >= defaultWidth) {
-          this.renderer.setStyle(this.sidebar.nativeElement, 'visibility', 'visible');
+          this.renderer.setStyle(this.sidebar.nativeElement, 'display', 'block');
           this.renderer.setStyle(timeline, 'display', 'grid');
           this.renderer.removeStyle(timeline, 'max-width');
           isStyleSet = false;

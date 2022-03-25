@@ -5,6 +5,7 @@
   <div #postsContainer class="group-feed__inner">
     <app-post-list
       [isGroupNameVisible]="true"
+      (lastPostIsInView)="getPosts()"
       [isLoading]="isLoading"
       [posts]="posts"
     ></app-post-list>

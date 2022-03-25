@@ -7,14 +7,22 @@ a {
   }
 }
 
-:host {
+$posts-gap: 17px;
+
+.post-list {
   display: flex;
-  row-gap: 17px;
+  row-gap: $posts-gap;
   flex-direction: column;
+  box-sizing: border-box;
+
+  .post {
+    width: 100%;
+    @include card(10px);
+  }
 }
 
-
-.post-container {
-  width: 100%;
-  @include card(10px);
+.skeletons {
+  display: flex;
+  row-gap: $posts-gap;
+  flex-direction: column;
 }
