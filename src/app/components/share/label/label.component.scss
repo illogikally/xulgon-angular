@@ -1,12 +1,17 @@
-.not-implemented {
+.label {
   position: absolute;
   z-index: 999;
   visibility: hidden;
   
+  &.pop {
+    animation: pop .1s;
+  }
+
   .text {
     font-weight: 500;
-    padding: 7px;
-    border-radius: 5px;
+    font-size: 14px;
+    padding: 4px 6px;
+    border-radius: 6px;
     background-color: #fff;
     box-shadow: 0 0px 14px 0 rgba(#000, .2), 
       0 0px 4px 0 rgba(#000, .1), 
@@ -15,12 +20,25 @@
 
   .triangle {
     border-style: solid;
-    border-width: 0 8px 8px 8px;
+    border-width: 0 4px 4px 4px;
     border-color: transparent transparent #fff transparent;
     position: absolute;
     bottom: 100%;
     z-index: 1;
     left: 50%;
     transform: translateX(-50%);
+  }
+
+}
+
+
+
+@keyframes pop {
+  0% {
+    transform: scale(.9);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }

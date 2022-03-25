@@ -1,9 +1,11 @@
 <div class="notif">
-  <div (click)="showNotifications()"
+  <div Label
+       labelText="Thông báo"
+       [delay]="400"
+       (click)="showNotifications()"
        id="notifButton"
        [ngClass]="{'active': isPopupVisible}"
        class="button">
-    <!-- <i class='bx bxs-bell'></i> -->
     <svg viewBox="0 0 28 28"
          alt=""
          [ngStyle]="isPopupVisible ? {'filter': 'invert(26%) sepia(100%) saturate(1903%) hue-rotate(207deg) brightness(107%) contrast(90%)'} : {}"
@@ -33,7 +35,6 @@
         <app-notification-item (itemClick)="isPopupVisible = false"
                                *ngFor="let notification of notifications"
                                [notification]="notification">
-
         </app-notification-item>
         <ng-container *ngIf="isLoading">
           <div class="skeleton"

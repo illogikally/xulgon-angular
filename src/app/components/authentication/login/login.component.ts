@@ -169,7 +169,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.loginError = false;
         location.href = '';
       }, (e) => {
-        console.log(e);
         this.loginError = true;
         this.isPosting = false;
       });

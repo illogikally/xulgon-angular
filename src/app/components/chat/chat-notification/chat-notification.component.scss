@@ -6,7 +6,6 @@
   width: 40px;
   height: 40px;
 
-
   .button {
     @extend %fz;
     @extend %fc;
@@ -50,6 +49,10 @@
     bottom: 70px;
     z-index: 1001;
     width: 360px;
+
+    h2 {
+      margin: 10px 0;
+    }
 
     .content {
       @include scrollbar(15px);

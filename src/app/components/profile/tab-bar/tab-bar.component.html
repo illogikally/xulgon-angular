@@ -31,7 +31,8 @@
              [routerLink]="tab.disabled ? null : './' + tab.path"
              [skipLocationChange]="true"
              routerLinkActive="tab-active"
-             NotImplemented
+             Label
+             labelText="Not implemented"
              [disabled]="!tab.disabled"
              class="visible-tab"
              [routerLinkActiveOptions]="{exact: true}">
@@ -63,7 +64,8 @@
                    (click)="(isMoreTabsVisible = false) && (tab.disabled ? null : locationGo(tab.path))"
                    [routerLink]="tab.disabled ? null : './' + tab.path"
                    [skipLocationChange]="true"
-                   NotImplemented
+                   Label
+                   labelText="Not implemented"
                    [disabled]="!tab.disabled"
                    routerLinkActive="tab-active"
                    [routerLinkActiveOptions]="{exact: true}"

@@ -67,7 +67,6 @@ export class ByPostsComponent implements OnInit {
       this.isLoadedPosts = true;
       this.isLoadingPosts = false;
       this.hasNextPost = response.hasNext;
-      console.log(response);
     });
   }
 

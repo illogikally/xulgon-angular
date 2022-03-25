@@ -265,6 +265,10 @@ $mediumView: 1250px;
           > div:first-child {
             @include x-btn(40px, inherit, darken($secondary-button-background, 5));
             background-color: $secondary-button-background;
+
+            svg {
+              font-size: 23px;
+            }
           }
 
           .route-active.route-active {

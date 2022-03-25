@@ -86,8 +86,6 @@ import { LoadOnScrollDirective } from './components/share/load-on-scroll.directi
 import { LoggedInComponent } from './components/share/logged-in/logged-in.component';
 import { MessageService } from './components/share/message.service';
 import { ModalComponent } from './components/share/modal/modal.component';
-import { NotImplementedComponent } from './components/share/not-implemented/not-implemented.component';
-import { NotImplementedDirective } from './components/share/not-implemented/not-implemented.directive';
 import { PhotoComponent } from './components/share/photo/photo.component';
 import { PopUpComponent } from './components/share/pop-up/pop-up.component';
 import { SirvPipe } from './components/share/sirv.pipe';
@@ -98,6 +96,8 @@ import { UserRefPopupComponent } from './components/share/user-ref/user-ref-popu
 import { UserRefComponent } from './components/share/user-ref/user-ref.component';
 import { MyReuseStrategy } from './my-reuse-trategy';
 import { MyRxStompConfig } from './my-rx-stomp.config';
+import { LabelComponent } from './components/share/label/label.component';
+import { LabelDirective } from './components/share/label/label.directive';
 
 @NgModule({
   declarations: [
@@ -178,11 +178,11 @@ import { MyRxStompConfig } from './my-rx-stomp.config';
     GroupGeneralGroupItemComponent,
     PostNotFoundComponent,
     ProfileAboutItemComponent,
-    NotImplementedDirective,
-    NotImplementedComponent,
     GroupDiscoverComponent,
     GroupDiscoverItemComponent,
     SirvPipe,
+    LabelComponent,
+    LabelDirective,
   ],
   imports: [
     ImageCropperModule,

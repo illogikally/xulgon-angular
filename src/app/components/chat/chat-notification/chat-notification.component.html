@@ -1,5 +1,8 @@
 <div class="chat-notif">
-  <div (click)="isPopupVisible = !isPopupVisible"
+  <div Label
+       labelText="Nhắn tin"
+       [delay]="400"
+       (click)="isPopupVisible = !isPopupVisible"
        id="chatNotifButton"
        [ngClass]="{'active': isPopupVisible}"
        class="button">
@@ -26,7 +29,8 @@
       <div class="title">
         <h2>Nhắn tin</h2>
       </div>
-      <div NotImplemented
+      <div Label
+           labelText="Not implemented"
            class="search">
         <div class="input-group">
           <i class='bx bx-search'></i>

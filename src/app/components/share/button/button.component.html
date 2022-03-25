@@ -2,7 +2,7 @@
      class="button">
   <button #inner
           (click)="toggleOptionsVisibility()"
-          type=""
+          type="button"
           class="button__inner">
     <div [ngStyle]="{'opacity': isLoadingSpinnerVisible ? '0' : '1', 'height': '100%'}">
       <ng-content select="[button]"></ng-content>

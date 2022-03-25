@@ -4,9 +4,8 @@ import {Subject} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class NotImplementedService {
-
-  show$ = new Subject<HTMLElement>();
+export class LabelService {
+  show$ = new Subject<{target: HTMLElement, text: string, delay: number}>();
   hide$ = new Subject<any>();
   constructor() { }
 }

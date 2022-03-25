@@ -84,8 +84,6 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
   onSelectImage(event: any): void {
     if (event.target?.files && event.target.files[0]) {
       this.files.push(event.target.files[0]);
-      console.log(event);
-
       var reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]);

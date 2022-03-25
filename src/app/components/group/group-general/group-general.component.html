@@ -6,7 +6,8 @@
           <div class="title">
             <span>Nhóm</span>
           </div>
-          <div NotImplemented
+          <div Label
+               labelText="Not implemented"
                class="input-group">
             <i class='bx bx-search'></i>
             <input type="text"
@@ -56,7 +57,8 @@
                                           [group]="group">
             </app-group-general-group-item>
             <ng-container *ngIf="isLoadingGroups">
-              <div class="skeleton" *ngFor="let item of [].constructor(2)">
+              <div class="skeleton"
+                   *ngFor="let item of [].constructor(2)">
                 <div class="avatar"></div>
                 <div class="text"></div>
               </div>
@@ -73,7 +75,8 @@
                                           [group]="group">
             </app-group-general-group-item>
             <ng-container *ngIf="isLoadingGroups">
-              <div class="skeleton" *ngFor="let item of [].constructor(2)">
+              <div class="skeleton"
+                   *ngFor="let item of [].constructor(2)">
                 <div class="avatar"></div>
                 <div class="text"></div>
               </div>
