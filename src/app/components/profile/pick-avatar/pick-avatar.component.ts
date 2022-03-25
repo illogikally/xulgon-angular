@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ImageCroppedEvent} from 'ngx-image-cropper';
-import {fromEvent, Subject} from 'rxjs';
+import {fromEvent, Observable, Subject} from 'rxjs';
 import {MessageService} from '../../share/message.service';
 import {PhotoResponse} from '../../share/photo/photo-response';
 import {PhotoService} from '../../share/photo/photo.service';
@@ -19,9 +19,9 @@ export class PickAvatarComponent implements OnInit {
 
   updateType: 'AVATAR' | 'COVER' = 'AVATAR';
   photos: PhotoResponse[] = [];
-  pickedPhoto!: PhotoResponse | undefined;
+  pickedPhoto?: PhotoResponse; 
   uploadFileForm!: FormGroup;
-  photoBlob: Blob | undefined;
+  photoBlob?: Blob;
   userProfile!: PageHeader;
 
   aspectRatio = 1;
@@ -29,6 +29,7 @@ export class PickAvatarComponent implements OnInit {
   pageSourceId = NaN;
   toggleModal = new Subject<any>();
   pageToUpdateId = NaN;
+  isCropperLoading = false;
   isLoading = false;
   isPosting = false;
   hasNext = true;
@@ -49,23 +50,23 @@ export class PickAvatarComponent implements OnInit {
       fileInput: new FormControl('')
     });
 
-
     this.messageService.updateAvatarOrCover.subscribe(data => {
       this.toggleModal.next();
-      this.pageSourceId = data.pageSourceId;
       this.pageToUpdateId = data.pageToUpdateId;
 
       if (data.type == 'AVATAR') {
         this.updateType = data.type;
         this.aspectRatio = 1;
       }
-
-      if (data.type == 'COVER') {
+      else if (data.type == 'COVER') {
         this.updateType = data.type;
         this.aspectRatio = 940 / 350.0;
       }
 
-      this.configureInitGetPhotos();
+      if (this.pageSourceId != data.pageSourceId) {
+        this.pageSourceId = data.pageSourceId;
+        this.configureInitGetPhotos();
+      }
       this.configureLoadPhotoOnScroll();
     });
   }
@@ -87,8 +88,9 @@ export class PickAvatarComponent implements OnInit {
     this.isLoading = false;
   }
 
-  photoPicked(photo: PhotoResponse): void {
+  photoPicked(photo: PhotoResponse) {
     this.pickedPhoto = photo;
+    this.isCropperLoading = true;
   }
 
   onSelectFile(event: any): void {
@@ -100,7 +102,6 @@ export class PickAvatarComponent implements OnInit {
   }
 
   reset() {
-    this.photos = [];
     this.abort();
     this.hasNext = true;
   }
@@ -121,17 +122,19 @@ export class PickAvatarComponent implements OnInit {
   }
 
   abort(): void {
-    // For some reason clickoutside triggers
-    setTimeout(() => {
-      this.pickedPhoto = undefined;
-      this.imageChangedEvent = null;
-      this.photoBlob = undefined;
-      this.uploadFileForm.reset();
-    }, 0);
+    this.pickedPhoto = undefined;
+    this.imageChangedEvent = null;
+    this.photoBlob = undefined;
+    this.uploadFileForm.reset();
   }
 
   confirm(): void {
     this.isPosting = true;
+    const data = this.constructUpdateRequest();
+    this.sendUpdateRequest(data);
+  }
+
+  private constructUpdateRequest(): FormData {
     let formData = new FormData();
     let photoRequest = new Blob(
       [JSON.stringify({
@@ -140,60 +143,57 @@ export class PickAvatarComponent implements OnInit {
       })],
       { type: 'application/json' }
     );
-    formData.append('photoRequest', photoRequest);
 
+    formData.append('photoRequest', photoRequest);
     formData.append('photo', this.photoBlob == undefined ? new Blob() : this.photoBlob);
 
+    return formData;
+  }
+
+  private sendUpdateRequest(data: FormData) {
+    let updateFn: (data: FormData, id: number) => Observable<PhotoResponse>;
+    let notifyUpdate$: Subject<{photo: PhotoResponse, pageId: number}>;
+    let subject = '';
+
     if (this.updateType == 'AVATAR') {
-      this.profileService.uploadAvatar(
-        formData,
-        this.pageToUpdateId
-      ).subscribe(photo => {
-        this.messageService.updateAvatar.next({
-          photo: photo,
-          pageId: this.pageToUpdateId
-        });
-        this.isPosting = false;
-        this.toaster.message$.next({
-          type: ToasterMessageType.SUCCESS,
-          message: 'Thay ảnh đại diện thành công'
-        })
-        this.close();
-      }, error => {
-        this.toaster.message$.next({
-          type: ToasterMessageType.ERROR,
-          message: 'Đã có lỗi trong quá trình thay đổi ảnh đại diện'
-        })
+      updateFn = this.profileService.uploadAvatar
+      notifyUpdate$ = this.messageService.updateAvatar;
+      subject = 'ảnh đại diện';
+    }
+    else {
+      updateFn = this.profileService.uploadAvatar
+      notifyUpdate$ = this.messageService.updateCoverPhoto;
+      subject = 'ảnh bìa';
+    }
+
+    const updateSuccessFn = (photo: PhotoResponse) => {
+      notifyUpdate$.next({
+        photo: photo,
+        pageId: this.pageToUpdateId
       });
 
-    } else {
-      this.profileService.uploadCoverPhoto(
-        formData,
-        this.pageToUpdateId
-      ).subscribe(photo => {
-        this.messageService.updateCoverPhoto.next({
-          photo: photo,
-          pageId: this.pageToUpdateId
-        });
-        this.isPosting = false;
-        this.toaster.message$.next({
-          type: ToasterMessageType.SUCCESS,
-          message: 'Thay ảnh bìa thành công'
-        })
-        this.close();
-      }, error => {
-        this.toaster.message$.next({
-          type: ToasterMessageType.ERROR,
-          message: 'Đã có lỗi trong quá trình thay đổi ảnh bìa'
-        })
-      });
+      this.toaster.message$.next({
+        type: ToasterMessageType.SUCCESS,
+        message: `Thay ảnh ${subject} thành công`
+      })
     }
+
+    const updateErrorFn = () => {
+      this.toaster.message$.next({
+        type: ToasterMessageType.ERROR,
+        message: `Đã có lỗi trong quá trình thay đổi ${subject}`
+      })
+    }
+
+    updateFn.call(this.profileService, data, this.pageToUpdateId).subscribe(
+      updateSuccessFn,
+      updateErrorFn,
+      () => {this.isPosting = false; this.close()}
+    );
   }
 
   imageCropped(event: ImageCroppedEvent) {
     if (!event.base64) return;
-    console.log(event);
-
     this.photoBlob = this.base64toBlob(event.base64);
   }
 
@@ -208,5 +208,4 @@ export class PickAvatarComponent implements OnInit {
 
     return new Blob([ab], {type: 'image/jpeg'});
   }
-
 }

@@ -13,10 +13,10 @@
            [parent]="sidebar"
            [onAttach$]="onAttach$"
            [onDetach$]="onDetach$"
-           class="sidebar__inner">
+           class="sidebar__inner intro">
         <app-profile-about [isTimeline]="true"></app-profile-about>
-        <div class="photo-intro">
 
+        <div class="intro__photos">
           <div class="intro-title">
             <h3 style="font-size: 20px; font-weight: 700;">Ảnh</h3>
             <app-button color="#1877f2"
@@ -55,8 +55,8 @@
           </div>
         </div>
 
-        <div class="friend-intro">
-          <div class="friend-intro__title">
+        <div class="intro__friends">
+          <div class="intro__friends__title">
             <h3>Bạn bè</h3>
             <app-button color="#1877f2"
                         class="to-photos"
@@ -72,7 +72,12 @@
               </div>
             </app-button>
           </div>
-          <div class="friend">
+          <div class="intro__friends__skeletons"
+               *ngIf="!userPage?.friends">
+            <div class="skeleton"
+                 *ngFor="let item of [].constructor(9)"></div>
+          </div>
+          <div class="intro__friends__friends">
             <div *ngFor="let friend of userPage?.friends">
               <div class="img-container">
                 <app-user-ref [userDto]="friend"
@@ -80,7 +85,8 @@
                               borderRadius="10px">
                 </app-user-ref>
               </div>
-              <app-user-ref fontSize="13px" [userDto]="friend"></app-user-ref>
+              <app-user-ref fontSize="13px"
+                            [userDto]="friend"></app-user-ref>
               <div *ngIf="friend.commonFriendCount > 0 && friend.id != principleId"
                    class="common-friend-count">
                 {{ friend.commonFriendCount }}

@@ -1,10 +1,11 @@
+@import 'src/styles';
 
 $header-content-width: 940px;
 .actions-menu-container {
   background-color: #fff;
   position: sticky;
   user-select: none;
-  z-index: 2;
+  z-index: z('navbar') - 1;
   top: 55px;
   box-shadow: 0 1px 2px #00000033;
 

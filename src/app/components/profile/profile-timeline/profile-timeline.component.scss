@@ -52,102 +52,94 @@
     }
 
     .intro {
-      // max-height: 500px;
-      font-size: 16px;
-
-      > div {
-        margin-bottom: 5px;
-        display: flex;
-        align-items: center;
-
-        i {
-          font-size: 27px;
-          margin-right: 10px;
-        }
-      }
-    }
-
-    .photo-intro {
-      max-height: 600px;
-
-      h3 {
-        all: unset;
-        display: flex;
-        font-size: 1.3rem;
-        font-weight: 600;
-        align-items: center;
-      }
-
-      .intro-title {
-        padding-bottom: 10px;
-        position: relative;
-        display: flex;
-        align-items: center;
-
-        .to-photos {
-          position: absolute;
-          right: 0;
-        }
-      }
-
-      .photo > div {
-        display: grid;
-        grid-gap: 3px;
-        border-radius: 10px;
-        overflow: hidden;
-        grid-template-columns: repeat(3, 1fr);
-
-        > div {
-          width: 100%;
-          aspect-ratio: 1;
-          overflow: hidden;
-        }
-
-      }
-
-    }
-
-    .friend-intro {
-      &__title {
-        position: relative;
-        display: flex;
-        align-items: center;
-        padding-bottom: 10px;
+      &__photos {
+        max-height: 600px;
 
         h3 {
-          margin: 0;
+          all: unset;
+          display: flex;
+          font-size: 1.3rem;
+          font-weight: 600;
+          align-items: center;
         }
 
-        .to-photos {
-          position: absolute;
-          right: 0;
+        .intro-title {
+          padding-bottom: 10px;
+          position: relative;
+          display: flex;
+          align-items: center;
+
+          .to-photos {
+            position: absolute;
+            right: 0;
+          }
         }
+
+        .photo > div {
+          display: grid;
+          grid-gap: 3px;
+          border-radius: 10px;
+          overflow: hidden;
+          grid-template-columns: repeat(3, 1fr);
+
+          > div {
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+          }
+
+        }
+
       }
 
-      .friend {
-        display: grid;
-        grid-gap: 10px;
-        grid-template-columns: repeat(3, 1fr);
+      &__friends {
+        &__title {
+          position: relative;
+          display: flex;
+          align-items: center;
+          padding-bottom: 10px;
 
-        .img-container {
-          width: 100%;
-          margin-bottom: 3px;
-          aspect-ratio: 1;
+          h3 {
+            margin: 0;
+          }
+
+          .to-photos {
+            position: absolute;
+            right: 0;
+          }
         }
 
-        .common-friend-count {
-          font-size: 14px;
-          font-size: 13px;
-          font-weight: 400;
+        &__skeletons {
+          display: grid;
+          grid-gap: 3px;
+          overflow: hidden;
+          grid-template-columns: repeat(3, 1fr);
+          border-radius: 10px;
+
+          .skeleton {
+            @extend %loading-animation;
+            aspect-ratio: 1;
+          }
+        }
+
+        &__friends {
+          display: grid;
+          grid-gap: 10px;
+          grid-template-columns: repeat(3, 1fr);
+
+          .img-container {
+            width: 100%;
+            margin-bottom: 3px;
+            aspect-ratio: 1;
+          }
+
+          .common-friend-count {
+            font-size: 14px;
+            font-size: 13px;
+            font-weight: 400;
+          }
         }
       }
     }
   }
-}
-
-.sidebar {
-  will-change: min-height;
-}
-
-.sidebar__inner {
 }

@@ -16,7 +16,6 @@ import { TitleService } from '../share/title.service';
 })
 export class NavbarComponent implements OnInit {
 
-
   @ViewChild('searchInput') searchBar!: ElementRef;
 
   openCreatePost = new Subject<any>();

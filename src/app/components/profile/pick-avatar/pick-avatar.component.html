@@ -33,17 +33,24 @@
         </app-square-image>
         <ng-container *ngIf="isLoading">
           <div *ngFor="let item of [].constructor(6)"
-               class="skeleton"></div>
+               class="skeleton">
+          </div>
         </ng-container>
       </div>
       <div *ngIf="pickedPhoto != undefined || imageChangedEvent"
            class="confirmation">
         <div class="photo-container">
+          <app-spinner size="30px"
+                       color="#ddd"
+                       *ngIf="isCropperLoading"
+                       backgroundColor="transparent">
+          </app-spinner>
           <image-cropper format="jpeg"
                          [maintainAspectRatio]="true"
                          [aspectRatio]="aspectRatio"
                          [imageChangedEvent]="imageChangedEvent"
                          [imageURL]="pickedPhoto?.url"
+                         (cropperReady)="isCropperLoading = false"
                          (imageCropped)="imageCropped($event)">
           </image-cropper>
         </div>
