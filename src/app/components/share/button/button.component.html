@@ -4,7 +4,9 @@
           (click)="toggleOptionsVisibility()"
           type="button"
           class="button__inner">
-    <ng-content select="[button]"></ng-content>
+    <div [ngStyle]="{'opacity': isLoadingSpinnerVisible ? '0' : '1'}">
+      <ng-content select="[button]"></ng-content>
+    </div>
     <app-spinner size="20px"
                  [color]="color"
                  *ngIf="isLoadingSpinnerVisible"

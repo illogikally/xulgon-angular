@@ -19,6 +19,8 @@ export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
   currentTab = '';
   isMoreActionsVisible = false;
   defaultCoverPhotoUrl = this.groupService.getDefaultCoverPhotoUrl();
+  isSendingJoinRequest = false;
+
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
@@ -72,14 +74,18 @@ export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   sendJoinRequest() {
+    this.isSendingJoinRequest = true;
     this.groupService.sendJoinRequest(this.group.id).subscribe(() => {
       this.group.isRequestSent = true;
+      this.isSendingJoinRequest = false;
     });
   }
 
   cancelJoinRequest(): void {
+    this.isSendingJoinRequest = true;
     this.groupService.cancelJoinRequest(this.group.id).subscribe(() => {
       this.group.isRequestSent = false;
+      this.isSendingJoinRequest = false;
     });
   }
 

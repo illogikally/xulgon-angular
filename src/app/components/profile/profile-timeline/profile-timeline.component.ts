@@ -133,20 +133,16 @@ export class ProfileTimelineComponent implements OnInit, AfterViewInit {
     const parent = self.parentElement;
     const defaultWidth = 892;
     let isStyleSet = false;
-    const disableStickySidebar = new Subject<any>();
     new ResizeObserver(entries => {
       if (!entries[0].contentRect.width) return;
       this.ngZone.run(() => {
         if (parent.offsetWidth < defaultWidth && !isStyleSet) {
-          this.renderer.setStyle(self, 'max-width', '515px');
-          this.renderer.setStyle(self, 'display', 'flex');
-          this.renderer.setStyle(self, 'flex-direction', 'column');
+          this.renderer.addClass(self, 'collapse');
           isStyleSet = true;
           this.toggleStickySidebar.next(true);
         }
         else if (parent.offsetWidth >= defaultWidth) {
-          this.renderer.setStyle(self, 'display', 'grid');
-          this.renderer.setStyle(self, 'max-width', '892px');
+          this.renderer.removeClass(self, 'collapse');
           this.toggleStickySidebar.next(false);
           isStyleSet = false;
         }

@@ -52,6 +52,7 @@
          class="actions">
       <app-button *ngIf="!group?.isMember && !group?.isRequestSent"
                   class="join-group"
+                  [isLoadingSpinnerVisible]="isSendingJoinRequest"
                   color="#fff"
                   background="#1877f2">
         <div (click)="sendJoinRequest() "
@@ -62,6 +63,7 @@
 
       <app-button *ngIf="group?.isRequestSent"
                   (click)="cancelJoinRequest()"
+                  [isLoadingSpinnerVisible]="isSendingJoinRequest"
                   class="cancel-request">
         <div button="">
           <div>Huỷ yêu cầu</div>

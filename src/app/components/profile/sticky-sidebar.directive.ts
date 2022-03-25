@@ -9,10 +9,10 @@ export class StickySidebarDirective implements OnInit {
 
   @Input() sidebarInner!: HTMLElement;
   @Input() parent!: HTMLElement;
-  @Input() onAttach$!: Observable<any>;
-  @Input() onDetach$!: Observable<any>;
+  @Input() onAttach$ = new Observable<any>();
+  @Input() onDetach$ = new Observable<any>();
   @Input() disabled = false;
-  @Input() toggle?: Observable<boolean>;
+  @Input() toggle = new Observable<boolean>();
 
   constructor(
     private renderer: Renderer2
@@ -22,9 +22,7 @@ export class StickySidebarDirective implements OnInit {
   ngOnInit(): void {
     this.configureOnWindowResize();
     this.configureStickySidebar();
-    if (this.toggle) {
-      this.listenOnDisableSidebar();
-    }
+    this.listenOnDisableSidebar();
   }
 
   listenOnDisableSidebar() {

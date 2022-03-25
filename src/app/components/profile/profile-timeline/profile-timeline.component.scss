@@ -12,6 +12,12 @@
   grid-gap: 17px;
   width: 100%;
 
+  &.collapse.collapse {
+    max-width: 515px;
+    display: flex;
+    flex-direction: column;
+  }
+
   .no-posts {
     display: flex;
     justify-content: center;
@@ -27,12 +33,9 @@
     font-weight: 500;
   }
 
-  .sidebar {
-    font-weight: 500;
-  }
-
   .sidebar__inner {
     display: flex;
+    will-change: position, transform;
     flex-direction: column;
     row-gap: 17px;
 
@@ -147,5 +150,4 @@
 }
 
 .sidebar__inner {
-  will-change: position, transform;
 }
