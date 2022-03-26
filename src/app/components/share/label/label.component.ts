@@ -19,19 +19,31 @@ export class LabelComponent implements OnInit {
   @ViewChild('self') self!: ElementRef;
   text = '';
   isHidden = true;
+  triangleTranslateX = 0;
 
   ngOnInit(): void {
+    this.listenOnOpenCalled()
+    this.configureCloseOnClick();
+  }
+
+  listenOnOpenCalled() {
     this.labelService.show$.subscribe(data => {
       const {target, text, delay} = data;
       this.text = text;
       this.changeDetector.detectChanges();
-      timer(delay).pipe(takeUntil(this.labelService.hide$), takeUntil(fromEvent(window, 'click')), take(1))
-        .subscribe(() => {
+      timer(delay).pipe(
+        takeUntil(this.labelService.hide$), 
+        takeUntil(fromEvent(window, 'click')), 
+        take(1)
+      ).subscribe(() => {
           this.move(target);
           this.show();
           this.isHidden = false;
         })
     });
+  }
+
+  configureCloseOnClick() {
     merge(
       fromEvent(window, 'click'),
       this.labelService.hide$
@@ -40,15 +52,23 @@ export class LabelComponent implements OnInit {
       this.isHidden = true;
     });
   }
-
   move(target: HTMLElement) {
-    const MARGIN = 2;
-    const targetRect = target.getBoundingClientRect();
-    const self = this.self.nativeElement;
+    const MARGIN          = 2;
+    const HOR_MARGIN      = 5;
+    const targetRect      = target.getBoundingClientRect();
+    const self            = this.self.nativeElement;
+    const SCROLLBAR_WIDTH = window.innerWidth - document.documentElement.clientWidth;
+    let left              = targetRect.left + target.offsetWidth/2 - self.offsetWidth/2;
+    this.triangleTranslateX = 0;
 
-    let left = targetRect.left + target.offsetWidth/2 - self.offsetWidth/2;
+    const windowRightOffset 
+      = left + self.offsetWidth - (window.innerWidth - HOR_MARGIN - SCROLLBAR_WIDTH);
+    if (windowRightOffset >= 0) {
+      left -= windowRightOffset 
+      this.triangleTranslateX += windowRightOffset;
+    }
+
     left = left < 10 ? 10 : left;
-
     let top = targetRect.bottom + MARGIN + 8;
     top += window.scrollY;
     

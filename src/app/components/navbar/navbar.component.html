@@ -33,7 +33,7 @@
     <ul class="menu">
       <li class="home"
           Label
-          [delay]="400"
+          [delay]="200"
           labelText="News feed"
           [ngClass]="{'menu-active-div': homeRla.isActive}">
         <a routerLink="/"
@@ -48,7 +48,7 @@
       </li>
       <li class="home"
           Label
-          [delay]="400"
+          [delay]="200"
           labelText="Bạn bè"
           [ngClass]="{'menu-active-div': friendRla.isActive}">
         <a [routerLink]="'/friends'"
@@ -65,7 +65,7 @@
       </li>
       <li [ngClass]="{'menu-active-div': groupRla.isActive}"
           Label
-          [delay]="400"
+          [delay]="200"
           labelText="Nhóm"
           class="home">
         <a [routerLink]="'/groups/feed'"
@@ -100,7 +100,7 @@
       <ul class="notis">
         <li>
           <div Label
-               [delay]="400"
+               [delay]="200"
                labelText="Tạo bài viết"
                class="wrapper">
             <div (click)="showCreatePost()">
@@ -121,7 +121,7 @@
             <div [ngClass]="{'route-active': moreOptsVisible}"
                  id="more-opt-button"
                  Label
-                 [delay]="400"
+                 [delay]="200"
                  labelText="Thêm"
                  (click)="moreOptsVisible = !moreOptsVisible"
                  class="more-opts">

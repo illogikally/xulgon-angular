@@ -1,18 +1,14 @@
 <div class="comment-list">
-  <app-spinner *ngIf="!isInitLoaded"
-               backgroundColor="transparent"
-               style="display: block; margin-top: 10px"
-               size="15px"
-               ringWidth="2px"
-               color="#bbb"
-               position="relative">
-  </app-spinner>
   <div #commentContainer
        class="comments">
     <app-comment *ngFor="let comment of comments"
                  (deleted)="onCommentDeleted($event)"
                  [comment]="comment">
     </app-comment>
+    <ng-container *ngIf="comments.length == 0 && !isInitLoaded">
+      <app-comment-skeleton *ngFor="let item of [].constructor(2)">
+      </app-comment-skeleton>
+    </ng-container>
   </div>
 
   <div class="load-comments"

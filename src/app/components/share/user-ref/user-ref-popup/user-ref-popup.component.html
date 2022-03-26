@@ -18,9 +18,8 @@
       </app-profile-about>
     </div>
   </div>
-  <div class="actions">
-    <div *ngIf="userDto?.friendshipStatus"
-         class="others">
+  <div *ngIf="userDto?.friendshipStatus" class="actions">
+    <div class="others">
       <app-button (click)="openChatBox()">
         <div button>
           <svg _ngcontent-cvq-c116=""

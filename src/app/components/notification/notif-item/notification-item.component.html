@@ -97,6 +97,9 @@
     </div>
     <div (click)="read()"
          [ngClass]="notification.isRead ? 'hidden' : 'visible'"
+         Label
+         [delay]="200"
+         labelText="Đánh dấu đã đọc"
          class="mark-as-read">
     </div>
   </div>

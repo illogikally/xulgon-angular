@@ -2,6 +2,8 @@
   position: absolute;
   z-index: 999;
   visibility: hidden;
+  display: flex;
+  justify-content: center;
   
   &.pop {
     animation: pop .1s;
@@ -12,6 +14,7 @@
     font-size: 14px;
     padding: 4px 6px;
     border-radius: 6px;
+    white-space: nowrap;
     background-color: #fff;
     box-shadow: 0 0px 14px 0 rgba(#000, .2), 
       0 0px 4px 0 rgba(#000, .1), 
@@ -25,13 +28,10 @@
     position: absolute;
     bottom: 100%;
     z-index: 1;
-    left: 50%;
-    transform: translateX(-50%);
+    // left: 50%;
+    // transform: translateX(-50%);
   }
-
 }
-
-
 
 @keyframes pop {
   0% {

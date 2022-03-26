@@ -1,4 +1,4 @@
 <div #self class="label">
   <div class="text">{{ text }}</div>
-  <div class="triangle"></div>
+  <div [ngStyle]="{'transform': 'translateX(' + triangleTranslateX + 'px)'}" class="triangle"></div>
 </div>

@@ -98,6 +98,7 @@ import { MyReuseStrategy } from './my-reuse-trategy';
 import { MyRxStompConfig } from './my-rx-stomp.config';
 import { LabelComponent } from './components/share/label/label.component';
 import { LabelDirective } from './components/share/label/label.directive';
+import { CommentSkeletonComponent } from './components/comment-list/comment-skeleton/comment-skeleton.component';
 
 @NgModule({
   declarations: [
@@ -183,6 +184,7 @@ import { LabelDirective } from './components/share/label/label.directive';
     SirvPipe,
     LabelComponent,
     LabelDirective,
+    CommentSkeletonComponent,
   ],
   imports: [
     ImageCropperModule,

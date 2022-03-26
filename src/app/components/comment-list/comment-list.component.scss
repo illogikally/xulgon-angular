@@ -64,6 +64,15 @@
   }
 }
 
+.comment-list {
+  margin-top: 10px;
+  .comments {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+}
+
 .upload-image-container {
   position: relative;
 
@@ -79,7 +88,6 @@
     img {
       object-fit: cover;
     }
-
   }
 
   .reset {
@@ -97,6 +105,7 @@ input[type=file] {
 
 .load-comments {
   font-weight: 500;
+  margin-top: 10px;
   cursor: pointer;
 
   &:hover {
