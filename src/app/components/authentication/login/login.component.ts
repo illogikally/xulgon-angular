@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         '',
         [
           Validators.required,
-          Validators.minLength(6),
+          Validators.pattern('^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}$'),
         ]
       ],
       firstName: ['', Validators.required],

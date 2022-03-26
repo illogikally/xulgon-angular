@@ -109,9 +109,9 @@
 
             <div class="warning"
                  *ngIf=" registerForm.get('password')?.touched
-                   && registerForm.get('password')?.hasError('minlength')">
+                   && registerForm.get('password')?.hasError('pattern')">
               <i class='bx bx-error'></i>
-              <span>Mật khẩu phải dài ít nhất 6 kí tự</span>
+              <span>Mật khẩu phải dài ít nhất 8 ký tự, chứa ít nhất một số, một chữ hoa, một trong các ký tự sau @$!%*#?&</span>
             </div>
 
             <div class="input-group">
