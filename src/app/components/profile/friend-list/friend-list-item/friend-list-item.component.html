@@ -1,17 +1,15 @@
 <div class="friend-list-item">
   <div class="avatar-container">
-    <a routerLink="/{{userDto.profileId}}">
-      <div class="avatar">
-        <img [src]="userDto.avatarUrl | sirv: 100 || 'https://xulgon.sirv.com/assets/avatar.jpg'" />
-      </div>
-    </a>
+    <app-user-ref [userDto]="userDto"
+                  [size]="100"
+                  borderRadius="10px">
+    </app-user-ref>
   </div>
 
   <div class="body">
-    <a routerLink="/{{userDto.profileId}}"
-       class="body-c">
-      <div class="username">
-        {{ userDto.username }}
+    <a class="body-c">
+      <div class="username" style="display: inline-block">
+        <app-user-ref [userDto]="userDto"></app-user-ref>
       </div>
       <div *ngIf="userDto.commonFriendCount > 0 && userDto.id != auth.getPrincipalId()"
            class="common-friend-count">
