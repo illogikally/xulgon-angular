@@ -76,6 +76,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     this.pageHeader = header;
+    
     this.pageAvatarUrl = new SirvPipe().transform(header.avatar?.url, 200);
     this.profileService.nextCurrentProfile(this.pageHeader);
     this.titleService.setTitle(this.pageHeader.name);

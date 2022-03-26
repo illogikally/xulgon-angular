@@ -161,7 +161,7 @@ export class PickAvatarComponent implements OnInit {
       subject = 'ảnh đại diện';
     }
     else {
-      updateFn = this.profileService.uploadAvatar
+      updateFn = this.profileService.uploadCoverPhoto
       notifyUpdate$ = this.messageService.updateCoverPhoto;
       subject = 'ảnh bìa';
     }
