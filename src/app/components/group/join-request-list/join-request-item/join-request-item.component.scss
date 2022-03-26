@@ -20,7 +20,8 @@
       .name--time-ago {
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: center;
+        row-gap: 5px;
 
         .name {
           font-weight: 500;

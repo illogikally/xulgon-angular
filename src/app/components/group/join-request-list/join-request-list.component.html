@@ -14,7 +14,8 @@
     <div class="requests">
       <app-join-request-item (destroy)="deleteRequest($event)"
                              *ngFor="let request of joinRequests"
-                             [request]="request"></app-join-request-item>
+                             [request]="request">
+      </app-join-request-item>
     </div>
   </div>
 </div>

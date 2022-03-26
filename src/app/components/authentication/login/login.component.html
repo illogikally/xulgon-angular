@@ -121,16 +121,19 @@
                      [formControlName]="'email'"
                      required>
             </div>
+
             <div class="warning"
                  *ngIf="!registerForm.get('email')?.value && registerForm.get('email')?.touched">
               <i class='bx bx-error'></i>
               <span>Email không được bỏ trống</span>
             </div>
+
             <div class="warning"
                  *ngIf="validatorHasError(registerForm.get('email'), 'email')">
               <i class='bx bx-error'></i>
               <span>Email không hợp lệ</span>
             </div>
+
             <div class="flex-center">
               <button class="submit-btn register-btn"
                       id="submit-button"
