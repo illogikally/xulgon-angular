@@ -1,4 +1,4 @@
-<div class="root">
+<div [ngStyle]="{'margin': isTimeline ? '0' : 'auto'}" class="root">
   <div (click)="showEdit()"
        class="add-info"
        *ngIf="isProfileOwner && !info && isFormHidden">
@@ -28,7 +28,7 @@
   </form>
   <div class="info"
        *ngIf="info && isFormHidden">
-    <div class="text">
+    <div [ngClass]="isTimeline ? 'timeline' : ''" class="text">
       <i [class]="'bx ' + icon"></i>
       <span>{{ text }}</span>
     </div>

@@ -17,6 +17,7 @@ export class ProfileAboutItemComponent implements OnInit {
   @Input() isEditHidden = false;
   @Input() update!: Subject<any>;
   @Input() isProfileOwner = false;
+  @Input() isTimeline = false;
 
   value = '';
   isFormHidden = true;

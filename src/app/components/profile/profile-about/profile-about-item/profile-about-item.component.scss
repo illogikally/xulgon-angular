@@ -90,6 +90,7 @@
     font-size: 16px;
     font-weight: 500;
     column-gap: 10px;
+
     .text {
       display: flex;
       align-items: center;
@@ -97,6 +98,14 @@
       i {
         font-size: 28px;
         margin-right: 10px;
+      }
+
+      &.timeline.timeline {
+        font-size: 15px;
+
+        i {
+          font-size: 26px;
+        }
       }
     }
   }
