@@ -2,13 +2,14 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-// const hostname = 'xulgon-spring.herokuapp.com';
-const hostname = 'localhost:8080';
+const hostname = 'xulgon-spring.herokuapp.com';
+// const hostname = 'localhost:8080';
 export const environment = {
   production: false,
-  baseApiUrl: `http://${hostname}/api`,
-  baseUrl: `http://${hostname}`,
-  hostname: hostname
+  baseApiUrl: `https://${hostname}/api`,
+  baseUrl: `https://${hostname}`,
+  hostname: hostname,
+  assetsUrl: 'https://xulgon.sirv.com/assets'
 };
 
 /*

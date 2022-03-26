@@ -1,8 +1,8 @@
 <div *ngIf="pageHeader"
      class="user-profile">
   <div class="profile-header">
-    <div [ngStyle]="{'background-color': pageHeader.coverPhoto?.dominantColor}" class="flex-center cover-wrapper">
-      <div class="left"></div>
+    <div class="cover-wrapper">
+      <div [ngStyle]="{'background-color': pageHeader.coverPhoto?.dominantColorLeft} "class="left"></div>
       <div class="cover-avatar">
         <div class="cover">
           <img *ngIf="pageHeader.coverPhoto"
@@ -19,7 +19,7 @@
         </div>
         <div class="avatar-container flex-center">
           <div class="avatar">
-            <app-photo [url]="(pageHeader.avatar?.url | sirv: 200) || 'assets/avatar.jpg'"
+            <app-photo [url]="(pageHeader.avatar?.url | sirv: 200) || 'https://xulgon.sirv.com/assets/avatar.jpg'"
                        [isPhotoViewNavigationReverse]="true"
                        [setId]="pageHeader.avatarPhotoSetId"
                        [id]="pageHeader.avatar?.id">
@@ -41,7 +41,8 @@
           </app-button>
         </div>
       </div>
-      <div class="right"></div>
+      <div [ngStyle]="{'background-color': pageHeader.coverPhoto?.dominantColorRight}" class="right"></div>
+      <div class="radiant-wash"></div>
     </div>
     <div class="flex-center">
       <h1 class="profile-name flex-center">

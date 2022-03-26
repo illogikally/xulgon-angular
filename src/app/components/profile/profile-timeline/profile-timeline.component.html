@@ -47,6 +47,7 @@
                 <div *ngFor="let photo of userPage?.photos">
                   <app-photo [url]="photo.url | sirv: 200"
                              [id]="photo.id"
+                             [isPhotoViewNavigationReverse]="true"
                              [setId]="this.pagePhotoSetId">
                   </app-photo>
                 </div>

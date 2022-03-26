@@ -89,7 +89,7 @@
              [routerLinkActiveOptions]="{exact: true}"
              class="pill">
             <span class="avatar">
-              <img [src]="(principalAvatarUrl | sirv: 40) || 'assets/avatar.jpg'">
+              <img [src]="(principalAvatarUrl | sirv: 40) || 'https://xulgon.sirv.com/assets/avatar.jpg'">
             </span>
             <span class="username">
               <span>{{ principalName }}</span>
@@ -142,7 +142,7 @@
               <a routerLink="/{{ principalProfileId }}"
                  class="to-profile">
                 <div class="avatar">
-                  <img [src]="(principalAvatarUrl | sirv: 100) || 'assets/avatar.jpg'"
+                  <img [src]="(principalAvatarUrl | sirv: 100) || 'https://xulgon.sirv.com/assets/avatar.jpg'"
                        alt="">
                 </div>
                 <div class="body">

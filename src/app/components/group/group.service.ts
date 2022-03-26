@@ -110,7 +110,7 @@ export class GroupService {
   }
 
   getDefaultCoverPhotoUrl(): string {
-    return 'assets/cover.png';
+    return 'https://xulgon.sirv.com/assets/cover.png';
   }
 
   getGroups(size: number, offset: number): Observable<OffsetResponse<GroupResponse>> {
@@ -119,6 +119,6 @@ export class GroupService {
   }
 
   getDefaultCoverUrl() {
-    return 'assets/cover.png';
+    return 'https://xulgon.sirv.com/assets/cover.png';
   }
 }

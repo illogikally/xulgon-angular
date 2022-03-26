@@ -117,7 +117,7 @@ export class AuthenticationService {
   }
 
   getDefaultAvatar(): string {
-    return 'assets/avatar.jpg';
+    return 'https://xulgon.sirv.com/assets/avatar.jpg';
   }
 
   getPrincipalId(): number {

@@ -30,7 +30,6 @@ export class PostListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.postElements);
     this.watchLastPostInView();
   }
 

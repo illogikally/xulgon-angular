@@ -5,7 +5,7 @@
   <div class="avatar--info">
     <div routerLink="/{{ userDto?.profileId }}"
          class="avatar">
-      <img [src]="(userDto?.avatarUrl | sirv: 100) || 'assets/avatar.jpg'" />
+      <img [src]="(userDto?.avatarUrl | sirv: 100) || 'https://xulgon.sirv.com/assets/avatar.jpg'" />
     </div>
     <div class="info--name">
       <div routerLink="/{{ userDto?.profileId }}"

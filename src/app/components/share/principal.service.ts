@@ -11,7 +11,7 @@ export class PrincipalService {
 
   private baseApiUrl = environment.baseApiUrl;
   private avatar?: PhotoResponse;
-  private defaultAvatarUrl = 'assets/avatar.jpg';
+  private defaultAvatarUrl = 'https://xulgon.sirv.com/assets/avatar.jpg';
   constructor(
     private http: HttpClient,
     private authenticationService: AuthenticationService
