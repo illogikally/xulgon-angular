@@ -1,15 +1,14 @@
-import {AnimationEvent} from '@angular/animations';
-import {Location} from '@angular/common';
-import {AfterViewInit, Component, HostListener, OnInit, Renderer2} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {Observable, of, timer} from 'rxjs';
-import {catchError, map, switchMap} from 'rxjs/operators';
-import {slideInOutLeft} from '../../share/animations/slide-in-out-left.animation';
-import {slideInOutRight} from '../../share/animations/slide-in-out-right.animation';
-import {UserService} from '../../share/user.service';
-import {AuthenticationService} from '../authentication.service';
-import {LoginRequest} from './login-request';
+import { AnimationEvent } from '@angular/animations';
+import { Location } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Observable, of, timer } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { slideInOutLeft } from '../../share/animations/slide-in-out-left.animation';
+import { slideInOutRight } from '../../share/animations/slide-in-out-right.animation';
+import { UserService } from '../../share/user.service';
+import { AuthenticationService } from '../authentication.service';
+import { LoginRequest } from './login-request';
 
 @Component({
   selector: 'app-login',
@@ -28,11 +27,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
   isPosting = false;
 
   showSampleAccounts = false;
+  @ViewChild('loginOuter') loginOuterElement!: ElementRef;
+  @ViewChild('loginInner') loginInnerElement!: ElementRef;
+  @ViewChild('loginTop') loginTopElement!: ElementRef;
   constructor(
     private renderer: Renderer2,
     private authService: AuthenticationService,
     private location: Location,
-    private router: Router,
     private userService: UserService,
     private fb: FormBuilder
   ) {
@@ -82,23 +83,27 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   calculateHeight(event: AnimationEvent) {
     if (event.toState === null) {
-      const content = document.querySelector<HTMLElement>('.content');
-      const container = document.querySelector<HTMLElement>('.fc-container');
-      if (container) {
+      const inner = this.loginInnerElement.nativeElement;
+      const outer = this.loginOuterElement.nativeElement;
+      const top = this.loginTopElement.nativeElement;
+      if (outer && inner) {
+        const outerInnerGap = outer.offsetHeight - inner.offsetHeight;
         const eventHeight = event.element.offsetHeight;
-        this.renderer.setStyle(container, 'height', eventHeight + 100 + 'px');
-        const height = eventHeight + 300 + 'px';
-        this.renderer.setStyle(content, 'height', height);
+        const innerHeight = eventHeight + top.offsetHeight;
+        const outerHeight = innerHeight + outerInnerGap;
+        this.renderer.setStyle(inner, 'height', innerHeight + 'px');
+        this.renderer.setStyle(outer, 'height', outerHeight + 'px');
       }
     }
   }
 
   discardHeight(event: AnimationEvent) {
     if (event.toState === null) {
-      const container = document.querySelector<HTMLElement>('.fc-container');
-      if (container) {
-        this.renderer.setStyle(container, 'height', 'auto');
-      }
+      const outer = this.loginOuterElement.nativeElement;
+      const inner = this.loginInnerElement.nativeElement;
+      this.renderer.setStyle(inner, 'height', 'auto');
+      this.renderer.setStyle(outer, 'overflow', 'visible');
+      this.renderer.setStyle(outer, 'height', 'auto');
     }
   }
 
@@ -168,7 +173,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.loginError = false;
         location.href = '';
-      }, (e) => {
+      }, () => {
         this.loginError = true;
         this.isPosting = false;
       });
@@ -176,9 +181,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   switchForm(event: any) {
     event.preventDefault();
-    const container = document.querySelector<HTMLElement>('.fc-container');
-    const height = container?.offsetHeight + 'px';
-    this.renderer.setStyle(container, 'height', height);
+    const outer = this.loginOuterElement.nativeElement;
+    const inner = this.loginInnerElement.nativeElement;
+    this.renderer.setStyle(outer, 'height', outer.offsetHeight + 'px');
+    this.renderer.setStyle(outer, 'overflow', 'hidden');
+    this.renderer.setStyle(inner, 'height', inner.offsetHeight + 'px');
 
     if (this.isLogin) {
       this.loginError = false;
@@ -186,7 +193,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
       this.isLogin = false;
       this.location.go('/register');
       this.showSampleAccounts = false;
-    } else {
+    } 
+    else {
       this.registerError = undefined;
       this.registerForm.reset()
       this.isLogin = true;

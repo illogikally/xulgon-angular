@@ -19,19 +19,12 @@
       </div>
     </div>
   </div>
-  <!-- <div
-  #opts
-  class="opts">
-    <div class="opts-btn">
-      <i class='bx bx-dots-horizontal-rounded'></i>
-      <div class="opts-popup">
-        <div>Đánh dấu là đã đọc</div>
-      </div>
-    </div>
-  </div> -->
   <div
     [ngClass]="isConversationRead() ? 'hidden' : 'visible'"
     #markAsRead
+    Label
+    labelText="Đánh dấu đã đọc"
+    [delay]="200"
     (click)="read()"
     class="mark-as-read">
 
