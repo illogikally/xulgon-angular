@@ -70,16 +70,16 @@ export class NotificationComponent implements OnInit, AfterViewInit {
 
   async getInitNotifications() {
     for (let i = 0; i < 2; ++i) {
-      this.getNotifications(6 * i);
+      await this.getNotifications();
     }
   }
 
-  async getNotifications(offsetArg?: number) {
+  async getNotifications() {
     if (!this.hasNext) return;
 
     const size = 6;
     this.isLoading = true;
-    const offset = offsetArg || this.notifications.length;
+    const offset = this.notifications.length;
     const response = await this.notificationService.getNotifications(size, offset).toPromise();
     this.notifications = this.notifications.concat(response.data);
     this.hasNext = response.hasNext;

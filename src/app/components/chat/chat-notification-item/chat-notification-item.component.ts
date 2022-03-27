@@ -12,21 +12,16 @@ export class ChatNotificationItemComponent implements OnInit {
 
   @Input() conversation!: ConversationNotif;
   @Input() conversationRead!: EventEmitter<number>;
-
   @Output() itemClick = new EventEmitter();
-
   @ViewChild('opts') opts!: ElementRef;
 
-  principalId: number;
+  principalId = this.authenticationService.getPrincipalId();
   isRead = false;
-
 
   constructor(
     private messageService: MessageService,
     private authenticationService: AuthenticationService
-  ) {
-    this.principalId = this.authenticationService.getPrincipalId();
-  }
+  ) {}
 
   ngOnInit(): void {
   }

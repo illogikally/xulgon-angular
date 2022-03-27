@@ -42,7 +42,7 @@
       <div class="notis">
         <app-chat-notification-item (itemClick)="isPopupVisible = false"
                                     [conversationRead]="conversationRead"
-                                    *ngFor="let conversation of latestConversations"
+                                    *ngFor="let conversation of conversations"
                                     [conversation]="conversation">
         </app-chat-notification-item>
       </div>

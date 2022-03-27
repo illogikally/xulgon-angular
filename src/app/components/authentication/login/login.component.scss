@@ -16,7 +16,7 @@ $trans-time: .15s;
   border-radius: 10px;
   display: flex;
   background-color: $bg-color;
-  transition: $trans-time;
+  transition: height $trans-time ease-in-out;
   box-shadow: 0 0 25px 2px rgba(0, 0, 0, .1);
 }
 
@@ -122,11 +122,10 @@ $trans-time: .15s;
       color: $secondary-text;
       transform: translateY(-50%);
     }
-
   }
 
   .fc-container {
-    transition: height .3s;
+    transition: height $trans-time;
     margin: 40px;
   }
 
@@ -134,7 +133,7 @@ $trans-time: .15s;
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   .oauth {

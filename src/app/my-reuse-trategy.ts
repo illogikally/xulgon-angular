@@ -1,12 +1,8 @@
-import { JsonpClientBackend } from "@angular/common/http";
-import { ComponentRef, Injectable } from "@angular/core";
+import { ComponentRef } from "@angular/core";
 import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from "@angular/router";
-import { withLatestFrom } from "rxjs/operators";
 import { MessageService } from "./components/share/message.service";
-import { FriendListComponent } from "./components/profile/friend-list/friend-list.component";
-import { CurrencyPipe } from "@angular/common";
 
-interface RouteStorageObject {
+interface RouteHandleStorage {
 	snapshot: ActivatedRouteSnapshot;
 	handle: DetachedRouteHandleExt | null;
 }
@@ -21,13 +17,10 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 	) {
 	}
 
-	storedRoutes: { [key: string]: RouteStorageObject } = {};
+	storedRoutes: { [key: string]: RouteHandleStorage } = {};
 
 	shouldDetach(route: ActivatedRouteSnapshot): boolean {
-		if (!route.routeConfig) {
-			return false;
-		}
-		return true;
+		return !!route.routeConfig;
 	}
 
 	store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandleExt | null): void {
@@ -43,18 +36,13 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 
 	shouldAttach(route: ActivatedRouteSnapshot): boolean {
 		const storedRoute = this.storedRoutes[this.getKey(route)];
-
 		let canAttach = !!route.routeConfig && !!storedRoute;
+
 		if (canAttach) {
 			const paramsMatch = this.compare(route.params, storedRoute.snapshot.params);
 			const queryParamsMatch = this.compare(route.queryParams, storedRoute.snapshot.queryParams);
-
 			const shouldAttach =  paramsMatch && queryParamsMatch;
-
-			if (shouldAttach) {
-				this.callHook(storedRoute.handle, 'onAttach');
-				
-			} 
+			shouldAttach && this.callHook(storedRoute.handle, 'onAttach');
 			return shouldAttach
 		}
 		return false;
@@ -67,20 +55,15 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 
 	shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
 		const should = 
-			future.routeConfig === curr.routeConfig
+			future.routeConfig === curr.routeConfig 
 			&& this.compare(future.params, curr.params)
 
-		if (should) {
-			this.messageService.routeReuse$.next(future);
-		}
-
+		should && this.messageService.routeReuse$.next(future);
 		return should;
 	}
 
 	private compare(base: any, compare: any): boolean {
-
 		for (let baseProperty in base) {
-
 			if (compare.hasOwnProperty(baseProperty)) {
 				switch (typeof base[baseProperty]) {
 					case 'object':
@@ -98,12 +81,11 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 					default:
 						if (base[baseProperty] != compare[baseProperty]) { return false }
 				}
-			} else {
-
+			} 
+			else {
 				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -112,10 +94,10 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 
 		path += 
 			route.pathFromRoot
-			.map(route => route.routeConfig?.path as string
-										+ route.routeConfig?.component?.name as string
-										+ JSON.stringify(route.params))
-			.join("->");
+				.map(route => route.routeConfig?.path as string
+											+ route.routeConfig?.component?.name as string
+											+ JSON.stringify(route.params))
+				.join("->");
 
 		const firstChild = route.firstChild;
 		path += 
@@ -127,7 +109,7 @@ export class MyReuseStrategy implements RouteReuseStrategy {
 		return path;
 	}
 
-	private callHook(detachedTree: DetachedRouteHandleExt | null, hookName: string): void {
+	private callHook(detachedTree: DetachedRouteHandleExt | null, hookName: string) {
     const componentRef = detachedTree?.componentRef;
     if (
 			componentRef &&
