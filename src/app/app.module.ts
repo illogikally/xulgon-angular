@@ -22,7 +22,7 @@ import {LoggedInModule} from "./logged-in/logged-in.module";
     CoreModule,
     // PostModule,
     // LoggedInModule,
-    AuthenticationModule,
+    // AuthenticationModule,
 
     BrowserModule,
     AppRoutingModule,

@@ -8,7 +8,6 @@ import {PhotoListComponent} from "./photo-list/photo-list.component";
 import {ProfileAboutComponent} from "../shared/components/profile-about/profile-about.component";
 
 const routes: Routes = [
-  // LoggedInService.withLoggedIn([
   {
     path: '',
     component: ProfileComponent,
@@ -31,7 +30,6 @@ const routes: Routes = [
       { path: 'photos', component: PhotoListComponent }
     ]
   },
-  // ])
 ];
 
 @NgModule({
