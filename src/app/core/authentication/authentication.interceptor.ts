@@ -48,29 +48,29 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   private handleAuthErrors(
     req: HttpRequest<any>,
     next: HttpHandler
-    ): Observable<HttpEvent<any>> {
-      if (!this.isTokenRefreshing) {
-        this.isTokenRefreshing = true;
-        this.refreshTokenSubject.next(null);
+  ): Observable<HttpEvent<any>> {
+    if (!this.isTokenRefreshing) {
+      this.isTokenRefreshing = true;
+      this.refreshTokenSubject.next(null);
 
-        return this.auth$.refreshAuthToken().pipe(
-          switchMap((refreshTokenResponse: LoginResponse) => {
-            this.isTokenRefreshing = false;
-            this.refreshTokenSubject.next(refreshTokenResponse.token);
-            this.auth$.storeResponse(refreshTokenResponse);
-            return next.handle(this.addToken(req, refreshTokenResponse.token));
-          })
-        );
-      }
-      else {
-        return this.refreshTokenSubject.pipe(
-          filter(result => result !== null),
-          take(1),
-          switchMap(_ => {
-            return next.handle(this.addToken(req, this.auth$.getToken()))
-          })
-        );
-      }
+      return this.auth$.refreshAuthToken().pipe(
+        switchMap((refreshTokenResponse: LoginResponse) => {
+          this.isTokenRefreshing = false;
+          this.refreshTokenSubject.next(refreshTokenResponse.token);
+          this.auth$.storeResponse(refreshTokenResponse);
+          return next.handle(this.addToken(req, refreshTokenResponse.token));
+        })
+      );
+    }
+    else {
+      return this.refreshTokenSubject.pipe(
+        filter(result => result !== null),
+        take(1),
+        switchMap(_ => {
+          return next.handle(this.addToken(req, this.auth$.getToken()))
+        })
+      );
+    }
   }
 
   private addToken(req: HttpRequest<any>, authenticationToken: any) {

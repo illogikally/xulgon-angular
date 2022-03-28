@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "ng build",
+    "build": "ng build && gzipper compress ./dist --verbose",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve": "ng serve",
-    "heroku-postbuild": "ng build && npm install -g angular-http-server",
-    "start": "angular-http-server --path dist/xulgon --rootFile index.html -p $PORT"
+    "heroku-postbuild": "ng build && gzipper compress -i js,css.html ./dist --verbose",
+    "start": "pwd && node server.js --path dist/xulgon --rootFile index.html -p $PORT"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +40,7 @@
     "@angular/compiler-cli": "~13.2.3",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
+    "gzipper": "^7.0.0",
     "jasmine-core": "~3.7.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",

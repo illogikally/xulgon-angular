@@ -68,16 +68,10 @@ export class NotificationComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async getInitNotifications() {
-    for (let i = 0; i < 2; ++i) {
-      await this.getNotifications();
-    }
-  }
-
   async getNotifications() {
     if (!this.hasNext) return;
 
-    const size = 6;
+    const size = 12;
     this.isLoading = true;
     const offset = this.notifications.length;
     const response = await this.notificationService.getNotifications(size, offset).toPromise();
@@ -95,7 +89,7 @@ export class NotificationComponent implements OnInit, AfterViewInit {
 
   showNotifications() {
     if (!this.isInit) {
-      this.getInitNotifications();
+      this.getNotifications();
     }
     this.isInit = true;
     this.isPopupVisible = !this.isPopupVisible;
