@@ -1,0 +1,34 @@
+@import "../../../../styles";
+
+.profile-about {
+  @include card(10px);
+  padding: 15px;
+
+  .content {
+    .infos {
+      .skeleton {
+        width: 100%;
+        height: 17px;
+        margin: 10px 0px;
+        border-radius: 10px;
+        @extend %loading-animation;
+      }
+
+      .skeleton:nth-child(1) {
+        width: 100%;
+      }
+
+      .skeleton:nth-child(2) {
+        width: 80%;
+      }
+
+      .skeleton:nth-child(3) {
+        width: 60%;
+      }
+
+      .skeleton:nth-child(4) {
+        width: 90%;
+      }
+    }
+  }
+}

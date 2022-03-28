@@ -1,0 +1,22 @@
+<div [ngStyle]="{'margin-bottom': isLastMsg() ? '10px' : '2px'}"
+     class="chat-msg">
+  <div [ngClass]="thisMsg?.user?.id != principalId ? 'your-msg' : 'my-msg'">
+    <div [ngClass]="{'first-msg': isFirstMsg(), 'last-msg': isLastMsg()}"
+         class="content">
+      <div class="avatar">
+        <div class="avatar-container">
+          <img [src]="avatarUrl || 'https://xulgon.sirv.com/assets/avatar.jpg'"/>
+        </div>
+      </div>
+      <div class="body">
+        <div
+          class="text">
+          <span>{{ thisMsg?.message }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="displayTimeCheck()" class="time-stamp">
+    {{ getCreatedDate() }}
+  </div>
+</div>

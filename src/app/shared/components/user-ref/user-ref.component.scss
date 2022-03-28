@@ -1,0 +1,49 @@
+@import "../../../../styles";
+
+:host {
+  display: flex;
+}
+
+.user-ref-container {
+  --font-size: 15px;
+  --font-weight: 500;
+  --avatar-border-radius: 10px;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  width: 100%;
+  display: inline-block;
+}
+
+.user-ref-a {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  z-index: 1;
+
+  &:hover {
+    text-decoration: underline;
+
+  }
+
+  .username {
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+    position: relative;
+    left: 0;
+  }
+
+  .avatar-container {
+    border: 1px solid rgba(#333, .2);
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--avatar-border-radius);
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      aspect-ratio: 1;
+    }
+  }
+}

@@ -1,0 +1,155 @@
+@import '../../styles';
+
+.post {
+  @include scrollbar(15px);
+  background-color: transparent;
+  padding-bottom: 0;
+  position: relative;
+  padding: 10px 15px;
+  max-height: 100%;
+
+  img {
+    user-select: none;
+  }
+
+  .opts-container {
+    position: absolute;
+    right: 10px;
+
+    .options {
+      @include x-btn(35px, #444, $bg-color);
+      position: relative;
+
+      i {
+        font-size: 25px;
+      }
+    }
+    .options-list {
+      @extend %opts;
+      z-index: 1;
+
+      &::before {
+        transform: none;
+        left: auto;
+        right: 10px;
+      }
+      left: auto;
+      right: 0;
+      transform: none;
+      i {
+        font-size: 25px;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .post-body {
+    min-height: 20px;
+    margin-top: 10px;
+
+    &__text {
+      white-space: pre-line;
+      -webkit-line-clamp: 10;
+      display: -webkit-box;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+    }
+
+    .unclamp {
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .media {
+      margin: 0px -15px;
+      margin-top: 10px;
+    }
+  }
+
+  .post-meta {
+    display: flex ;
+    justify-content: space-between;
+    margin-top: 10px;
+    user-select: none;
+    font-size: 14px;
+    color: grey;
+
+    .reaction-count, .comment-count, .share-count {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .comment-count {
+      margin-right: 15px;
+    }
+  }
+
+  .post-actions {
+    user-select: none;
+    display: flex;
+    border-top: 1px solid #00000033;
+    margin-top: 10px;
+    padding: 5px 0;
+    color: grey;
+    font-weight: 500;
+
+    .share-action {
+      position: relative;
+
+      &__options {
+        font-size: 16px;
+        color: #050505;
+
+        > div {
+          border-radius: 5px;
+          padding: 5px;
+
+          &:hover {
+            background-color: #f0f2f5;
+          }
+        }
+      }
+    }
+
+    > * {
+      border-radius: 5px;
+      @extend %fc;
+      width: 100%;
+      padding: 6px 0px;
+      height: 20px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #efefef;
+      }
+
+      span {
+        @extend %fc;
+      }
+
+      i {
+        margin-right: 7px;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+a {
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+}
+
+.comments {
+  border-top: 1px solid rgba(#333, .2);
+}

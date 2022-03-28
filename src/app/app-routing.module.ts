@@ -1,160 +1,47 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthenticationGuard } from './components/authentication/authentication.guard';
-import { LoginGuard } from './components/authentication/login.guard';
-import { LoginComponent } from './components/authentication/login/login.component';
-import { Oauth2CallbackComponent } from './components/authentication/login/oauth2-callback/oauth2-callback.component';
-import { ErrorPageComponent } from './components/error-page/error-page.component';
-import { FriendRequestComponent } from './components/friend-request/friend-request.component';
-import { GroupAboutComponent } from './components/group/group-about/group-about.component';
-import { GroupAdminGuard } from './components/group/group-admin.guard';
-import { GroupContentComponent } from './components/group/group-content/group-content.component';
-import { GroupDiscoverComponent } from './components/group/group-discover/group-discover.component';
-import { GroupFeedComponent } from './components/group/group-feed/group-feed.component';
-import { GroupGeneralComponent } from './components/group/group-general/group-general.component';
-import { GroupMediaComponent } from './components/group/group-media/group-media.component';
-import { GroupMemberComponent } from './components/group/group-member/group-member.component';
-import { GroupSettingsComponent } from './components/group/group-settings/group-settings.component';
-import { GroupTimelineComponent } from './components/group/group-timeline/group-timeline.component';
-import { GroupComponent } from './components/group/group.component';
-import { JoinRequestListComponent } from './components/group/join-request-list/join-request-list.component';
-import { NewsFeedComponent } from './components/news-feed/news-feed.component';
-import { PhotoViewerPlaceholderComponent } from './components/photo/photo-viewer/photo-viewer-placeholder/photo-viewer-placeholder.component';
-import { PostViewComponent } from './components/post/post-view/post-view.component';
-import { FriendListComponent } from './components/profile/friend-list/friend-list.component';
-import { PhotoListComponent } from './components/profile/photo-list/photo-list.component';
-import { ProfileAboutComponent } from './components/profile/profile-about/profile-about.component';
-import { ProfileHeaderResolver } from './components/profile/profile-header.resolver';
-import { ProfileTimelineComponent } from './components/profile/profile-timeline/profile-timeline.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { ByGroupsComponent } from './components/search/by-groups/by-groups.component';
-import { ByPeopleComponent } from './components/search/by-people/by-people.component';
-import { ByPostsComponent } from './components/search/by-posts/by-posts.component';
-import { SearchComponent } from './components/search/search.component';
-import { LoggedInComponent } from './components/share/logged-in/logged-in.component';
+import {RouterModule, Routes} from '@angular/router';
+import {LoginComponent} from "./authentication/login/login.component";
+import {LoginGuard} from "./authentication/login/login.guard";
+import {Oauth2CallbackComponent} from "./authentication/oauth2-callback/oauth2-callback.component";
+import {LoggedInComponent} from "./logged-in/logged-in.component";
+import {AuthenticationGuard} from "./core/authentication/authentication.guard";
+import {
+  PhotoViewerPlaceholderComponent
+} from "./logged-in/photo-viewer/photo-viewer-placeholder/photo-viewer-placeholder.component";
+import {PostViewComponent} from "./post-view/post-view.component";
+import {ErrorPageComponent} from "./error-page/error-page.component";
+import {NgModule} from "@angular/core";
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
-  { path: 'register', component: LoginComponent },
-  {
-    path: 'oauth2',
-    children: [
-      { path: 'callback', component: Oauth2CallbackComponent }
-    ]
-  },
+  {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
+  {path: 'register', component: LoginComponent, canActivate: [LoginGuard]},
+  {path: 'oauth2/callback', component: Oauth2CallbackComponent},
   {
     path: '',
     component: LoggedInComponent,
     canActivate: [AuthenticationGuard],
     children: [
-      { path: '', component: NewsFeedComponent },
+      {path: '', loadChildren: () => import('./news-feed/news-feed.module').then(m => m.NewsFeedModule)},
       {
         path: 'friends',
-        component: FriendRequestComponent,
-        children: [
-          {
-            path: ':id',
-            component: ProfileComponent,
-            resolve: {
-              header: ProfileHeaderResolver
-            },
-            children: [
-              { path: '', component: ProfileTimelineComponent },
-              { path: 'about', component: ProfileAboutComponent },
-              { path: 'friends', component: FriendListComponent },
-              { path: 'photos', component: PhotoListComponent }
-            ]
-          }
-        ]
+        loadChildren: () => import('./friend-request/friend-request.module').then(m => m.FriendRequestModule)
       },
       {
         path: 'search',
-        component: SearchComponent,
-        children: [
-          { path: '', redirectTo: 'people', pathMatch: 'full' },
-          { path: 'people', component: ByPeopleComponent },
-          { path: 'groups', component: ByGroupsComponent },
-          { path: 'posts', component: ByPostsComponent },
-        ]
-
+        loadChildren: () => import('./search/search.module').then(m => m.SearchModule)
       },
-      {
-        path: 'photo',
-        children: [
-          { path: ':id', component: PhotoViewerPlaceholderComponent },
-        ]
-      },
+      {path: 'photo/:id', component: PhotoViewerPlaceholderComponent},
       {
         path: 'groups',
-        children: [
-          { path: '', redirectTo: 'feed', pathMatch: 'full' },
-          {
-            path: 'feed', component: GroupGeneralComponent,
-            children: [
-              { path: '', component: GroupFeedComponent, pathMatch: 'full' },
-              { path: 'discover', component: GroupDiscoverComponent },
-              {
-                path: ':id',
-                component: GroupComponent,
-                children: [
-                  {
-                    path: '',
-                    component: GroupContentComponent,
-                    children: [
-                      { path: '', component: GroupTimelineComponent, pathMatch: 'full', data: { isPostView: false } },
-                      { path: 'posts/:id', component: GroupTimelineComponent, data: { isPostView: true } },
-                      { path: 'about', component: GroupAboutComponent },
-                      { path: 'media', component: GroupMediaComponent },
-                      { path: 'members', component: GroupMemberComponent },
-                    ]
-                  },
-                ]
-              }
-            ]
-          },
-          {
-            path: ':id',
-            component: GroupComponent,
-            children: [
-              {
-                path: '',
-                component: GroupContentComponent,
-                children: [
-                  { path: '', component: GroupTimelineComponent, pathMatch: 'full', data: { isPostView: false } },
-                  { path: 'posts/:id', component: GroupTimelineComponent, data: { isPostView: true } },
-                  { path: 'about', component: GroupAboutComponent },
-                  { path: 'media', component: GroupMediaComponent },
-                  { path: 'members', component: GroupMemberComponent },
-                ]
-              },
-              { path: 'member_request', component: JoinRequestListComponent, canActivate: [GroupAdminGuard] },
-              { path: 'settings', component: GroupSettingsComponent, canActivate: [GroupAdminGuard] }
-            ]
-          }
-        ]
+        loadChildren: () => import('./group/group.module').then(m => m.GroupModule),
       },
-      {
-        path: ':id/posts/:id',
-        component: PostViewComponent
-      },
+      {path: ':id/posts/:id', component: PostViewComponent},
       {
         path: ':id',
-        component: ProfileComponent,
-        resolve: {
-          header: ProfileHeaderResolver
-        },
-        children: [
-          { path: '', component: ProfileTimelineComponent, pathMatch: 'full' },
-          { path: 'about', component: ProfileAboutComponent },
-          { path: 'friends', component: FriendListComponent },
-          { path: 'photos', component: PhotoListComponent }
-        ]
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)
       },
-      { path: '**', component: ErrorPageComponent, data: { displayErrorPage: true } }
+      {path: '**', component: ErrorPageComponent, data: {displayErrorPage: true}}
     ]
   },
-
-
 ];
 
 @NgModule({
@@ -167,4 +54,5 @@ const routes: Routes = [
   )],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

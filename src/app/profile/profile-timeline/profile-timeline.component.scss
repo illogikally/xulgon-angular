@@ -1,0 +1,145 @@
+@import "../../../styles";
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  max-width: 892px;
+  display: grid;
+  grid-template-columns: 1fr 515px;
+  grid-gap: 17px;
+  width: 100%;
+
+  &.collapse.collapse {
+    max-width: 515px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .no-posts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #555;
+    h3 {
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+
+  .sidebar-container {
+    font-weight: 500;
+  }
+
+  .sidebar__inner {
+    display: flex;
+    will-change: position, transform;
+    flex-direction: column;
+    row-gap: 17px;
+
+    > *:not(:first-child) {
+      @include card(10px);
+      background-color: #fff;
+      padding: 15px 15px;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin-block-start: .7em;
+    }
+
+    .intro {
+
+      &__photos {
+        max-height: 600px;
+
+        h3 {
+          all: unset;
+          display: flex;
+          font-size: 1.3rem;
+          font-weight: 600;
+          align-items: center;
+        }
+
+        .intro-title {
+          padding-bottom: 10px;
+          position: relative;
+          display: flex;
+          align-items: center;
+
+          .to-photos {
+            position: absolute;
+            right: 0;
+          }
+        }
+
+        .photo > div {
+          display: grid;
+          grid-gap: 3px;
+          border-radius: 10px;
+          overflow: hidden;
+          grid-template-columns: repeat(3, 1fr);
+
+          > div {
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+          }
+
+        }
+
+      }
+
+      &__friends {
+        &__title {
+          position: relative;
+          display: flex;
+          align-items: center;
+          padding-bottom: 10px;
+
+          h3 {
+            margin: 0;
+          }
+
+          .to-photos {
+            position: absolute;
+            right: 0;
+          }
+        }
+
+        &__skeletons {
+          display: grid;
+          grid-gap: 3px;
+          overflow: hidden;
+          grid-template-columns: repeat(3, 1fr);
+          border-radius: 10px;
+
+          .skeleton {
+            @extend %loading-animation;
+            aspect-ratio: 1;
+          }
+        }
+
+        &__friends {
+          display: grid;
+          grid-gap: 10px;
+          grid-template-columns: repeat(3, 1fr);
+
+          .img-container {
+            width: 100%;
+            margin-bottom: 3px;
+            aspect-ratio: 1;
+          }
+
+          .common-friend-count {
+            font-size: 14px;
+            font-size: 13px;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+  }
+}

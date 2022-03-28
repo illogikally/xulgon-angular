@@ -1,0 +1,150 @@
+@import '../../styles';
+
+.friend-request {
+  display: flex;
+
+  .sidebar-container {
+    flex: 0 0 360px;
+    position: relative;
+
+    .sidebar {
+      position: fixed;
+      z-index: 110;
+      box-shadow: 1px 0 3px rgba(#000, .2);
+      top: 56px;
+      box-sizing: border-box;
+      left: 0;
+      background-color: #fff;
+      width: 360px;
+      bottom: 0;
+      padding: 15px 10px;
+
+      .title {
+        height: 50px;
+        font-size: 25px;
+        font-weight: 700;
+
+      }
+
+      .content {
+        overflow-y: auto;
+        @include scrollbar(15px);
+
+        a {
+          display: block;
+        }
+
+        .skeleton {
+          display: flex;
+          column-gap: 10px;
+          padding: 10px;
+
+          .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            @extend %loading-animation;
+          }
+
+          .body {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            row-gap: 5px;
+
+            .text {
+              @extend %loading-animation;
+              width: 60%;
+              border-radius: 10px;
+              height: 15px;
+            }
+
+            .buttons {
+              display: flex;
+              justify-content: space-between;
+              width: 100%;
+
+              div {
+                @extend %loading-animation;
+                flex: 0 0 48%;
+                border-radius: 5px;
+                height: 37px;
+              }
+            }
+          }
+        }
+
+        .request {
+          display: flex;
+          padding: 10px;
+          border-radius: 10px;
+
+          &:hover {
+            background-color: #efefef;
+          }
+
+          .avatar {
+            flex: 0 0 60px;
+            height: 60px;
+            @extend %fc;
+            margin-right: 10px;
+            border-radius: 50%;
+            border: 1px solid rgba(#555, .2);
+            overflow: hidden;
+
+            img {
+              object-fit: cover;
+              width: 100%;
+            }
+          }
+
+          .request-info {
+            flex-grow: 1;
+            font-size: 14px;
+            color: var(--secondary-text);
+
+            > * {
+              padding: 3px 0;
+            }
+
+            .username--time {
+              display: flex;
+              justify-content: space-between;
+
+              .username {
+                font-weight: 500;
+                color: var(--primary-text);
+                font-size: 15px;
+              }
+            }
+
+            .request-actions {
+
+              display: flex;
+              justify-content: space-between;
+
+              .accept-request {
+                flex-basis: 48%;
+                @include button(#1877f2, #fff);
+              }
+
+              .delete-request {
+                flex-basis: 48%;
+                @include button(#ddd, #000);
+              }
+            }
+          }
+
+        }
+      }
+
+    }
+  }
+
+  .user-profile {
+    flex-grow: 1;
+    position: relative;
+  }
+}
+

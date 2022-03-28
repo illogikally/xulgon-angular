@@ -1,0 +1,14 @@
+@import "../../styles";
+
+.post-view {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  &__inner {
+    @include card(10px);
+  }
+  padding-bottom: 20px;
+
+}

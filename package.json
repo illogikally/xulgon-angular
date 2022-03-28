@@ -6,6 +6,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "serve": "ng serve",
     "heroku-postbuild": "ng build && npm install -g angular-http-server",
     "start": "angular-http-server --path dist/xulgon --rootFile index.html -p $PORT"
   },

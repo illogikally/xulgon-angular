@@ -1,0 +1,194 @@
+<form class="create-post"
+      enctype="multipart/form-data"
+      [ngStyle]="{'max-width': width}"
+      [formGroup]="postForm"
+      (ngSubmit)="submit()">
+  <app-card-header (close)="hide()"
+                   title="Tạo bài viết">
+  </app-card-header>
+  <div class="create-post-body">
+    <app-spinner *ngIf="isPosting"
+                 size="40px"
+                 [isFullScreen]="true"
+                 [displayText]="true"
+                 text="Đang đăng bài">
+    </app-spinner>
+    <div class="post-info">
+      <div class="avatar">
+        <img [src]="(principalAvatarUrl | sirv: 40) || 'https://xulgon.sirv.com/assets/avatar.jpg'">
+      </div>
+      <div class="name--privacy">
+        <div class="name">{{ authenticationService.getUserFullName() }}</div>
+        <div class="privacy">
+          <span *ngIf="groupName"
+                class="page-target">
+            <span *ngIf=" groupPrivacy == 'GROUP' ">
+              <i class='bx bxs-network-chart'></i>
+            </span>
+            <span *ngIf=" groupPrivacy == 'PUBLIC' ">
+              <i class='bx bx-globe'></i>
+            </span>
+            <span class="group-name">
+              {{ groupName }}
+            </span>
+          </span>
+          <span *ngIf="!groupName"
+                (click)="showPrivacyOpts()"
+                #privacyBtn>
+            <span *ngIf="privacy == 'PUBLIC'">
+              <i class='bx bx-globe'></i>
+              <span style="padding: 0 3px">Công khai</span>
+            </span>
+            <span *ngIf="privacy == 'FRIEND'">
+              <i class='bx bx-group'></i>
+              <span style="padding: 0 3px">Bạn bè</span>
+            </span>
+            <span *ngIf="privacy == 'ME'">
+              <i class='bx bxs-lock-alt'></i>
+              <span style="padding: 0 3px">Mình tôi</span>
+            </span>
+            <i style="font-size: 9px; margin-left: 2px"
+               class='bx bxs-down-arrow'></i>
+          </span>
+          <div (clickOutside)="clickOutsidePrivacyOpts()"
+               *ngIf="isPrivacyOptsVisible"
+               [delayClickOutsideInit]="true"
+               class="privacy-opts">
+            <div (click)="setPrivacy('PUBLIC')"
+                 class="public">
+              <i class='bx bx-globe'></i>
+              <span>Công khai <br />
+                <span class="secondary-text">
+                  (Ai cũng có thể xem bài viết này)
+                </span>
+              </span>
+            </div>
+            <div (click)="setPrivacy('FRIEND')"
+                 class="friend">
+              <i class='bx bx-group'></i>
+              <span>Bạn bè <br />
+                <span class="secondary-text">
+                  (Chỉ bạn của tôi mới xem được bài viết này)
+                </span>
+              </span>
+            </div>
+            <div (click)="setPrivacy('ME')"
+                 class="me">
+              <i class='bx bxs-lock-alt'></i>
+              <span>Chỉ mình tôi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="post-content">
+      <div class="post-text">
+        <textarea #textArea
+                  [autofocus]="true"
+                  placeholder="Hãy viết gì đó..."
+                  spellcheck="false"
+                  (input)=textAreaAutoGrow($event)
+                  formControlName="textarea"
+                  required
+                  autofocus>
+        </textarea>
+      </div>
+      <div *ngIf="photos.length > 0"
+           class="post-photos">
+        <div *ngIf="photos.length > 2">
+          <div *ngFor="let photo of photos.slice(2, 4); index as index">
+            <div [ngClass]="photos.length == 3 ? 'three': ''">
+              <img [src]="photo.url">
+              <div class="photos-left"
+                   *ngIf="index == 1 && photos.length - 4 > 0">
+                <span>+{{ photos.length - 4 }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div *ngFor="let photo of photos.slice(0, 2); index as index">
+            <div>
+              <img [src]="photo.url">
+            </div>
+          </div>
+        </div>
+        <app-button [isRounded]="true"
+                    width="35px"
+                    iconSize="27px"
+                    color="#fff"
+                    class="x-btn"
+                    background="rgba(0,0,0,.1)"
+                    backgroundHover="rgba(0,0,0,.2)"
+                    height="35px">
+          <div (click)="abort()"
+               button="">
+            <i class='x-icon'></i>
+          </div>
+        </app-button>
+      </div>
+      <app-shared-content [isCreatePostChild]="true"
+                          [isDisabled]="true"
+                          *ngIf="sharedContent"
+                          [content]="sharedContent">
+      </app-shared-content>
+    </div>
+    <div class="post-addition">
+      <div>Thêm vào bài viết</div>
+
+      <div class="post-addition__actions">
+        <div id="emoji-picker-button"
+             #addEmoji
+             class="actions__add-emoji">
+          <div (click)="isEmojiPickerHidden = !isEmojiPickerHidden"
+               class="add-emoji__button">
+            <i class='bx bx-smile'></i>
+          </div>
+
+          <app-popup [parent]="addEmoji"
+                     [triangle]="false"
+                     (clickOutside)="isEmojiPickerHidden = true"
+                     exclude="#emoji-picker-button"
+                     position="ABOVE"
+                     padding="0px"
+                     *ngIf="!isEmojiPickerHidden">
+            <emoji-mart [showSingleCategory]="true"
+                        [darkMode]="false"
+                        [enableSearch]="false"
+                        [emojiSize]="30"
+                        [exclude]="['recent']"
+                        [perLine]="8"
+                        [sheetSize]="64"
+                        [set]="'facebook'"
+                        (emojiSelect)="onEmojiSelect($event)"
+                        [ngStyle]="{'display': 'flex'}"
+                        [showPreview]="false">
+            </emoji-mart>
+          </app-popup>
+        </div>
+
+        <div class="actions__add-photo">
+          <input formControlName="fileInput"
+                 accept="image/*"
+                 type="file"
+                 (change)="onSelectImage($event)"
+                 #uploadImage>
+
+          <div [ngStyle]="sharedContent ? {
+                'color': '#ddd',
+                'cursor': 'not-allowed'
+                } : {}"
+               (click)="!sharedContent ? uploadImage.click() : null"
+               class="upload-image">
+            <i class='bx bxs-file-image'></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit"
+            class="btn-post"
+            [attr.disabled]="(!sharedContent && !photos.length && !textArea.value.trim()) ? true : null">
+      <span>Đăng</span>
+    </button>
+  </div>
+</form>

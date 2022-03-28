@@ -1,0 +1,46 @@
+@import "../../../../styles";
+
+.photo-item {
+  position: relative;
+  background-color: transparent;
+  color: transparent;
+  box-sizing: border-box;
+  background-clip: content-box;
+  border-radius: 10px;
+
+  .photo-container {
+    border-radius: 10px;
+    border: 1px solid rgba(#777, .2);
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1;
+  }
+
+  .options {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    [button] {
+      visibility: hidden;
+      background-color: rgba(#000, .1);
+      border-radius: 50%;
+      &:hover {
+        background-color: rgba(#111, .2);
+      }
+    }
+
+    [options] {
+      color: #050505;
+    }
+
+  }
+
+  &:hover {
+    .options {
+      [button] {
+        visibility: visible;
+      }
+    }
+  }
+}

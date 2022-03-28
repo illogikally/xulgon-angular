@@ -1,0 +1,33 @@
+@import "../../../../styles";
+
+.member {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  position: relative;
+  font-size: 15px;
+
+  .options {
+    position: absolute;
+    right: 10px;
+  }
+
+  .avatar {
+    margin-right: 15px;
+
+    .avatar-cont {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid rgba(#333, .2);
+
+      img {
+        object-fit: cover;
+        aspect-ratio: 1;
+        width: 100%;
+      }
+    }
+  }
+}

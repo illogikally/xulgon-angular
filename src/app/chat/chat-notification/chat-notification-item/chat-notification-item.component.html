@@ -1,0 +1,30 @@
+<div class="chat-noti-item">
+  <div (click)="openChatBox()"
+       class="content">
+    <div class="avatar">
+      <div class="avatar-container">
+        <img [src]="conversation.user.avatarUrl || 'https://xulgon.sirv.com/assets/avatar.jpg'" />
+      </div>
+    </div>
+    <div class="body">
+      <div class="name">{{ conversation.user.username }}</div>
+      <div class="msg--ago">
+        <span [ngStyle]="{'color': isConversationRead() ? 'inherit' : '#1877f2' }"
+              class="msg">
+          <span *ngIf="conversation.latestMessage.user.id == principalId">Bạn: </span>
+          {{ conversation.latestMessage.message }}
+        </span>
+        <span>&nbsp;·&nbsp;</span>
+        <span class="ago">{{ conversation.latestMessage.createdAgo }}</span>
+      </div>
+    </div>
+  </div>
+  <div [ngClass]="isConversationRead() ? 'hidden' : 'visible'"
+       Label
+       labelText="Đánh dấu đã đọc"
+       [delay]="200"
+       (click)="read()"
+       class="mark-as-read">
+
+  </div>
+</div>

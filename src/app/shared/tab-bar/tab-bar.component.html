@@ -1,0 +1,86 @@
+<div #actionMenu
+     class="actions-menu-container flex-center">
+  <div class="wrapper">
+    <div class="actions-menu">
+      <div [hidden]="!isTabBarSticky"
+           class="to-top">
+        <a href="pagePath"
+           (click)="scrollToTop($event)"
+           class="container">
+          <div class="content">
+            <div class="avatar-container">
+              <div class="avatar">
+                <img [src]="avatar || (pageType == 'PROFILE' ? 'https://xulgon.sirv.com/assets/avatar.jpg' : 'https://xulgon.sirv.com/assets/cover.png')">
+              </div>
+            </div>
+
+            <div class="name">
+              <span>{{ pageName }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div [ngClass]="isTabBarConfigured ? '' : 'hidden'"
+           #tabsWrapper
+           class="tab-bar-wrapper">
+        <div #tabsElement
+             [ngClass]="isTabBarSticky || blocked ? 'hidden' : ''"
+             class="tab-bar">
+          <a *ngFor="let tab of tabs"
+             (click)="tab.disabled ? null : locationGo(tab.path)"
+             [routerLink]="tab.disabled ? null : './' + tab.path"
+             [skipLocationChange]="true"
+             routerLinkActive="tab-active"
+             Label
+             labelText="Not implemented"
+             [disabled]="!tab.disabled"
+             class="visible-tab"
+             [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <div class="flex-center">
+                <span>{{ tab.name }}</span>
+              </div>
+            </div>
+          </a>
+          <li [ngClass]="hiddenTabs.length && !isTabBarSticky ? '' : 'hidden'"
+              #moreTabs
+              class="more-tabs">
+            <div id="more-tabs"
+                 (click)="isMoreTabsVisible = !isMoreTabsVisible">
+              <div class="flex-center">
+                <span>Thêm</span>
+                <i class='bx bx-caret-down'></i>
+              </div>
+            </div>
+            <app-popup *ngIf="isMoreTabsVisible"
+                       [triangle]="false"
+                       aligment="LEFT"
+                       [margin]="-5"
+                       [parent]="moreTabs">
+              <div (clickOutside)="isMoreTabsVisible = false"
+                   exclude="#more-tabs"
+                   class="hidden-tabs">
+                <a *ngFor="let tab of hiddenTabs"
+                   (click)="(isMoreTabsVisible = false) && (tab.disabled ? null : locationGo(tab.path))"
+                   [routerLink]="tab.disabled ? null : './' + tab.path"
+                   [skipLocationChange]="true"
+                   Label
+                   labelText="Not implemented"
+                   [disabled]="!tab.disabled"
+                   routerLinkActive="tab-active"
+                   [routerLinkActiveOptions]="{exact: true}"
+                   class="tab">
+                  <span #name>{{ tab.name }}</span>
+                </a>
+              </div>
+            </app-popup>
+          </li>
+        </div>
+      </div>
+      <div #buttons
+           class="profile-actions">
+        <ng-content select="[actions]"></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

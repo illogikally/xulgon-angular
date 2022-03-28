@@ -1,0 +1,30 @@
+@import "../../../styles";
+
+.dialog__inner {
+  $horizontalPadding: 15px;
+  position: relative;
+  background-color: #fff;
+  max-width: 500px;
+  width: 100%;
+  border-image-width: 100%;
+  border-radius: 10px;
+  box-shadow: $box-shadow-wide;
+
+  .body {
+    padding: 10px $horizontalPadding;
+    font-size: 16px;
+
+    .confirmation {
+      margin-top: 20px;
+      display: flex;
+      justify-content: right;
+      align-items: center;
+
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 10px;
+      }
+    }
+  }
+}

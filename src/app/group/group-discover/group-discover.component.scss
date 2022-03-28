@@ -1,0 +1,67 @@
+@import '../../../styles';
+
+$width: calc(1560px * .2);
+
+.discover {
+  padding: 17px 10px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(1, 1fr);
+
+  @for $i from 1 through 5 {
+    @media screen
+      and (max-width: calc(360px + #{$width} * #{$i}))
+      and (min-width: calc(360px + #{$width} * #{$i - 1})){
+        & {
+          grid-template-columns: repeat(#{$i - 1}, 1fr);
+        }
+    }
+  }
+
+  .skeleton {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(#000, .2);
+
+    .cover {
+      height: 180px;
+      overflow: hidden;
+      @extend %loading-animation;
+    }
+
+    .body {
+      padding: 10px;
+      width: 100%;
+      position: relative;
+      height: 100px;
+
+      .text {
+        height: 17px;
+        border-radius: 10px;
+        @extend %loading-animation;
+      }
+
+      .text:nth-child(1) {
+        width: 80%;
+        margin-bottom: 5px;
+      }
+
+      .text:nth-child(2) {
+        width: 50%;
+        height: 15px;
+      }
+    }
+
+    .button {
+      margin: 0 10px;
+      margin-bottom: 10px;
+      @extend %loading-animation;
+      border-radius: 5px;
+      height: 35px;
+    }
+  }
+}

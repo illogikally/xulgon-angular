@@ -1,0 +1,126 @@
+@import "../../../styles";
+
+.group-general {
+  position: relative;
+
+  &__inner {
+    display: flex;
+
+    .content {
+      flex-grow: 1;
+    }
+
+    .content-sidebar {
+      flex: 0 0 360px;
+      z-index: 996;
+
+      .sidebar {
+        background-color: #fff;
+        position: fixed;
+        top: 56px;
+        box-shadow: 1px 0px 2px #00000033;
+        font-weight: 500;
+        padding: 10px 8px;
+        box-sizing: border-box;
+        width: 360px;
+        bottom: 0;
+
+        .menu {
+          border-bottom: 1px solid rgba(#333, .2);
+          padding-bottom: 5px;
+
+          .title {
+            font-size: 24px;
+            font-weight: 700;
+            padding-left: 10px;
+          }
+
+          .input-group {
+            @extend %input-group;
+            margin: 10px 8px;
+            height: 40px;
+          }
+        }
+
+        .menu-items {
+          font-weight: 500;
+          margin-bottom: 5px;
+
+          > * {
+            border-radius: 10px;
+            padding: 0 8px;
+            display: flex;
+            align-items: center;
+            height: 52px;
+            box-sizing: border-box;
+
+            &:hover {
+              background-color: #f0f2f5;
+            }
+
+            &.selected.selected{
+              background-color:  rgba(#1877f2, .1);
+              .icon-cont {
+                background-color: $btn-blue;
+              }
+            }
+
+            .icon-cont {
+              @extend %fc;
+              width: 35px;
+              height: 35px;
+              border-radius: 50%;
+              margin-right: 8px;
+              background-color: $btn-grey;
+
+              i {
+                font-size: 25px;
+              }
+            }
+
+          }
+        }
+      }
+
+      .admin-groups {
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(#333, .2);
+
+        &__title {
+          font-size: 17px;
+          margin-bottom: 10px;
+        }
+      }
+
+      .groups {
+        &__title {
+          margin-top: 10px;
+          font-size: 17px;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  .skeleton {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      margin-right: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+      @extend %loading-animation;
+    }
+
+    .text {
+      width: 70%;
+      height: 15px;
+      border-radius: 10px;
+      @extend %loading-animation;
+    }
+  }
+}

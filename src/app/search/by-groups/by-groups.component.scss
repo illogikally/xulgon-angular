@@ -1,0 +1,48 @@
+@import '../../../styles';
+
+.by-group {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  top: 20px;
+
+  .wrapper {
+    max-width: 680px;
+    width: 100%;
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 17px;
+
+    .no-posts {
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      margin-top: 50px;
+      color: #555;
+    }
+  }
+
+  .skeleton {
+    @include card(10px);
+    display: flex;
+    padding: 10px;
+    column-gap: 10px;
+    align-items: center;
+
+    .avatar {
+      @extend %loading-animation;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+
+    .text {
+      @extend %loading-animation;
+      width: 30%;
+      height: 15px;
+      border-radius: 10px;
+    }
+  }
+}

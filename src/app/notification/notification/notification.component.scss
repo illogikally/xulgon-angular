@@ -1,0 +1,103 @@
+@import "../../../styles";
+
+.notif {
+  .button {
+    @extend %fc;
+    @include x-btn(40px, #050505, darken($secondary-button-background, 5));
+    background-color: $secondary-button-background;
+    position: relative;
+    border-radius: 50%;
+
+
+    &.active {
+      background-color: rgba($active-tab, .15);
+      color: $active-tab !important
+    }
+
+    &:active {
+      animation: clickScale .1s ease 1;
+    }
+
+    > i {
+      font-size: 22px;
+    }
+
+    .unread {
+      @extend %fc;
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 50%;
+      background-color: #F02849;
+      color: #fff;
+      top: -5%;
+      right: -20%;
+    }
+  }
+
+
+  .popup {
+    box-sizing: border-box;
+    position: fixed;
+    width: 360px;
+    top: 54px;
+    bottom: 70px;
+    cursor: auto;
+    user-select: none;
+    right: 15px;
+
+    &__inner {
+      @include card(10px);
+      box-shadow: 0 12px 28px 0 rgba(#000, .2), 0 2px 4px 0 rgba(#000,.1), inset 0 0 0 1px rgba(#fff, .5);
+      max-height: 100%;
+      box-sizing: border-box;
+      overflow-y: overlay;
+      @include scrollbar(15px);
+      padding: 10px 15px;
+
+      .title {
+        font-weight: 700;
+        font-size: 1.5em;
+        padding: 10px 0;
+      }
+
+      .notif-items {
+        font-size: 15px;
+
+        .skeleton {
+          display: flex;
+          column-gap: 10px;
+          align-items: center;
+          margin-bottom: 10px;
+
+          .avatar {
+            @extend %loading-animation;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+          }
+
+          .body {
+            flex-grow: 1;
+
+            .text {
+              border-radius: 10px;
+              height: 17px;
+              @extend %loading-animation;
+              margin-bottom: 5px;
+            }
+
+            .date {
+              border-radius: 10px;
+              @extend %loading-animation;
+              width: 30%;
+              height: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

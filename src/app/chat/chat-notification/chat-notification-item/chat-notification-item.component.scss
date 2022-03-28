@@ -1,0 +1,114 @@
+@import "../../../../styles";
+
+.chat-noti-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    .opts {
+      visibility: visible;
+    }
+  }
+
+  .content {
+    padding: 8px 5px;
+    width: 100%;
+    margin: 0px -5px;
+    display: flex;
+    cursor: pointer;
+    position: relative;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: rgba(#d8dadf, .5);
+    }
+
+    .avatar {
+      margin-right: 13px;
+      height: 56px;
+      flex: 0 0 56px;
+      border-radius: 50%;
+      border: 1px solid rgba(#333, .2);
+      overflow: hidden;
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        aspect-ratio: 1;
+      }
+    }
+
+    .body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      overflow: hidden;
+      box-sizing: border-box;
+
+      .name {
+        margin-bottom: 3px;
+      }
+
+      .msg--ago {
+        color: var(--secondary-text);
+        font-size: 13px;
+        display: flex;
+
+        .msg {
+          overflow: hidden;
+          flex-shrink: 1;
+          display: block;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .ago {
+          flex-shrink: 0;
+        }
+
+      }
+    }
+  }
+
+  .opts {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 20px;
+    visibility: hidden;
+
+    .opts-btn {
+      @include x-btn(35px, #111, rgba(#eee, 1));
+      position: relative;
+      background-color: rgba(#fff, 1);
+
+      border: 1px solid rgba(#333, .2);
+
+      i {
+        font-size: 23px;
+      }
+
+      .opts-popup {
+        visibility: hidden;
+        @extend %opts;
+        position: fixed;
+        bottom: auto;
+        top: 200px;
+        right: 0;
+      }
+    }
+  }
+
+  .mark-as-read {
+    cursor: pointer;
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    right: 3px;
+    border-radius: 50%;
+    background-color: $btn-blue;
+  }
+
+}

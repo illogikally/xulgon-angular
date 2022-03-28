@@ -1,0 +1,160 @@
+@import '../../styles';
+
+
+.user-profile {
+  position: relative;
+  padding-bottom: 17px;
+}
+
+$header-content-width: 940px;
+.profile-header {
+  z-index: 1;
+  width: 100%;
+  background-color: #fff;
+
+  .cover-wrapper {
+    display: flex;
+    height: 350px;
+    position: relative;
+
+    .radiant-wash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background-image: linear-gradient(
+        to top,
+        #FFFFFF,
+        rgba(255,255,255.9),
+        rgba(255,255,255,.7),
+        rgba(255,255,255,.4),
+        rgba(255,255,255,0)
+      );
+      width: 100%;
+      height: 100%;
+    }
+
+    .left {
+      flex-grow: 1;
+      height: 100%;
+      background-image:
+        linear-gradient(.75turn, rgba(#fff, .8), 20%, rgba(#fff, .2), transparent),
+        linear-gradient(.25turn, rgba(#fff, .5), 20%, transparent);
+    }
+
+    .right {
+      height: 100%;
+      flex-grow: 1;
+      background-image:
+        linear-gradient(.25turn, rgba(#fff, .8), 20%, rgba(#fff, .2), transparent),
+        linear-gradient(.75turn, rgba(#fff, .5), 20%, transparent);
+    }
+  }
+  .cover-avatar {
+    height: 350px;
+    max-width: $header-content-width;
+    z-index: 2;
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+
+    .cover {
+      width: 100%;
+      height: 100%;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      border-top: none;
+      background-color: #aaa;
+      overflow: hidden;
+
+      @extend %fc;
+
+      .change-cover {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+
+        @media screen and (max-width: 550px){
+          i {
+            margin: 0px;
+          }
+
+          span {
+            display: none;
+          }
+        }
+      }
+
+      img {
+        background-color: rgba(#eee, .7);
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .avatar-container {
+      height: 178px;
+      width: 178px;
+      background-color: #fff;
+      position: absolute;
+      border-radius: 50%;
+      bottom: -20px;
+
+      .change-avatar {
+        position: absolute;
+        bottom: 6%;
+        right: 6%;
+        cursor: pointer;
+      }
+
+      .avatar {
+        height: 168px;
+        width: 168px;
+        border: 1px solid #00000025;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #dfdfdf;
+        cursor: pointer;
+        position: relative;
+
+        .blocked {
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          background-color: transparent;
+          z-index: 1;
+          top: 0;
+          left: 0;
+        }
+
+      }
+    }
+  }
+
+  .profile-name {
+    height: 40px;
+  }
+}
+
+
+.profile-body {
+  margin-top: 17px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .content-container {
+    max-width: 892px;
+    width: 100%;
+    margin: 0px 15px;
+  }
+
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

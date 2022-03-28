@@ -1,0 +1,44 @@
+@import "../../../../styles";
+
+.friend-list-item {
+  display: flex;
+  padding: 16px;
+  align-items: center;
+  border-radius: 10px;
+  position: relative;
+  border: 1px solid rgba(#999, .2);
+  box-shadow: 0 1px 1px rgba(#333, .1);
+
+  a.body-c {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .options {
+    position: absolute;
+    right: 10px;
+  }
+
+  .avatar-container {
+    height: 80px;
+    width: 80px;
+    border-radius: 10px;
+    border: 1px solid rgba(#777, .3);
+  }
+
+  .body {
+    padding-left: 10px;
+    position: relative;
+
+    .username {
+      font-weight: 500;
+    }
+
+    .common-friend-count {
+      font-size: 14px;
+    }
+
+  }
+}

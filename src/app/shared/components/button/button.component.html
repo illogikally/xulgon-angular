@@ -1,0 +1,33 @@
+<div #self
+     class="button">
+  <button #inner
+          (click)="toggleOptionsVisibility()"
+          type="button"
+          class="button__inner">
+    <div [ngStyle]="{'opacity': isLoadingSpinnerVisible ? '0' : '1', 'height': '100%'}">
+      <ng-content select="[button]"></ng-content>
+      <div *ngIf="isX"
+           button="">
+        <i style="filter: invert(0%)"
+           class='x-icon'></i>
+      </div>
+    </div>
+    <app-spinner size="20px"
+                 [color]="color"
+                 *ngIf="isLoadingSpinnerVisible"
+                 ringWidth="2px"
+                 backgroundColor="transparent">
+    </app-spinner>
+  </button>
+  <div *ngIf="isOptionsVisible"
+       class="triangle"></div>
+  <app-popup *ngIf="isOptionsVisible"
+             (clickOutside)="toggleOptionsVisibility()"
+             (click)="toggleOptionsVisibility()"
+             [delayClickOutsideInit]="true"
+             #options
+             class="button__options"
+             [parent]="self">
+    <ng-content select="[options]"></ng-content>
+  </app-popup>
+</div>

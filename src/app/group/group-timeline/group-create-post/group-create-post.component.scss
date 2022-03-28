@@ -1,0 +1,40 @@
+@import "../../../../styles";
+
+.root {
+  @include card(10px);
+  padding: 7px;
+  cursor: pointer;
+  margin-bottom: 17px;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    padding: 7px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #f0f2f5;
+    }
+  }
+
+  .icon {
+    @extend %fc;
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+    border-radius: 50%;
+    padding: 5px;
+    background-color: rgba($btn-blue, .1);
+    color: $btn-blue;
+    font-size: 30px;
+  }
+
+  .des {
+    font-size: 16px;
+    .top {
+      font-weight: 500;
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+  }
+}

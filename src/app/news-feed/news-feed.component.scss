@@ -1,0 +1,9 @@
+.news-feed {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 17px 0px;
+  &__inner {
+    width: 680px;
+  }
+}
