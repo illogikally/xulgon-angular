@@ -1,6 +1,6 @@
 import {Location} from '@angular/common';
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2} from '@angular/core';
-import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {PhotoViewResponse} from '../../shared/components/photo/photo-view-response';
@@ -53,11 +53,21 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   }
 
   configureHideOnRouteChange() {
+    let willHide = false;
     this.router.events.subscribe(e => {
+        
       if (e instanceof NavigationStart) {
-
-        if (this.router.url.replace(/\?.*$/g, '') == e.url.replace(/\?.*$/g, '')) {
-        } else {
+        const currentUrl = '/' + window.location.href.split('/').slice(3).join('/');
+        const futureUrl = e.url.replace(/\?.*$/g, '');
+        
+        if (currentUrl != futureUrl) {
+          willHide = true;
+        }
+      }
+      
+      if (e instanceof NavigationEnd) {
+        if (willHide) {
+          willHide = false;
           this.isHidden = true;
           this.resumeBodyScroll();
         }

@@ -18,6 +18,7 @@ import {PostComponent} from "./post.component";
 import {RouterModule} from "@angular/router";
 import {PickerModule} from "@ctrl/ngx-emoji-mart";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { ContentUrlPipe } from './pipes/content-url.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     PostListComponent,
     PostNotFoundComponent,
     PostSkeletonComponent,
-    SharedContentComponent
+    SharedContentComponent,
+    ContentUrlPipe
   ],
   imports: [
     SharedModule,

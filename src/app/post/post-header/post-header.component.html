@@ -20,7 +20,6 @@
           <a routerLink="/groups/{{ content.pageId }}">
             <span>{{ content.pageName }}</span>
           </a>
-
         </div>
       </div>
       <div class="date--privacy">
@@ -30,7 +29,7 @@
         </app-user-ref>
 
         <span *ngIf="isPageNameVisible && content.pageType == 'GROUP'">&nbsp;·&nbsp;</span>
-        <a [routerLink]="contentUrl">
+        <a [routerLink]="content | contentUrl">
           {{ content.createdAt }}
         </a>
         <span class="privacy">
