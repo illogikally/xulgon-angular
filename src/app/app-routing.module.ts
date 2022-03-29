@@ -10,6 +10,7 @@ import {
 import {PostViewComponent} from "./post-view/post-view.component";
 import {ErrorPageComponent} from "./error-page/error-page.component";
 import {NgModule} from "@angular/core";
+import {CustomPreloadingStrategy} from "./core/route/custom-preloading-strategy";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
@@ -23,7 +24,8 @@ const routes: Routes = [
       {path: '', loadChildren: () => import('./news-feed/news-feed.module').then(m => m.NewsFeedModule)},
       {
         path: 'friends',
-        loadChildren: () => import('./friend-request/friend-request.module').then(m => m.FriendRequestModule)
+        loadChildren: () => import('./friend-request/friend-request.module').then(m => m.FriendRequestModule),
+        data: {preload: true, delay: 2000}
       },
       {
         path: 'search',
@@ -33,11 +35,13 @@ const routes: Routes = [
       {
         path: 'groups',
         loadChildren: () => import('./group/group.module').then(m => m.GroupModule),
-      },
+        data: {preload: true, delay: 2000}
+},
       {path: ':id/posts/:id', component: PostViewComponent},
       {
         path: ':id',
-        loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),
+        data: {preload: true, delay: 2000}
       },
       {path: '**', component: ErrorPageComponent, data: {displayErrorPage: true}}
     ]
@@ -50,7 +54,7 @@ const routes: Routes = [
     {
       onSameUrlNavigation: 'reload',
       scrollPositionRestoration: 'disabled',
-      preloadingStrategy: PreloadAllModules
+      preloadingStrategy: CustomPreloadingStrategy
     }
   )],
   exports: [RouterModule]
