@@ -98,7 +98,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
         this.comments = this.parentIdCommentsMap.get(currentParentId);
       } else {
         this.comments = [];
-        this.isLoading = true;
+        this.isInitLoaded = false;
         this.commentIdSet = new Set();
         this.loadComments();
       }
@@ -124,11 +124,11 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
         this.highlightedCommentId = data.childCommentId;
       }
 
-      this.loadHighlightedCommentIfHavent();
+      this.loadHighlightedComment();
     })
   }
 
-  loadHighlightedCommentIfHavent() {
+  loadHighlightedComment() {
     if (this.highlightedCommentId) {
       if (!this.commentIdSet.has(this.highlightedCommentId)) {
         this.loadComments();
@@ -157,7 +157,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
         this.isInitLoaded = true;
         this.isLoading = false;
         this.comments = this.comments.concat(resp);
-        this.loadHighlightedCommentIfHavent();
+        this.loadHighlightedComment();
       });
   }
 

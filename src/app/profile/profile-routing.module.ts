@@ -19,13 +19,15 @@ const routes: Routes = [
         path: '',
         component: ProfileTimelineComponent,
         pathMatch: 'full',
+        data: {preload: true, delay: 1000},
         loadChildren: () => import('./profile-timeline/profile-timeline.module').then(m => m.ProfileTimelineModule)
       },
       { path: 'about', component: ProfileAboutComponent },
       {
         path: 'friends',
         component: FriendListComponent,
-        loadChildren: () => import('./friend-list/friend-list.module').then(m => m.FriendListModule)
+        loadChildren: () => import('./friend-list/friend-list.module').then(m => m.FriendListModule),
+        data: {preload: true, delay: 1000},
       },
       { path: 'photos', component: PhotoListComponent }
     ]

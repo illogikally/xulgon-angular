@@ -13,7 +13,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   private isTokenRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject(null);
 
-  constructor(private auth$: AuthenticationService) { }
+  constructor(private authenticationService: AuthenticationService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -21,13 +21,13 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const authenticationToken = this.auth$.getToken();
+    const authenticationToken = this.authenticationService.getToken();
 
     if (authenticationToken) {
-    const expiresAt = this.auth$.getExpiresAt();
-    const current = new Date().getTime();
+      const expiresAt = this.authenticationService.getExpiresAt();
+      const current = new Date().getTime();
 
-    if (expiresAt - current < 1e4) {
+      if (expiresAt - current < 1e4) {
         return this.handleAuthErrors(req, next);
       }
 
@@ -53,11 +53,11 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       this.isTokenRefreshing = true;
       this.refreshTokenSubject.next(null);
 
-      return this.auth$.refreshAuthToken().pipe(
+      return this.authenticationService.refreshAuthToken().pipe(
         switchMap((refreshTokenResponse: LoginResponse) => {
           this.isTokenRefreshing = false;
           this.refreshTokenSubject.next(refreshTokenResponse.token);
-          this.auth$.storeResponse(refreshTokenResponse);
+          this.authenticationService.storeResponse(refreshTokenResponse);
           return next.handle(this.addToken(req, refreshTokenResponse.token));
         })
       );
@@ -66,8 +66,8 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       return this.refreshTokenSubject.pipe(
         filter(result => result !== null),
         take(1),
-        switchMap(_ => {
-          return next.handle(this.addToken(req, this.auth$.getToken()))
+        switchMap(() => {
+          return next.handle(this.addToken(req, this.authenticationService.getToken()))
         })
       );
     }

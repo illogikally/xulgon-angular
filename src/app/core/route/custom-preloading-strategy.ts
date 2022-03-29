@@ -9,7 +9,6 @@ export class CustomPreloadingStrategy implements PreloadingStrategy {
     if (route.data && route.data.preload) {
       const delay = Number(route.data.delay) || 0;
       return timer(delay).pipe(map(() => {
-        console.log('loading', route, delay);
         return fn();
       }));
     }

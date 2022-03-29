@@ -14,7 +14,8 @@
   &__body {
     display: flex;
     height: 50px;
-    width: 40%;
+    width: 100%;
+    max-width: 270px;
     flex-direction: column;
     border-radius: 10px;
     @extend %loading-animation;

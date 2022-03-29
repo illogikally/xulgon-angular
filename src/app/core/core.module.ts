@@ -40,6 +40,7 @@ import {CustomPreloadingStrategy} from "./route/custom-preloading-strategy";
     },
     {
       provide: CustomPreloadingStrategy,
+      useClass: CustomPreloadingStrategy
     }
   ]
 })
