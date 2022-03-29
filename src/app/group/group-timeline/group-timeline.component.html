@@ -4,7 +4,7 @@
       <div *ngIf="!groupResponse?.isMember && groupResponse?.isPrivate"
           class="private-group-warn">
         <div class="lock">
-          <img src="assets/lock.jpg"/>
+          <img src="https://xulgon.sirv.com/assets/lock.jpg"/>
         </div>
         <div class="text">
           <div>Đây là nhóm riêng tư.</div>
@@ -32,10 +32,10 @@
       </div>
     </div>
 
-    <div #sidebar 
+    <div #sidebar
          class="timeline-sidebar">
       <div #sidebar__inner
-           StickySidebar 
+           StickySidebar
            [parent]="sidebar"
            [onAttach$]="onAttach$"
            [onDetach$]="onDetach$"
@@ -56,7 +56,7 @@
               </div>
               <div>
                 <div class="f-17 w-500" style="margin-bottom: 5px">Riêng tư</div>
-                <div>Chỉ thành viên mới nhìn thấy mọi 
+                <div>Chỉ thành viên mới nhìn thấy mọi
                   người trong nhóm và những gì họ đăng.</div>
               </div>
             </div>
@@ -67,7 +67,7 @@
               </div>
               <div>
                 <div class="f-17 w-500" style="margin-bottom: 5px">Công khai</div>
-                <div>Ai cũng có thể nhìn thấy mọi người 
+                <div>Ai cũng có thể nhìn thấy mọi người
                   trong nhóm và những gì họ đăng.</div>
               </div>
             </div>

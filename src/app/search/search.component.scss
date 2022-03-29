@@ -1,8 +1,4 @@
-@import "../../styles";
-
-// div {
-// 	border: 1px solid red;
-// }
+@import "src/styles";
 
 .search {
   position: relative;
@@ -48,7 +44,7 @@
             cursor: pointer;
 
             &:hover {
-              background-color: rgba(#ddd, .8);
+              background-color: #f0f2f5;
             }
 
             .icon-container {

@@ -96,9 +96,9 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
       this.parentIdCommentsMap.set(previousParenId, this.comments);
       if (this.parentIdCommentsMap.has(currentParentId)) {
         this.comments = this.parentIdCommentsMap.get(currentParentId);
-      }
-      else {
+      } else {
         this.comments = [];
+        this.isLoading = true;
         this.commentIdSet = new Set();
         this.loadComments();
       }
@@ -139,6 +139,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
   loadComments() {
     const limit = this.isInitLoaded ? 5 : this.initCommentCount;
     const offset = this.comments.length;
+    if (!limit && !offset) return;
     this.isLoading = true;
 
     this.commentService
@@ -176,11 +177,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
     formData.append('photo', !this.image ? new Blob() : this.image)
 
 
-    this.commentService.createComment(formData).subscribe(comment => {
-      // this.comments.push(comment);
-      this.commentService.commentAdded$.next({
-        parentId: this.parentId
-      });
+    this.commentService.createComment(formData).subscribe(() => {
       this.isPostingComment = false;
     });
 
@@ -191,7 +188,7 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
   onSelectImage(event: any) {
     if (event.target?.files && event.target.files[0]) {
       this.image = event.target.files[0];
-      var reader = new FileReader();
+      const reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]);
 
@@ -236,6 +233,9 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
         if (!this.commentIdSet.has(dto.content.id)) {
           this.comments.push(dto.content);
           this.commentIdSet.add(dto.content.id)
+          this.commentService.newCommentAdded.next({
+            parentId: this.parentId
+          });
         }
       }
     });

@@ -10,7 +10,7 @@ import {CommentResponse} from './comment-response';
 })
 export class CommentService {
 
-  public commentAdded$ = new Subject<any>();
+  public newCommentAdded = new Subject<any>();
 
   private baseApiUrl = environment.baseApiUrl;
   constructor(private http: HttpClient) {}

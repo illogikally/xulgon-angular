@@ -20,7 +20,6 @@ import {ClickOutsideModule} from "ng-click-outside";
 import {GroupMemberItemComponent} from "./group-member/group-member-item/group-member-item.component";
 import {GroupSettingsComponent} from "./group-settings/group-settings.component";
 import {GroupTimelineComponent} from "./group-timeline/group-timeline.component";
-import {GroupCreatePostComponent} from "./group-timeline/group-create-post/group-create-post.component";
 import {JoinRequestListComponent} from "./join-request-list/join-request-list.component";
 import {JoinRequestItemComponent} from "./join-request-list/join-request-item/join-request-item.component";
 import {PostModule} from "../post/post.module";
@@ -45,7 +44,6 @@ import {ReactiveFormsModule} from "@angular/forms";
     GroupMemberItemComponent,
     GroupSettingsComponent,
     GroupTimelineComponent,
-    GroupCreatePostComponent,
     JoinRequestListComponent,
     JoinRequestItemComponent,
     GroupComponent

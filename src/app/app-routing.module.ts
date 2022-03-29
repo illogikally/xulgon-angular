@@ -1,4 +1,4 @@
-import {RouterModule, Routes} from '@angular/router';
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from "./authentication/login/login.component";
 import {LoginGuard} from "./authentication/login/login.guard";
 import {Oauth2CallbackComponent} from "./authentication/oauth2-callback/oauth2-callback.component";
@@ -49,7 +49,8 @@ const routes: Routes = [
     routes,
     {
       onSameUrlNavigation: 'reload',
-      scrollPositionRestoration: 'disabled'
+      scrollPositionRestoration: 'disabled',
+      preloadingStrategy: PreloadAllModules
     }
   )],
   exports: [RouterModule]

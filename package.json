@@ -8,7 +8,7 @@
     "test": "ng test",
     "serve": "ng serve",
     "heroku-postbuild": "ng build && gzipper compress -i js,css.html ./dist --verbose",
-    "start": "pwd && node server.js --path dist/xulgon --rootFile index.html -p $PORT"
+    "start": "node server.js --path dist/xulgon --rootFile index.html -p $PORT"
   },
   "private": true,
   "dependencies": {

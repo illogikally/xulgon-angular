@@ -62,7 +62,7 @@ export class PostComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.commentService.commentAdded$.pipe(
+    this.commentService.newCommentAdded.pipe(
       filter(msg => msg.parentId == this.post.id)
     ).subscribe(() => this.post.commentCount += 1);
   }

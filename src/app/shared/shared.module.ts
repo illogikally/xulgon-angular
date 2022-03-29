@@ -26,6 +26,7 @@ import {PhotoListItemComponent} from "../profile/photo-list/photo-list-item/phot
 import {TabBarComponent} from "./tab-bar/tab-bar.component";
 import {RouterModule} from "@angular/router";
 import {StickySidebarDirective} from "./directives/sticky-sidebar.directive";
+import {GroupCreatePostComponent} from "./components/group-create-post/group-create-post.component";
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {StickySidebarDirective} from "./directives/sticky-sidebar.directive";
     UserRefPopupComponent,
     SquareImageComponent,
     ProfileAboutComponent,
+    GroupCreatePostComponent,
     ProfileAboutItemComponent,
     FriendshipButtonComponent,
     SirvPipe,
@@ -70,6 +72,7 @@ import {StickySidebarDirective} from "./directives/sticky-sidebar.directive";
     LabelComponent,
     LabelDirective,
     SirvPipe,
+    GroupCreatePostComponent,
     ProfileAboutComponent,
     ModalComponent,
     PhotoComponent,
