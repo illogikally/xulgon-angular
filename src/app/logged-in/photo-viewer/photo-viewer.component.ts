@@ -38,14 +38,20 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (this.photoId) {
-      this.getPhoto();
+    if (this.isPlaceHolderChild) {
+      this.show();
+      this.nullPhoto = !this.photo;
+      this.placeHolderOnAttachListener?.subscribe(() => this.show());
     }
-    this.placeHolderOnAttachListener?.subscribe(() => this.show());
+    else {
+      if (this.photoId) {
+        this.getPhoto();
+      }
 
-    this.configureHideOnRouteChange();
-    if (!this.isPlaceHolderChild) {
-      this.configureOnOpenPhotoViewer();
+      this.configureHideOnRouteChange();
+      if (!this.isPlaceHolderChild) {
+        this.lisntenOnOpenCalled();
+      }
     }
   }
 
@@ -75,7 +81,7 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
     });
   }
 
-  configureOnOpenPhotoViewer() {
+  lisntenOnOpenCalled() {
     this.photoService.onOpenPhotoViewerCalled().subscribe(data => {
       this.photoStack.push({
         setId: this.setId,

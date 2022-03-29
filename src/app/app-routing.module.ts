@@ -11,6 +11,7 @@ import {PostViewComponent} from "./post-view/post-view.component";
 import {ErrorPageComponent} from "./error-page/error-page.component";
 import {NgModule} from "@angular/core";
 import {CustomPreloadingStrategy} from "./core/route/custom-preloading-strategy";
+import { PhotoResolver } from './logged-in/photo-viewer/photo-viewer-placeholder/resolvers/photo.resolver';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
@@ -31,7 +32,7 @@ const routes: Routes = [
         path: 'search',
         loadChildren: () => import('./search/search.module').then(m => m.SearchModule)
       },
-      {path: 'photo/:id', component: PhotoViewerPlaceholderComponent},
+      {path: 'photo/:id', component: PhotoViewerPlaceholderComponent, resolve: {photo: PhotoResolver}},
       {
         path: 'groups',
         loadChildren: () => import('./group/group.module').then(m => m.GroupModule),
