@@ -19,6 +19,7 @@ export class MediaLayoutComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.photos = this.photos.sort((l, r) => l.id - r.id);
   }
 
   ngAfterViewInit(): void {
