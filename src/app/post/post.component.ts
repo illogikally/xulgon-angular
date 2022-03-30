@@ -68,10 +68,6 @@ export class PostComponent implements OnInit, AfterViewInit {
     this.commentService.newCommentAdded.pipe(
       filter(msg => msg.parentId == this.post.id)
     ).subscribe(() => this.post.commentCount += 1);
-    // this.postViewService.attach$.pipe(
-    //   filter(postId => postId == this.post.id),
-    //   takeUntil(this.postViewService.detach$.pipe(filter(postId => postId == this.post.id)))
-    // ).subscribe(() => this.onAttach());
   }
 
   onAttach() {
