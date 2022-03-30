@@ -13,16 +13,26 @@
     .content-sidebar {
       flex: 0 0 360px;
       z-index: z('sidebar');
+      transition: margin-left .4s ease;
+
+      .toggle-sidebar {
+        position: absolute;
+        top: 5px;
+        right: 20px;
+        transition: right .4s ease;
+      }
 
       .sidebar {
+        transition: margin-left .4s ease;
         background-color: #fff;
         position: fixed;
+        max-width: 360px;
+        width: 100%;
         top: 56px;
         box-shadow: 1px 0px 2px #00000033;
         font-weight: 500;
         padding: 10px 8px;
         box-sizing: border-box;
-        width: 360px;
         bottom: 0;
 
         .menu {
@@ -77,7 +87,6 @@
                 font-size: 25px;
               }
             }
-
           }
         }
       }

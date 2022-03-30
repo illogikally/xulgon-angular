@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subject} from 'rxjs';
 import {TitleService} from '../../shared/services/title.service';
@@ -19,11 +19,15 @@ export class GroupGeneralComponent implements OnInit {
   selectedGroup = new Subject<number>();
   isLoadingGroups = false;
 
+  @ViewChild('sidebarBelow') sidebarBelow!: ElementRef;
+  @ViewChild('sidebar') sidebar!: ElementRef;
+  @ViewChild('toggleButton') toggleButton!: ElementRef;
   constructor(
     public groupService: GroupService,
     private userService: UserService,
     public route: ActivatedRoute,
     private titleService: TitleService,
+    private renderer: Renderer2
   ) {
   }
 
@@ -52,9 +56,12 @@ export class GroupGeneralComponent implements OnInit {
 
   listenOnGroupJoinAccepted() {
     this.groupService.groupMemberAccepted$.subscribe(groupId => {
-      this.groupService.getGroupHeader(groupId).subscribe(group => this.groups.push(group));
+      this.groupService.getGroupHeader(groupId).subscribe(group => {
+        this.groups.push(group)
+      });
     });
   }
+
 
   newGroupCreated(group: GroupResponse) {
     this.managedGroups.push(group);
