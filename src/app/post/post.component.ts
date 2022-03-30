@@ -9,8 +9,8 @@ import {
   Output, Renderer2,
   ViewChild
 } from '@angular/core';
-import {fromEvent, Subject} from 'rxjs';
-import {filter, take, takeUntil} from 'rxjs/operators';
+import {fromEvent, merge, of, Subject} from 'rxjs';
+import {filter, mergeAll, switchMap, take, takeUntil} from 'rxjs/operators';
 import {AuthenticationService} from '../core/authentication/authentication.service';
 import {CommentListComponent} from './comment-list/comment-list.component';
 import {CommentService} from './comment-list/comment/comment.service';
@@ -108,12 +108,20 @@ export class PostComponent implements OnInit, AfterViewInit {
   }
 
   listenOnHighlightReaction() {
-    this.postViewService.highlight$.pipe(
+    const attach$ = this.postViewService.attach$
+      .pipe(filter(id => id == this.post.id));
+    const detach$ = this.postViewService.detach$
+      .pipe(filter(id => id == this.post.id));
+    const highlight$ = this.postViewService.highlight$.pipe(
       filter(data => !!data),
       filter(data => data.postId == this.post.id),
       filter(data => !data.commentId),
-      filter(data => data.type == 'reaction')
-    ).subscribe(this.highlightReaction.bind(this));
+      filter(data => data.type == 'reaction'),
+      takeUntil(detach$)
+    );
+    merge(attach$, of(null))
+      .pipe(switchMap(() => highlight$))
+      .subscribe(this.highlightReaction.bind(this));
   }
 
   highlightReaction() {
