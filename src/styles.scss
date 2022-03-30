@@ -20,6 +20,7 @@ $z-indexes: (
   "user-ref",
   "modal",
   "navbar",
+  "sidebar",
   "popup",
 );
 @function z($name) {
@@ -40,8 +41,8 @@ $active-tab: #1876F2;
 $btn-green: #00a400;
 
 $box-shadow-narrow: 0 1px 2px rgba(#000, .2);
-$box-shadow-wide: 0 12px 28px 0 rgba(#000, .2), 
-    0 2px 4px 0 rgba(#000, .1), 
+$box-shadow-wide: 0 12px 28px 0 rgba(#000, .2),
+    0 2px 4px 0 rgba(#000, .1),
     inset 0 0 0 1px rgba(#fff, .5);
 .full-height {
   height: 100%;
@@ -153,16 +154,16 @@ $box-shadow-wide: 0 12px 28px 0 rgba(#000, .2),
   position: relative;
   border: none;
   outline: none;
-  transition: 200ms cubic-bezier(.08,.52,.52,1) background-color, 
-              200ms cubic-bezier(.08,.52,.52,1) box-shadow, 
-              200ms cubic-bezier(.08,.52,.52,1) transform; 
+  transition: 200ms cubic-bezier(.08,.52,.52,1) background-color,
+              200ms cubic-bezier(.08,.52,.52,1) box-shadow,
+              200ms cubic-bezier(.08,.52,.52,1) transform;
 
   &:hover {
     background-color: darken($bg, 5%);
   }
 
   &:active {
-    animation: clickScale .1s ease 1; 
+    animation: clickScale .1s ease 1;
   }
 
 }
@@ -170,7 +171,7 @@ $box-shadow-wide: 0 12px 28px 0 rgba(#000, .2),
 @keyframes clickScale {
   0% {
     transform: scale(1);
-  } 
+  }
   50% {
     transform: scale(.96);
   }
@@ -357,43 +358,43 @@ input {
 }
 
 .x-icon {
-  filter: invert(100%); 
-  background-image: url($image-cdn-url + 'assets/icons.png'); 
-  background-position: -105px -67px; 
-  background-size: auto; 
-  width: 20px; 
-  height: 20px; 
-  background-repeat: no-repeat; 
+  filter: invert(100%);
+  background-image: url($image-cdn-url + 'assets/icons.png');
+  background-position: -105px -67px;
+  background-size: auto;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
   display: inline-block;
 }
 
 .x-icon-small {
-  background-image: url($image-cdn-url + 'assets/icons.png'); 
-  background-position: -167px -109px; 
-  background-size: auto; 
-  width: 11px; 
-  height: 11px; 
-  background-repeat: no-repeat; 
+  background-image: url($image-cdn-url + 'assets/icons.png');
+  background-position: -167px -109px;
+  background-size: auto;
+  width: 11px;
+  height: 11px;
+  background-repeat: no-repeat;
   display: inline-block;
 }
 
 .right-arrow {
-  background-image: url($image-cdn-url + 'assets/icons.png'); 
-  background-position: -83px -13px; 
-  background-size: auto; 
-  width: 24px; 
-  height: 24px; 
-  background-repeat: no-repeat; 
+  background-image: url($image-cdn-url + 'assets/icons.png');
+  background-position: -83px -13px;
+  background-size: auto;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
   display: inline-block;
 }
 
 .left-arrow {
-  background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/y6/r/lwBekknsaqF.png'); 
-  background-position: -37px -122px; 
-  background-size: auto; 
-  width: 24px; 
-  height: 24px; 
-  background-repeat: no-repeat; 
+  background-image: url('https://static.xx.fbcdn.net/rsrc.php/v3/y6/r/lwBekknsaqF.png');
+  background-position: -37px -122px;
+  background-size: auto;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
   display: inline-block;
 }
 

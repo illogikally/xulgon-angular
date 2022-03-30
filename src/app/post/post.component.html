@@ -38,7 +38,7 @@
         </div>
 
         <div (click)="delete()"
-             *ngIf="post.user.id == principalId || groupReponse?.role == 'ADMIN'">
+             *ngIf="post.user.id == principalId || groupResponse?.role == 'ADMIN'">
           <i data-visualcompletion="css-img"
              class="hu5pjgll lzf7d6o1"
              style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yb/r/IdnFteCuiox.png&quot;); background-position: 0px -992px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
@@ -79,7 +79,8 @@
   </div>
   <div class="post-meta">
     <div>
-      <div *ngIf="post.reactionCount > 0"
+      <div [ngStyle]="{'visibility': post.reactionCount ? 'visible' : 'hidden'}"
+           #reactionCount
            class="flex-center reaction-count">
         <img src="https://xulgon.sirv.com/assets/like-16x16.png"
              style="margin-right: 2px;"> {{ post.reactionCount }}
@@ -127,7 +128,7 @@
         <span>Chia sẻ</span>
       </span>
       <app-popup [parent]="shareButton"
-                  *ngIf="!isShareOptionsHidden">
+                 *ngIf="!isShareOptionsHidden">
         <div (clickOutside)="isShareOptionsHidden = true"
              [delayClickOutsideInit]="true"
              class="share-action__options">

@@ -1,4 +1,3 @@
-import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {AuthenticationService} from '../core/authentication/authentication.service';
@@ -23,7 +22,6 @@ export class FriendRequestComponent implements OnInit {
     private titleService: TitleService,
     private userService: UserService,
     private rxStompService: RxStompService,
-    private http: HttpClient
   ) {
   }
 

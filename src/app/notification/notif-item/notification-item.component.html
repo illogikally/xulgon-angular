@@ -51,7 +51,8 @@
             đã thích
             <span *ngIf="notification.targetContent.type == 'POST'">một bài viết của bạn</span>
             <span *ngIf="notification.targetContent.type == 'COMMENT'">một bình luận của bạn</span>
-            <span>: "{{ notification.targetContent.text }}"</span>
+            <span *ngIf="notification.targetContent.type == 'PHOTO'">một hình ảnh của bạn</span>
+            <span *ngIf="notification.targetContent.text">: "{{ notification.targetContent.text }}"</span>
             <span>.</span>
           </span>
 

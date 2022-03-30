@@ -1,10 +1,11 @@
 import {Location} from '@angular/common';
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {PhotoViewResponse} from '../../shared/components/photo/photo-view-response';
 import {PhotoService} from '../../shared/components/photo/photo.service';
+import {PostViewService} from "../../post-view/post-view.service";
 
 @Component({
   selector: 'app-photo-viewer',
@@ -22,7 +23,6 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   photoStack: any[] = [];
   nullPhoto = false;
   isHidden = true;
-  currentHistoryStateId = 0;
   isNavigationReverse = false;
   navigateForward = this.nextPhoto;
   navigateBackward = this.previousPhoto;
@@ -33,6 +33,7 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private self: ElementRef,
+    private postViewService: PostViewService,
     private photoService: PhotoService
   ) {
   }
@@ -41,18 +42,21 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
     if (this.isPlaceHolderChild) {
       this.show();
       this.nullPhoto = !this.photo;
-      this.placeHolderOnAttachListener?.subscribe(() => this.show());
-    }
-    else {
+      this.placeHolderOnAttachListener?.subscribe(() => this.onAttach());
+    } else {
       if (this.photoId) {
         this.getPhoto();
       }
 
       this.configureHideOnRouteChange();
       if (!this.isPlaceHolderChild) {
-        this.lisntenOnOpenCalled();
+        this.listenOnOpenCalled();
       }
     }
+  }
+
+  onAttach() {
+    this.show();
   }
 
   ngAfterViewInit(): void {
@@ -61,16 +65,13 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
   configureHideOnRouteChange() {
     let willHide = false;
     this.router.events.subscribe(e => {
-        
       if (e instanceof NavigationStart) {
         const currentUrl = '/' + window.location.href.split('/').slice(3).join('/');
         const futureUrl = e.url.replace(/\?.*$/g, '');
-        
-        if (currentUrl != futureUrl) {
-          willHide = true;
-        }
+
+        willHide = currentUrl != futureUrl;
       }
-      
+
       if (e instanceof NavigationEnd) {
         if (willHide) {
           willHide = false;
@@ -81,7 +82,8 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
     });
   }
 
-  lisntenOnOpenCalled() {
+
+  listenOnOpenCalled() {
     this.photoService.onOpenPhotoViewerCalled().subscribe(data => {
       this.photoStack.push({
         setId: this.setId,
@@ -151,21 +153,17 @@ export class PhotoViewerComponent implements OnInit, AfterViewInit {
 
   show() {
     this.isHidden = false;
-    if (!this.isPlaceHolderChild) {
-      this.location.go(this.constructPhotoUrl());
-    }
-    else {
-      this.location.replaceState(this.constructPhotoUrl());
-    }
 
     if (!this.photo && !this.isPlaceHolderChild) {
       window.location.reload();
     }
 
-    setTimeout(() => {
+
+    if (!this.isPlaceHolderChild) {
       this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
-      this.renderer.setStyle(this.self.nativeElement, 'display', 'block');
-    }, 200);
+      this.location.go(this.constructPhotoUrl());
+    }
+    this.renderer.setStyle(this.self.nativeElement, 'display', 'block');
   }
 
   nextPhoto() {

@@ -10,7 +10,6 @@
   <div class="comment-right">
     <div class="comment-body-container">
       <div #commentBody
-           (clickOutside)="commentBody.classList.remove('highlight')"
            class="comment-body">
         <div class="comment-username">
           <app-user-ref [userDto]="comment.user"></app-user-ref>
@@ -76,8 +75,8 @@
       <div class="placeholder">
         <span class="hover-underline"
               *ngIf="
-          comment.parentType != 'COMMENT' 
-          && !replyVisible 
+          comment.parentType != 'COMMENT'
+          && !replyVisible
           && comment.replyCount
         "
               (click)="showReplies()">

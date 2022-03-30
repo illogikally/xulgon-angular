@@ -6,11 +6,11 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output,
+  Output, Renderer2,
   ViewChild
 } from '@angular/core';
-import {Subject} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import {fromEvent, Subject} from 'rxjs';
+import {filter, take, takeUntil} from 'rxjs/operators';
 import {AuthenticationService} from '../core/authentication/authentication.service';
 import {CommentListComponent} from './comment-list/comment-list.component';
 import {CommentService} from './comment-list/comment/comment.service';
@@ -25,6 +25,7 @@ import {ToasterMessageType} from '../shared/components/toaster/toaster-message-t
 import {ToasterService} from '../shared/components/toaster/toaster.service';
 import {Post} from './post';
 import {PostService} from './post.service';
+import {PostViewService} from "../post-view/post-view.service";
 
 
 @Component({
@@ -42,14 +43,15 @@ export class PostComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CommentListComponent) commentListComponent!: CommentListComponent;
   @ViewChild('postBodyText') postBodyText!: ElementRef;
-  openCreatePostToShare$ = new Subject<any>();
+  @ViewChild('reactionCount') reactionCount!: ElementRef;
 
   principalId = this.authService.getPrincipalId();
-  groupReponse!: GroupResponse;
+  groupResponse!: GroupResponse;
   isShareOptionsHidden = true;
   isTextClamped = false;
 
   constructor(
+    private renderer: Renderer2,
     private toaster: ToasterService,
     private commentService: CommentService,
     private followService: FollowService,
@@ -57,6 +59,7 @@ export class PostComponent implements OnInit, AfterViewInit {
     private confirmService: ConfirmDialogService,
     private authService: AuthenticationService,
     private changeDetector: ChangeDetectorRef,
+    private postViewService: PostViewService,
     private postService: PostService,
   ) {
   }
@@ -65,11 +68,20 @@ export class PostComponent implements OnInit, AfterViewInit {
     this.commentService.newCommentAdded.pipe(
       filter(msg => msg.parentId == this.post.id)
     ).subscribe(() => this.post.commentCount += 1);
+    // this.postViewService.attach$.pipe(
+    //   filter(postId => postId == this.post.id),
+    //   takeUntil(this.postViewService.detach$.pipe(filter(postId => postId == this.post.id)))
+    // ).subscribe(() => this.onAttach());
+  }
+
+  onAttach() {
+
   }
 
   ngAfterViewInit(): void {
     this.isTextClamped = this.isPostBodyClamped();
     this.changeDetector.detectChanges();
+    this.listenOnHighlightReaction();
   }
 
   toggleComment(): void {
@@ -93,6 +105,25 @@ export class PostComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.commentListComponent.focusInput();
     }, 200);
+  }
+
+  listenOnHighlightReaction() {
+    this.postViewService.highlight$.pipe(
+      filter(data => !!data),
+      filter(data => data.postId == this.post.id),
+      filter(data => !data.commentId),
+      filter(data => data.type == 'reaction')
+    ).subscribe(this.highlightReaction.bind(this));
+  }
+
+  highlightReaction() {
+    const reaction = this.reactionCount.nativeElement;
+    this.post.reactionCount = this.post.reactionCount || 1;
+    this.renderer.addClass(reaction, 'highlight');
+    reaction.scrollIntoView({behavior: 'smooth'});
+    fromEvent(window, 'mouseup')
+      .pipe(take(1))
+      .subscribe(() => this.renderer.removeClass(reaction, 'highlight'));
   }
 
   unfollow() {

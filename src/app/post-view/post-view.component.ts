@@ -36,8 +36,8 @@ export class PostViewComponent implements OnInit {
     this.titleService.setTitle('Xulgon');
     let postId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.getPost(postId);
-    this.highlightComment(this.activatedRoute.snapshot);
-    this.onRouteReuse().subscribe(route => this.highlightComment(route));
+    this.postViewService.highlight(this.activatedRoute.snapshot);
+    this.onRouteReuse().subscribe(route => this.postViewService.highlight(route));
 
     this.groupService.attach$.pipe(
       filter(id => this.groupId == id)
@@ -46,26 +46,6 @@ export class PostViewComponent implements OnInit {
     this.groupService.detach$.pipe(
       filter(id => this.groupId == id)
     ).subscribe(() => this.onDetach());
-  }
-
-  highlightComment(route: ActivatedRouteSnapshot) {
-    let postId = Number(route.paramMap.get('id'));
-    const queryParams = route.queryParamMap;
-    const commentId = Number(queryParams.get('comment'));
-    const childCommentId = Number(queryParams.get('child_comment'));
-    const type = queryParams.get('type');
-
-    if (!commentId && type == 'reaction') {
-      this.scrollToView();
-    } else {
-      const data = {
-        postId: postId,
-        commentId: commentId,
-        childCommentId: childCommentId
-      }
-
-      this.postViewService.highlight$.next(data);
-    }
   }
 
   scrollToView() {
@@ -108,7 +88,7 @@ export class PostViewComponent implements OnInit {
     // Prevent getting called twice on attach
     if (!this.isAttached) {
       this.postViewService.attach$.next(this.post?.id);
-      this.highlightComment(this.activatedRoute.snapshot);
+      this.postViewService.highlight(this.activatedRoute.snapshot);
       this.isAttached = true;
     }
   }

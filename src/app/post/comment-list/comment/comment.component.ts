@@ -11,8 +11,8 @@ import {
   ViewChild
 } from '@angular/core';
 import {RxStompService} from '@stomp/ng2-stompjs';
-import {merge, of} from 'rxjs';
-import {filter, switchMap, takeUntil} from 'rxjs/operators';
+import {fromEvent, merge, of} from 'rxjs';
+import {filter, switchMap, take, takeUntil} from 'rxjs/operators';
 import {AuthenticationService} from '../../../core/authentication/authentication.service';
 import {PostViewService} from '../../../post-view/post-view.service';
 import {ConfirmDialogService} from '../../../logged-in/confirm-dialog/confirm-dialog.service';
@@ -100,10 +100,10 @@ export class CommentComponent implements OnInit, AfterViewInit {
 
   highlight() {
     const comment = this.commentBodyElement.nativeElement;
-    // Prevent click outside canceling
-    setTimeout(() => {
-      this.renderer.addClass(comment, 'highlight')
-    }, 100);
+    this.renderer.addClass(comment, 'highlight');
+    fromEvent(document, 'mouseup')
+      .pipe(take(1))
+      .subscribe(() => this.renderer.removeClass(comment, 'highlight'));
   }
 
   scrollToView() {

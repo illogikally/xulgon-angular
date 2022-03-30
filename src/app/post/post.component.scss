@@ -79,6 +79,15 @@
     font-size: 14px;
     color: grey;
 
+    .reaction-count {
+      padding: 3px 6px;
+      border-radius: 20px;
+
+      &.highlight {
+        background-color: rgba($btn-blue, .1);
+      }
+    }
+
     .reaction-count, .comment-count, .share-count {
       cursor: pointer;
 
@@ -89,6 +98,7 @@
 
     .comment-count {
       margin-right: 15px;
+
     }
   }
 

@@ -9,11 +9,11 @@
 
     .sidebar {
       position: fixed;
-      z-index: 110;
       box-shadow: 1px 0 3px rgba(#000, .2);
       top: 56px;
       box-sizing: border-box;
       left: 0;
+      z-index: z('sidebar');
       background-color: #fff;
       width: 360px;
       bottom: 0;
