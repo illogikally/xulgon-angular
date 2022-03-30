@@ -36,9 +36,9 @@ const routes: Routes = [
       {
         path: 'groups',
         loadChildren: () => import('./group/group.module').then(m => m.GroupModule),
-        data: {preload: true, delay: 2000}
-},
-      {path: ':id/posts/:id', component: PostViewComponent},
+        data: {preload: true, delay: 2000} 
+      },
+      // {path: ':id/posts/:id', component: PostViewComponent, pathMatch: 'full'},
       {
         path: ':id',
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),

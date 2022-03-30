@@ -14,6 +14,27 @@ import {GroupTimelineComponent} from "./group-timeline/group-timeline.component"
 import {GroupAdminGuard} from "./group-admin.guard";
 import {GroupResolver} from "./resolvers/group.resolver";
 
+const groupPageRoutes = 
+  {
+    path: ':id',
+    resolve: {group: GroupResolver},
+    component: GroupComponent,
+    children: [
+      {
+        path: '',
+        component: GroupContentComponent,
+        children: [
+          {path: '', component: GroupTimelineComponent, pathMatch: 'full', data: {isPostView: false }},
+          {path: 'posts/:id', component: GroupTimelineComponent, data: {isPostView: true }},
+          {path: 'about', component: GroupAboutComponent},
+          {path: 'media', component: GroupMediaComponent},
+          {path: 'members', component: GroupMemberComponent},
+        ]
+      },
+      { path: 'member_request', component: JoinRequestListComponent, canActivate: [GroupAdminGuard] },
+      { path: 'settings', component: GroupSettingsComponent, canActivate: [GroupAdminGuard] }
+    ]
+  };
 const routes: Routes = [
   {
     path: '',
@@ -24,46 +45,10 @@ const routes: Routes = [
         children: [
           { path: '', component: GroupFeedComponent, pathMatch: 'full' },
           { path: 'discover', component: GroupDiscoverComponent },
-          {
-            path: ':id',
-            resolve: {group: GroupResolver},
-            component: GroupComponent,
-            children: [
-              {
-                path: '',
-                component: GroupContentComponent,
-                children: [
-                  { path: '', component: GroupTimelineComponent, pathMatch: 'full', data: { isPostView: false } },
-                  { path: 'posts/:id', component: GroupTimelineComponent, data: { isPostView: true } },
-                  { path: 'about', component: GroupAboutComponent },
-                  { path: 'media', component: GroupMediaComponent },
-                  { path: 'members', component: GroupMemberComponent },
-                ]
-              },
-            ]
-          }
+          groupPageRoutes
         ]
       },
-      {
-        path: ':id',
-        resolve: {group: GroupResolver},
-        component: GroupComponent,
-        children: [
-          {
-            path: '',
-            component: GroupContentComponent,
-            children: [
-              { path: '', component: GroupTimelineComponent, pathMatch: 'full', data: { isPostView: false } },
-              { path: 'posts/:id', component: GroupTimelineComponent, data: { isPostView: true } },
-              { path: 'about', component: GroupAboutComponent },
-              { path: 'media', component: GroupMediaComponent },
-              { path: 'members', component: GroupMemberComponent },
-            ]
-          },
-          { path: 'member_request', component: JoinRequestListComponent, canActivate: [GroupAdminGuard] },
-          { path: 'settings', component: GroupSettingsComponent, canActivate: [GroupAdminGuard] }
-        ]
-      }
+      groupPageRoutes
     ]
   },
 ];

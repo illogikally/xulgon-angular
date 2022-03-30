@@ -1,7 +1,7 @@
 <div #wrapper class="wrapper">
   <div #timeline class="group-timeline">
     <div class="content">
-      <div *ngIf="!groupResponse?.isMember && groupResponse?.isPrivate"
+      <div *ngIf="!groupResponse?.isMember && groupResponse?.isPrivate && !isPostView"
           class="private-group-warn">
         <div class="lock">
           <img src="https://xulgon.sirv.com/assets/lock.jpg"/>
