@@ -83,8 +83,12 @@ export class ChatNotificationComponent implements OnInit {
       return isMe || msg.isRead;
     }
 
-    const unreads = this.conversations.filter(conv => !isRead(conv));
-    this.conversations = unreads.concat(this.conversations.filter(isRead));
+    const sortDesc = (left: ConversationNotif, right: ConversationNotif) => {
+      return right.latestMessage.id - left.latestMessage.id;
+    }
+
+    const unreads = this.conversations.filter(conv => !isRead(conv)).sort(sortDesc);
+    this.conversations = unreads.concat(this.conversations.filter(isRead).sort(sortDesc));
   }
 
   loadConversations(): void {
@@ -92,14 +96,6 @@ export class ChatNotificationComponent implements OnInit {
       this.conversations = this.conversations.concat(latest);
       this.hoistUnread();
     })
-  }
-
-  hidePopup(): void {
-    this.renderer.setStyle(this.popup.nativeElement, 'display', 'none');
-  }
-
-  togglePopup(): void {
-    this.isPopupVisible = !this.isPopupVisible;
   }
 
   markAsRead(messageId: number): void {
