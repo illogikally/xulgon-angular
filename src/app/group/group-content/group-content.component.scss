@@ -1,5 +1,7 @@
 @import "../../../styles";
 
+$cover-height: 350px;
+$content-width: 940px;
 .group-content {
   .group-header {
     display: flex;
@@ -12,41 +14,81 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      max-width: 940px;
       width: 100%;
 
       .cover {
         position: relative;
         width: 100%;
+        display: flex;
+        height: $cover-height;
+        justify-content: center;
+
+        .radiant-wash {
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-image: linear-gradient(
+            to top,
+            #FFFFFF,
+            rgba(255,255,255.9),
+            rgba(255,255,255,.7),
+            rgba(255,255,255,.4),
+            rgba(255,255,255,0)
+          );
+          width: 100%;
+          height: 100%;
+        }
+
+        .left, .right {
+          flex-grow: 1;
+          height: 100%;
+        }
+
+        .left {
+          background-image:
+            linear-gradient(.75turn, rgba(#fff, .8), 20%, rgba(#fff, .2), transparent),
+            linear-gradient(.25turn, rgba(#fff, .5), 20%, transparent);
+        }
+
+        .right {
+          background-image:
+            linear-gradient(.25turn, rgba(#fff, .8), 20%, rgba(#fff, .2), transparent),
+            linear-gradient(.75turn, rgba(#fff, .5), 20%, transparent);
+        }
 
         .update-cover {
           position: absolute;
           bottom: 10px;
+          z-index: 2;
           right: 10px;
         }
 
-      }
-
-      .cover-container {
-        @extend %fc;
-        height: 350px;
-        width: 100%;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-        background-color: #ddd;
-        border: 1px solid rgba(#333, .1);
-        border-top: none;
-        box-sizing: border-box;
-        overflow: hidden;
-
-        img {
-          object-fit: cover;
-          height: 100%;
+        .cover-container {
+          @extend %fc;
+          max-width: $content-width;
           width: 100%;
+          position: relative;
+          height: $cover-height;
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 10px;
+          background-color: #ddd;
+          border: 1px solid rgba(#333, .1);
+          border-top: none;
+          box-sizing: border-box;
+          overflow: hidden;
+
+          img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+          }
         }
+
       }
+
 
       .name--tabs--container {
+        max-width: $content-width;
         width: 100%;
         margin: 20px 0px;
 

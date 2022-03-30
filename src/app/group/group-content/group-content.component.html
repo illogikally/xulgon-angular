@@ -2,23 +2,31 @@
   <div class="group-header">
     <div class="content">
       <div class="cover">
-        <div class="cover-container">
-          <img [src]="(group.coverPhotoUrl | sirv: 900) || defaultCoverPhotoUrl" />
+        <div class="left"
+             [ngStyle]="{'background-color': group.coverLeftColor}"></div>
+        <div class="div"
+             style="position: relative; z-index: 1;">
+          <div class="cover-container">
+            <img [src]="(group.coverPhotoUrl | sirv: 900) || defaultCoverPhotoUrl" />
+          </div>
+          <div class="update-cover">
+            <app-button background="#fff"
+                        *ngIf="group.role == 'ADMIN'"
+                        [hasOptions]="true">
+              <div button="">
+                <i class='bx bxs-camera'></i>
+                <span>Thay ảnh bìa</span>
+              </div>
+              <div options="">
+                <div (click)="updateCover('GROUP')">Chọn ảnh từ ảnh trong nhóm</div>
+                <div (click)="updateCover('PROFILE')">Chọn ảnh từ trang cá nhân</div>
+              </div>
+            </app-button>
+          </div>
         </div>
-        <div class="update-cover">
-          <app-button background="#fff"
-                      *ngIf="group.role == 'ADMIN'"
-                      [hasOptions]="true">
-            <div button="">
-              <i class='bx bxs-camera'></i>
-              <span>Thay ảnh bìa</span>
-            </div>
-            <div options="">
-              <div (click)="updateCover('GROUP')">Chọn ảnh từ ảnh trong nhóm</div>
-              <div (click)="updateCover('PROFILE')">Chọn ảnh từ trang cá nhân</div>
-            </div>
-          </app-button>
-        </div>
+        <div class="right"
+             [ngStyle]="{'background-color': group.coverRightColor}"></div>
+        <div class="radiant-wash"></div>
       </div>
       <div class="name--tabs--container">
         <div class="group-name">

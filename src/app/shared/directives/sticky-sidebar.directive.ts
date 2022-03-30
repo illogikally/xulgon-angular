@@ -66,6 +66,7 @@ export class StickySidebarDirective implements OnInit {
 
       if (this.disabled || SIDEBAR_WIDTH == 0) return;
       const SPEED = (window.scrollY - oldY)
+      
       if (SPEED < 0) { // Scroll up
 
         if (

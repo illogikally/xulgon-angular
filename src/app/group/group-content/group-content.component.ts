@@ -21,7 +21,6 @@ export class GroupContentComponent implements OnInit, OnDestroy, AfterViewInit {
   defaultCoverPhotoUrl = this.groupService.getDefaultCoverPhotoUrl();
   isSendingJoinRequest = false;
 
-
   private destroyed$ = new ReplaySubject<boolean>(1);
 
   tabs = [

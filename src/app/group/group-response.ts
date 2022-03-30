@@ -1,7 +1,10 @@
+import { PhotoResponse } from "../shared/components/photo/photo-response";
 
 export interface GroupResponse {
   id: number;
   coverPhotoUrl: string;
+  coverLeftColor: string;
+  coverRightColor: string;
   name: string;
   isHidden: boolean;
   isPrivate: boolean;
