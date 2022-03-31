@@ -8,7 +8,7 @@ import {PhotoResponse} from '../../shared/components/photo/photo-response';
 })
 export class MediaLayoutComponent implements OnInit, AfterViewInit {
 
-  @Input() photos!: PhotoResponse[];
+  @Input() photos: PhotoResponse[] = [];
   @Input() photoSetId!: number;
   @Input() photoCount!: number;
 
