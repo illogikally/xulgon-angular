@@ -7,7 +7,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve": "ng serve",
-    "heroku-postbuild": "ng build && gzipper compress -i js,css.html ./dist --verbose",
+    "heroku-postbuild": "ng build && gzipper compress -i js,css,html ./dist --verbose",
     "start": "node server.js --path dist/xulgon --rootFile index.html -p $PORT"
   },
   "private": true,

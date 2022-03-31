@@ -8,6 +8,10 @@
     display: flex;
     position: relative;
 
+    .name {
+      display: inline-block;
+    }
+
     .name--page {
       margin-right: 40px;
       flex
