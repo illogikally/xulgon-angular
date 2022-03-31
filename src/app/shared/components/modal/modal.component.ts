@@ -42,7 +42,7 @@ export class ModalComponent implements OnInit {
       this.isHidden = false;
       this.changeDetector.detectChanges();
       this.renderer.setStyle(this.self.nativeElement, 'top', '0px');
-    }, 10);
+    }, 0);
 
     this.renderer.setStyle(document.body, 'top', -window.scrollY + 'px');
     this.renderer.setStyle(document.body, 'position', 'fixed');

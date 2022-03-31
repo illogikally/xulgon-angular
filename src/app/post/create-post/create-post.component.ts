@@ -4,9 +4,11 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   Renderer2,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
@@ -32,7 +34,7 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
   @Input() groupName = '';
   @Input() groupId = NaN;
   @Input() groupPrivacy = '';
-  @Input() sharedContent?: SharedContent;
+  @Input() sharedContent?: SharedContent; 
 
   @Output() close = new EventEmitter();
   @ViewChild('privacyBtn') privacyButton!: ElementRef;
@@ -188,7 +190,6 @@ export class CreatePostComponent implements OnInit, AfterViewInit {
     this.photos = [];
     this.files = [];
     this.postForm.reset();
-    this.sharedContent = undefined;
   }
 
   setPrivacy(privacy: string) {

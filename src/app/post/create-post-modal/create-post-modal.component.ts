@@ -27,6 +27,7 @@ export class CreatePostModalComponent implements OnInit {
   configureOnOpenCalled() {
     this.postService.onOpenCreatePostCalled().subscribe(data => {
       this.data = data;
+      console.log(this.data);
       this.toggleModalNgIf.next();
     });
   }

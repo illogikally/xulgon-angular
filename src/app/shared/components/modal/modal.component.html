@@ -3,7 +3,7 @@
      *ngIf="!isHidden"
      class="root">
   <div (clickOutside)="hide()"
-       [clickOutsideEvents]="'mousedown'"
+       [delayClickOutsideInit]="true"
        class="root__inner">
     <ng-content></ng-content>
   </div>
