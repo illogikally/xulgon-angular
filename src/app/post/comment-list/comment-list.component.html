@@ -5,7 +5,7 @@
                  (deleted)="onCommentDeleted($event)"
                  [comment]="comment">
     </app-comment>
-    <ng-container *ngIf="comments.length == 0 && !isInitLoaded">
+    <ng-container *ngIf="comments.length == 0 && !isInitLoaded && totalCommentCount">
       <app-comment-skeleton *ngFor="let item of [].constructor(2)">
       </app-comment-skeleton>
     </ng-container>

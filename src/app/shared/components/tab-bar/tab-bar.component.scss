@@ -1,0 +1,191 @@
+@import '../../../styles';
+
+$header-content-width: 940px;
+.actions-menu-container {
+  background-color: #fff;
+  position: sticky;
+  user-select: none;
+  z-index: z('tab-bar');
+  top: 55px;
+  box-shadow: 0 1px 2px #00000033;
+
+  .to-top {
+    padding: 3px 0px;
+    height: 100%;
+    position: absolute;
+    box-sizing: border-box;
+
+    .container {
+      cursor: pointer;
+      border-radius: 5px;
+      padding: 0 8px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .content {
+        position: relative;
+        display: flex;
+        animation: slideUp .2s 1;
+      }
+
+      @keyframes slideUp {
+        0% {
+          transform: translateY(10px);
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0px);
+        }
+      }
+
+      &:hover {
+        background-color: var(--bg-color);
+      }
+
+      .avatar-container {
+        height: 100%;
+        margin-right: 10px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+    .name {
+      font-weight: 500;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .wrapper {
+    max-width: $header-content-width;
+    width: 100%;
+  }
+
+  .actions-menu {
+    height: 60px;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #00000044;
+
+    .tab-bar-wrapper {
+      height: 100%;
+      flex-grow: 1;
+      max-width: 700px;
+
+      .tab-bar {
+        display: flex;
+        height: 100%;
+        font-weight: 500;
+        position: absolute;
+        color: #65676B;
+
+        .disabled {
+          cursor: not-allowed !important;
+        }
+
+
+        > * {
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          cursor: pointer;
+          padding: 5px 0;
+          box-sizing: border-box;
+          margin-right: 5px;
+
+          > *:not(app-pop-up) {
+            width: 100%;
+            align-items: center;
+            display: flex;
+            height: 100%;
+            border-radius: 5px;
+            padding: 0 15px;
+
+            i {
+              margin-left: 2px;
+            }
+
+            &:hover {
+              background-color: var(--bg-color);
+            }
+          }
+        }
+
+        .tab-active {
+          color: #1877F2;
+          box-shadow: inset 0 -3px 0 #1877F2;
+
+          > *:hover {
+            background-color: transparent !important;
+          }
+        }
+
+        > .more-tabs {
+          position: relative;
+          justify-content: unset;
+          cursor: pointer;
+
+          .hidden-tabs {
+            display: flex;
+            user-select: none;
+            flex-direction: column;
+            font-size: 15px;
+
+            .tab-active {
+              color: #1877f2;
+              box-shadow: none;
+            }
+
+            .tab {
+              background-color: #fff;
+              padding: 7px;
+              border-radius: 3px;
+              &:hover {
+                background-color: #f0f2f5;
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+  .profile-actions {
+    ::ng-deep {
+      [actions] {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        // margin-left: 40px;
+
+        & > :not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
