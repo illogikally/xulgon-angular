@@ -141,6 +141,7 @@
                  [hidden]="!moreOptsVisible"
                  class="more-opts__items">
               <a routerLink="/{{ principalProfileId }}"
+                 (click)="moreOptsVisible = false"
                  class="to-profile">
                 <div class="avatar">
                   <img [src]="(principalAvatarUrl | sirv: 100) || 'https://xulgon.sirv.com/assets/avatar.jpg'"

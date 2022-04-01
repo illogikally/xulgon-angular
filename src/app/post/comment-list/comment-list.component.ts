@@ -76,7 +76,6 @@ export class CommentListComponent implements OnInit, OnDestroy, OnChanges, After
 
   async ngOnInit() {
     this.configureOnHighlightComment();
-    this.loadComments();
     this.listenToWebSocketNewComment();
     this.principalAvatarUrl = await this.principalService.getAvatarUrl();
   }
