@@ -1,7 +1,7 @@
 @import 'src/styles';
 
 $width: 360px;
-$transition-time: .4s ease;
+$transition-time: .4s ease-in-out;
 
 .sidebar {
   width: $width;
@@ -38,26 +38,6 @@ $transition-time: .4s ease;
 
     &.hide {
       margin-left: -$width;
-    }
-  }
-
-  @include media(0px, 750px) {
-    position: absolute;
-
-    &__inner {
-      margin-left: -360px;
-
-      .toggle-button {
-        right: -60px;
-
-        &.hide {
-          right: 20px;
-        }
-      }
-
-      &.hide {
-        margin-left: 0px;
-      }
     }
   }
 }
