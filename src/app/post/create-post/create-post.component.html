@@ -19,7 +19,8 @@
       </div>
       <div class="name--privacy">
         <div class="name">{{ authenticationService.getUserFullName() }}</div>
-        <div class="privacy">
+        <div #privacyElement
+             class="privacy">
           <span *ngIf="groupName"
                 class="page-target">
             <span *ngIf=" groupPrivacy == 'GROUP' ">
@@ -50,34 +51,37 @@
             <i style="font-size: 9px; margin-left: 2px"
                class='bx bxs-down-arrow'></i>
           </span>
-          <div (clickOutside)="clickOutsidePrivacyOpts()"
-               *ngIf="isPrivacyOptsVisible"
-               [delayClickOutsideInit]="true"
-               class="privacy-opts">
-            <div (click)="setPrivacy('PUBLIC')"
-                 class="public">
-              <i class='bx bx-globe'></i>
-              <span>Công khai <br />
-                <span class="secondary-text">
-                  (Ai cũng có thể xem bài viết này)
+          <app-popup [parent]="privacyElement"
+                     alignment="LEFT"
+                     (clickOutside)="clickOutsidePrivacyOpts()"
+                     [delayClickOutsideInit]="true"
+                     *ngIf="isPrivacyOptsVisible">
+            <div class="privacy-opts">
+              <div (click)="setPrivacy('PUBLIC')"
+                   class="public">
+                <i class='bx bx-globe'></i>
+                <span>Công khai <br />
+                  <span class="secondary-text">
+                    (Ai cũng có thể xem bài viết này)
+                  </span>
                 </span>
-              </span>
-            </div>
-            <div (click)="setPrivacy('FRIEND')"
-                 class="friend">
-              <i class='bx bx-group'></i>
-              <span>Bạn bè <br />
-                <span class="secondary-text">
-                  (Chỉ bạn của tôi mới xem được bài viết này)
+              </div>
+              <div (click)="setPrivacy('FRIEND')"
+                   class="friend">
+                <i class='bx bx-group'></i>
+                <span>Bạn bè <br />
+                  <span class="secondary-text">
+                    (Chỉ bạn của tôi mới xem được bài viết này)
+                  </span>
                 </span>
-              </span>
+              </div>
+              <div (click)="setPrivacy('ME')"
+                   class="me">
+                <i class='bx bxs-lock-alt'></i>
+                <span>Chỉ mình tôi</span>
+              </div>
             </div>
-            <div (click)="setPrivacy('ME')"
-                 class="me">
-              <i class='bx bxs-lock-alt'></i>
-              <span>Chỉ mình tôi</span>
-            </div>
-          </div>
+          </app-popup>
         </div>
       </div>
     </div>

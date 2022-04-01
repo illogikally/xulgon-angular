@@ -146,7 +146,6 @@ export class UserRefPopupComponent implements OnInit {
     this.setSelfStyle('visibility', 'hidden');
     this.setSelfStyle('opacity', '0');
     this.userDto = undefined;
-    document.body.click();
   }
 
   private setSelfStyle(style: string, value: string) {

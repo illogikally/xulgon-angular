@@ -90,15 +90,17 @@
 
           .privacy-opts {
             @extend %opts;
+            position: static;
+            box-shadow: none;
+            padding: 0px;
+            max-width: 400px;
+            width: 100%;
             z-index: 2;
-            left: 0;
             transform: none;
             &::before {
               border: none;
             }
-            top: 150%;
-            width: 400px;
-            box-shadow: $box-shadow-wide;
+            width: 320px;
 
             i {
               font-size: 20px;
