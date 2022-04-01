@@ -27,6 +27,7 @@ import {TabBarComponent} from "./tab-bar/tab-bar.component";
 import {RouterModule} from "@angular/router";
 import {StickySidebarDirective} from "./directives/sticky-sidebar.directive";
 import {GroupCreatePostComponent} from "./components/group-create-post/group-create-post.component";
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {GroupCreatePostComponent} from "./components/group-create-post/group-cre
     SirvPipe,
     LabelDirective,
     TabBarComponent,
-    StickySidebarDirective
+    StickySidebarDirective,
+    SidebarComponent
   ],
   imports: [
     CommonModule,
@@ -71,6 +73,7 @@ import {GroupCreatePostComponent} from "./components/group-create-post/group-cre
     PhotoListComponent,
     LabelComponent,
     LabelDirective,
+    SidebarComponent,
     SirvPipe,
     GroupCreatePostComponent,
     ProfileAboutComponent,

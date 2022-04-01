@@ -1,0 +1,63 @@
+@import 'src/styles';
+
+$width: 360px;
+$transition-time: .4s ease;
+
+.sidebar {
+  width: $width;
+  height: 100%;
+  transition: margin-left $transition-time;
+
+  &.hide {
+    margin-left: -$width;
+  }
+
+  &__inner {
+    position: fixed;
+    top: $navbar-height;
+    transition: margin-left $transition-time;
+    left: 0;
+    bottom: 0;
+    width: $width;
+    box-shadow: 1px 0 3px rgba(#000, .2);
+    box-sizing: border-box;
+    z-index: z('sidebar');
+    background-color: #fff;
+    padding: 15px 10px;
+
+    .toggle-button {
+      transition: right $transition-time;
+      position: absolute;
+      right: 20px;
+      top: 0px;
+
+      &.hide {
+        right: -60px;
+      }
+    }
+
+    &.hide {
+      margin-left: -$width;
+    }
+  }
+
+  @include media(0px, 750px) {
+    position: absolute;
+
+    &__inner {
+      margin-left: -360px;
+
+      .toggle-button {
+        right: -60px;
+
+        &.hide {
+          right: 20px;
+        }
+      }
+
+      &.hide {
+        margin-left: 0px;
+      }
+    }
+  }
+}

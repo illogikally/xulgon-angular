@@ -1,9 +1,7 @@
 <div class="group-general">
   <div class="group-general__inner">
-    <div #sidebarBelow
-         class="content-sidebar">
-      <div #sidebar
-           class="sidebar">
+    <app-sidebar>
+      <ng-container>
         <div class="menu">
           <div class="title">
             <span>Nhóm</span>
@@ -85,8 +83,8 @@
             </ng-container>
           </div>
         </div>
-      </div>
-    </div>
+      </ng-container>
+    </app-sidebar>
     <div class="content">
       <router-outlet></router-outlet>
     </div>

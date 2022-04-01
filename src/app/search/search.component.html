@@ -1,7 +1,7 @@
 <div class="search">
   <div class="search__inner">
-    <div class="sidebar-container">
-      <div class="sidebar">
+    <app-sidebar>
+      <ng-container>
         <div class="sidebar__title">
           Kết quả tìm kiếm
         </div>
@@ -9,11 +9,10 @@
           <div class="title">
             Bộ lọc
           </div>
-          <div
-            routerLinkActive="active"
-            routerLink="/search/people"
-            queryParamsHandling="merge"
-            class="by-people filter">
+          <div routerLinkActive="active"
+               routerLink="/search/people"
+               queryParamsHandling="merge"
+               class="by-people filter">
             <div class="icon-container">
               <div class="icon">
                 <i class='bx bxs-group'></i>
@@ -23,11 +22,10 @@
               Mọi người
             </div>
           </div>
-          <div
-            routerLink="/search/posts"
-            routerLinkActive="active"
-            queryParamsHandling="merge"
-            class="by-post filter">
+          <div routerLink="/search/posts"
+               routerLinkActive="active"
+               queryParamsHandling="merge"
+               class="by-post filter">
             <div class="icon-container">
               <div class="icon">
                 <i class='bx bxs-book-content'></i>
@@ -37,11 +35,10 @@
               Bài viết
             </div>
           </div>
-          <div
-            routerLink="/search/groups"
-            routerLinkActive="active"
-            queryParamsHandling="merge"
-            class="by-group filter">
+          <div routerLink="/search/groups"
+               routerLinkActive="active"
+               queryParamsHandling="merge"
+               class="by-group filter">
             <div class="icon-container">
               <div class="icon">
                 <i class='bx bxs-network-chart'></i>
@@ -52,8 +49,8 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </ng-container>
+    </app-sidebar>
     <div class="content">
       <router-outlet></router-outlet>
     </div>

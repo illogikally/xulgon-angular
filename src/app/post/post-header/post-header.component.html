@@ -10,9 +10,9 @@
     <div class="name-date"
          style="position: relative;">
       <div class="name--page">
-        <div class="name">
-          <app-user-ref *ngIf="!isPageNameVisible || content.pageType != 'GROUP'"
-                        [userDto]="content.user">
+        <div *ngIf="!isPageNameVisible || content.pageType != 'GROUP'"
+             class="name">
+          <app-user-ref [userDto]="content.user">
           </app-user-ref>
         </div>
         <div class="group-name"

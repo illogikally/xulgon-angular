@@ -1,28 +1,9 @@
 <div *ngIf="group"
      class="group">
-  <div class="sidebar-below"
-       #sidebarBelow
-       *ngIf="group?.role == 'ADMIN'">
-    <div #sidebar
-         class="group-sidebar">
+  <app-sidebar *ngIf="group?.role == 'ADMIN'">
+    <ng-container>
       <div class="title">
         <span>Quản lý nhóm</span>
-        <div #toggleButton
-             class="toggle-sidebar">
-          <app-button [hasOptions]="false"
-                      background="#fff"
-                      width="40px"
-                      height="40px"
-                      iconSize="30px"
-                      [isRounded]="true">
-            <div (click)="toggleSidebar()"
-                 button="">
-              <div>
-                <i class='bx bx-sidebar'></i>
-              </div>
-            </div>
-          </app-button>
-        </div>
       </div>
       <div class="group-meta">
         <div class="cover-img">
@@ -113,8 +94,8 @@
           </div>
         </a>
       </div>
-    </div>
-  </div>
+    </ng-container>
+  </app-sidebar>
   <div class="group-content">
     <router-outlet></router-outlet>
   </div>

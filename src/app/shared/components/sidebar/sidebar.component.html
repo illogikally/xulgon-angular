@@ -1,0 +1,24 @@
+<div #sidebar
+     class="sidebar">
+  <div #sidebarInner
+       class="sidebar__inner">
+    <div #toggleButton
+         [ngStyle]="toggleButtonPosition"
+         class="toggle-button">
+      <app-button [hasOptions]="false"
+                  background="#fff"
+                  width="40px"
+                  height="40px"
+                  iconSize="30px"
+                  [isRounded]="true">
+        <div (click)="toggleSidebar()"
+             button="">
+          <div>
+            <i class='bx bx-sidebar'></i>
+          </div>
+        </div>
+      </app-button>
+    </div>
+    <ng-content></ng-content>
+  </div>
+</div>

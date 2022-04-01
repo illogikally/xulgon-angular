@@ -13,7 +13,7 @@
 }
 
 $image-cdn-url: 'https://xulgon.sirv.com/';
-
+$navbar-height: 56px;
 $modal-z-index: 1000;
 $z-indexes: (
   "toaster",
@@ -166,7 +166,6 @@ $box-shadow-wide: 0 12px 28px 0 rgba(#000, .2),
   &:active {
     animation: clickScale .1s ease 1;
   }
-
 }
 
 @keyframes clickScale {
@@ -182,7 +181,6 @@ $box-shadow-wide: 0 12px 28px 0 rgba(#000, .2),
 }
 
 @mixin scrollbar($w) {
-
   &::-webkit-scrollbar-track {
     background-color: transparent;
     width: 20px;
@@ -210,6 +208,11 @@ $box-shadow-wide: 0 12px 28px 0 rgba(#000, .2),
   }
 }
 
+@mixin media($min, $max) {
+  @media screen and (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}
 
 img {
   user-select: none;
