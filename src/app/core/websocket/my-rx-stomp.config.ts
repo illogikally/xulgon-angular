@@ -8,7 +8,7 @@ export class MyRxStompConfig extends InjectableRxStompConfig {
     private authenticationService: AuthenticationService
   ) {
     super();
-    this.webSocketFactory = () => new WebSocket(`wss://${environment.hostname}/ws/websocket`);
+    this.webSocketFactory = () => new WebSocket(`ws${environment.production ? 's' : ''}://${environment.hostname}/ws/websocket`);
     this.beforeConnect = async (rxStomp: RxStomp) => {
       rxStomp.configure({
         connectHeaders: {

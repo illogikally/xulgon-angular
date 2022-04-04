@@ -9,8 +9,8 @@ https://xulgon.herokuapp.com
 
 # Features
 - Creating and modifying user profiles, posts, comments, reactions, and groups. 
-- Sharing post, photo.
-- Adjusting the privacy of post.
+- Sharing posts, photos.
+- Adjusting post's privacy.
 - Chatting.
 - Real-time notifications, post and comment updates.
 - Responsive UI.
